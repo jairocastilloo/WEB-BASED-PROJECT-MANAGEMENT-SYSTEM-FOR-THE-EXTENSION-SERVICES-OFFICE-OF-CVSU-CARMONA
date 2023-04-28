@@ -52,7 +52,10 @@ $(document).ready(function() {
 
     $('#createproject').click((event) => {
         event.preventDefault();
-        var url = $(this).data('url');
+        $('#newproject').hide();
+        var memberindex = $('select[name="projectmember[]"]').length;
+        $('#memberindex').val(memberindex);
+        var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
         var data2 = $('#form2').serialize();
         var data3 = $('#form3').serialize();
@@ -62,7 +65,7 @@ $(document).ready(function() {
         
         // send data via AJAX
         $.ajax({
-        url: url,
+        url: dataurl,
         type: 'POST',
         data: formData,
         success: function(response) {

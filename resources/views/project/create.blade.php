@@ -28,31 +28,33 @@
 
                     <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                         <!-- Form for tab 1 -->
-                        <form id="form1">
+                        <form id="form1" data-url="{{ route('project.store') }}">
+                            @csrf
+                            <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
-                                <input type="text" class="form-control" id="projecttitle">
+                                <input type="text" class="form-control" id="projecttitle" name="projecttitle">
                             </div>
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
-                                <input type="text" class="form-control" id="projectleader">
+                                <input type="text" class="form-control" id="projectleader" name="projectleader">
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
-                                <input type="text" class="form-control" id="programtitle">
+                                <input type="text" class="form-control" id="programtitle" name="programtitle">
                             </div>
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Program Leader</label>
-                                <input type="text" class="form-control" id="programleader">
+                                <input type="text" class="form-control" id="programleader" name="programleader">
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
-                                <input type="text" class="form-control" id="projectstartdate">
+                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
                             </div>
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
-                                <input type="text" class="form-control" id="projectenddate">
+                                <input type="date" class="form-control" id="projectenddate" name="projectenddate">
                             </div>
                         </form>
 
@@ -63,9 +65,10 @@
 
                         <div class="container-fluid" id="memberform">
                             <form id="form2">
+                                @csrf
                                 <label for="projectmembers" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row" id="#selectmember">
-                                    <select class="col-9 m-1" id="member-select" name="projectmember[]">
+                                    <select class="col-9 m-1" id="member-select" name="projectmember[0]">
                                         <option value="" disable selected>Select a Member</option>
                                     </select>
                                     <button type="button" class="remove-member btn btn-danger col-2 m-1" id="removemember">Remove</button>
@@ -82,6 +85,7 @@
 
                         <div class="container-fluid" id="objectiveform">
                             <form id="form3">
+                                @csrf
                                 <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
                                 <div class="mb-2 row" id="#selectobjectives">
                                     <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
@@ -99,7 +103,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="#createproject" data-url="{{ route('project.store') }}">Create Project</button>
+                <button type="button" class="btn btn-primary" id="createproject">Create Project</button>
             </div>
         </div>
     </div>
