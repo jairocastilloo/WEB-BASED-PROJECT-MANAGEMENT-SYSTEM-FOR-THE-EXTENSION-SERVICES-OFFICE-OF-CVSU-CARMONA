@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Objectives;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -12,21 +13,15 @@ use Illuminate\Support\Facades\DB;
 class ProjectController extends Controller
 {
     //
-    public function show($id)
+
+    public function showproject($id)
     {
         $id = User::findOrFail($id);
-
-        return view('project.index', ['id' => $id]);
-    }
-
-    public function getMembers()
-    {
-        // Retrieve all user names
+        $projects = Project::all(['id', 'projecttitle']);
         $users = User::all(['id', 'name']);
-
-        // Pass the user names to the view
-        return view('project.create')->with('members', $users);
+        return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
+
     public function store(Request $request)
     {
 
@@ -50,7 +45,7 @@ class ProjectController extends Controller
         $programleader = $request->input('programleader');
         $projectstartdate = $request->input('projectstartdate');
         $projectenddate = $request->input('projectenddate');
-        $memberindex = $request->input('memberindex');
+
         $projectData = [
             'projecttitle' => $projecttitle,
             'projectleader' => $projectleader,
@@ -62,9 +57,28 @@ class ProjectController extends Controller
         DB::table('projects')->insert($projectData);
         $newProjectId = DB::getPdo()->lastInsertId();
 
-        $allmembers = [];
-        for ($x = 0; $x < $memberindex; $x++) {
-            $aacti = $request->input('actname.' . $x);
+        $validatedData = $request->validate([
+            'projectmember.*' => 'required|integer', // Validate each select input
+            'memberindex' => 'required|integer',
+            'projectobjective.*' => 'required',
+            'objectiveindex' => 'required|integer',
+            // Validate select count
+        ]);
+        for ($i = 0; $i < $validatedData['memberindex']; $i++) {
+            $projectmembers = new ProjectUser;
+            $projectmembers->userid = $validatedData['projectmember'][$i];
+            $projectmembers->projectid = $newProjectId;
+            $projectmembers->save();
+        }
+        for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
+            $projectobjective = new Objectives;
+            $projectobjective->name = $validatedData['projectobjective'][$i];
+            $projectobjective->projectid = $newProjectId;
+            $projectobjective->save();
+        }
+        /* $allmembers = [];
+        for ($x = 1; $x <= $memberindex; $x++) {
+
             $validatedData = $request->validate([
                 'projectmember.' . $x => 'required',
             ]);
@@ -74,7 +88,7 @@ class ProjectController extends Controller
             ];
             $allmembers[] = $allmember;
         }
-        DB::table('project_users')->insert($allmembers);
+        DB::table('project_users')->insert($allmembers);*/
 
 
         return response()->json(['success' => true]);

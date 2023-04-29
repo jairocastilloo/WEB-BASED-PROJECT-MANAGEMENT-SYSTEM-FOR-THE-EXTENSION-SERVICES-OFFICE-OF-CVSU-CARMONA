@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Monitoring;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,8 +19,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-
+Route::get('/project/{id}', [ProjectController::class, 'showproject'])->name('project.show');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/user', [ProjectController::class, 'show'])->name('user.show');
-Route::post('/projects', [ProjectController::class, 'getMembers'])->name('project.members');
-Route::post('/saveproject', [ProjectController::class, 'store'])->name('project.store');
+Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
+Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
+Route::get('/addactivity', [ProjectController::class, 'projectmembers'])->name('project.members');
+Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');

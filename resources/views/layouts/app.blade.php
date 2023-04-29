@@ -60,7 +60,7 @@
                         <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Monitoring
                         </a>
-                        <a class="nav-link" href="{{ route('project.members') }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Project
                         </a>
 

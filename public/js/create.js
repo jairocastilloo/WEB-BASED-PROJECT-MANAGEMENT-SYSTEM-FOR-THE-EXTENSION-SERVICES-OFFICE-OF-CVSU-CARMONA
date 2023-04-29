@@ -1,5 +1,28 @@
 
 $(document).ready(function() {
+    
+    $('#addactivity').click((event) => {
+        event.preventDefault();
+        var message = "Please select a project";
+        alert(message);
+      });
+
+
+
+  function showMessage(message) {
+    $('<div>').html(message)
+              .dialog({
+                  title: 'Validation Message',
+                  modal: true,
+                  buttons: {
+                      Ok: function () {
+                          $(this).dialog("close");
+                      }
+                  }
+              });
+  }
+
+    // CREATE PROJECT
     $.each(users, function(index, user) {
         $('#member-select').append($('<option>', {
             value: user.id,
@@ -54,7 +77,18 @@ $(document).ready(function() {
         event.preventDefault();
         $('#newproject').hide();
         var memberindex = $('select[name="projectmember[]"]').length;
+        var objectiveindex = $('input[name="projectobjective[]"]').length;
+
+// Iterate over each select element and set its name attribute
+        $('input[name="projectobjective[]"]').each(function(index) {
+        $(this).attr('name', 'projectobjective[' + index + ']');
+        });
+        $('input[name="projectmember[]"]').each(function(index) {
+            $(this).attr('name', 'projectmember[' + index + ']');
+            });
+        
         $('#memberindex').val(memberindex);
+        $('#objectiveindex').val(objectiveindex);
         var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
         var data2 = $('#form2').serialize();
@@ -72,7 +106,9 @@ $(document).ready(function() {
             console.log(response);
         },
         error: function(xhr, status, error) {
+            console.log(xhr.responseText);
             console.error(error);
+            
         }
         });
         
