@@ -2,23 +2,25 @@
 
 @section('content')
 <div id="#projectdropdown">
-    <select id="project-select" class="form-select form-select-lg">
-        <option value="" disable selected>Select a Project</option>
+    <select id="project-select" class="form-select form-select-lg m-3">
+        <option value="" selected disabled>Select a Project</option>
 
         @foreach($projects as $project)
-        <option value="{{ $project->id }}">{{ $project->projecttitle }}</option>
+        <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
+            {{ $project->projecttitle }}
+        </option>
         @endforeach
 
     </select>
 
 </div>
 <!-- Add activity -->
-<button type="button" class="btn btn-primary" id="addactivity">Add Activity</button>
+<button type="button" class="btn btn-primary" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">Add Activity</button>
 <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="newactivityLabel">Activity Details</h5>
+                <h5 class="modal-title" id="newactivityLabel">Adding Activity</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -38,44 +40,49 @@
                                 <input type="text" class="form-control" id="activityname">
                             </div>
                             <div class="mb-3">
-                                <label for="activityobjecives" class="form-label">Objectives</label>
+                                <label for="objectives" class="form-label">Objectives</label>
                                 <select class="form-select" id="objective-select" name="objectives">
                                     <option value="" disable selected>Choose Objective</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="activityname" class="form-label">Expected Output</label>
-                                <input type="text" class="form-control" id="activity-name">
+                                <label for="expectedoutput" class="form-label">Expected Output</label>
+                                <input type="text" class="form-control" id="expectedoutput">
                             </div>
                             <div class="mb-3">
-                                <label for="activityname" class="form-label">Activity Start Date</label>
-                                <input type="text" class="form-control" id="activity-name">
+                                <label for="startdate" class="form-label">Activity Start Date</label>
+                                <input type="text" class="form-control" id="activitystartdate">
                             </div>
                             <div class="mb-3">
-                                <label for="activityname" class="form-label">Activity End Date</label>
-                                <input type="text" class="form-control" id="activity-name">
+                                <label for="enddate" class="form-label">Activity End Date</label>
+                                <input type="text" class="form-control" id="activityenddate">
                             </div>
                             <div class="mb-3">
-                                <label for="activityname" class="form-label">Budget</label>
-                                <input type="number" class="form-control" id="activity-name">
+                                <label for="budget" class="form-label">Budget</label>
+                                <input type="number" class="form-control" id="budget">
                             </div>
                             <div class="mb-3">
-                                <label for="activityname" class="form-label">Source</label>
-                                <input type="text" class="form-control" id="activity-name">
+                                <label for="Source" class="form-label">Source</label>
+                                <input type="text" class="form-control" id="Source">
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="assignees" role="tabpanel" aria-labelledby="assignees-tab">
-                        <form>
-                            <div class="mb-3">
-                                <label for="assignee-name" class="form-label">Assignee Name</label>
-                                <input type="text" class="form-control" id="assignee-name">
-                            </div>
-                            <div class="mb-3">
-                                <label for="assignee-email" class="form-label">Assignee Email</label>
-                                <input type="email" class="form-control" id="assignee-email">
-                            </div>
-                        </form>
+                        <div class="container-fluid" id="assigneesform">
+                            <form>
+                                @csrf
+                                <label for="assignees" class="form-label mt-2">Assign project members for the activity</label>
+                                <div class="mb-2 row" id="selectassignees">
+                                    <select class="col-9 m-1" id="assignees-select" name="assignees[]">
+                                        <option value="" selected disabled>Select a Member</option>
+                                    </select>
+                                    <button type="button" class="remove-assignees btn btn-danger col-2 m-1" id="removeassignees">Remove</button>
+                                </div>
+
+
+                            </form>
+                            <button type="button" class="addassignees-button btn btn-success" id="addassignees">Add Assignees</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -88,7 +95,7 @@
 </div>
 
 <!-- New Project -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newproject">Create Project</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -154,13 +161,14 @@
                                 <label for="projectmembers" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row" id="selectmember">
                                     <select class="col-9 m-1" id="member-select" name="projectmember[]">
-                                        <option value="" disable selected>Select a Member</option>
+                                        <option value="" selected disabled>Select a Member</option>
                                     </select>
                                     <button type="button" class="remove-member btn btn-danger col-2 m-1" id="removemember">Remove</button>
                                 </div>
 
                             </form>
                             <button type="button" class="addmember-button btn btn-success" id="addmember">Add Member</button>
+
                         </div>
 
                     </div>
@@ -197,23 +205,42 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script>
     var users = <?php echo json_encode($members); ?>;
+    var objectives = <?php echo json_encode($objectives); ?>;
+    var assignees = <?php echo json_encode($assignees); ?>;
     var selectElement = $('#project-select');
-    var selectElement = $('#project-select');
+    $(document).ready(function() {
 
-    // Add an event listener to the select element
-    selectElement.change(function() {
-        // Get the currently selected option
+        $.each(objectives, function(index, objective) {
+            $('#objective-select').append($('<option>', {
+                value: objective.id,
+                text: objective.name
+            }));
+        });
+        $.each(assignees, function(index, assignee) {
+            $('#assigneesform form div:last #assignees-select').append($('<option>', {
+                value: assignee.id,
+                text: assignee.name
+            }));
+        });
 
-        var selectedOption = $(this).find(':selected');
-        var projectid = selectedOption.val();
+        // Add an event listener to the select element
+        selectElement.change(function() {
+            // Get the currently selected option
 
-        var url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
-        url = url.replace(':projectid', projectid);
-        window.location.href = url;
+            var selectedOption = $(this).find(':selected');
+            var projectid = selectedOption.val();
 
+            var url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+            url = url.replace(':projectid', projectid);
+            window.location.href = url;
+
+
+
+        });
 
 
     });
 </script>
 <script src="{{ asset('js/create.js') }}"></script>
+<script src="{{ asset('js/select.js') }}"></script>
 @endsection

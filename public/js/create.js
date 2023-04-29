@@ -9,6 +9,7 @@ $(document).ready(function() {
             text: user.name
         }));
     });
+    
     $('#addmember').click((event) => {
         event.preventDefault();
         var $newSelect = $(`<select class="col-9 m-1" id="member-select" name="projectmember[]"><option value="" disable selected>Select a Member</option></select>`);
@@ -55,7 +56,7 @@ $(document).ready(function() {
 
     $('#createproject').click((event) => {
         event.preventDefault();
-        $('#newproject').hide();
+        
         var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -91,7 +92,7 @@ $(document).ready(function() {
             
         }
         });
-        
+        $('#newproject').modal('toggle');
     });
 
 });

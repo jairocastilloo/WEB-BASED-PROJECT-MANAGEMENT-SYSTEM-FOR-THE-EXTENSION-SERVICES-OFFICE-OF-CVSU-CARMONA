@@ -26,3 +26,4 @@ Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 Route::get('/project/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
+Route::POST('/saveactivity', [ProjectController::class, 'storeactivity'])->name('project.store');

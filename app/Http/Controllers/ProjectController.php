@@ -23,14 +23,22 @@ class ProjectController extends Controller
     }
     public function getobjectives($id, $projectid)
     {
+        $projects = Project::findOrFail($projectid);
+        $assignees = $projects->users;
+
         $user = User::findOrFail($id);
         $projects = $user->projects;
+
+
+
         $users = User::all(['id', 'name']);
 
         $project = Project::findOrFail($projectid);
         $objectives = $project->objectives;
+        //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
+
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
+        return view('project.select', ['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
     }
     public function store(Request $request)
     {
@@ -86,19 +94,7 @@ class ProjectController extends Controller
             $projectobjective->project_id = $newProjectId;
             $projectobjective->save();
         }
-        /* $allmembers = [];
-        for ($x = 1; $x <= $memberindex; $x++) {
 
-            $validatedData = $request->validate([
-                'projectmember.' . $x => 'required',
-            ]);
-            $allmember = [
-                'projectid' => $newProjectId,
-                'userid' => $validatedData['projectmember.' . $x],
-            ];
-            $allmembers[] = $allmember;
-        }
-        DB::table('project_users')->insert($allmembers);*/
 
 
         return response()->json(['success' => true]);

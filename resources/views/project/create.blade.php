@@ -16,7 +16,7 @@
 
 
 <!-- New Project -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newproject">Create Project</button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -125,6 +125,7 @@
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script>
     var users = <?php echo json_encode($members); ?>;
+
     var selectElement = $('#project-select');
 
     // Add an event listener to the select element
