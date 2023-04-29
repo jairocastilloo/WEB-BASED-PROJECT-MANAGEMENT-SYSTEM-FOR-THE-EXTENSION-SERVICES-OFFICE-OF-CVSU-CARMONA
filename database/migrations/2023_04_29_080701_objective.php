@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateObjectivesTable extends Migration
+class Objective extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateObjectivesTable extends Migration
      */
     public function up()
     {
+        //
         Schema::create('objectives', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('projectid');
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +29,7 @@ class CreateObjectivesTable extends Migration
      */
     public function down()
     {
+        //
         Schema::dropIfExists('objectives');
     }
 }

@@ -16,4 +16,12 @@ class Project extends Model
         'project_startdate',
         'project_enddate',
     ];
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'project_user');
+    }
+    public function objectives()
+    {
+        return $this->hasMany(Objective::class);
+    }
 }

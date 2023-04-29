@@ -1,29 +1,6 @@
 
 $(document).ready(function() {
     
-    $('#addactivity').click((event) => {
-        event.preventDefault();
-        var dataurl = $('this').attr('data-url');
-        if ($('#project-select').val() === '') {
-            alert('Please select a project!');
-          }
-          else{
-            var selectedValue = $('#project-select').val();
-            $.post(dataurl, { 
-            selectedValue: selectedValue 
-                })
-            .done(function(data) {
-            console.log('Data sent successfully!');
-                })
-            .fail(function(xhr, status, error) {
-            console.error(xhr.responseText);
-                });
-          }
-      });
-
-
-
-  
 
     // CREATE PROJECT
     $.each(users, function(index, user) {
@@ -36,7 +13,7 @@ $(document).ready(function() {
         event.preventDefault();
         var $newSelect = $(`<select class="col-9 m-1" id="member-select" name="projectmember[]"><option value="" disable selected>Select a Member</option></select>`);
         var $newButton = $('<button type="button" class="remove-member btn btn-danger col-2 m-1" id="removemember">Remove</button>');
-        var $newDiv = $('<div class="mb-2 row" id="#selectmember">').append($newSelect, $newButton);
+        var $newDiv = $('<div class="mb-2 row" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);
         $.each(users, function(index, user) {
             $('#memberform form div:last #member-select').append($('<option>', {

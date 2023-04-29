@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Objectives;
+use App\Models\Objective;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -16,15 +16,21 @@ class ProjectController extends Controller
 
     public function showproject($id)
     {
-        $id = ProjectUser::findOrFail($id); //still not being used
-        $projects = $id->projects()->pluck('project_id');
-        $projects = Project::all(['id', 'projecttitle']);
+        $user = User::findOrFail($id);
+        $projects = $user->projects;
         $users = User::all(['id', 'name']);
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
-    public function projectobjectives(Request $request)
+    public function getobjectives($id, $projectid)
     {
-        $selectedValue = $request->input('selectedValue');
+        $user = User::findOrFail($id);
+        $projects = $user->projects;
+        $users = User::all(['id', 'name']);
+
+        $project = Project::findOrFail($projectid);
+        $objectives = $project->objectives;
+        //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
+        return view('project.select', ['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
     }
     public function store(Request $request)
     {
@@ -70,14 +76,14 @@ class ProjectController extends Controller
         ]);
         for ($i = 0; $i < $validatedData['memberindex']; $i++) {
             $projectmembers = new ProjectUser;
-            $projectmembers->userid = $validatedData['projectmember'][$i];
-            $projectmembers->projectid = $newProjectId;
+            $projectmembers->user_id = $validatedData['projectmember'][$i];
+            $projectmembers->project_id = $newProjectId;
             $projectmembers->save();
         }
         for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
-            $projectobjective = new Objectives;
+            $projectobjective = new Objective;
             $projectobjective->name = $validatedData['projectobjective'][$i];
-            $projectobjective->projectid = $newProjectId;
+            $projectobjective->project_id = $newProjectId;
             $projectobjective->save();
         }
         /* $allmembers = [];
