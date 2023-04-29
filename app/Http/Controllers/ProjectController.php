@@ -16,12 +16,16 @@ class ProjectController extends Controller
 
     public function showproject($id)
     {
-        $id = User::findOrFail($id);
+        $id = ProjectUser::findOrFail($id); //still not being used
+        $projects = $id->projects()->pluck('project_id');
         $projects = Project::all(['id', 'projecttitle']);
         $users = User::all(['id', 'name']);
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
-
+    public function projectobjectives(Request $request)
+    {
+        $selectedValue = $request->input('selectedValue');
+    }
     public function store(Request $request)
     {
 

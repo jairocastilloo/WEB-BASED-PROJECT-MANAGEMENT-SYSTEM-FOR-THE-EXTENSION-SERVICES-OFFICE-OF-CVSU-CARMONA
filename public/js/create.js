@@ -3,24 +3,27 @@ $(document).ready(function() {
     
     $('#addactivity').click((event) => {
         event.preventDefault();
-        var message = "Please select a project";
-        alert(message);
+        var dataurl = $('this').attr('data-url');
+        if ($('#project-select').val() === '') {
+            alert('Please select a project!');
+          }
+          else{
+            var selectedValue = $('#project-select').val();
+            $.post(dataurl, { 
+            selectedValue: selectedValue 
+                })
+            .done(function(data) {
+            console.log('Data sent successfully!');
+                })
+            .fail(function(xhr, status, error) {
+            console.error(xhr.responseText);
+                });
+          }
       });
 
 
 
-  function showMessage(message) {
-    $('<div>').html(message)
-              .dialog({
-                  title: 'Validation Message',
-                  modal: true,
-                  buttons: {
-                      Ok: function () {
-                          $(this).dialog("close");
-                      }
-                  }
-              });
-  }
+  
 
     // CREATE PROJECT
     $.each(users, function(index, user) {

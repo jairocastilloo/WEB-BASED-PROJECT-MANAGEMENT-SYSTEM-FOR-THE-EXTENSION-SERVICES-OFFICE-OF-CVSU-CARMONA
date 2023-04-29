@@ -3,7 +3,7 @@
 @section('content')
 
 <div id="#projectdropdown">
-    <select id="project-select">
+    <select id="project-select" class="form-select form-select-lg">
         <option value="" disable selected>Select a Project</option>
 
         @foreach($projects as $project)
@@ -15,7 +15,7 @@
 </div>
 
 <!-- Add activity -->
-<button type="button" class="btn btn-primary" id="#addactivity">Add Activity</button>
+<button type="button" class="btn btn-primary" id="addactivity" data-url="{{ route('project.objectives') }}">Add Activity</button>
 <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

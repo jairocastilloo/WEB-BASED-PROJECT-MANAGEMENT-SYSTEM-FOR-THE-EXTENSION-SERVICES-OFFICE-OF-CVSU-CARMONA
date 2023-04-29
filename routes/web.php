@@ -23,5 +23,5 @@ Route::get('/project/{id}', [ProjectController::class, 'showproject'])->name('pr
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
-Route::get('/addactivity', [ProjectController::class, 'projectmembers'])->name('project.members');
+Route::get('/addactivity', [ProjectController::class, 'projectobjectives'])->name('project.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
