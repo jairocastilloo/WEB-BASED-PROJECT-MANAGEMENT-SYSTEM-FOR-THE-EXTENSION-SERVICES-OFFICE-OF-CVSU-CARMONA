@@ -207,6 +207,36 @@ use Illuminate\Support\Facades\Auth;
         </div>
     </div>
 </div>
+
+<div class="container">
+    <h2>New Activity Added</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>Objectives</th>
+                <th>Expected Output</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Budget</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($activities as $activity)
+            <tr>
+                <td>{{ $activity->actname }}</td>
+                <td>{{ $activity->actobjectives }}</td>
+                <td>{{ $activity->actoutput }}</td>
+                <td>{{ $activity->actstartdate }}</td>
+                <td>{{ $activity->actenddate }}</td>
+                <td>{{ $activity->actbudget }}</td>
+                <td>{{ $activity->actsource }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script>
@@ -219,7 +249,7 @@ use Illuminate\Support\Facades\Auth;
 
         $.each(objectives, function(index, objective) {
             $('#objective-select').append($('<option>', {
-                value: objective.id,
+                value: objective.name,
                 text: objective.name
             }));
         });
