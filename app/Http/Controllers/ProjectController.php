@@ -9,6 +9,9 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class ProjectController extends Controller
 {
@@ -42,7 +45,6 @@ class ProjectController extends Controller
     }
     public function store(Request $request)
     {
-
 
         $validator = Validator::make($request->all(), [
             'projecttitle' => 'required|unique:projects|max:255',
@@ -96,7 +98,13 @@ class ProjectController extends Controller
         }
 
 
+        //$id = Auth::user()->id;
 
+        //return redirect()->route('get.objectives', ['id' => $id, 'projectid' => $newProjectId]);
+
+        //$url = route('get.objectives', ['id' => $id, 'projectid' => $newProjectId]);
+
+        //return redirect($url);
         return response()->json(['success' => true]);
     }
 }

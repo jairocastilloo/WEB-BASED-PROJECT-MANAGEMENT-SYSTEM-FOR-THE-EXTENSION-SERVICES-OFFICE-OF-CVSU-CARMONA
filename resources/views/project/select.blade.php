@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+<!--@php
+use Illuminate\Support\Facades\Auth;
+@endphp-->
 @section('content')
 <div id="#projectdropdown">
     <select id="project-select" class="form-select form-select-lg m-3">
@@ -14,6 +16,7 @@
     </select>
 
 </div>
+
 <!-- Add activity -->
 <button type="button" class="btn btn-primary" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">Add Activity</button>
 <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
@@ -34,10 +37,12 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <form>
+                        <form id="act1" data-url="{{ route('activity.store') }}">
+                            <input type="number" class="d-none" id="assigneesindex" name="assigneesindex">
+                            <input type="number" class="d-none" id="projectindex" name="projectindex">
                             <div class="mb-3">
                                 <label for="activityname" class="form-label">Activity Name</label>
-                                <input type="text" class="form-control" id="activityname">
+                                <input type="text" class="form-control" id="activityname" name="activityname">
                             </div>
                             <div class="mb-3">
                                 <label for="objectives" class="form-label">Objectives</label>
@@ -47,29 +52,29 @@
                             </div>
                             <div class="mb-3">
                                 <label for="expectedoutput" class="form-label">Expected Output</label>
-                                <input type="text" class="form-control" id="expectedoutput">
+                                <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
                             </div>
                             <div class="mb-3">
                                 <label for="startdate" class="form-label">Activity Start Date</label>
-                                <input type="text" class="form-control" id="activitystartdate">
+                                <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
                             </div>
                             <div class="mb-3">
                                 <label for="enddate" class="form-label">Activity End Date</label>
-                                <input type="text" class="form-control" id="activityenddate">
+                                <input type="date" class="form-control" id="activityenddate" name="activityenddate">
                             </div>
                             <div class="mb-3">
                                 <label for="budget" class="form-label">Budget</label>
-                                <input type="number" class="form-control" id="budget">
+                                <input type="number" class="form-control" id="budget" name="budget">
                             </div>
                             <div class="mb-3">
                                 <label for="Source" class="form-label">Source</label>
-                                <input type="text" class="form-control" id="Source">
+                                <input type="text" class="form-control" id="Source" name="source">
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="assignees" role="tabpanel" aria-labelledby="assignees-tab">
                         <div class="container-fluid" id="assigneesform">
-                            <form>
+                            <form id="act2">
                                 @csrf
                                 <label for="assignees" class="form-label mt-2">Assign project members for the activity</label>
                                 <div class="mb-2 row" id="selectassignees">
@@ -88,7 +93,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" id="confirmactivity">Add activity</button>
             </div>
         </div>
     </div>
@@ -121,6 +126,7 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
+                            <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -208,6 +214,7 @@
     var objectives = <?php echo json_encode($objectives); ?>;
     var assignees = <?php echo json_encode($assignees); ?>;
     var selectElement = $('#project-select');
+    var url = "";
     $(document).ready(function() {
 
         $.each(objectives, function(index, objective) {
@@ -230,11 +237,9 @@
             var selectedOption = $(this).find(':selected');
             var projectid = selectedOption.val();
 
-            var url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
             url = url.replace(':projectid', projectid);
             window.location.href = url;
-
-
 
         });
 

@@ -64,7 +64,7 @@ $(document).ready(function() {
         $('input[name="projectobjective[]"]').each(function(index) {
         $(this).attr('name', 'projectobjective[' + index + ']');
         });
-        $('input[name="projectmember[]"]').each(function(index) {
+        $('select[name="projectmember[]"]').each(function(index) {
             $(this).attr('name', 'projectmember[' + index + ']');
             });
         
@@ -85,6 +85,9 @@ $(document).ready(function() {
         data: formData,
         success: function(response) {
             console.log(response);
+            $('#newproject').modal('toggle');
+            window.location.href = url;
+            
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
@@ -92,7 +95,7 @@ $(document).ready(function() {
             
         }
         });
-        $('#newproject').modal('toggle');
+        
     });
 
 });

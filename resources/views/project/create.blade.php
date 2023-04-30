@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+<!--@php
+use Illuminate\Support\Facades\Auth;
+@endphp-->
 @section('content')
 
 <div id="#projectdropdown">
@@ -42,6 +44,7 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
+                            <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
