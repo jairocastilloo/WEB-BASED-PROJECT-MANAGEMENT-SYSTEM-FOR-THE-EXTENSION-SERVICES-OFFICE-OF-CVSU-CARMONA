@@ -138,19 +138,27 @@ use Illuminate\Support\Facades\Auth;
 
 
         <div class="table-responsive m-4">
-            <table class="table table-bordered border-white table-dark table-hover">
+            <table class="table table-bordered table-dark table-hover rounded">
                 <thead>
                     <tr>
                         <th class="col-5">
-                            <label class="ms-3 mt-2">Activity</label>
+                            <label class="mt-2 ms-2">
+                                <h4><b>Activities</b></h4>
+                            </label>
                             <button type="button" class="btn btn-light float-end add-assignees-btn text-success shadow m-1 bg-body rounded" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
                                 <b>Add Activity</b>
                             </button>
 
                         </th>
-                        <th class="col-2">Due Date</th>
-                        <th class="col-2">Assignees</th>
-                        <th class="col-3">Activity Info</th>
+                        <th class="col-2"><label class="mt-2">
+                                <h4><b>Due Date</b></h4>
+                            </label></th>
+                        <th class="col-2"><label class="mt-2">
+                                <h4><b>Assignees</b></h4>
+                            </label></th>
+                        <th class="col-3"><label class="mt-2">
+                                <h4><b>Activity Info</b></h4>
+                            </label></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -161,10 +169,10 @@ use Illuminate\Support\Facades\Auth;
                         <td data-activity="{{ $activity->id }}" id="selectedactivity">{{ $activity->actname }}
 
 
-                            <ul class="list-unstyled ms-2">
+                            <ul class="list-unstyled ms-2 small">
                                 <p style="display: inline; margin: 0; color: #3dd18d;">Subtasks List:</p>
                                 @foreach($subtasks->where('activity_id', $activity->id) as $subtask)
-                                <li value="{{ $subtask->subtask_name }}">{{ $subtask->subtask_name }} - <p style="display: inline; margin: 0; color: #3dd18d;">{{ $subtask->subtask_assignee }}</p>
+                                <li value="{{ $subtask->subtask_name }}" class="ms-2">{{ $subtask->subtask_name }} - <p style="display: inline; margin: 0; color: #3dd18d;">{{ $subtask->subtask_assignee }}</p>
                                 </li>
                                 @endforeach
 
@@ -174,7 +182,7 @@ use Illuminate\Support\Facades\Auth;
                                 <li value="{{ $activityassignee->assignees_name }}">{{ $activityassignee->assignees_name }}</li>
                                 @endforeach
                             </ul>
-                            <button type="button" class="btn btn-success btn-sm float-end add-subtask-btn " id="addsubtask">Add Subtask</button>
+                            <button type="button" class="btn btn-success btn-sm mt-auto align-self-end add-subtask-btn" id="addsubtask">Add Subtask</button>
 
                         </td>
                         <td>{{ $activity->actenddate }}</td>
@@ -341,6 +349,9 @@ use Illuminate\Support\Facades\Auth;
 
 </div>
 
+
+@endsection
+@section('scripts')
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>

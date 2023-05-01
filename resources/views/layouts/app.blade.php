@@ -60,14 +60,15 @@
                         </li>
                         @endif
                         @else
+
                         <a class="nav-link text-white" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Home
-                        </a>
-                        <a class="nav-link text-white" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Monitoring
                         </a>
                         <a class="nav-link text-white" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Project
+                        </a>
+                        <a class="nav-link text-white" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Reports
                         </a>
 
                         <li class="nav-item dropdown">
@@ -98,6 +99,7 @@
         <main class="py-4">
             @yield('content')
         </main>
+        @yield('scripts')
     </div>
 
 </body>
