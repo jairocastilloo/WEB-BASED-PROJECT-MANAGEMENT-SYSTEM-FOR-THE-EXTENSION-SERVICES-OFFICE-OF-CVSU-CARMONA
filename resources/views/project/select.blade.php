@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Auth;
 
 
         <!-- New Project -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
+        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
         <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -137,14 +137,20 @@ use Illuminate\Support\Facades\Auth;
         </div>
 
 
-        <div class="table-responsive mt-2">
+        <div class="table-responsive m-4">
             <table class="table table-bordered border-white table-dark table-hover">
                 <thead>
                     <tr>
-                        <th class="col-5">Activity <button type="button" class="btn btn-success btn-sm float-end" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">Add Activity</button></th>
-                        <th class="col-2">Due Date</th>
+                        <th class="col-5">
+                            <label class="ms-3">Activity</label>
+                            <button type="button" class="btn btn-dark float-end " id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
+                                Add Activity
+                            </button>
+
+                        </th>
+                        <th class="col-2 ">Due Date</th>
                         <th class="col-2">Assignees</th>
-                        <th class="col-3">More Info</th>
+                        <th class="col-3">Activity Info</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -153,9 +159,9 @@ use Illuminate\Support\Facades\Auth;
                     @foreach ($activities as $activity)
                     <tr>
                         <td value="{{ $activity->id }}">{{ $activity->actname }}
-                            <button type="button" class="btn btn-light btn-sm float-end" id="addsubtask" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">Add Subtask</button>
+                            <button type="button" class="btn btn-success btn-sm float-end" id="addsubtask" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">Add Subtask</button>
                             <ul class="list-unstyled m-2">
-                                <li>Objectives: {{ $activity->actobjectives }}<button type="button" class="btn btn-dark btn-sm ms-2" id="completesubtask">✓</button></li>
+                                <li>Objectives: {{ $activity->actobjectives }}</li>
                                 <li>Output: {{ $activity->actoutput }}</li>
                                 <li>Start Date: {{ $activity->actstartdate }}</li>
                                 <li>End Date: {{ $activity->actenddate }}</li>
@@ -205,6 +211,7 @@ use Illuminate\Support\Facades\Auth;
                                 <form id="act1" data-url="{{ route('activity.store') }}">
                                     <input type="number" class="d-none" id="assigneesindex" name="assigneesindex">
                                     <input type="number" class="d-none" id="projectindex" name="projectindex">
+                                    <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                                     <div class="mb-3">
                                         <label for="activityname" class="form-label">Activity Name</label>
                                         <input type="text" class="form-control" id="activityname" name="activityname">
@@ -265,6 +272,35 @@ use Illuminate\Support\Facades\Auth;
         </div>
 
     </div>
+    <!--subtask -->
+
+    <div class="modal fade" id="new-subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="new-subtask-modal-label">New Subtask</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="subtask-name" class="form-label">Subtask Name</label>
+                            <input type="text" class="form-control" id="subtask-name" name="subtask-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="assignee" class="form-label">Assignee</label>
+                            <input type="text" class="form-control" id="assignee" name="assignee">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Subtask</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="col-1">
 
     </div>
@@ -315,6 +351,3 @@ use Illuminate\Support\Facades\Auth;
 <script src="{{ asset('js/create.js') }}"></script>
 <script src="{{ asset('js/select.js') }}"></script>
 @endsection
-@push('styles')
-<link href="{{ asset('css/select.css') }}" rel="stylesheet">
-@endpush

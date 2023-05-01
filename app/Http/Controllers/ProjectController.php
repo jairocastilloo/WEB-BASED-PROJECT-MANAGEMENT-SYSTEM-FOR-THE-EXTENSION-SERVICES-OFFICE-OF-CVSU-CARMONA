@@ -32,8 +32,6 @@ class ProjectController extends Controller
         $user = User::findOrFail($id);
         $projects = $user->projects;
 
-
-
         $users = User::all(['id', 'name']);
 
         $project = Project::findOrFail($projectid);

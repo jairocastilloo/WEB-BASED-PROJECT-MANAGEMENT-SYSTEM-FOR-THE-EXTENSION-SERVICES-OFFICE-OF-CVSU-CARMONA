@@ -45,6 +45,7 @@ class ActivityController extends Controller
         $source = $request->input('source');
         $projectindex = $request->input('projectindex');
 
+
         $activityData = [
             'actname' => $activityname,
             'actobjectives' => $objectives,
@@ -61,11 +62,13 @@ class ActivityController extends Controller
         $validatedData = $request->validate([
             'assignees.*' => 'required|integer', // Validate each select input
             'assigneesindex' => 'required|integer',
+            'assigneesname.*' => 'required',
             // Validate select count
         ]);
         for ($i = 0; $i < $validatedData['assigneesindex']; $i++) {
             $assignees = new ActivityUser();
             $assignees->user_id = $validatedData['assignees'][$i];
+            $assignees->assignees_name = $validatedData['assigneesname'][$i];
             $assignees->activity_id = $newactivityId;
             $assignees->save();
         }

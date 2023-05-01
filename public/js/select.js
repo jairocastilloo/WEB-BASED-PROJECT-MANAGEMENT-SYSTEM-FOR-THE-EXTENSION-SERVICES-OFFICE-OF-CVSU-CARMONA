@@ -27,13 +27,22 @@ $('#confirmactivity').click((event) => {
     event.preventDefault();
     
     var assigneesindex = $('select[name="assignees[]"]').length;
-
+    
+    for (let i = 1; i < assigneesindex; i++) {
+        $('#act1').append(`<input type="text" class="d-none" id="assigneesname" name="assigneesname[${i}]">`);
+      }
 
 // Iterate over each select element and set its name attribute
     
-    $('select[name="assignees[]"]').each(function(index) {
-        $(this).attr('name', 'assignees[' + index + ']');
-        });
+   
+        $('select[name="assignees[]"]').each(function(index) {
+            let assigneesnameInput = $(`input[name="assigneesname[${index}]"]`);
+            $(this).attr('name', 'assignees[' + index + ']');
+            
+            assigneesnameInput.val($(this).find('option:selected').text());
+          });
+          
+        
     
     $('#assigneesindex').val(assigneesindex);
 
@@ -44,6 +53,7 @@ $('#confirmactivity').click((event) => {
     
     // concatenate serialized data into a single string
     var formData = data1 + '&' + data2;
+    
     
     // send data via AJAX
     $.ajax({
