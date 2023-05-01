@@ -28,3 +28,4 @@ Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('ge
 Route::get('/project/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
+Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');

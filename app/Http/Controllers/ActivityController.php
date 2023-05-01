@@ -7,8 +7,10 @@ use App\Models\Activity;
 use App\Models\Objective;
 use Illuminate\Http\Request;
 use App\Models\User;
+
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\Subtask;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -73,6 +75,36 @@ class ActivityController extends Controller
             $assignees->save();
         }
 
+
+        return response()->json(['success' => true]);
+    }
+
+    public function storesubtask(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'subtaskname' => 'required|max:255',
+            'subtaskassignee' => 'required|max:255',
+            'activitynumber' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $subtaskname = $request->input('subtaskname');
+        $subtaskassignee = $request->input('subtaskassignee');
+        $activitynumber = $request->input('activitynumber');
+
+        $user = User::where('name', $subtaskassignee)->first();
+        $userid = $user->id;
+
+        $subtasks = new Subtask();
+        $subtasks->subtask_name = $subtaskname;
+        $subtasks->subtask_assignee = $subtaskassignee;
+        $subtasks->activity_id = $activitynumber;
+        $subtasks->user_id = $userid;
+        $subtasks->save();
 
         return response()->json(['success' => true]);
     }

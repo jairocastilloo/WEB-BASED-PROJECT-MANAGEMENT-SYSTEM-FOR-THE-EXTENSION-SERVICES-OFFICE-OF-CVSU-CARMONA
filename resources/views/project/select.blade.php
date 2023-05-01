@@ -142,13 +142,13 @@ use Illuminate\Support\Facades\Auth;
                 <thead>
                     <tr>
                         <th class="col-5">
-                            <label class="ms-3">Activity</label>
-                            <button type="button" class="btn btn-dark float-end " id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
-                                Add Activity
+                            <label class="ms-3 mt-2">Activity</label>
+                            <button type="button" class="btn btn-light float-end add-assignees-btn text-success shadow m-1 bg-body rounded" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
+                                <b>Add Activity</b>
                             </button>
 
                         </th>
-                        <th class="col-2 ">Due Date</th>
+                        <th class="col-2">Due Date</th>
                         <th class="col-2">Assignees</th>
                         <th class="col-3">Activity Info</th>
                     </tr>
@@ -158,27 +158,56 @@ use Illuminate\Support\Facades\Auth;
 
                     @foreach ($activities as $activity)
                     <tr>
-                        <td value="{{ $activity->id }}">{{ $activity->actname }}
-                            <button type="button" class="btn btn-success btn-sm float-end" id="addsubtask" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">Add Subtask</button>
-                            <ul class="list-unstyled m-2">
-                                <li>Objectives: {{ $activity->actobjectives }}</li>
-                                <li>Output: {{ $activity->actoutput }}</li>
-                                <li>Start Date: {{ $activity->actstartdate }}</li>
-                                <li>End Date: {{ $activity->actenddate }}</li>
-                                <li>Budget: {{ $activity->actbudget }}</li>
-                                <li>Source: {{ $activity->actsource }}</li>
+                        <td data-activity="{{ $activity->id }}" id="selectedactivity">{{ $activity->actname }}
+
+
+                            <ul class="list-unstyled ms-2">
+                                <p style="display: inline; margin: 0; color: #3dd18d;">Subtasks List:</p>
+                                @foreach($subtasks->where('activity_id', $activity->id) as $subtask)
+                                <li value="{{ $subtask->subtask_name }}">{{ $subtask->subtask_name }} - <p style="display: inline; margin: 0; color: #3dd18d;">{{ $subtask->subtask_assignee }}</p>
+                                </li>
+                                @endforeach
+
                             </ul>
+                            <ul class="list-unstyled d-none">
+                                @foreach($activityassignees->where('activity_id', $activity->id) as $activityassignee)
+                                <li value="{{ $activityassignee->assignees_name }}">{{ $activityassignee->assignees_name }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn btn-success btn-sm float-end add-subtask-btn " id="addsubtask">Add Subtask</button>
+
                         </td>
                         <td>{{ $activity->actenddate }}</td>
-                        <td>555-555-1234</td>
+                        <td>
+                            <ul class="list-unstyled m-2">
+                                @foreach($activityassignees->where('activity_id', $activity->id) as $activityassignee)
+                                <li>{{ $activityassignee->assignees_name }}</li>
+                                @endforeach
+
+                            </ul>
+                        </td>
                         <td>
                             <ul class="list-unstyled">
-                                <li>Objectives: {{ $activity->actobjectives }}</li>
-                                <li>Output: {{ $activity->actoutput }}</li>
-                                <li>Start Date: {{ $activity->actstartdate }}</li>
-                                <li>End Date: {{ $activity->actenddate }}</li>
-                                <li>Budget: {{ $activity->actbudget }}</li>
-                                <li>Source: {{ $activity->actsource }}</li>
+
+                                <li>
+                                    <p style="display: inline; margin: 0; color: #3dd18d;">Objectives:</p> {{ $activity->actobjectives }}
+                                </li>
+
+                                <li>
+                                    <p style="display: inline; margin: 0; color: #3dd18d;">Output:</p> {{ $activity->actoutput }}
+                                </li>
+                                <li>
+                                    <p style="display: inline; margin: 0; color: #3dd18d;">Start Date:</p> {{ $activity->actstartdate }}
+                                </li>
+                                <li>
+                                    <p style="display: inline; margin: 0; color: #3dd18d;">End Date:</p> {{ $activity->actenddate }}
+                                </li>
+                                <li>
+                                    <p style="display: inline; margin: 0; color: #3dd18d;">Budget:</p> {{ $activity->actbudget }}
+                                </li>
+                                <li>
+                                    <p style="display: inline; margin: 0; color: #3dd18d;">Source:</p> {{ $activity->actsource }}
+                                </li>
                             </ul>
 
                         </td>
@@ -274,10 +303,11 @@ use Illuminate\Support\Facades\Auth;
     </div>
     <!--subtask -->
 
-    <div class="modal fade" id="new-subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
+    <div class="modal" id="new-subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form>
+                <form id="subtaskform" data-url="{{ route('subtask.store') }}">
+                    @csrf
                     <div class="modal-header">
                         <h5 class="modal-title" id="new-subtask-modal-label">New Subtask</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -285,16 +315,19 @@ use Illuminate\Support\Facades\Auth;
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="subtask-name" class="form-label">Subtask Name</label>
-                            <input type="text" class="form-control" id="subtask-name" name="subtask-name">
+                            <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
                         </div>
                         <div class="mb-3">
-                            <label for="assignee" class="form-label">Assignee</label>
-                            <input type="text" class="form-control" id="assignee" name="assignee">
+                            <label for="assignee" class="form-label">Subtask Assignee</label>
+                            <select class="form-select" id="subtaskassignee" name="subtaskassignee">
+                                <option value="" selected disabled>Select subtask assignee</option>
+                            </select>
+                            <input type="number" class="form-control d-none" id="activitynumber" name="activitynumber">
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Subtask</button>
+                        <button type="submit" class="btn btn-primary" id="createsubtask">Add Subtask</button>
                     </div>
                 </form>
             </div>
@@ -315,8 +348,10 @@ use Illuminate\Support\Facades\Auth;
     var users = <?php echo json_encode($members); ?>;
     var objectives = <?php echo json_encode($objectives); ?>;
     var assignees = <?php echo json_encode($assignees); ?>;
+
     var selectElement = $('#project-select');
     var url = "";
+
     $(document).ready(function() {
 
         $.each(objectives, function(index, objective) {
@@ -344,7 +379,6 @@ use Illuminate\Support\Facades\Auth;
             window.location.href = url;
 
         });
-
 
     });
 </script>

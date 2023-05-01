@@ -75,4 +75,57 @@ $('#confirmactivity').click((event) => {
     
 });
 
+
+$(document).on('click', '.add-subtask-btn', function() {
+    $('#subtaskname').val('');
+    var select = $('#subtaskassignee');
+    select.children().not(':first').remove();
+    var unordered = $(this).prev();
+    var lis = unordered.find('li');
+
+    var activityindex = $(this).closest('td').data('activity');
+
+    $('#activitynumber').val(activityindex);
+
+    lis.each(function() {
+        var liText = $(this).text();
+
+        var option = $('<option>', {
+            value: liText,
+            text: liText
+        });
+        select.append(option);
+    });
+    $('#new-subtask-modal').modal('show');
+
+});
+
+$('#createsubtask').click((event) => {
+    event.preventDefault();
+
+
+    var dataurl = $('#subtaskform').attr('data-url');
+    var data1 = $('#subtaskform').serialize();
+
+
+    // send data via AJAX
+    $.ajax({
+        url: dataurl,
+        type: 'POST',
+        data: data1,
+        success: function(response) {
+            console.log(response);
+            $('#new-subtask-modal').modal('toggle');
+            window.location.href = url;
+
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+            console.error(error);
+
+        }
+    });
+
+});
+
 });

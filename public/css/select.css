@@ -2,3 +2,14 @@
   .table-responsive .table thead th {
     background-color: #198754;
   }
+
+  ul.list-unstyled {
+    margin-top: 0;
+  }
+  ul.list-unstyled p {
+    margin-top: 0;
+  }
+  td p {
+    display: inline;
+    margin-right: 5px;
+  }

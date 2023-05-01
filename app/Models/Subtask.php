@@ -5,17 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ActivityUser extends Model
+class Subtask extends Model
 {
     use HasFactory;
-
-    protected $table = 'activity_user';
-
-    protected $fillable = [
-        'activity_id',
-        'user_id',
-        'assignees_name',
-    ];
+    protected $fillable = ['subtask_name', 'subtask_assignee', 'activity_id', 'user_id'];
 
     public function activity()
     {
