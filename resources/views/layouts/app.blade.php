@@ -19,14 +19,18 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+
 </head>
 
-<body>
+<body style="background-color: #323132; font-family: sans-serif;">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm ">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand text-white" href="{{ url('/') }}">
                     {{ config('app.name', 'Extension Services Office Project Manager') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -45,28 +49,28 @@
                         @guest
                         @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link text-white" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         @endif
 
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="nav-link text-white" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @endif
                         @else
-                        <a class="nav-link" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link text-white" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Home
                         </a>
-                        <a class="nav-link" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link text-white" href="#" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Monitoring
                         </a>
-                        <a class="nav-link" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link text-white" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Project
                         </a>
 
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
 
