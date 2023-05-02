@@ -1,7 +1,5 @@
 @extends('layouts.app')
-<!--@php
-use Illuminate\Support\Facades\Auth;
-@endphp-->
+
 @section('content')
 <div class="row">
     <div class="col-1"></div>
@@ -166,7 +164,7 @@ use Illuminate\Support\Facades\Auth;
 
                     @foreach ($activities as $activity)
                     <tr>
-                        <td data-activity="{{ $activity->id }}" id="selectedactivity">{{ $activity->actname }}
+                        <td data-activity="{{ $activity->id }}" id="selectedactivity"><b>{{ $activity->actname }}</b>
 
 
                             <ul class="list-unstyled ms-2 small">

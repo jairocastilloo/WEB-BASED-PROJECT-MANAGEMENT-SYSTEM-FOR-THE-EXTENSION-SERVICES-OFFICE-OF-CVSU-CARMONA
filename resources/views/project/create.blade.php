@@ -134,6 +134,38 @@
                 </div>
             </div>
         </div>
+
+
+
+        <div class="table-responsive m-4">
+            <table class="table table-bordered table-dark table-hover rounded">
+                <thead>
+                    <tr>
+                        <th class="col-5">
+                            <label class="mt-2 ms-2">
+                                <h4><b>Activities</b></h4>
+                            </label>
+
+
+                        </th>
+                        <th class="col-2"><label class="mt-2">
+                                <h4><b>Due Date</b></h4>
+                            </label></th>
+                        <th class="col-2"><label class="mt-2">
+                                <h4><b>Assignees</b></h4>
+                            </label></th>
+                        <th class="col-3"><label class="mt-2">
+                                <h4><b>Activity Info</b></h4>
+                            </label></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+
     </div>
     <div class="col-1"></div>
 </div>

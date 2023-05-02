@@ -21,4 +21,12 @@ class Activity extends Model
     {
         return $this->belongsTo(Project::class);
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+    public function subtasks()
+    {
+        return $this->hasMany(Subtask::class);
+    }
 }
