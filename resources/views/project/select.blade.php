@@ -141,21 +141,21 @@
                     <tr>
                         <th class="col-5">
                             <label class="mt-2 ms-2">
-                                <h4><b>Activities</b></h4>
+                                <h5><b>Activities</b></h5>
                             </label>
-                            <button type="button" class="btn btn-light float-end add-assignees-btn text-success shadow m-1 bg-body rounded" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
+                            <button type="button" class="btn btn-sm float-end add-assignees-btn text-success shadow m-1 bg-body rounded" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
                                 <b>Add Activity</b>
                             </button>
 
                         </th>
                         <th class="col-2"><label class="mt-2">
-                                <h4><b>Due Date</b></h4>
+                                <h5><b>Due Date</b></h5>
                             </label></th>
                         <th class="col-2"><label class="mt-2">
-                                <h4><b>Assignees</b></h4>
+                                <h5><b>Assignees</b></h5>
                             </label></th>
                         <th class="col-3"><label class="mt-2">
-                                <h4><b>Activity Info</b></h4>
+                                <h5><b>Activity Info</b></h5>
                             </label></th>
                     </tr>
                 </thead>
