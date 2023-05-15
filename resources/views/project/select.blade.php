@@ -350,13 +350,13 @@
 
 @endsection
 @section('scripts')
-
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 <script>
-    var users = <?php echo json_encode($members); ?>;
-    var objectives = <?php echo json_encode($objectives); ?>;
-    var assignees = <?php echo json_encode($assignees); ?>;
+    var users = <?php echo json_encode($members);
+                ?>;
+    var objectives = <?php echo json_encode($objectives);
+                        ?>;
+    var assignees = <?php echo json_encode($assignees);
+                    ?>;
 
     var selectElement = $('#project-select');
     var url = "";

@@ -4,6 +4,9 @@ $(document).ready(function() {
     $('#projectindex').val(selectproject.val());
    
 
+
+
+
 $('#addassignees').click((event) => {
     event.preventDefault();
     var $newSelect = $(`<select class="col-9 m-1" id="assignees-select" name="assignees[]"><option value="" disable selected>Select a Assignees</option></select>`);

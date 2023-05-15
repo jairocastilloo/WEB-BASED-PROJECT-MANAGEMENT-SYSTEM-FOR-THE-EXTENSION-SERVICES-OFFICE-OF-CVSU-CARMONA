@@ -94,10 +94,10 @@
                                         @csrf
                                         <label for="projectmembers" class="form-label mt-2">Assign Members for the Project</label>
                                         <div class="mb-2 row" id="selectmember">
-                                            <select class="col-9 m-1" id="member-select" name="projectmember[]">
+                                            <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
                                                 <option value="" selected disabled>Select a Member</option>
                                             </select>
-                                            <button type="button" class="remove-member btn btn-danger col-2 m-1" id="removemember">Remove</button>
+                                            <button type="button" class="remove-member btn btn-danger col-2 m-1 float-end" id="removemember">Remove</button>
                                         </div>
 
                                     </form>
@@ -170,12 +170,14 @@
     <div class="col-1"></div>
 </div>
 
+
+
 @endsection
 @section('scripts')
-<script src="{{ asset('js/jquery.min.js') }}"></script>
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
 <script>
-    var users = <?php echo json_encode($members); ?>;
+    var users = <?php echo json_encode($members);
+                ?>;
 
     var selectElement = $('#project-select');
 

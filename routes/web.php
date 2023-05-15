@@ -21,11 +21,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-Route::get('/project/{id}', [ProjectController::class, 'showproject'])->name('project.show');
+Route::get('/user/{id}/project', [ProjectController::class, 'showproject'])->name('project.show');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
-Route::get('/project/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
+Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');

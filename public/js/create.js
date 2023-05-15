@@ -1,7 +1,7 @@
 
 $(document).ready(function() {
     
-
+    $('#addmember').hide();
     // CREATE PROJECT
     $.each(users, function(index, user) {
         $('#member-select').append($('<option>', {
@@ -12,8 +12,8 @@ $(document).ready(function() {
     
     $('#addmember').click((event) => {
         event.preventDefault();
-        var $newSelect = $(`<select class="col-9 m-1" id="member-select" name="projectmember[]"><option value="" disable selected>Select a Member</option></select>`);
-        var $newButton = $('<button type="button" class="remove-member btn btn-danger col-2 m-1" id="removemember">Remove</button>');
+        var $newSelect = $(`<select class="member-select col-7 m-1" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
+        var $newButton = $('<button type="button" class="remove-member btn btn-danger col-2 m-1 float-end" id="removemember">Remove</button>');
         var $newDiv = $('<div class="mb-2 row" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);
         $.each(users, function(index, user) {
@@ -22,10 +22,80 @@ $(document).ready(function() {
                 text: user.name
             }));
         });
-        
+        $('#addmember').hide();
       });
+    
+      $(document).on('change', '.member-select', function() {
+       
+        var selectedMember = $(this).find(':selected');
+        var memberId = selectedMember.val();
+        let index = users.findIndex(user => user.id === parseInt(memberId));
+        users.splice(index, 1);
+        $(this).prop('disabled', true);
+        $(this).after('<button type="button" class="edit-member btn btn-success col-2 m-1 float-end" id="editmember">Edit</button>');
+        $('#form2 div .edit-member').show();
+        $('#addmember').show();
+       
+        if (jQuery.isEmptyObject(users)){
+            $('#addmember').hide();
+        }
+        $(this).parent().removeClass('bg-info');
+        
+    });
+   
+
+      $(document).on('click', '.edit-member', function() {
+        if (!$('#memberform form div:last #member-select').val() && $('#memberform form div').length > 1){
+            $('#memberform form div:last').remove();
+        }
+
+        var prevSelect = $(this).prev('select');
+
+       
+       
+
+
+        var prevValue = parseInt(prevSelect.val());
+        var prevText = prevSelect.find(':selected').text();
+        
+        let newUser = { id: prevValue, name: prevText };
+        users.push(newUser);
+
+        prevSelect.find('option:not(:first)').remove();
+        $('#mySelect option[value="optionValue"]').prop('selected', true);
+        prevSelect.find('option:first').prop('selected', true);
+
+       
+        prevSelect.parent().addClass('bg-info');
+      
+        prevSelect.prop('disabled', false);
+        $.each(users, function(index, user) {
+            $(prevSelect).append($('<option>', {
+                value: user.id,
+                text: user.name
+            }));
+        });
+
+        $(this).remove();
+        $('#form2 div .edit-member').hide();
+     
+    });
 
     $('#memberform form').on('click', '.remove-member', function() {
+        var prevSelect = $(this).parent().find('select');
+        if (prevSelect.val() != null){
+        var prevValue = parseInt(prevSelect.val());
+        
+        var prevText = prevSelect.find(':selected').text();
+        
+        let newUser = { id: prevValue, name: prevText };
+        users.push(newUser);
+       
+        
+        }
+        if (Object.keys(users).length > 0) {
+            $('#addmember').show();
+          }
         $(this).parent().remove();
     });
 
