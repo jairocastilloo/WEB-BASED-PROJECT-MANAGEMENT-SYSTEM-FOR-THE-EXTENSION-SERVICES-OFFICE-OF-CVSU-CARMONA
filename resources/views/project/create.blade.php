@@ -28,7 +28,7 @@
 
 
         <!-- New Project -->
-        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
+        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
         <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -128,8 +128,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+
+                        <button type="button" class="btn btn-secondary" id="prevproject">Previous</button>
+                        <button type="button" class="btn btn-info" id="nextproject">Next</button>
                         <button type="button" class="btn btn-primary" id="createproject">Create Project</button>
+
                     </div>
                 </div>
             </div>

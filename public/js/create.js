@@ -1,21 +1,92 @@
 
+
 $(document).ready(function() {
-    
+    var currentstep = 0;
     $('#addmember').hide();
     // CREATE PROJECT
+    users.sort(function(a, b) {
+        var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare
+        var nameB = b.name.toUpperCase(); // Convert name to uppercase to compare
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0; // Names are equal
+      });
     $.each(users, function(index, user) {
+        
         $('#member-select').append($('<option>', {
             value: user.id,
             text: user.name
         }));
     });
     
+    function updateButtons(){
+      if (currentstep == 0){
+        $('#prevproject').hide();
+        $('#nextproject').show();
+        $('#createproject').hide();
+        $('#tab1-tab').tab('show');
+      } 
+      else if (currentstep == 1){
+        $('#prevproject').show();
+        $('#nextproject').show();
+        $('#createproject').hide();
+        $('#tab2-tab').tab('show');
+      }
+      else if (currentstep == 2){
+        $('#prevproject').show();
+        $('#nextproject').hide();
+        $('#createproject').show();
+        $('#tab3-tab').tab('show');
+      }
+
+    }
+   
+    $('#nextproject').click((event) => {
+
+      event.preventDefault();
+      currentstep++;
+      console.log(currentstep);
+      updateButtons();
+
+    });
+    $('#prevproject').click((event) => {
+
+      event.preventDefault();
+      currentstep--;
+      console.log(currentstep);
+      updateButtons();
+    });
+
+    $('#addproj').click((event) => {
+
+      event.preventDefault();
+      console.log(currentstep);
+      updateButtons();
+    });
+
     $('#addmember').click((event) => {
         event.preventDefault();
         var $newSelect = $(`<select class="member-select col-7 m-1" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
         var $newButton = $('<button type="button" class="remove-member btn btn-danger col-2 m-1 float-end" id="removemember">Remove</button>');
-        var $newDiv = $('<div class="mb-2 row" id="selectmember">').append($newSelect, $newButton);
+        var $newDiv = $('<div class="mb-2 row bg-info" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);
+
+        users.sort(function(a, b) {
+            var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare
+            var nameB = b.name.toUpperCase(); // Convert name to uppercase to compare
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0; // Names are equal
+          });
+
         $.each(users, function(index, user) {
             $('#memberform form div:last #member-select').append($('<option>', {
                 value: user.id,
@@ -52,9 +123,7 @@ $(document).ready(function() {
         var prevSelect = $(this).prev('select');
 
        
-       
-
-
+    
         var prevValue = parseInt(prevSelect.val());
         var prevText = prevSelect.find(':selected').text();
         
@@ -65,10 +134,20 @@ $(document).ready(function() {
         $('#mySelect option[value="optionValue"]').prop('selected', true);
         prevSelect.find('option:first').prop('selected', true);
 
-       
         prevSelect.parent().addClass('bg-info');
       
         prevSelect.prop('disabled', false);
+        users.sort(function(a, b) {
+            var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare
+            var nameB = b.name.toUpperCase(); // Convert name to uppercase to compare
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0; // Names are equal
+          });
         $.each(users, function(index, user) {
             $(prevSelect).append($('<option>', {
                 value: user.id,
@@ -76,6 +155,7 @@ $(document).ready(function() {
             }));
         });
 
+      
         $(this).remove();
         $('#form2 div .edit-member').hide();
      
@@ -126,7 +206,7 @@ $(document).ready(function() {
 
     $('#createproject').click((event) => {
         event.preventDefault();
-        
+       
         var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
