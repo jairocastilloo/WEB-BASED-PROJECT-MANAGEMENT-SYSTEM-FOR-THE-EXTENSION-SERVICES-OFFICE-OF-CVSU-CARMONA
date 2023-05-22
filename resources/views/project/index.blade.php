@@ -57,3 +57,13 @@
     <div class="col-1"></div>
 </div>
 @endsection
+@section('scripts')
+
+<script>
+    $('#navbarDropdown').click(function() {
+        // Add your function here
+        $('.dropdown-menu').toggleClass('shows');
+    });
+</script>
+
+@endsection

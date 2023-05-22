@@ -2,7 +2,15 @@
 
 $(document).ready(function() {
     var currentstep = 0;
+
+
     $('#addmember').hide();
+
+    $('#navbarDropdown').click(function() {
+      // Add your function here
+      $('.dropdown-menu').toggleClass('shows');
+  });
+
     // CREATE PROJECT
     users.sort(function(a, b) {
         var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare
@@ -64,6 +72,27 @@ $(document).ready(function() {
     $('#addproj').click((event) => {
 
       event.preventDefault();
+      console.log(currentstep);
+      updateButtons();
+    });
+    $('#tab1-tab').click((event) => {
+
+      event.preventDefault();
+      currentstep = 0;
+      console.log(currentstep);
+      updateButtons();
+    });
+    $('#tab2-tab').click((event) => {
+
+      event.preventDefault();
+      currentstep = 1;
+      console.log(currentstep);
+      updateButtons();
+    });
+    $('#tab3-tab').click((event) => {
+
+      event.preventDefault();
+      currentstep = 2;
       console.log(currentstep);
       updateButtons();
     });
