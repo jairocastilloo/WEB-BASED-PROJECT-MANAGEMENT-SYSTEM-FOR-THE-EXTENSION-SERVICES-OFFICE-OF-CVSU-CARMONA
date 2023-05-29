@@ -22,6 +22,8 @@ $('#addassignees').click((event) => {
 });
 
 
+
+
 $('#memberform form').on('click', '.remove-member', function() {
     $(this).parent().remove();
 });

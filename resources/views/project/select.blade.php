@@ -20,6 +20,7 @@
                 </select>
 
             </div>
+
         </div>
         <div class="col-8">
             <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
@@ -104,7 +105,7 @@
                                     </div>
 
                                 </form>
-                                <button type="button" class="addmember-button btn btn-success" id="addmember">Add Member</button>
+                                <button type="button" class="addmember-button btn btn-success w-100" id="addmember">Add Member</button>
 
                             </div>
 
@@ -113,18 +114,30 @@
                         <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                             <!-- Form for tab 2 -->
 
-                            <div class="container-fluid" id="objectiveform">
+                            <div class="container-fluid" id="objform">
                                 <form id="form3">
                                     @csrf
                                     <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
-                                    <div class="mb-2 row" id="#selectobjectives">
-                                        <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
-                                        <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
-                                        <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
+                                    <div class="container-fluid" id="objectiveset">
+                                        <div>
+                                            <div class="mb-2 row" id="selectobjectives">
+                                                <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                                <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
+                                                <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
+                                                <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
+
+                                            </div>
+                                        </div>
+                                        <button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button>
+                                        <hr>
                                     </div>
 
                                 </form>
-                                <button type="button" class="addobjective-button btn btn-success" id="addobjective">Add Objective</button>
+
+
+
+                                <button type="button" class="addset btn btn-success w-100" id="addset">Add Objective Set</button>
+
                             </div>
 
                         </div>
@@ -148,13 +161,13 @@
                 <tr>
                     <th class="col-3">
                         <label class="mt-2 ms-2">
-                            <h6><b>Objectives</b></h6>
+                            <h6><b>Objective</b></h6>
                         </label>
 
 
                     </th>
                     <th class="col-3"><label class="mt-2">
-                            <h6><b>Activities</b></h6>
+                            <h6><b>Activity</b></h6>
                         </label></th>
                     <th class="col-2"><label class="mt-2">
                             <h6><b>Expected Output</b></h6>
@@ -267,9 +280,26 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="objectives" class="form-label">Objectives</label>
-                                    <select class="form-select" id="objective-select" name="objectives">
-                                        <option value="" disable selected>Choose Objective</option>
-                                    </select>
+                                    <!--<select class="form-select" id="objective-select" name="objectives">
+                                        <option value="" selected disabled>Choose Objectives</option>
+                                        <option value="2">Option 2 with<br>multiline tex</option>
+                                        <option value="3">Option 3 with/nmultiline tex</option>
+                                        <option value="4">Option 4 with.multiline tex</option>
+                                        <option value="5">Option 5 with.multiline tex</option>
+                                    </select>-->
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="radioOption" id="radioOption1" value="option1" required>
+                                        <label class="form-check-label" for="radioOption1">Option 1</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="radioOption" id="radioOption2" value="option2" required>
+                                        <label class="form-check-label" for="radioOption2">Option 2</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="radioOption" id="radioOption3" value="option3" required>
+                                        <label class="form-check-label" for="radioOption3">Option 3</label>
+                                    </div>
+
                                 </div>
                                 <div class="mb-3">
                                     <label for="expectedoutput" class="form-label">Expected Output</label>
@@ -355,13 +385,10 @@
 </div>
 
 
-
-
-
-
-
 @endsection
+
 @section('scripts')
+<script src="{{ asset('js/selectize.min.js') }}"></script>
 <script>
     var users = <?php echo json_encode($members);
                 ?>;
@@ -374,13 +401,32 @@
     var url = "";
 
     $(document).ready(function() {
-
-        $.each(objectives, function(index, objective) {
+        /**$('#objective-select').select2({
+            escapeMarkup: function(markup) {
+                return markup;
+            }
+        });**/
+        /**$('#objective-select').selectize(
+            {
+                        render: {
+                            option: function(data, escape) {
+                                var lines = data.label.split('.');
+                                var content = '';
+                                for (var i = 0; i < lines.length; i++) {
+                                    content += '<div>' + escape(lines[i]) + '</div>';
+                                }
+                                return content;
+                            }
+                        }
+                    }
+        );**/
+        /**$.each(objectives, function(index, objective) {
             $('#objective-select').append($('<option>', {
                 value: objective.name,
-                text: objective.name
+                text: objective.name + "\n" + "asdasd"
             }));
-        });
+        });**/
+
         $.each(assignees, function(index, assignee) {
             $('#assigneesform form div:last #assignees-select').append($('<option>', {
                 value: assignee.id,
@@ -400,6 +446,46 @@
             window.location.href = url;
 
         });
+
+
+
+        //$('#objective-select').select2({
+        // placeholder: "Select something",
+        //minimumResultsForSearch: Infinity, //removes the search box
+        //templateResult: formatResult,
+        //templateSelection: formatSelection
+        //});
+
+
+        /**function formatResult(item) {
+            alert("dfdfdf");
+            var $returnString = $('<span>' + "result" + '</span>');
+            return $returnString;
+        };
+
+        function formatSelection(item) {
+            var $returnString = $('<span>' + "selected" + '</span>');
+            return $returnString;
+        };**/
+        /**$('#objective-select').select2({
+            templateResult: formatOption
+        });
+
+        function formatOption(option) {
+            if (!option.id) {
+                return option.text;
+            }
+
+            var lines = option.text.split('.');
+            var formattedText = '<div>';
+            for (var i = 0; i < lines.length; i++) {
+                formattedText += '<span>' + lines[i] + '</span><br>';
+            }
+            formattedText += '</div>';
+
+            return $(formattedText);
+        }**/
+
 
     });
 </script>

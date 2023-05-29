@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
     var currentstep = 0;
-
+    var setcount = 0;
 
     $('#addmember').hide();
 
@@ -208,23 +208,25 @@ $(document).ready(function() {
         $(this).parent().remove();
     });
 
-    $('#addobjective').click((event) => {
-        event.preventDefault();
+    
+    $('#objectiveset').on('click', '.add-objective', function() {
+      var setid = $(this).prev().find('div:first .objectivesetid').val();
+       
         var $newInput = $('<input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+        var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setid + '" class="objectivesetid d-none">');
         var $newButton1 = $('<button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>');
         var $newButton2 = $('<button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>');
-        var $newDiv = $('<div class="mb-2 row" id="#selectobjectives">').append($newInput, $newButton1, $newButton2);
-        $('#objectiveform form').append($newDiv);
+        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton1, $newButton2);
+        $(this).prev().append($newDiv);
         
-    });
-
-    $('#objectiveform form').on('click', '.remove-objective', function() {
+  });
+    $('#objform form').on('click', '.remove-objective', function() {
         $(this).parent().remove();
     });
-    $('#objectiveform form').on('click', '.edit-objective', function() {
+    $('#objform form').on('click', '.edit-objective', function() {
         $(this).prev().focus();
     });
-    $('#objectiveform form').on('keydown', '.input-objective', function() {
+    $('#objform form').on('keydown', '.input-objective', function() {
         if (event.keyCode === 13) { 
           event.preventDefault(); 
           
@@ -232,6 +234,20 @@ $(document).ready(function() {
          
         }
     });
+
+    $('#addset').click((event) => {
+      event.preventDefault();
+      setcount++;
+      var $newInput = $('<input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+      var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setcount + '" class="objectivesetid d-none">');
+        var $newButton1 = $('<button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>');
+        var $newButton2 = $('<button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>');
+        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton1, $newButton2);
+        var $newDiv1 = $('<div>').append($newDiv);
+        var $newButton3 = $('<button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button><hr>');
+        $('#objectiveset').append($newDiv1, $newButton3);
+        
+  });
 
     $('#createproject').click((event) => {
         event.preventDefault();
@@ -243,6 +259,9 @@ $(document).ready(function() {
         $('input[name="projectobjective[]"]').each(function(index) {
         $(this).attr('name', 'projectobjective[' + index + ']');
         });
+        $('input[name="objectivesetid[]"]').each(function(index) {
+          $(this).attr('name', 'objectivesetid[' + index + ']');
+          });
         $('select[name="projectmember[]"]').each(function(index) {
             $(this).attr('name', 'projectmember[' + index + ']');
             });

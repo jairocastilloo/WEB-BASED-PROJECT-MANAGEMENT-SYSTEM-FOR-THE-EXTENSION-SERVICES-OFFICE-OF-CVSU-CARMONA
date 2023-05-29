@@ -15,13 +15,16 @@
         "bootstrap": "^5.2.3",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
+        "node-sass": "^6.0.1",
         "postcss": "^8.1.14",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.32.11",
-        "sass-loader": "^11.0.1"
+        "sass-loader": "^11.1.1"
     },
     "dependencies": {
+        "@selectize/selectize": "^0.15.2",
         "jquery": "^3.6.4",
+        "materialize-css": "^1.0.0",
         "popper.js": "^1.16.1"
     }
 }

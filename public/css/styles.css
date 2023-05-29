@@ -5,4 +5,7 @@
   .shows {
     display: block;
   }
-  
+  /**#objective-select .option .item {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }**/

@@ -98,6 +98,7 @@ class ProjectController extends Controller
             $projectobjective = new Objective;
             $projectobjective->name = $validatedData['projectobjective'][$i];
             $projectobjective->project_id = $newProjectId;
+            $projectobjective->objectiveset_id = $validatedData['objectivesetid'][$i];
             $projectobjective->save();
         }
 
