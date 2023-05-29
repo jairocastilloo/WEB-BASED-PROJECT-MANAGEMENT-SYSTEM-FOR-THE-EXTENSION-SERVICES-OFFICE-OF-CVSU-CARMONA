@@ -86,6 +86,7 @@ class ProjectController extends Controller
             'memberindex' => 'required|integer',
             'projectobjective.*' => 'required',
             'objectiveindex' => 'required|integer',
+            'objectivesetid.*' => 'required|integer',
             // Validate select count
         ]);
         for ($i = 0; $i < $validatedData['memberindex']; $i++) {

@@ -18,9 +18,9 @@
 
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
+    <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
     <script src="{{ mix('js/app.js') }}"></script>
 
 

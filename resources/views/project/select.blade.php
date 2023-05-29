@@ -96,7 +96,7 @@
                             <div class="container-fluid" id="memberform">
                                 <form id="form2">
                                     @csrf
-                                    <label for="projectmembers" class="form-label mt-2">Assign Members for the Project</label>
+                                    <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                     <div class="mb-2 row" id="selectmember">
                                         <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
                                             <option value="" selected disabled>Select a Member</option>
@@ -280,25 +280,11 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="objectives" class="form-label">Objectives</label>
-                                    <!--<select class="form-select" id="objective-select" name="objectives">
+                                    <select class="form-select" id="objective-select" name="objectives">
                                         <option value="" selected disabled>Choose Objectives</option>
-                                        <option value="2">Option 2 with<br>multiline tex</option>
-                                        <option value="3">Option 3 with/nmultiline tex</option>
-                                        <option value="4">Option 4 with.multiline tex</option>
-                                        <option value="5">Option 5 with.multiline tex</option>
-                                    </select>-->
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radioOption" id="radioOption1" value="option1" required>
-                                        <label class="form-check-label" for="radioOption1">Option 1</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radioOption" id="radioOption2" value="option2" required>
-                                        <label class="form-check-label" for="radioOption2">Option 2</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="radioOption" id="radioOption3" value="option3" required>
-                                        <label class="form-check-label" for="radioOption3">Option 3</label>
-                                    </div>
+                                        <option value="0">Objective Set 1</option>
+                                    </select>
+
 
                                 </div>
                                 <div class="mb-3">
@@ -388,7 +374,7 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/selectize.min.js') }}"></script>
+<!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
     var users = <?php echo json_encode($members);
                 ?>;
@@ -399,6 +385,7 @@
 
     var selectElement = $('#project-select');
     var url = "";
+    var objoption = 1;
 
     $(document).ready(function() {
         /**$('#objective-select').select2({
@@ -420,12 +407,41 @@
                         }
                     }
         );**/
-        /**$.each(objectives, function(index, objective) {
-            $('#objective-select').append($('<option>', {
-                value: objective.name,
-                text: objective.name + "\n" + "asdasd"
-            }));
-        });**/
+        var lastItemId = objectives[objectives.length - 1].objectiveset_id;
+        var count = 0;
+        $.each(objectives, function(index, objective) {
+
+            if (objective.objectiveset_id === count) {
+                $('#objective-select').append($('<option>', {
+
+                    text: '\u00A0\u00A0\u00A0\u00A0' + objoption + "." + objective.name,
+                    disabled: true
+                }));
+            } else {
+                count++;
+                var y = count + 1;
+                $('#objective-select').append($('<option>', {
+                    value: count,
+                    text: "Objective Set " + y,
+                }));
+                $('#objective-select').append($('<option>', {
+
+                    text: '\u00A0\u00A0\u00A0\u00A0' + objoption + "." + objective.name,
+                    disabled: true
+                }));
+            };
+            objoption++;
+
+        });
+
+        $.each(objectives, function(index, item) {
+            if (item.objectiveset_id === "1") {
+                $('#objective-select').append($('<option>', {
+                    value: item.value,
+                    text: item.text
+                }));
+            }
+        });
 
         $.each(assignees, function(index, assignee) {
             $('#assigneesform form div:last #assignees-select').append($('<option>', {

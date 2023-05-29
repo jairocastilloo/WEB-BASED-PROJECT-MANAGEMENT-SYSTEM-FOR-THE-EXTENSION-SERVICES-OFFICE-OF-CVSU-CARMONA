@@ -57,7 +57,7 @@ $(document).ready(function() {
 
       event.preventDefault();
       currentstep++;
-      console.log(currentstep);
+   
       updateButtons();
 
     });
@@ -65,35 +65,35 @@ $(document).ready(function() {
 
       event.preventDefault();
       currentstep--;
-      console.log(currentstep);
+    
       updateButtons();
     });
 
     $('#addproj').click((event) => {
 
       event.preventDefault();
-      console.log(currentstep);
+  
       updateButtons();
     });
     $('#tab1-tab').click((event) => {
 
       event.preventDefault();
       currentstep = 0;
-      console.log(currentstep);
+
       updateButtons();
     });
     $('#tab2-tab').click((event) => {
 
       event.preventDefault();
       currentstep = 1;
-      console.log(currentstep);
+    
       updateButtons();
     });
     $('#tab3-tab').click((event) => {
 
       event.preventDefault();
       currentstep = 2;
-      console.log(currentstep);
+   
       updateButtons();
     });
 
@@ -258,15 +258,20 @@ $(document).ready(function() {
 // Iterate over each select element and set its name attribute
         $('input[name="projectobjective[]"]').each(function(index) {
         $(this).attr('name', 'projectobjective[' + index + ']');
+       
         });
         $('input[name="objectivesetid[]"]').each(function(index) {
           $(this).attr('name', 'objectivesetid[' + index + ']');
+     
           });
         $('select[name="projectmember[]"]').each(function(index) {
+          $(this).prop('disabled', false);
             $(this).attr('name', 'projectmember[' + index + ']');
+           
             });
         
         $('#memberindex').val(memberindex);
+        console.log(memberindex);
         $('#objectiveindex').val(objectiveindex);
         var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
@@ -289,8 +294,8 @@ $(document).ready(function() {
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
-            console.error(error);
-            
+            console.log(status);
+            console.log(error);
         }
         });
         
