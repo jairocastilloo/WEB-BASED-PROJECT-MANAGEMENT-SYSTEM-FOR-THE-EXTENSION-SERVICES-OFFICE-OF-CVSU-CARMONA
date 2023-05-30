@@ -194,7 +194,7 @@
                     <td data-activity="{{ $activity->id }}" id="selectedactivity"><b>{{ $activity->actname }}</b>
 
 
-                        <ul class="list-unstyled ms-2 small">
+                        <!--<ul class="list-unstyled ms-2 small">
                             <p style="display: inline; margin: 0; color: #3dd18d;">Subtasks List:</p>
                             @foreach($subtasks->where('activity_id', $activity->id) as $subtask)
                             <li value="{{ $subtask->subtask_name }}" class="ms-2">{{ $subtask->subtask_name }} - <p style="display: inline; margin: 0; color: #3dd18d;">{{ $subtask->subtask_assignee }}</p>
@@ -208,7 +208,7 @@
                             @endforeach
                         </ul>
                         <button type="button" class="btn btn-success btn-sm mt-auto align-self-end add-subtask-btn" id="addsubtask">Add Subtask</button>
-
+-->
                     </td>
                     <td>{{ $activity->actenddate }}</td>
                     <td>
@@ -282,7 +282,7 @@
                                     <label for="objectives" class="form-label">Objectives</label>
                                     <select class="form-select" id="objective-select" name="objectives">
                                         <option value="" selected disabled>Choose Objectives</option>
-                                        <option value="0">Objective Set 1</option>
+                                        <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
                                     </select>
 
 
@@ -388,25 +388,7 @@
     var objoption = 1;
 
     $(document).ready(function() {
-        /**$('#objective-select').select2({
-            escapeMarkup: function(markup) {
-                return markup;
-            }
-        });**/
-        /**$('#objective-select').selectize(
-            {
-                        render: {
-                            option: function(data, escape) {
-                                var lines = data.label.split('.');
-                                var content = '';
-                                for (var i = 0; i < lines.length; i++) {
-                                    content += '<div>' + escape(lines[i]) + '</div>';
-                                }
-                                return content;
-                            }
-                        }
-                    }
-        );**/
+
         var lastItemId = objectives[objectives.length - 1].objectiveset_id;
         var count = 0;
         $.each(objectives, function(index, objective) {
@@ -415,14 +397,21 @@
                 $('#objective-select').append($('<option>', {
 
                     text: '\u00A0\u00A0\u00A0\u00A0' + objoption + "." + objective.name,
-                    disabled: true
+                    disabled: true,
+                    style: 'font-style: italic;'
                 }));
             } else {
                 count++;
                 var y = count + 1;
+                var line = '\u2014\u00A0'.repeat(20);
+                $('#objective-select').append($('<option>', {
+                    text: line,
+                    disabled: true,
+                }));
                 $('#objective-select').append($('<option>', {
                     value: count,
-                    text: "Objective Set " + y,
+                    text: "OBJECTIVE SET " + y,
+                    style: 'font-weight: bold;'
                 }));
                 $('#objective-select').append($('<option>', {
 
@@ -462,45 +451,6 @@
             window.location.href = url;
 
         });
-
-
-
-        //$('#objective-select').select2({
-        // placeholder: "Select something",
-        //minimumResultsForSearch: Infinity, //removes the search box
-        //templateResult: formatResult,
-        //templateSelection: formatSelection
-        //});
-
-
-        /**function formatResult(item) {
-            alert("dfdfdf");
-            var $returnString = $('<span>' + "result" + '</span>');
-            return $returnString;
-        };
-
-        function formatSelection(item) {
-            var $returnString = $('<span>' + "selected" + '</span>');
-            return $returnString;
-        };**/
-        /**$('#objective-select').select2({
-            templateResult: formatOption
-        });
-
-        function formatOption(option) {
-            if (!option.id) {
-                return option.text;
-            }
-
-            var lines = option.text.split('.');
-            var formattedText = '<div>';
-            for (var i = 0; i < lines.length; i++) {
-                formattedText += '<span>' + lines[i] + '</span><br>';
-            }
-            formattedText += '</div>';
-
-            return $(formattedText);
-        }**/
 
 
     });
