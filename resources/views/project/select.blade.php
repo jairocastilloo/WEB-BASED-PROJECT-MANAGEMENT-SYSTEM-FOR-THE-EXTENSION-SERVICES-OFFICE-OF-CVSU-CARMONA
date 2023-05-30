@@ -187,14 +187,56 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+
+                $lastObject = $objectives->last();
+                $lastObjectivesetId = $lastObject['objectiveset_id'];
+                $x = 0;
+                $y = 1;
+                @endphp
+
+                <!--@foreach ($activities as $activity)-->
+                @while ($x <= $lastObjectivesetId ) <tr>
+                    @php
+                    $actcount = $activities->where('actobjectives', $x)->count();
+                    @endphp
+                    <td>
+                        <ul class="list-unstyled">
+                            <!--{{ __($actcount) }}-->
+                            @foreach($objectives->where('objectiveset_id', $x) as $objective)
+                            <li>
+                                {{ __($y) . '. ' . $objective['name'] }}
+                            </li>
+                            @php
+                            $y++;
+                            @endphp
+                            @endforeach
+                        </ul>
+
+                    </td>
 
 
-                @foreach ($activities as $activity)
-                <tr>
-                    <td data-activity="{{ $activity->id }}" id="selectedactivity"><b>{{ $activity->actname }}</b>
+                    @foreach($activities->where('actobjectives', $x) as $activity)
+                    <td>
 
 
-                        <!--<ul class="list-unstyled ms-2 small">
+                        {{ $activity->actname }}
+
+
+
+                    </td>
+                    @endforeach
+
+                    @php
+                    $x++;
+                    @endphp
+
+                    </tr>
+
+                    @endwhile
+                    <!--<td data-activity="{{ $activity->id }}" id="selectedactivity"><b>{{ $activity->actname }}</b>
+
+                        <ul class="list-unstyled ms-2 small">
                             <p style="display: inline; margin: 0; color: #3dd18d;">Subtasks List:</p>
                             @foreach($subtasks->where('activity_id', $activity->id) as $subtask)
                             <li value="{{ $subtask->subtask_name }}" class="ms-2">{{ $subtask->subtask_name }} - <p style="display: inline; margin: 0; color: #3dd18d;">{{ $subtask->subtask_assignee }}</p>
@@ -208,8 +250,9 @@
                             @endforeach
                         </ul>
                         <button type="button" class="btn btn-success btn-sm mt-auto align-self-end add-subtask-btn" id="addsubtask">Add Subtask</button>
--->
-                    </td>
+
+                    </td>-->
+                    <!--
                     <td>{{ $activity->actenddate }}</td>
                     <td>
                         <ul class="list-unstyled m-2">
@@ -243,9 +286,10 @@
                             </li>
                         </ul>
 
-                    </td>
-                </tr>
-                @endforeach
+                    </td>-->
+                    <!--</tr>-->
+
+                    <!--@endforeach-->
 
             </tbody>
         </table>
