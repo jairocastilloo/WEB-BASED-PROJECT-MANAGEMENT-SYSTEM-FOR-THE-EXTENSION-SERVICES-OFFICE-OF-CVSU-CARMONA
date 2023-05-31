@@ -191,109 +191,205 @@
 
                 $lastObject = $objectives->last();
                 $lastObjectivesetId = $lastObject['objectiveset_id'];
+                $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
                 $x = 0;
                 $y = 1;
                 @endphp
 
-                <!--@foreach ($activities as $activity)-->
-                @while ($x <= $lastObjectivesetId ) <tr>
-                    @php
-                    $actcount = $activities->where('actobjectives', $x)->count();
+                @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                     @endphp
+
+                    <tr>
+
+
+                        <td>
+
+                            <ul class="list-unstyled">
+                                @foreach($objectives->where('objectiveset_id', $x) as $objective)
+                                <li>
+                                    {{ __($y) . '. ' . $objective['name'] }}
+                                </li>
+                                @php
+                                $y++;
+                                @endphp
+                                @endforeach
+
+                            </ul>
+
+                        </td>
+                        <td>
+                            <table>
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr>
+                                    <td>
+                                        {{ $activity['actname'] }}
+                                    </td>
+
+
+                                </tr>
+
+                                @endforeach
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr>
+                                    <td>{{ $activity['actoutput'] }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr>
+                                    <td>{{ $activity['actstartdate'] }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr>
+                                    <td>{{ $activity['actenddate'] }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr>
+                                    <td>{{ $activity['actbudget'] }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr>
+                                    <td>{{ $activity['actsource'] }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </td>
+                        <!--
                     <td>
+                        @foreach($sortedactivity as $item)
                         <ul class="list-unstyled">
-                            <!--{{ __($actcount) }}-->
-                            @foreach($objectives->where('objectiveset_id', $x) as $objective)
                             <li>
-                                {{ __($y) . '. ' . $objective['name'] }}
+                                {{ $item['actname'] }}
                             </li>
-                            @php
-                            $y++;
-                            @endphp
-                            @endforeach
                         </ul>
+                        @endforeach
 
-                    </td>
+                    </td> -->
 
+                    </tr>
 
-                    @foreach($activities->where('actobjectives', $x) as $activity)
-                    <td>
-
-
-                        {{ $activity->actname }}
-
-
-
-                    </td>
-                    @endforeach
 
                     @php
                     $x++;
                     @endphp
-
-                    </tr>
-
                     @endwhile
-                    <!--<td data-activity="{{ $activity->id }}" id="selectedactivity"><b>{{ $activity->actname }}</b>
-
-                        <ul class="list-unstyled ms-2 small">
-                            <p style="display: inline; margin: 0; color: #3dd18d;">Subtasks List:</p>
-                            @foreach($subtasks->where('activity_id', $activity->id) as $subtask)
-                            <li value="{{ $subtask->subtask_name }}" class="ms-2">{{ $subtask->subtask_name }} - <p style="display: inline; margin: 0; color: #3dd18d;">{{ $subtask->subtask_assignee }}</p>
-                            </li>
-                            @endforeach
-
-                        </ul>
-                        <ul class="list-unstyled d-none">
-                            @foreach($activityassignees->where('activity_id', $activity->id) as $activityassignee)
-                            <li value="{{ $activityassignee->assignees_name }}">{{ $activityassignee->assignees_name }}</li>
-                            @endforeach
-                        </ul>
-                        <button type="button" class="btn btn-success btn-sm mt-auto align-self-end add-subtask-btn" id="addsubtask">Add Subtask</button>
-
-                    </td>-->
-                    <!--
-                    <td>{{ $activity->actenddate }}</td>
-                    <td>
-                        <ul class="list-unstyled m-2">
-                            @foreach($activityassignees->where('activity_id', $activity->id) as $activityassignee)
-                            <li>{{ $activityassignee->assignees_name }}</li>
-                            @endforeach
-
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="list-unstyled">
-
-                            <li>
-                                <p style="display: inline; margin: 0; color: #3dd18d;">Objectives:</p> {{ $activity->actobjectives }}
-                            </li>
-
-                            <li>
-                                <p style="display: inline; margin: 0; color: #3dd18d;">Output:</p> {{ $activity->actoutput }}
-                            </li>
-                            <li>
-                                <p style="display: inline; margin: 0; color: #3dd18d;">Start Date:</p> {{ $activity->actstartdate }}
-                            </li>
-                            <li>
-                                <p style="display: inline; margin: 0; color: #3dd18d;">End Date:</p> {{ $activity->actenddate }}
-                            </li>
-                            <li>
-                                <p style="display: inline; margin: 0; color: #3dd18d;">Budget:</p> {{ $activity->actbudget }}
-                            </li>
-                            <li>
-                                <p style="display: inline; margin: 0; color: #3dd18d;">Source:</p> {{ $activity->actsource }}
-                            </li>
-                        </ul>
-
-                    </td>-->
-                    <!--</tr>-->
-
-                    <!--@endforeach-->
 
             </tbody>
         </table>
+
     </div>
+
+    <div class="container-fluid table-responsive">
+        <div class="row">
+            <div class="col-2 p-0">
+                <table class="table table-bordered table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Objectives</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @php
+
+                        $lastObject = $objectives->last();
+                        $lastObjectivesetId = $lastObject['objectiveset_id'];
+                        $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                        $x = 0;
+                        $y = 1;
+                        @endphp
+
+                        @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                            @endphp
+                            <tr id="objective-{{ $x }}">
+                                <td>
+                                    <ul class="list-unstyled">
+                                        @foreach($objectives->where('objectiveset_id', $x) as $objective)
+                                        <li>
+                                            {{ __($y) . '. ' . $objective['name'] }}
+                                        </li>
+                                        @php
+                                        $y++;
+                                        @endphp
+                                        @endforeach
+
+                                    </ul>
+                                </td>
+                            </tr>
+                            @php
+                            $x++;
+                            @endphp
+                            @endwhile
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-10 p-0">
+                <table class="table table-bordered table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Activities</th>
+                            <th>Expected Output</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Budget</th>
+                            <th>Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+
+                        $lastObject = $objectives->last();
+                        $lastObjectivesetId = $lastObject['objectiveset_id'];
+                        $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                        $x = 0;
+                        $y = 1;
+                        @endphp
+
+                        @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                            @endphp
+                            @foreach($activities->where('actobjectives', $x) as $activity)
+                            <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]">
+                                <td>{{ $activity['actname'] }}</td>
+                                <td>{{ $activity['actoutput'] }}</td>
+                                <td>{{ $activity['actstartdate'] }}</td>
+                                <td>{{ $activity['actenddate'] }}</td>
+                                <td>{{ $activity['actbudget'] }}</td>
+                                <td>{{ $activity['actsource'] }}</td>
+                            </tr>
+                            @endforeach
+                            @php
+                            $x++;
+                            @endphp
+                            @endwhile
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- Add activity -->
 
     <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
@@ -435,6 +531,36 @@
 
         var lastItemId = objectives[objectives.length - 1].objectiveset_id;
         var count = 0;
+
+        var rowcount = <?php echo $x; ?>;
+        var currentrow = 0;
+
+        while (currentrow < rowcount) {
+
+            var objectiveheight = $(`#objective-${currentrow}`).height();
+            var allactheight = 0;
+            var x = 0;
+            $(`tr[name="activity-${currentrow}[]"]`).each(function() {
+                allactheight = allactheight + $(this).height();
+                x++;
+                console.log('all' + allactheight);
+                console.log(x);
+            });
+            if (objectiveheight < allactheight) {
+                $(`#objective-${currentrow}`).height(allactheight);
+            } else if (allactheight < objectiveheight) {
+                var heightneeded = objectiveheight - allactheight;
+                var addheight = heightneeded / $(`tr[name="activity-${currentrow}[]"]`).length;
+
+                $(`tr[name="activity-${currentrow}[]"]`).each(function() {
+                    var actheight = $(this).height();
+                    $(this).height(addheight + actheight);
+                });
+            }
+            console.log("obj" + objectiveheight);
+            console.log("act" + allactheight);
+            currentrow++;
+        }
         $.each(objectives, function(index, objective) {
 
             if (objective.objectiveset_id === count) {

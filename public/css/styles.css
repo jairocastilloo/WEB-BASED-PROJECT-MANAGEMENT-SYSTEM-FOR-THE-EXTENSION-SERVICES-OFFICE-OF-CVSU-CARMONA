@@ -9,3 +9,8 @@
     white-space: pre-wrap;
     word-wrap: break-word;
   }**/
+
+  .hide-text {
+    color: transparent;
+  }
+ 
