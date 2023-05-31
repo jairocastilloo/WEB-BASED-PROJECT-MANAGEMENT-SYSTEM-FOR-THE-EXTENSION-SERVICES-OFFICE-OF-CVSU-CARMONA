@@ -154,160 +154,13 @@
         </div>
     </div>
 
-
-    <div class="table-responsive mt-2">
-        <table class="table table-bordered table-dark table-hover rounded">
-            <thead>
-                <tr>
-                    <th class="col-3">
-                        <label class="mt-2 ms-2">
-                            <h6><b>Objective</b></h6>
-                        </label>
-
-
-                    </th>
-                    <th class="col-3"><label class="mt-2">
-                            <h6><b>Activity</b></h6>
-                        </label></th>
-                    <th class="col-2"><label class="mt-2">
-                            <h6><b>Expected Output</b></h6>
-                        </label></th>
-                    <th class="col-1"><label class="mt-2">
-                            <h6><b>Start Date</b></h6>
-                        </label></th>
-                    <th class="col-1"><label class="mt-2">
-                            <h6><b>End Date</b></h6>
-                        </label></th>
-                    <th class="col-1"><label class="mt-2">
-                            <h6><b>Budget</b></h6>
-                        </label></th>
-                    <th class="col-1"><label class="mt-2">
-                            <h6><b>Source</b></h6>
-                        </label></th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-
-                $lastObject = $objectives->last();
-                $lastObjectivesetId = $lastObject['objectiveset_id'];
-                $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
-                $x = 0;
-                $y = 1;
-                @endphp
-
-                @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
-                    @endphp
-
-                    <tr>
-
-
-                        <td>
-
-                            <ul class="list-unstyled">
-                                @foreach($objectives->where('objectiveset_id', $x) as $objective)
-                                <li>
-                                    {{ __($y) . '. ' . $objective['name'] }}
-                                </li>
-                                @php
-                                $y++;
-                                @endphp
-                                @endforeach
-
-                            </ul>
-
-                        </td>
-                        <td>
-                            <table>
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr>
-                                    <td>
-                                        {{ $activity['actname'] }}
-                                    </td>
-
-
-                                </tr>
-
-                                @endforeach
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr>
-                                    <td>{{ $activity['actoutput'] }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr>
-                                    <td>{{ $activity['actstartdate'] }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr>
-                                    <td>{{ $activity['actenddate'] }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr>
-                                    <td>{{ $activity['actbudget'] }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr>
-                                    <td>{{ $activity['actsource'] }}</td>
-                                </tr>
-                                @endforeach
-                            </table>
-                        </td>
-                        <!--
-                    <td>
-                        @foreach($sortedactivity as $item)
-                        <ul class="list-unstyled">
-                            <li>
-                                {{ $item['actname'] }}
-                            </li>
-                        </ul>
-                        @endforeach
-
-                    </td> -->
-
-                    </tr>
-
-
-                    @php
-                    $x++;
-                    @endphp
-                    @endwhile
-
-            </tbody>
-        </table>
-
-    </div>
-
     <div class="container-fluid table-responsive">
         <div class="row">
             <div class="col-2 p-0">
-                <table class="table table-bordered table-dark table-hover">
+                <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>Objectives</th>
+                        <tr class="table-success">
+                            <th class="fw-bold text-center">OBJECTIVES</th>
                         </tr>
                     </thead>
 
@@ -330,6 +183,7 @@
                                         <li>
                                             {{ __($y) . '. ' . $objective['name'] }}
                                         </li>
+                                        <br>
                                         @php
                                         $y++;
                                         @endphp
@@ -347,16 +201,17 @@
                 </table>
             </div>
             <div class="col-10 p-0">
-                <table class="table table-bordered table-dark table-hover">
+                <table class="table table-bordered">
                     <thead>
-                        <tr>
-                            <th>Activities</th>
-                            <th>Expected Output</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                            <th>Budget</th>
-                            <th>Source</th>
+                        <tr class="table-success">
+                            <th class="fw-bold text-center fixed-width-column">ACTIVITIES</th>
+                            <th class="fw-bold text-center fixed-width-column">EXPECTED OUTPUT</th>
+                            <th class="fw-bold text-center fixed-width-column">START DATE</th>
+                            <th class="fw-bold text-center fixed-width-column">END DATE</th>
+                            <th class="fw-bold text-center fixed-width-column">BUDGET</th>
+                            <th class="fw-bold text-center fixed-width-column">SOURCE</th>
                         </tr>
+
                     </thead>
                     <tbody>
                         @php
@@ -371,12 +226,12 @@
                         @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                             @endphp
                             @foreach($activities->where('actobjectives', $x) as $activity)
-                            <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]">
-                                <td>{{ $activity['actname'] }}</td>
+                            <tr class="fixed-width-column" id="activity-{{ $x }}" name="activity-{{ $x }}[]">
+                                <td class="bullet-cell">{{ $activity['actname'] }}</td>
                                 <td>{{ $activity['actoutput'] }}</td>
-                                <td>{{ $activity['actstartdate'] }}</td>
-                                <td>{{ $activity['actenddate'] }}</td>
-                                <td>{{ $activity['actbudget'] }}</td>
+                                <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
+                                <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
+                                <td>&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
                                 <td>{{ $activity['actsource'] }}</td>
                             </tr>
                             @endforeach
@@ -539,26 +394,28 @@
 
             var objectiveheight = $(`#objective-${currentrow}`).height();
             var allactheight = 0;
-            var x = 0;
+
             $(`tr[name="activity-${currentrow}[]"]`).each(function() {
                 allactheight = allactheight + $(this).height();
-                x++;
-                console.log('all' + allactheight);
-                console.log(x);
+
             });
+            console.log(allactheight);
+            console.log(objectiveheight);
             if (objectiveheight < allactheight) {
                 $(`#objective-${currentrow}`).height(allactheight);
+
             } else if (allactheight < objectiveheight) {
                 var heightneeded = objectiveheight - allactheight;
                 var addheight = heightneeded / $(`tr[name="activity-${currentrow}[]"]`).length;
-
-                $(`tr[name="activity-${currentrow}[]"]`).each(function() {
+                console.log("add" + addheight);
+                $('#activity-' + currentrow).each(function() {
                     var actheight = $(this).height();
                     $(this).height(addheight + actheight);
+
                 });
+
             }
-            console.log("obj" + objectiveheight);
-            console.log("act" + allactheight);
+            console.log("final" + $(`#objective-${currentrow}`).height());
             currentrow++;
         }
         $.each(objectives, function(index, objective) {

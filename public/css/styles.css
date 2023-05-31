@@ -5,12 +5,19 @@
   .shows {
     display: block;
   }
-  /**#objective-select .option .item {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }**/
 
-  .hide-text {
-    color: transparent;
+  .bullet-cell::before {
+    content: "\2022"; /* Unicode bullet symbol */
+    margin-right: 5px; /* Optional: Add spacing between bullet and content */
+  }
+  .fixed-width-column {
+     /* Adjust the maximum width as per your requirements */
+    max-width: 8.33%;
+    overflow-wrap: break-word;
+  word-wrap: break-word;
+   
+  }
+  .table {
+    table-layout: fixed;
   }
  

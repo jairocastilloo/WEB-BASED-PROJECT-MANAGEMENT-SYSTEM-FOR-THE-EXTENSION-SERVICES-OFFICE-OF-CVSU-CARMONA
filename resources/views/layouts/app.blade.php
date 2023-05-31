@@ -26,7 +26,7 @@
 
 </head>
 
-<body style="background-color: #323132; font-family: sans-serif;">
+<body style="font-family: sans-serif;">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm ">
             <div class="container">
