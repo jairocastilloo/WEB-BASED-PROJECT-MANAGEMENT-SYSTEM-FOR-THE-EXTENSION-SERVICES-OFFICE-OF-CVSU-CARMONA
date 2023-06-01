@@ -157,10 +157,10 @@
     <div class="container-fluid table-responsive">
         <div class="row">
             <div class="col-2 p-0">
-                <table class="table table-bordered">
+                <table class="table border border-dark border-1">
                     <thead>
-                        <tr class="table-success">
-                            <th class="fw-bold text-center">OBJECTIVES</th>
+                        <tr class="table-success border border-dark border-1">
+                            <th class="fw-bold text-center border border-dark border-1">OBJECTIVES</th>
                         </tr>
                     </thead>
 
@@ -176,7 +176,7 @@
 
                         @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                             @endphp
-                            <tr id="objective-{{ $x }}">
+                            <tr id="objective-{{ $x }}" name="objective-{{ $x }}" class="bgbg">
                                 <td>
                                     <ul class="list-unstyled">
                                         @foreach($objectives->where('objectiveset_id', $x) as $objective)
@@ -201,15 +201,15 @@
                 </table>
             </div>
             <div class="col-10 p-0">
-                <table class="table table-bordered">
+                <table class="table table-hover">
                     <thead>
                         <tr class="table-success">
-                            <th class="fw-bold text-center fixed-width-column">ACTIVITIES</th>
-                            <th class="fw-bold text-center fixed-width-column">EXPECTED OUTPUT</th>
-                            <th class="fw-bold text-center fixed-width-column">START DATE</th>
-                            <th class="fw-bold text-center fixed-width-column">END DATE</th>
-                            <th class="fw-bold text-center fixed-width-column">BUDGET</th>
-                            <th class="fw-bold text-center fixed-width-column">SOURCE</th>
+                            <th class="fw-bold text-center fixed-width-column border border-dark border-start-0 border-1">ACTIVITIES</th>
+                            <th class="fw-bold text-center fixed-width-column border border-dark border-1">EXPECTED OUTPUT</th>
+                            <th class="fw-bold text-center fixed-width-column border border-dark border-1">START DATE</th>
+                            <th class="fw-bold text-center fixed-width-column border border-dark border-1">END DATE</th>
+                            <th class="fw-bold text-center fixed-width-column border border-dark border-1">BUDGET</th>
+                            <th class="fw-bold text-center fixed-width-column border border-dark border-1">SOURCE</th>
                         </tr>
 
                     </thead>
@@ -227,12 +227,12 @@
                             @endphp
                             @foreach($activities->where('actobjectives', $x) as $activity)
                             <tr class="fixed-width-column" id="activity-{{ $x }}" name="activity-{{ $x }}[]">
-                                <td class="bullet-cell">{{ $activity['actname'] }}</td>
-                                <td>{{ $activity['actoutput'] }}</td>
-                                <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
-                                <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                                <td>&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
-                                <td>{{ $activity['actsource'] }}</td>
+                                <td class="bullet-cell border border-dark border-start-0 border-1">{{ $activity['actname'] }}</td>
+                                <td class="border border-dark border-1">{{ $activity['actoutput'] }}</td>
+                                <td class="border border-dark border-1">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
+                                <td class="border border-dark border-1">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
+                                <td class="border border-dark border-1">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                                <td class="border border-dark border-1">{{ $activity['actsource'] }}</td>
                             </tr>
                             @endforeach
                             @php
@@ -399,8 +399,7 @@
                 allactheight = allactheight + $(this).height();
 
             });
-            console.log(allactheight);
-            console.log(objectiveheight);
+
             if (objectiveheight < allactheight) {
                 $(`#objective-${currentrow}`).height(allactheight);
 
@@ -415,7 +414,7 @@
                 });
 
             }
-            console.log("final" + $(`#objective-${currentrow}`).height());
+
             currentrow++;
         }
         $.each(objectives, function(index, objective) {
@@ -449,6 +448,20 @@
             objoption++;
 
         });
+        var currenthover = 0;
+        $('tr[name^="activity-"]').hover(
+
+            function() {
+                // Code to run when the mouse enters the 'tr' element
+                currenthover = $(this).attr('name').match(/\d+/)[0];
+
+                $(`tr[name="objective-${currenthover}"`).css('background-color', '#e6e7e9');
+            },
+            function() {
+                // Code to run when the mouse leaves the 'tr' element
+                $(`tr[name="objective-${currenthover}"`).css('background-color', '');
+            }
+        );
 
         $.each(objectives, function(index, item) {
             if (item.objectiveset_id === "1") {
