@@ -28,7 +28,7 @@
 
 <body style="font-family: sans-serif;">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm ">
+        <nav class="navbar navbar-expand-md navbar-light bg-success shadow-sm p-0">
             <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/') }}">
                     <b>{{ config('app.name', 'Extension Services Office Project Manager') }}</b>
@@ -59,17 +59,28 @@
                         </li>
                         @endif
                         @else
-
+                        @if (Auth::user()->approval === 1)
+                        @if (Auth::user()->role === 'Coordinator')
                         <a class="nav-link text-white" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Monitoring
                         </a>
+
                         <a class="nav-link text-white" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Project
                         </a>
                         <a class="nav-link text-white" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
+                        @endif
+                        @if (Auth::user()->role === 'Admin')
+                        <a class="nav-link text-white" href="{{ route('admin.manage', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Account Management
+                        </a>
 
+                        <a class="nav-link text-white" href="{{ route('admin.approve', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Account Approval
+                        </a>
+                        @endif
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button">
                                 {{ Auth::user()->name }}
@@ -87,7 +98,7 @@
                             </div>
 
                         </li>
-
+                        @endif
                         @endguest
                     </ul>
 

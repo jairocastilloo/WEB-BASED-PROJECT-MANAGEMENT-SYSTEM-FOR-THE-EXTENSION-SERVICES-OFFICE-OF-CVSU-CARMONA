@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Monitoring;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use App\Http\Controllers\ActivityController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,3 +32,7 @@ Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'g
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');
+Route::get('/manageaccount/{id}', [AdminController::class, 'manageaccount'])->name('admin.manage');
+Route::get('/approveaccount/{id}', [AdminController::class, 'approveaccount'])->name('admin.approve');
+Route::POST('/acceptaccount', [AdminController::class, 'acceptaccount'])->name('admin.accept');
+Route::POST('/declineaccount', [AdminController::class, 'declineaccount'])->name('admin.decline');
