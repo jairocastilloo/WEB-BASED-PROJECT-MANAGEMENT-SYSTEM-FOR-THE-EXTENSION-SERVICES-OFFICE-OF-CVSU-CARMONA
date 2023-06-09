@@ -23,7 +23,14 @@
                     <form id="myForm" action="{{ route('admin.accept') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $alluser->id }}">
-                        <button type="submit" class="btn btn-outline-primary">Accept</button>
+                        <input type="hidden" name="user_role" value="Coordinator">
+                        <button type="submit" class="btn btn-outline-primary">Approve as Coordinator</button>
+                    </form>
+                    <form id="myForm" action="{{ route('admin.accept') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ $alluser->id }}">
+                        <input type="hidden" name="user_role" value="Implementer">
+                        <button type="submit" class="btn btn-outline-primary">Approve as Implementer</button>
                     </form>
                 </td>
                 <td>
@@ -46,7 +53,12 @@
 @section('scripts')
 
 <script>
-
+    $(document).ready(function() {
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('.dropdown-menu').toggleClass('shows');
+        });
+    });
 </script>
 
 @endsection

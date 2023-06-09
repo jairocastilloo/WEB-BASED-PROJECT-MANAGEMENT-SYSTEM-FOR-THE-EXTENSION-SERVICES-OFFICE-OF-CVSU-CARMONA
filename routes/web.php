@@ -32,7 +32,7 @@ Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'g
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');
-Route::get('/manageaccount/{id}', [AdminController::class, 'manageaccount'])->name('admin.manage');
-Route::get('/approveaccount/{id}', [AdminController::class, 'approveaccount'])->name('admin.approve');
+Route::get('/user/{id}/manageaccount', [AdminController::class, 'manageaccount'])->name('admin.manage');
+Route::get('/user/{id}/approveaccount', [AdminController::class, 'approveaccount'])->name('admin.approve');
 Route::POST('/acceptaccount', [AdminController::class, 'acceptaccount'])->name('admin.accept');
 Route::POST('/declineaccount', [AdminController::class, 'declineaccount'])->name('admin.decline');

@@ -13,7 +13,7 @@
                     <option value="" selected disabled>Select Project</option>
                     @foreach($projects as $project)
                     <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
-                        {{ $project->projecttitle }}</i>
+                        {{ $project->projecttitle }}
                     </option>
                     @endforeach
 

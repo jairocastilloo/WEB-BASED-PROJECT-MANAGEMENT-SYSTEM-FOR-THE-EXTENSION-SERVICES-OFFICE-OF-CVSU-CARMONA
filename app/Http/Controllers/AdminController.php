@@ -13,24 +13,26 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $allusers = User::all();
-        return view('admin.accountmanagement', ['user' => $user, 'allusers' => $allusers]);
+        return view('admin.accountmanagement', ['allusers' => $allusers]);
     }
 
     public function approveaccount($id)
     {
         $user = User::findOrFail($id);
         $allusers = User::all();
-        return view('admin.accountapproval', ['user' => $user, 'allusers' => $allusers]);
+        return view('admin.accountapproval', ['allusers' => $allusers]);
     }
 
     public function acceptaccount(Request $request)
     {
 
         $id = $request->input('user_id');
+        $role = $request->input('user_role');
         $record = User::find($id);
 
         if ($record) {
             $record->approval = 1;
+            $record->role = $role;
             $record->save();
 
             // Optionally, you can perform additional actions or return a response

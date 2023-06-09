@@ -30,7 +30,12 @@
 @section('scripts')
 
 <script>
-
+    $(document).ready(function() {
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('.dropdown-menu').toggleClass('shows');
+        });
+    });
 </script>
 
 @endsection
