@@ -36,3 +36,4 @@ Route::get('/user/{id}/manageaccount', [AdminController::class, 'manageaccount']
 Route::get('/user/{id}/approveaccount', [AdminController::class, 'approveaccount'])->name('admin.approve');
 Route::POST('/acceptaccount', [AdminController::class, 'acceptaccount'])->name('admin.accept');
 Route::POST('/declineaccount', [AdminController::class, 'declineaccount'])->name('admin.decline');
+Route::POST('/addaccount', [AdminController::class, 'addaccount'])->name('admin.add');
