@@ -22,8 +22,11 @@ class ProjectController extends Controller
     public function showproject($id)
     {
         $user = User::findOrFail($id);
+        $department = $user->department;
         $projects = $user->projects;
-        $users = User::all(['id', 'name']);
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name']);
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
     public function getobjectives($id, $projectid)
@@ -32,9 +35,12 @@ class ProjectController extends Controller
         $assignees = $projects->users; //get all members of project
 
         $user = User::findOrFail($id);
+        $department = $user->department;
         $projects = $user->projects;
 
-        $users = User::all(['id', 'name']);
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name']);
         $activityassignees = ActivityUser::all(['activity_id', 'assignees_name']);
         $subtasks = Subtask::all(['activity_id', 'subtask_name', 'subtask_assignee']);
 

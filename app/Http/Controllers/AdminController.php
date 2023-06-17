@@ -62,6 +62,23 @@ class AdminController extends Controller
             return response()->json(['message' => 'Record not found'], 404);
         }
     }
+    public function deleteaccount(Request $request)
+    {
+
+        $id = $request->input('editid');
+        $record = User::find($id);
+        $currentid = $request->input('currentid');
+
+        if ($record) {
+            $record->delete();
+
+            // Optionally, you can perform additional actions or return a response
+            return redirect()->route('admin.manage', ['id' => $currentid]);
+        } else {
+            // Handle the case where the record is not found
+            return response()->json(['message' => 'Record not found'], 404);
+        }
+    }
     public function addaccount(Request $request)
     {
         $currentid = $request->input('currentid');
@@ -85,7 +102,7 @@ class AdminController extends Controller
             'department' => $request['department'],
             'middle_name' => $request['middle_name'],
             'last_name' => $request['last_name'],
-            'role' => $request['last_name'],
+            'role' => $request['role'],
             'approval' => 1,
         ]);
         return redirect()->route('admin.manage', ['id' => $currentid]);

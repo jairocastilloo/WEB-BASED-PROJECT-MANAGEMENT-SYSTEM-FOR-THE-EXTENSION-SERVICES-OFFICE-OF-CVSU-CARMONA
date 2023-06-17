@@ -7,7 +7,10 @@
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Department</th>
                 <th scope="col">Role</th>
+                <th scope="col">Edit</th>
+
             </tr>
         </thead>
         <tbody>
@@ -16,7 +19,22 @@
             <tr>
                 <td>{{ $alluser->name . " " . $alluser->middle_name . " " . $alluser->last_name }}</td>
                 <td>{{ $alluser->email }}</td>
+                <td>{{ $alluser->department }}</td>
                 <td>{{ $alluser->role }}</td>
+                <td>
+                    <form action="{{ route('admin.delete') }}" method="POST">
+                        @csrf
+                        <input type="number" value="{{ $alluser->id }}" name="editid" hidden>
+                        <input type="number" name="currentid" value="{{ Auth::user()->id }}" hidden>
+                        <button type="button" class="btn btn-primary edit-account">
+                            Edit
+                        </button>
+                        <button type="submit" class="btn btn-outline-danger">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+
             </tr>
             @endif
             @endforeach
@@ -24,7 +42,7 @@
         </tbody>
     </table>
 </div>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+<button type=" button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
     Add account
 </button>
 
@@ -180,6 +198,8 @@
 @section('scripts')
 
 <script>
+    var alluser = <?php echo json_encode($allusers);
+                    ?>;
     $(document).ready(function() {
         $('#navbarDropdown').click(function() {
             // Add your function here
@@ -187,5 +207,5 @@
         });
     });
 </script>
-
+<script src="{{ asset('js/admin.js') }}"></script>
 @endsection
