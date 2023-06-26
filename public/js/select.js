@@ -22,6 +22,26 @@ $('#addassignees').click((event) => {
 });
 
 
+$('td.bullet-cell div').on('click', '.show-assignees', function() {
+    var td = $(this).closest('td');
+    var id = td.data('value');
+    function findKeysByValue(obj, value) {
+        var keys = [];
+        for (var key in obj) {
+          if (obj[key].activity_id === value) {
+            keys.push(key);
+          }
+        }
+        return keys;
+      }
+      
+      
+      var keys = findKeysByValue(activityassignees, id);
+      
+      console.log(keys); // Output: ["2", "3", "4"]
+   
+
+});
 
 
 $('#memberform form').on('click', '.remove-member', function() {

@@ -227,8 +227,23 @@
                             @endphp
                             @foreach($activities->where('actobjectives', $x) as $activity)
                             <tr class="fixed-width-column" id="activity-{{ $x }}" name="activity-{{ $x }}[]">
-                                <td class="bullet-cell border border-dark border-start-0 border-1">{{ $activity['actname'] }}</td>
-                                <td class="border border-dark border-1">{{ $activity['actoutput'] }}</td>
+                                <td class="bullet-cell border border-dark border-start-0 border-1" data-value="{{ $activity['id'] }}" id="actid">
+                                    {{ $activity['actname'] }}
+                                    <div class="w-100">
+                                        <button type="button" class="btn btn-outline-success btn-sm float-end show-assignees">Assignees</button>
+                                        <button type="button" class="btn btn-outline-success btn-sm float-end me-2" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">
+                                            Subtasks
+                                        </button>
+
+
+                                    </div>
+                                </td>
+                                <td class="border border-dark border-1">{{ $activity['actoutput'] }}
+                                    <div class="w-100">
+                                        <button type="button" class="btn btn-outline-success btn-sm float-end">Submit an Output</button>
+                                    </div>
+
+                                </td>
                                 <td class="border border-dark border-1">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
                                 <td class="border border-dark border-1">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
                                 <td class="border border-dark border-1">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
@@ -377,6 +392,8 @@
                         ?>;
     var assignees = <?php echo json_encode($assignees);
                     ?>;
+    var activityassignees = <?php echo json_encode($activityassignees);
+                            ?>;
 
     var selectElement = $('#project-select');
     var url = "";

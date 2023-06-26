@@ -41,7 +41,8 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name']);
-        $activityassignees = ActivityUser::all(['activity_id', 'assignees_name']);
+        $activityassignees = ActivityUser::where('project_id', $projectid)
+            ->get(['activity_id', 'assignees_name']);
         $subtasks = Subtask::all(['activity_id', 'subtask_name', 'subtask_assignee']);
 
         $project = Project::findOrFail($projectid);

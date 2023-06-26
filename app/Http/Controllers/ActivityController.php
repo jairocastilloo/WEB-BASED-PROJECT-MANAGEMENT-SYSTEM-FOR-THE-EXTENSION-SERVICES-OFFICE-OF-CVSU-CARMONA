@@ -72,6 +72,7 @@ class ActivityController extends Controller
             $assignees->user_id = $validatedData['assignees'][$i];
             $assignees->assignees_name = $validatedData['assigneesname'][$i];
             $assignees->activity_id = $newactivityId;
+            $assignees->project_id = $projectindex;
             $assignees->save();
         }
 
