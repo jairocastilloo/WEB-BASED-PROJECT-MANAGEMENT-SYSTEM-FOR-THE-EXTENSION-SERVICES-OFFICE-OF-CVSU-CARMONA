@@ -20,5 +20,16 @@
   .table {
     table-layout: fixed;
   }
+  .btn-danger:hover {
+    color: #dc3545;
+    background-color: transparent;
+    border-color: #dc3545;
+  }
+  
+  .btn.btn-success:hover {
+    background-color: transparent;
+    color: #198754;
+    border-color: #198754;
+  }
 
  

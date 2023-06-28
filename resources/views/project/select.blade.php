@@ -230,8 +230,8 @@
                                 <td class="bullet-cell border border-dark border-start-0 border-1" data-value="{{ $activity['id'] }}" id="actid">
                                     {{ $activity['actname'] }}
                                     <div class="w-100">
-                                        <button type="button" class="btn btn-outline-success btn-sm float-end show-assignees">Assignees</button>
-                                        <button type="button" class="btn btn-outline-success btn-sm float-end me-2" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">
+                                        <button type="button" class="btn btn-success btn-sm float-end show-assignees">Assignees</button>
+                                        <button type="button" class="btn btn-success btn-sm float-end me-2" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">
                                             Subtasks
                                         </button>
 
@@ -240,7 +240,7 @@
                                 </td>
                                 <td class="border border-dark border-1">{{ $activity['actoutput'] }}
                                     <div class="w-100">
-                                        <button type="button" class="btn btn-outline-success btn-sm float-end">Submit an Output</button>
+                                        <button type="button" class="btn btn-success btn-sm float-end">Submit an Output</button>
                                     </div>
 
                                 </td>
@@ -359,6 +359,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+
                     <div class="mb-3">
                         <label for="subtask-name" class="form-label">Subtask Name</label>
                         <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
@@ -380,6 +381,41 @@
     </div>
 </div>
 
+<!--assignees-->
+<div class="modal fade" id="assigneesModal" tabindex="-1" aria-labelledby="namesModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="namesModalLabel">Assignees</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="activityassigneesform">
+                    <div class="mb-2 row" id="selectactivityassignees" class="firstselect">
+                        <select class="col-9 m-1" id="firstactivityassignees" name="activityassignees[]" disabled>
+                        </select>
+                        <button type="button" class="remove-activityassignees btn btn-danger col-2 m-1 btn-hover-toggle" id="removeactivityassignees">Remove</button>
+                    </div>
+                </form>
+                <div class="row mb-2">
+                    <div class="col-6 d-flex justify-content-center align-items-center d-none">
+                        <button type="button" class="btn btn-outline-primary add-activityassignees">Confirm Adding</button>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center align-items-center d-none">
+                        <button type="button" class="btn btn-outline-primary remove-activityassignees">Confirm Deleting</button>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center align-items-center d-none">
+                        <button type="button" class="btn btn-outline-danger">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

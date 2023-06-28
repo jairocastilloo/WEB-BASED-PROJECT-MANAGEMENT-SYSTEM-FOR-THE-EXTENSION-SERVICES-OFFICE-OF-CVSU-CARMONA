@@ -25,20 +25,31 @@ $('#addassignees').click((event) => {
 $('td.bullet-cell div').on('click', '.show-assignees', function() {
     var td = $(this).closest('td');
     var id = td.data('value');
-    function findKeysByValue(obj, value) {
-        var keys = [];
-        for (var key in obj) {
-          if (obj[key].activity_id === value) {
-            keys.push(key);
-          }
-        }
-        return keys;
-      }
-      
-      
-      var keys = findKeysByValue(activityassignees, id);
-      
-      console.log(keys); // Output: ["2", "3", "4"]
+    var names = []
+    if ($('#firstactivityassignees option').length > 0){
+        $('#firstactivityassignees option').remove();
+    }
+    if ($('#activityassigneesform div').length > 1){
+        $('#activityassigneesform div:not(:first)').remove();
+    }
+    
+for (var key in activityassignees) {
+  if (activityassignees[key].activity_id === id) {
+    names.push(activityassignees[key].assignees_name);
+    if (names.length === 1){
+        var $newOption = $(`<option value="" selected>${names[names.length - 1]}</option>`);
+        $('#firstactivityassignees').append($newOption);
+        console.log(names[names.length - 1]);
+    } else if (names.length > 1){
+   var $newSelect = $(`<select class="col-9 m-1" id="activityassignees" name="activityassignees[]" disabled><option value="" selected>${names[key]}</option></select>`);
+    var $newButton = $('<button type="button" class="remove-activityassignees btn btn-danger col-2 m-1 btn-hover-toggle" id="removeactivityassignees">Remove</button>');
+    var $newDiv = $('<div class="mb-2 row" class="">').append($newSelect, $newButton);
+    $('#activityassigneesform').append($newDiv);}
+  }
+}
+
+
+$('#assigneesModal').modal('show');
    
 
 });
