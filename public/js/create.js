@@ -27,7 +27,7 @@ $(document).ready(function() {
         
         $('#member-select').append($('<option>', {
             value: user.id,
-            text: user.name
+            text: user.name + " " + user.last_name
         }));
     });
     

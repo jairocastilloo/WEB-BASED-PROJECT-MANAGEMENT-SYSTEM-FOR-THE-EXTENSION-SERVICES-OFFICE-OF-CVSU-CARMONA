@@ -31,5 +31,13 @@
     color: #198754;
     border-color: #198754;
   }
+  .btn-hover-outline-primary:hover {
+    background-color: transparent;
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+  }
+  .highlight {
+    background-color: #ffc4ca;
+}
 
  

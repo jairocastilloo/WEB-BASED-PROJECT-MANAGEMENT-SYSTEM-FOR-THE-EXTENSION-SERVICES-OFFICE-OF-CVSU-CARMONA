@@ -41,9 +41,9 @@ for (var key in activityassignees) {
         $('#firstactivityassignees').append($newOption);
         console.log(names[names.length - 1]);
     } else if (names.length > 1){
-   var $newSelect = $(`<select class="col-9 m-1" id="activityassignees" name="activityassignees[]" disabled><option value="" selected>${names[key]}</option></select>`);
-    var $newButton = $('<button type="button" class="remove-activityassignees btn btn-danger col-2 m-1 btn-hover-toggle" id="removeactivityassignees">Remove</button>');
-    var $newDiv = $('<div class="mb-2 row" class="">').append($newSelect, $newButton);
+   var $newSelect = $(`<select class="col-9 m-1" id="activityassignees" name="activityassignees[]" disabled><option value="${names[key]}" selected>${names[key]}</option></select>`);
+    var $newButton = $('<button type="button" class="delete-activityassignees btn btn-sm btn-danger col-2 m-1 btn-hover-toggle d-none btn-sm">Delete</button>');
+    var $newDiv = $('<div class="mb-2 row">').append($newSelect, $newButton);
     $('#activityassigneesform').append($newDiv);}
   }
 }
@@ -54,6 +54,25 @@ $('#assigneesModal').modal('show');
 
 });
 
+$('#remove-activityassignees').click((event) => {
+    event.preventDefault();
+    $('.delete-activityassignees').toggleClass('d-none');
+    $('#labeltoselect').text('Select the Assignees you want to remove!');
+    $('.btn-confirmremoveactivityassignees').toggleClass('d-none');
+    $('.btn-activityassignees').toggleClass('d-none');
+});
+
+$('#activityassigneesform').on('click', '.delete-activityassignees', function() {
+    if ($(this).text() === "Delete") {
+        $(this).parent().addClass('highlight');
+        $(this).removeClass('btn-danger').addClass('btn-outline-danger');
+        $(this).text("Cancel");
+    } else if ($(this).text() === "Cancel") {
+        $(this).parent().removeClass('highlight');
+        $(this).removeClass('btn-outline-danger').addClass('btn-danger');
+        $(this).text("Delete");
+    }
+});
 
 $('#memberform form').on('click', '.remove-member', function() {
     $(this).parent().remove();

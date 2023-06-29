@@ -390,22 +390,38 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <label id="labeltoselect"></label>
                 <form id="activityassigneesform">
-                    <div class="mb-2 row" id="selectactivityassignees" class="firstselect">
+                    <div class="mb-2 row firstselect" id="selectactivityassignees">
                         <select class="col-9 m-1" id="firstactivityassignees" name="activityassignees[]" disabled>
                         </select>
-                        <button type="button" class="remove-activityassignees btn btn-danger col-2 m-1 btn-hover-toggle" id="removeactivityassignees">Remove</button>
+                        <button type="button" class="delete-activityassignees btn btn-sm btn-danger col-2 m-1 btn-hover-toggle d-none btn-sm">Delete</button>
                     </div>
                 </form>
-                <div class="row mb-2">
-                    <div class="col-6 d-flex justify-content-center align-items-center d-none">
-                        <button type="button" class="btn btn-outline-primary add-activityassignees">Confirm Adding</button>
+                <div class="row mb-2 btn-activityassignees">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-sm btn-primary btn-hover-outline-primary add-activityassignees">Add Assignees</button>
                     </div>
-                    <div class="col-6 d-flex justify-content-center align-items-center d-none">
-                        <button type="button" class="btn btn-outline-primary remove-activityassignees">Confirm Deleting</button>
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-sm btn-danger" id="remove-activityassignees">Remove Assignees</button>
                     </div>
-                    <div class="col-6 d-flex justify-content-center align-items-center d-none">
-                        <button type="button" class="btn btn-outline-danger">Cancel</button>
+                </div>
+                <div class="row mb-2 d-none btn-confirmremoveactivityassignees">
+
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-sm btn-primary btn-hover-outline-primary confirm-removeactivityassignees">Confirm Deleting</button>
+                    </div>
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-sm btn-danger cancel-activityassignees">Cancel Deleting</button>
+                    </div>
+                </div>
+                <div class="row mb-2 d-none btn-confirmaddactivityassignees">
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-sm btn-primary btn-hover-outline-primary confirm-addactivityassignees">Confirm Adding</button>
+                    </div>
+
+                    <div class="col-6 d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-sm btn-danger cancel-activityassignees">Cancel Removing</button>
                     </div>
                 </div>
 
