@@ -8,9 +8,8 @@ $(document).ready(function() {
 
     $('#navbarDropdown').click(function() {
       // Add your function here
-      $('.dropdown-menu').toggleClass('shows');
+      $('#account .dropdown-menu').toggleClass('shows');
   });
-
     // CREATE PROJECT
     users.sort(function(a, b) {
         var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare

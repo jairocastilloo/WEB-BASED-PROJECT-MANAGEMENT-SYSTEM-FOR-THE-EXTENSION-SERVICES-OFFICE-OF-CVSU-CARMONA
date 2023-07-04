@@ -54,6 +54,11 @@ $('#assigneesModal').modal('show');
 
 });
 
+$('[id^="myDropdownButton"]').click(function() {
+    // Find the corresponding dropdown menu and toggle its visibility
+    $(this).siblings('.dropdown-menu').toggleClass('show');
+  });
+
 $('#remove-activityassignees').click((event) => {
     event.preventDefault();
     $('.delete-activityassignees').toggleClass('d-none');

@@ -153,6 +153,62 @@
             </div>
         </div>
     </div>
+    <!--
+    <div class="container-fluid table-responsive">
+        <table class="table">
+            <thead>
+                <tr class="fixed-width-column">
+                    <th class="fw-bold text-center border border-dark border-1">Objectives</th>
+                    <th class="fw-bold text-center border border-dark border-1">Activities</th>
+                    <th class="fw-bold text-center border border-dark border-1">Expected Output</th>
+                    <th class="fw-bold text-center border border-dark border-1">Start Date</th>
+                    <th class="fw-bold text-center border border-dark border-1">End Date</th>
+                    <th class="fw-bold text-center border border-dark border-1">Budget</th>
+                    <th class="fw-bold text-center border border-dark border-1">Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                $lastObject = $objectives->last();
+                $lastObjectivesetId = $lastObject['objectiveset_id'];
+                $x = 0;
+                $y = 1;
+                @endphp
+
+                @foreach ($sortedActivities as $activity)
+                <tr class="fixed-width-column">
+                    @if ($x <= $lastObjectivesetId) <td id="objective-{{ $x }}" name="objective-{{ $x }}" class="border border-dark border-1 bgbg">
+                        <ul class="list-unstyled">
+                            @foreach ($objectives->where('objectiveset_id', $x) as $objective)
+                            <li>{{ $y . '. ' . $objective['name'] }}</li>
+                            <br>
+                            @php
+                            $y++;
+                            @endphp
+                            @endforeach
+
+                        </ul>
+                        </td>
+                        @else
+                        <td class="border-0"></td>
+                        @endif
+                        <td class="border border-dark border-1" name="activity-{{ $activity->actobjectives }}[]" id="activity-{{ $activity->actobjectives }}">{{ $activity->actname }}</td>
+                        <td class="border border-dark border-1">{{ $activity->actoutput }}</td>
+                        <td class="border border-dark border-1">{{ $activity->actstartdate }}</td>
+                        <td class="border border-dark border-1">{{ $activity->actenddate }}</td>
+                        <td class="border border-dark border-1">{{ $activity->actbudget }}</td>
+                        <td class="border border-dark border-1">{{ $activity->actsource }}</td>
+                </tr>
+                @php
+                $x++;
+                @endphp
+                @endforeach
+-->
+    <!-- Additional rows here -->
+    <!--</tbody>
+        </table>
+    </div>
+-->
 
     <div class="container-fluid table-responsive">
         <div class="row">
@@ -239,8 +295,15 @@
                                     </div>
                                 </td>
                                 <td class="border border-dark border-1">{{ $activity['actoutput'] }}
-                                    <div class="w-100">
-                                        <button type="button" class="btn btn-success btn-sm float-end">Submit an Output</button>
+                                    <div id="outputdropdown" class="dropdown">
+                                        <button class="btn btn-primary" type="button" id="myDropdownButton">
+                                            Show Options
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="myDropdownButton">
+                                            <li><a class="dropdown-item" href="#">Option 1</a></li>
+                                            <li><a class="dropdown-item" href="#">Option 2</a></li>
+                                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                                        </ul>
                                     </div>
 
                                 </td>
@@ -277,6 +340,9 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="assignees-tab" data-bs-toggle="tab" data-bs-target="#assignees" type="button" role="tab" aria-controls="assignees" aria-selected="false">Assignees</button>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="output-tab" data-bs-toggle="tab" data-bs-target="#output" type="button" role="tab" aria-controls="output" aria-selected="false">Output</button>
+                        </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
@@ -294,8 +360,6 @@
                                         <option value="" selected disabled>Choose Objectives</option>
                                         <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
                                     </select>
-
-
                                 </div>
                                 <div class="mb-3">
                                     <label for="expectedoutput" class="form-label">Expected Output</label>
@@ -334,6 +398,25 @@
 
                                 </form>
                                 <button type="button" class="addassignees-button btn btn-success" id="addassignees">Add Assignees</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="output" role="tabpanel" aria-labelledby="output-tab">
+                            <div class="container-fluid" id="outputform">
+                                <form id="act3">
+                                    @csrf
+                                    <label for="output" class="form-label mt-2">Select what output should be submitted to this activity.</label>
+                                    <div class="mb-2 row" id="selectoutput">
+                                        <select class="col-9 m-1" id="output-select" name="output[]">
+                                            <option value="" selected disabled>Select Output Type</option>
+                                            <option value="Capacity building">Capacity building</option>
+                                            <option value="IEC Material">IEC Material</option>
+                                            <option value="Advisory services">Advisory services</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                        <button type="button" class="remove-output btn btn-danger col-2 m-1" id="removeoutput">Remove</button>
+                                    </div>
+                                </form>
+                                <button type="button" class="addoutput-button btn btn-success" id="addoutput">Add Output</button>
                             </div>
                         </div>
                     </div>
@@ -459,6 +542,7 @@
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
 
+
         while (currentrow < rowcount) {
 
             var objectiveheight = $(`#objective-${currentrow}`).height();
@@ -475,7 +559,7 @@
             } else if (allactheight < objectiveheight) {
                 var heightneeded = objectiveheight - allactheight;
                 var addheight = heightneeded / $(`tr[name="activity-${currentrow}[]"]`).length;
-                console.log("add" + addheight);
+
                 $('#activity-' + currentrow).each(function() {
                     var actheight = $(this).height();
                     $(this).height(addheight + actheight);

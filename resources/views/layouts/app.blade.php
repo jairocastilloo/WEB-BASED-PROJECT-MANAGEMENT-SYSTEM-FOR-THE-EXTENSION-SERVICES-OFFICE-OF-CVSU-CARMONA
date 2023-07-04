@@ -82,21 +82,22 @@
                         </a>
                         @endif
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button">
-                                {{ Auth::user()->name }}
-                            </a>
-
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="" onclick="event.preventDefault();
-        document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                            <div id="account">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button">
+                                    {{ Auth::user()->name }}
                                 </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
 
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="" onclick="event.preventDefault();
+        document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+
+                                </div>
                             </div>
-
                         </li>
                         @endif
                         @endguest

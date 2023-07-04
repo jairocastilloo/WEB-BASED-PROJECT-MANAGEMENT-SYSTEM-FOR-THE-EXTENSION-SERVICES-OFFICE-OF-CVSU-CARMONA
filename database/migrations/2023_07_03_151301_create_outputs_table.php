@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Addprojectid extends Migration
+class CreateOutputsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class Addprojectid extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('activity_user', function (Blueprint $table) {
-
-            $table->integer('project_id');
+        Schema::create('outputs', function (Blueprint $table) {
+            $table->id();
+            $table->string('output_name');
+            $table->string('output_type');
+            $table->foreignId('activity_id')->constrained('activities');
+            $table->timestamps();
         });
     }
 
@@ -27,9 +29,6 @@ class Addprojectid extends Migration
      */
     public function down()
     {
-        //
-        Schema::table('activity_user', function (Blueprint $table) {
-            $table->dropColumn(['project_id']);
-        });
+        Schema::dropIfExists('outputs');
     }
 }
