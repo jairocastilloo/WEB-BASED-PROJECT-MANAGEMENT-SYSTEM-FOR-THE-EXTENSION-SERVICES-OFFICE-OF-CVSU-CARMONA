@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityUser;
+use App\Models\Output;
 use App\Models\Activity;
 use App\Models\Objective;
 use Illuminate\Http\Request;
@@ -74,6 +75,52 @@ class ActivityController extends Controller
             $assignees->activity_id = $newactivityId;
             $assignees->project_id = $projectindex;
             $assignees->save();
+        }
+
+        $validatedOutput = $request->validate([
+            'output.*' => 'required', // Validate each select input
+            'outputindex' => 'required|integer',
+            // Validate select count
+        ]);
+
+        for ($i = 0; $i < $validatedOutput['outputindex']; $i++) {
+            if ($validatedOutput['output'][$i] === 'Capacity building') {
+                $output1 = new Output();
+                $output1->output_type = $validatedOutput['output'][$i];
+                $output1->output_name = 'Number of trainees';
+                $output1->activity_id = $newactivityId;
+                $output1->save();
+
+                $output2 = new Output();
+                $output2->output_type = $validatedOutput['output'][$i];
+                $output2->output_name = 'Number of training';
+                $output2->activity_id = $newactivityId;
+                $output2->save();
+            } else if ($validatedOutput['output'][$i] === 'IEC Material') {
+                $output1 = new Output();
+                $output1->output_type = $validatedOutput['output'][$i];
+                $output1->output_name = 'Number of recipient';
+                $output1->activity_id = $newactivityId;
+                $output1->save();
+
+                $output2 = new Output();
+                $output2->output_type = $validatedOutput['output'][$i];
+                $output2->output_name = 'Number of IEC Material';
+                $output2->activity_id = $newactivityId;
+                $output2->save();
+            } else if ($validatedOutput['output'][$i] === 'Advisory Services') {
+                $output1 = new Output();
+                $output1->output_type = $validatedOutput['output'][$i];
+                $output1->output_name = 'Number of recipient';
+                $output1->activity_id = $newactivityId;
+                $output1->save();
+            } else if ($validatedOutput['output'][$i] === 'Others') {
+                $output1 = new Output();
+                $output1->output_type = $validatedOutput['output'][$i];
+                $output1->output_name = 'To be Added';
+                $output1->activity_id = $newactivityId;
+                $output1->save();
+            }
         }
 
 

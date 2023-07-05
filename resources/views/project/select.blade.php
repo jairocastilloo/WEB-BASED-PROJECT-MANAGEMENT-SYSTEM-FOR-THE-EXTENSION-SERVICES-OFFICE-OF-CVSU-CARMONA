@@ -347,6 +347,7 @@
                         <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
                             <form id="act1" data-url="{{ route('activity.store') }}">
                                 <input type="number" class="d-none" id="assigneesindex" name="assigneesindex">
+                                <input type="number" class="d-none" id="outputindex" name="outputindex">
                                 <input type="number" class="d-none" id="projectindex" name="projectindex">
                                 <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                                 <div class="mb-3">

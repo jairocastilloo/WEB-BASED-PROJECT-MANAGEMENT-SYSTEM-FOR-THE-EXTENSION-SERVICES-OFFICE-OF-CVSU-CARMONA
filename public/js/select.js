@@ -114,9 +114,6 @@ $('#confirmactivity').click((event) => {
         $('#act1').append(`<input type="text" class="d-none" id="assigneesname" name="assigneesname[${i}]">`);
       }
     
-      for (let i = 1; i < outputindex; i++) {
-        $('#act3').append(`<input type="text" class="d-none" id="outputname" name="outputname[${i}]">`);
-      }
       
 
 // Iterate over each select element and set its name attribute
@@ -129,10 +126,7 @@ $('#confirmactivity').click((event) => {
             assigneesnameInput.val($(this).find('option:selected').text());
           });
           $('select[name="output[]"]').each(function(index) {
-            let outputnameInput = $(`input[name="outputname[${index}]"]`);
             $(this).attr('name', 'output[' + index + ']');
-            
-            outputnameInput.val($(this).find('option:selected').text());
           });
           
         
