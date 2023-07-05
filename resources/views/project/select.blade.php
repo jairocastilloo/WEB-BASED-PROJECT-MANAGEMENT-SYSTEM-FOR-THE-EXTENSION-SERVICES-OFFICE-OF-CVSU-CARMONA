@@ -298,10 +298,20 @@
                                         <button class="btn btn-primary dropdown-toggle" type="button" id="myDropdownButton">
                                             Output
                                         </button>
+
                                         <ul class="dropdown-menu" aria-labelledby="myDropdownButton">
-                                            <li><a class="dropdown-item" href="#">Option 1</a></li>
-                                            <li><a class="dropdown-item" href="#">Option 2</a></li>
-                                            <li><a class="dropdown-item" href="#">Option 3</a></li>
+                                            @php
+                                            $uniqueOutputTypes = [];
+                                            @endphp
+                                            @foreach ($outputs as $output)
+                                            @if ($output->activity_id == $activity['id'] && !in_array($output->output_type, $uniqueOutputTypes))
+                                            <li><a class="dropdown-item" href="#">{{ $output->output_type }}</a></li>
+                                            @php
+                                            $uniqueOutputTypes[] = $output->output_type;
+                                            @endphp
+                                            @endif
+                                            @endforeach
+
                                         </ul>
                                     </div>
 

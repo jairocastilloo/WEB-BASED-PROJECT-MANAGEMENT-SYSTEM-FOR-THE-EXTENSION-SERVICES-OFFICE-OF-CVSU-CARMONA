@@ -89,36 +89,42 @@ class ActivityController extends Controller
                 $output1->output_type = $validatedOutput['output'][$i];
                 $output1->output_name = 'Number of trainees';
                 $output1->activity_id = $newactivityId;
+                $output1->project_id = $projectindex;
                 $output1->save();
 
                 $output2 = new Output();
                 $output2->output_type = $validatedOutput['output'][$i];
                 $output2->output_name = 'Number of training';
                 $output2->activity_id = $newactivityId;
+                $output2->project_id = $projectindex;
                 $output2->save();
             } else if ($validatedOutput['output'][$i] === 'IEC Material') {
                 $output1 = new Output();
                 $output1->output_type = $validatedOutput['output'][$i];
                 $output1->output_name = 'Number of recipient';
                 $output1->activity_id = $newactivityId;
+                $output1->project_id = $projectindex;
                 $output1->save();
 
                 $output2 = new Output();
                 $output2->output_type = $validatedOutput['output'][$i];
                 $output2->output_name = 'Number of IEC Material';
                 $output2->activity_id = $newactivityId;
+                $output2->project_id = $projectindex;
                 $output2->save();
             } else if ($validatedOutput['output'][$i] === 'Advisory Services') {
                 $output1 = new Output();
                 $output1->output_type = $validatedOutput['output'][$i];
                 $output1->output_name = 'Number of recipient';
                 $output1->activity_id = $newactivityId;
+                $output1->project_id = $projectindex;
                 $output1->save();
             } else if ($validatedOutput['output'][$i] === 'Others') {
                 $output1 = new Output();
                 $output1->output_type = $validatedOutput['output'][$i];
                 $output1->output_name = 'To be Added';
                 $output1->activity_id = $newactivityId;
+                $output1->project_id = $projectindex;
                 $output1->save();
             }
         }

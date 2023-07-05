@@ -14,4 +14,8 @@ class Output extends Model
     {
         return $this->belongsTo(Activity::class);
     }
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
 }

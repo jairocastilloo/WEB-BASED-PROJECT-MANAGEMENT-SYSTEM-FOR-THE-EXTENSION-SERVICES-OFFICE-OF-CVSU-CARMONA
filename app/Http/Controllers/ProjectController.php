@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityUser;
 use App\Models\Objective;
+use App\Models\Output;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -44,7 +45,7 @@ class ProjectController extends Controller
         $activityassignees = ActivityUser::where('project_id', $projectid)
             ->get(['activity_id', 'assignees_name']);
         $subtasks = Subtask::all(['activity_id', 'subtask_name', 'subtask_assignee']);
-
+        $outputs = Output::where('project_id', $projectid)->get();
         $project = Project::findOrFail($projectid);
         $objectives = $project->objectives;
         $activities = Project::findOrFail($projectid);
@@ -53,7 +54,7 @@ class ProjectController extends Controller
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'activityassignees' => $activityassignees, 'subtasks' => $subtasks]);
+        return view('project.select', ['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'activityassignees' => $activityassignees, 'subtasks' => $subtasks, 'outputs' => $outputs]);
     }
     public function store(Request $request)
     {
