@@ -40,4 +40,8 @@
     background-color: #ffc4ca;
 }
 
- 
+.bi-arrow-up {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}

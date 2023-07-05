@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <div class="container-fluid">
     <section class="row">
 
@@ -296,8 +295,8 @@
                                 </td>
                                 <td class="border border-dark border-1">{{ $activity['actoutput'] }}
                                     <div id="outputdropdown" class="dropdown">
-                                        <button class="btn btn-primary" type="button" id="myDropdownButton">
-                                            Show Options
+                                        <button class="btn btn-primary dropdown-toggle" type="button" id="myDropdownButton">
+                                            Output
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="myDropdownButton">
                                             <li><a class="dropdown-item" href="#">Option 1</a></li>

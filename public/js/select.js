@@ -67,6 +67,27 @@ $('#remove-activityassignees').click((event) => {
     $('.btn-activityassignees').toggleClass('d-none');
 });
 
+$('.addoutput-button').click((event) => {
+    event.preventDefault();
+    var outputElement = `
+          <div class="mb-2 row" id="selectoutput">
+            <select class="col-9 m-1" id="output-select" name="output[]">
+              <option value="" selected disabled>Select Output Type</option>
+              <option value="Capacity building">Capacity building</option>
+              <option value="IEC Material">IEC Material</option>
+              <option value="Advisory services">Advisory services</option>
+              <option value="Others">Others</option>
+            </select>
+            <button type="button" class="remove-output btn btn-danger col-2 m-1" id="removeoutput">Remove</button>
+          </div>
+        `;
+        $('#act3').append(outputElement);
+});
+
+$('#act3').on('click', '.remove-output', function() {
+    $(this).parent().remove();
+  });
+
 $('#activityassigneesform').on('click', '.delete-activityassignees', function() {
     if ($(this).text() === "Delete") {
         $(this).parent().addClass('highlight');
@@ -87,10 +108,16 @@ $('#confirmactivity').click((event) => {
     event.preventDefault();
     
     var assigneesindex = $('select[name="assignees[]"]').length;
+    var outputindex = $('select[name="output[]"]').length;
     
     for (let i = 1; i < assigneesindex; i++) {
         $('#act1').append(`<input type="text" class="d-none" id="assigneesname" name="assigneesname[${i}]">`);
       }
+    
+      for (let i = 1; i < outputindex; i++) {
+        $('#act3').append(`<input type="text" class="d-none" id="outputname" name="outputname[${i}]">`);
+      }
+      
 
 // Iterate over each select element and set its name attribute
     
@@ -101,18 +128,26 @@ $('#confirmactivity').click((event) => {
             
             assigneesnameInput.val($(this).find('option:selected').text());
           });
+          $('select[name="output[]"]').each(function(index) {
+            let outputnameInput = $(`input[name="outputname[${index}]"]`);
+            $(this).attr('name', 'output[' + index + ']');
+            
+            outputnameInput.val($(this).find('option:selected').text());
+          });
           
         
     
     $('#assigneesindex').val(assigneesindex);
+    $('#outputindex').val(outputindex);
 
     var dataurl = $('#act1').attr('data-url');
     var data1 = $('#act1').serialize();
     var data2 = $('#act2').serialize();
+    var data3 = $('#act3').serialize();
    
     
     // concatenate serialized data into a single string
-    var formData = data1 + '&' + data2;
+    var formData = data1 + '&' + data2 + '&' + data3;
     
     
     // send data via AJAX

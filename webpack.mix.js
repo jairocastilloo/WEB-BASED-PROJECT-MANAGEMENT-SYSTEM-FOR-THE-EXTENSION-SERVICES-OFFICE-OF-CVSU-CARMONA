@@ -17,6 +17,7 @@ const mix = require('laravel-mix');
  .copy('node_modules/@selectize/selectize/dist/css/selectize.css', 'public/css')
  .copy('node_modules/@selectize/selectize/dist/css/selectize.default.css', 'public/css')
  .copy('node_modules/@selectize/selectize/dist/css/selectize.bootstrap5.css', 'public/css')
+ .copy('node_modules/bootstrap-icons/font/bootstrap-icons.css', 'public/css/bootstrap-icons.css')
  .version();
 
 // Compile and bundle JavaScript

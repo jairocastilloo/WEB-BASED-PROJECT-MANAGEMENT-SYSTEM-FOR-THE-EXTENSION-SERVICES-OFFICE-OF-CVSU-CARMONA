@@ -16,7 +16,9 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
+    <link href="{{ mix('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
