@@ -305,7 +305,7 @@
                                             @endphp
                                             @foreach ($outputs as $output)
                                             @if ($output->activity_id == $activity['id'] && !in_array($output->output_type, $uniqueOutputTypes))
-                                            <li><a class="dropdown-item" href="#">{{ $output->output_type }}</a></li>
+                                            <li value="{{ $activity['id'] }}"><a class="dropdown-item output-link">{{ $output->output_type }}</a></li>
                                             @php
                                             $uniqueOutputTypes[] = $output->output_type;
                                             @endphp
@@ -526,6 +526,33 @@
     </div>
 </div>
 
+<!--output-->
+<div class="modal fade" id="output-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="outputform">
+                <form>
+                    <div class="mb-2 row" id="firstoutput-container">
+                        <label class="col-7 m-1 output-label"></label>
+                        <input type="number" class="col-4 m-1" name="output-number[0]">
+                        <input type="text" class="d-none firstoutput-name" name="out-name[0]">
+                        <input type="text" class="d-none firstoutput-type" name="out-type[0]">
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')
@@ -539,6 +566,8 @@
                     ?>;
     var activityassignees = <?php echo json_encode($activityassignees);
                             ?>;
+    var outputs = <?php echo json_encode($outputs);
+                    ?>;
 
     var selectElement = $('#project-select');
     var url = "";

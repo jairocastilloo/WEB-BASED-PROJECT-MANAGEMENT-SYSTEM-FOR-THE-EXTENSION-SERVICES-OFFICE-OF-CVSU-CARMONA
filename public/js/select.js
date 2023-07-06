@@ -189,6 +189,44 @@ $(document).on('click', '.add-subtask-btn', function() {
 
 });
 
+$(document).on('click', '.output-link', function() {
+
+    $('.output-container').remove();
+
+
+    var $this = $(this); // Store reference to 'this'
+    
+    var filteredOutputs = $.grep(outputs, function(output) {
+        return output.output_type === $this.text() && output.activity_id === $this.parent().val();
+    });
+    
+    // Access the output_names of the filtered outputs
+    var outputNames = filteredOutputs.map(function(output) {
+        return output.output_name;
+    });
+    var outputTypes = filteredOutputs.map(function(output) {
+        return output.output_type;
+    });
+    
+    $('#firstoutput-container label').text(outputNames[0]);
+    $('#firstoutput-container .firstoutput-name').val(outputNames[0]);
+    $('#firstoutput-container .firstoutput-type').val(outputTypes[0]);
+    
+    for (var i = 1; i < outputNames.length; i++) {
+        var outputContainer = $('<div class="mb-2 row output-container"></div>');
+        outputContainer.append(`<label class="col-7 m-1 output-label">${outputNames[i]}</label>`);
+        outputContainer.append('<input type="number" class="col-4 m-1" name="output-number[' + i + ']">');
+        outputContainer.append(`<input type="text" class="d-none" name="out-name[` + i + `]" value="${outputNames[i]}">`);
+        outputContainer.append(`<input type="text" class="d-none" name="out-type[` + i + `]" value="${outputTypes[i]}">`);
+        $('#outputform form').append(outputContainer);
+    }
+    
+    $('#output-modal').modal('show');
+});
+
+
+
+
 $('#createsubtask').click((event) => {
     event.preventDefault();
 
