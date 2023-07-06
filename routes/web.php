@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Monitoring;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OutputController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,4 @@ Route::POST('/acceptaccount', [AdminController::class, 'acceptaccount'])->name('
 Route::POST('/declineaccount', [AdminController::class, 'declineaccount'])->name('admin.decline');
 Route::POST('/deleteaccount', [AdminController::class, 'deleteaccount'])->name('admin.delete');
 Route::POST('/addaccount', [AdminController::class, 'addaccount'])->name('admin.add');
+Route::post('/submitoutput', [OutputController::class, 'submitoutput'])->name('output.submit');

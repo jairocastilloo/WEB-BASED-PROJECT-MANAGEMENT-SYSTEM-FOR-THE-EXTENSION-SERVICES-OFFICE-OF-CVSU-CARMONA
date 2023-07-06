@@ -305,7 +305,7 @@
                                             @endphp
                                             @foreach ($outputs as $output)
                                             @if ($output->activity_id == $activity['id'] && !in_array($output->output_type, $uniqueOutputTypes))
-                                            <li value="{{ $activity['id'] }}"><a class="dropdown-item output-link">{{ $output->output_type }}</a></li>
+                                            <li value="{{ $activity['id'] }}" data-actname="{{ $activity['actname'] }}"><a class="dropdown-item output-link">{{ $output->output_type }}</a></li>
                                             @php
                                             $uniqueOutputTypes[] = $output->output_type;
                                             @endphp
@@ -531,11 +531,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                <h5 class="modal-title" id="outputmodallabel"></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="outputform">
-                <form>
+            <div class="modal-body" id="outputformdiv">
+                <form id="outputformsubmit" data-url="{{ route('output.submit') }}">
+                    @csrf
+                    <input type="number" class="d-none" id="submitoutputindex" name="submitoutputindex">
                     <div class="mb-2 row" id="firstoutput-container">
                         <label class="col-7 m-1 output-label"></label>
                         <input type="number" class="col-4 m-1" name="output-number[0]">
@@ -547,7 +549,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-primary" id="submitoutput">Submit output</button>
             </div>
         </div>
     </div>

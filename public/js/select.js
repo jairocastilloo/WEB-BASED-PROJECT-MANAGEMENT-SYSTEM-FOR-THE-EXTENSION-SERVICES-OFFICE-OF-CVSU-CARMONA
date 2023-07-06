@@ -109,6 +109,7 @@ $('#confirmactivity').click((event) => {
     
     var assigneesindex = $('select[name="assignees[]"]').length;
     var outputindex = $('select[name="output[]"]').length;
+   
     
     for (let i = 1; i < assigneesindex; i++) {
         $('#act1').append(`<input type="text" class="d-none" id="assigneesname" name="assigneesname[${i}]">`);
@@ -195,6 +196,7 @@ $(document).on('click', '.output-link', function() {
 
 
     var $this = $(this); // Store reference to 'this'
+    $('#outputmodallabel').text($this.parent().data('actname'));
     
     var filteredOutputs = $.grep(outputs, function(output) {
         return output.output_type === $this.text() && output.activity_id === $this.parent().val();
@@ -218,13 +220,12 @@ $(document).on('click', '.output-link', function() {
         outputContainer.append('<input type="number" class="col-4 m-1" name="output-number[' + i + ']">');
         outputContainer.append(`<input type="text" class="d-none" name="out-name[` + i + `]" value="${outputNames[i]}">`);
         outputContainer.append(`<input type="text" class="d-none" name="out-type[` + i + `]" value="${outputTypes[i]}">`);
-        $('#outputform form').append(outputContainer);
-    }
-    
+        $('#outputformdiv form').append(outputContainer);
+    }   
+    $('#submitoutputindex').val(outputNames.length);
+
     $('#output-modal').modal('show');
 });
-
-
 
 
 $('#createsubtask').click((event) => {
@@ -243,6 +244,35 @@ $('#createsubtask').click((event) => {
         success: function(response) {
             console.log(response);
             $('#new-subtask-modal').modal('toggle');
+            window.location.href = url;
+
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+            console.error(error);
+
+        }
+    });
+
+});
+
+
+$('#submitoutput').click((event) => {
+    event.preventDefault();
+    
+    
+
+    var dataurl = $('#outputformsubmit').attr('data-url');
+    var data1 = $('#outputformsubmit').serialize();
+
+    // send data via AJAX
+    $.ajax({
+        url: dataurl,
+        type: 'POST',
+        data: data1,
+        success: function(response) {
+            console.log(response);
+            $('#output-modal').modal('toggle');
             window.location.href = url;
 
         },
