@@ -153,10 +153,14 @@ class ActivityController extends Controller
         $user = User::where('name', $subtaskassignee)->first();
         $userid = $user->id;
 
+        $activity = Activity::findOrFail($activitynumber); // Retrieve the activity using the activity number
+        $projectid = $activity->project->id; // Retrieve the project_id through the relationship
+
         $subtasks = new Subtask();
         $subtasks->subtask_name = $subtaskname;
         $subtasks->subtask_assignee = $subtaskassignee;
         $subtasks->activity_id = $activitynumber;
+        $subtasks->project_id = $projectid;
         $subtasks->user_id = $userid;
         $subtasks->save();
 

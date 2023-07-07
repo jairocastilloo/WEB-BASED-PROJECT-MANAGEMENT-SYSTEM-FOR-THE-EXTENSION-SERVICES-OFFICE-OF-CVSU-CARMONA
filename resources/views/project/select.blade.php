@@ -286,10 +286,19 @@
                                     {{ $activity['actname'] }}
                                     <div class="w-100">
                                         <button type="button" class="btn btn-success btn-sm float-end show-assignees">Assignees</button>
-                                        <button type="button" class="btn btn-success btn-sm float-end me-2" data-bs-toggle="modal" data-bs-target="#new-subtask-modal">
+                                        <button type="button" class="btn btn-success btn-sm float-end me-2 dropdown-toggle" id="myDropdownSubtask">
                                             Subtasks
                                         </button>
+                                        <ul class="dropdown-menu" aria-labelledby="myDropdownSubtask">
 
+                                            @foreach ($subtasks as $subtask)
+                                            @if ($subtask->activity_id == $activity['id'] )
+                                            <li value="" data-actname=""><a class="dropdown-item output-link">{{ $subtask->subtask_name }}</a></li>
+
+                                            @endif
+                                            @endforeach
+                                            <li><a class="dropdown-item subtask-link">Add subtask</a></li>
+                                        </ul>
 
                                     </div>
                                 </td>

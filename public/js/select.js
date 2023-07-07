@@ -56,7 +56,18 @@ $('#assigneesModal').modal('show');
 
 $('[id^="myDropdownButton"]').click(function() {
     // Find the corresponding dropdown menu and toggle its visibility
-    $(this).siblings('.dropdown-menu').toggleClass('show');
+    var dropdownMenu = $(this).siblings('.dropdown-menu');
+    $('.dropdown-menu').not(dropdownMenu).removeClass('show').addClass('hide');
+    dropdownMenu.toggleClass('show hide');
+
+  });
+
+  $('[id^="myDropdownSubtask"]').click(function() {
+    // Find the corresponding dropdown menu and toggle its visibility
+    var dropdownMenu = $(this).siblings('.dropdown-menu');
+    $('.dropdown-menu').not(dropdownMenu).removeClass('show').addClass('hide');
+    dropdownMenu.toggleClass('show hide');
+
   });
 
 $('#remove-activityassignees').click((event) => {
@@ -190,6 +201,9 @@ $(document).on('click', '.add-subtask-btn', function() {
 
 });
 
+$(document).on('click', '.subtask-link', function(){
+    $('#new-subtask-modal').modal('show');
+});
 $(document).on('click', '.output-link', function() {
 
     $('.output-container').remove();

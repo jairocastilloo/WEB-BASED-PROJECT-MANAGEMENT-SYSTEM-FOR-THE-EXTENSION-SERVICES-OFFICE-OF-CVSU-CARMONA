@@ -44,7 +44,8 @@ class ProjectController extends Controller
             ->get(['id', 'name', 'middle_name', 'last_name']);
         $activityassignees = ActivityUser::where('project_id', $projectid)
             ->get(['activity_id', 'assignees_name']);
-        $subtasks = Subtask::all(['activity_id', 'subtask_name', 'subtask_assignee']);
+        $subtasks = Subtask::where('project_id', $projectid)
+            ->get(['activity_id', 'subtask_name', 'subtask_assignee']);
         $outputs = Output::where('project_id', $projectid)->get();
         $project = Project::findOrFail($projectid);
         $objectives = $project->objectives;
