@@ -200,6 +200,19 @@ $(document).on('click', '.add-subtask-btn', function() {
 });
 
 $(document).on('click', '.subtask-link', function(){
+    var chosenActivityId = $(this).parent().val();
+    var activitySelect = $('#subtaskassignee');
+    var filteredAssignees = activityassignees.filter(function(assignee) {
+        return assignee.activity_id === chosenActivityId;
+      });
+    activitySelect.find('option:not(:first)').remove();
+    filteredAssignees.forEach(function(assignee) {
+        var option = $('<option></option>');
+        option.val(assignee.assignees_name);
+        option.text(assignee.assignees_name);
+        activitySelect.append(option);
+      });
+    
     $('#new-subtask-modal').modal('show');
 });
 $(document).on('click', '.output-link', function() {
