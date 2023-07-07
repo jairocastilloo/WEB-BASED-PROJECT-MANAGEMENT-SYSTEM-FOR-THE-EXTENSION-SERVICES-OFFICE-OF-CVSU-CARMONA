@@ -222,6 +222,8 @@ $(document).on('click', '.subtask-link', function(){
 
 $(document).on('click', '.subtaskhour-link', function(){
     $('#hours-rendered-modal-label').text($(this).text());
+    $('.hours-subname').val($(this).text());
+    $('.hours-actid').val($(this).parents().val());
     $('#hours-rendered-modal').modal('show');
     
 });
@@ -300,6 +302,34 @@ $('#submitoutput').click((event) => {
 
     var dataurl = $('#outputformsubmit').attr('data-url');
     var data1 = $('#outputformsubmit').serialize();
+
+    // send data via AJAX
+    $.ajax({
+        url: dataurl,
+        type: 'POST',
+        data: data1,
+        success: function(response) {
+            console.log(response);
+            $('#output-modal').modal('toggle');
+            window.location.href = url;
+
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+            console.error(error);
+
+        }
+    });
+
+});
+
+$('#submithours').click((event) => {
+    event.preventDefault();
+    
+    
+
+    var dataurl = $('#hoursform').attr('data-url');
+    var data1 = $('#hoursform').serialize();
 
     // send data via AJAX
     $.ajax({

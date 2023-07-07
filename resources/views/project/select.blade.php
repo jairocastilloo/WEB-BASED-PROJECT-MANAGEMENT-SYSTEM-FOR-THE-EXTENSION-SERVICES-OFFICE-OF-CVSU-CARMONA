@@ -293,7 +293,7 @@
 
                                             @foreach ($subtasks as $subtask)
                                             @if ($subtask->activity_id == $activity['id'] )
-                                            <li value="" data-actname=""><a class="dropdown-item subtaskhour-link">{{ $subtask->subtask_name }}</a></li>
+                                            <li value="{{ $activity['id'] }}"><a class="dropdown-item subtaskhour-link">{{ $subtask->subtask_name }}</a></li>
 
                                             @endif
                                             @endforeach
@@ -580,16 +580,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="hoursform" data-url="{{ route('hoursrendered.submit') }}">
+                    @csrf
                     <div class="mb-3">
                         <label for="hours-rendered-input" class="form-label">Hours Rendered:</label>
-                        <input type="number" class="form-control" id="hours-rendered-input" placeholder="Enter hours rendered" min="0" step="0.5">
+                        <input type="number" class="form-control" name="hours-rendered-input" id="hours-rendered-input" placeholder="Enter hours rendered" min="0" step="0.5">
+                        <input type="text" class="d-none hours-subname" name="hours-subname">
+                        <input type="text" class="d-none hours-actid" name="hours-actid">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-primary" id="submithours">Submit hours</button>
             </div>
         </div>
     </div>

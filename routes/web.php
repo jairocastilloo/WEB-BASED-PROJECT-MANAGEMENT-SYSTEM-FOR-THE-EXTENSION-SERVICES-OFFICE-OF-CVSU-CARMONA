@@ -8,6 +8,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\SubtaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,3 +43,4 @@ Route::POST('/deleteaccount', [AdminController::class, 'deleteaccount'])->name('
 Route::POST('/addaccount', [AdminController::class, 'addaccount'])->name('admin.add');
 Route::post('/submitoutput', [OutputController::class, 'submitoutput'])->name('output.submit');
 Route::post('/upload', [FileController::class, 'upload'])->name('upload.file');
+Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrendered'])->name('hoursrendered.submit');
