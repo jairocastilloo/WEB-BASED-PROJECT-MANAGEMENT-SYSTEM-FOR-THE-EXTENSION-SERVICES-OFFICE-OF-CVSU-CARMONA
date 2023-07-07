@@ -297,7 +297,7 @@
 
                                             @endif
                                             @endforeach
-                                            <li><a class="dropdown-item subtask-link">Add subtask</a></li>
+                                            <li value="{{ $activity['id'] }}"><a class="dropdown-item subtask-link">Add subtask</a></li>
                                         </ul>
 
                                     </div>

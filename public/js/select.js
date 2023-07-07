@@ -47,11 +47,7 @@ for (var key in activityassignees) {
     $('#activityassigneesform').append($newDiv);}
   }
 }
-
-
 $('#assigneesModal').modal('show');
-   
-
 });
 
 $('[id^="myDropdownButton"]').click(function() {
@@ -178,7 +174,9 @@ $('#confirmactivity').click((event) => {
 
 
 $(document).on('click', '.add-subtask-btn', function() {
-    $('#subtaskname').val('');
+
+
+    /**$('#subtaskname').val('');
     var select = $('#subtaskassignee');
     select.children().not(':first').remove();
     var unordered = $(this).prev();
@@ -197,7 +195,7 @@ $(document).on('click', '.add-subtask-btn', function() {
         });
         select.append(option);
     });
-    $('#new-subtask-modal').modal('show');
+    $('#new-subtask-modal').modal('show');*/
 
 });
 
