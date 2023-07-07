@@ -546,7 +546,13 @@
                     </div>
                 </form>
 
+
             </div>
+            <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" accept=".docx">
+                <button type="submit">Upload report</button>
+            </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="submitoutput">Submit output</button>
