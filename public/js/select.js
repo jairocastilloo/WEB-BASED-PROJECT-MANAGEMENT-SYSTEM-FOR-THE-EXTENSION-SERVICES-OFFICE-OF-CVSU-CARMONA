@@ -206,6 +206,9 @@ $(document).on('click', '.subtask-link', function(){
         return assignee.activity_id === chosenActivityId;
       });
     activitySelect.find('option:not(:first)').remove();
+
+    $('#activitynumber').val(chosenActivityId);
+
     filteredAssignees.forEach(function(assignee) {
         var option = $('<option></option>');
         option.val(assignee.assignees_name);
@@ -215,6 +218,14 @@ $(document).on('click', '.subtask-link', function(){
     
     $('#new-subtask-modal').modal('show');
 });
+
+
+$(document).on('click', '.subtaskhour-link', function(){
+    $('#hours-rendered-modal-label').text($(this).text());
+    $('#hours-rendered-modal').modal('show');
+    
+});
+
 $(document).on('click', '.output-link', function() {
 
     $('.output-container').remove();

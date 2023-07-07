@@ -293,7 +293,7 @@
 
                                             @foreach ($subtasks as $subtask)
                                             @if ($subtask->activity_id == $activity['id'] )
-                                            <li value="" data-actname=""><a class="dropdown-item output-link">{{ $subtask->subtask_name }}</a></li>
+                                            <li value="" data-actname=""><a class="dropdown-item subtaskhour-link">{{ $subtask->subtask_name }}</a></li>
 
                                             @endif
                                             @endforeach
@@ -565,6 +565,31 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="submitoutput">Submit output</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--hours rendered -->
+
+<div class="modal fade" id="hours-rendered-modal" tabindex="-1" aria-labelledby="hours-rendered-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="hours-rendered-modal-label">Add Hours Rendered</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="hours-rendered-input" class="form-label">Hours Rendered:</label>
+                        <input type="number" class="form-control" id="hours-rendered-input" placeholder="Enter hours rendered" min="0" step="0.5">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
