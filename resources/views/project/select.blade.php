@@ -299,7 +299,13 @@
                                             @endforeach
                                             <li value="{{ $activity['id'] }}"><a class="dropdown-item subtask-link">Add subtask</a></li>
                                         </ul>
-
+                                        <form method="POST" action="{{ route('activity.complete') }}">
+                                            @csrf
+                                            <input type="number" name="completedactid" class="d-none" value="{{ $activity['id'] }}">
+                                            <button type="submit" class="btn btn-success btn-sm float-end me-2">
+                                                Mark as Done
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                                 <td class="border border-dark border-1">{{ $activity['actoutput'] }}

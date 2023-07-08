@@ -166,4 +166,23 @@ class ActivityController extends Controller
 
         return response()->json(['success' => true]);
     }
+    public function completeactivity(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'completedactid' => 'required|integer',
+        ]);
+
+        $output = Activity::where('id', $validatedData['completedactid'])->first();
+        if ($output) {
+            // Update the value of actremark
+            $output->actremark = "Completed";
+            $output->save();
+        } else {
+            // Handle the case when the activity is not found
+            return response()->json(['error' => 'Activity not found.'], 404);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

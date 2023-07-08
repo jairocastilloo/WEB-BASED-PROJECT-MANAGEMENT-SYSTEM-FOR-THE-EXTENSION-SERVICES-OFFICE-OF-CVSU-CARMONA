@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\SubtaskController;
+use App\Models\Activity;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,4 @@ Route::POST('/addaccount', [AdminController::class, 'addaccount'])->name('admin.
 Route::post('/submitoutput', [OutputController::class, 'submitoutput'])->name('output.submit');
 Route::post('/upload', [FileController::class, 'upload'])->name('upload.file');
 Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrendered'])->name('hoursrendered.submit');
+Route::post('/completeactivity', [ActivityController::class, 'completeactivity'])->name('activity.complete');

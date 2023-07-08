@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Subtask;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +29,11 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name']);
+        $activities = Activity::all();
+
+        $activities->map(function ($activity) {
+            return $activity->actremark;
+        });
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
     public function getobjectives($id, $projectid)
