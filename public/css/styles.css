@@ -45,3 +45,10 @@
   outline: none;
   box-shadow: none;
 }
+.container-fluid .vlr-table th,
+.container-fluid .vlr-table td {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+}
+

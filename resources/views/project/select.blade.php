@@ -67,7 +67,12 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="projectleader" class="form-label">Project Leader</label>
-                                    <input type="text" class="form-control" id="projectleader" name="projectleader">
+                                    <select class="form-select" name="projectleader" id="projectleader">
+                                        <option selected disabled>Select Project Leader</option>
+
+
+                                    </select>
+                                    <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
                                 </div>
                                 <div class="mb-3">
                                     <label for="programtitle" class="form-label">Program Title</label>
