@@ -14,18 +14,20 @@ class UpdateActivityStatus extends Command
 
     public function handle()
     {
-        //$now = Carbon::now()->format('Y-m-d');
-        //$this->updateOngoingActivities();
-        //Activity::where('actstartdate', '=', $now)
-        //->update(['actremark' => 'Ongoing']);
+
+
+        $this->updateInProgressActivities();
+        $this->updateScheduledActivities();
+        // Activity::where('actstartdate', '<=', $now)
+        // ->update(['actremark' => 'Ongoing']);
         // Update activities to 'Upcoming'
         //$this->updateUpcomingActivities();
-        $now = Carbon::now()->format('Y-m-d');
 
-        Activity::where('actstartdate', '<=', $now)
+
+        /**Activity::where('actstartdate', '<=', $now)
             ->where('actenddate', '>=', $now)
             ->where('actremark', '!=', 'Completed')
-            ->update(['actremark' => 'Ongoing']);
+            ->update(['actremark' => 'Ongoing']);*/
         // Update activities to 'Incomplete'
         //$this->updateIncompleteActivities();
         //Activity::where('actremark', '=', 'Completed')
@@ -33,28 +35,38 @@ class UpdateActivityStatus extends Command
 
         // $this->info('Activity statuses updated successfully.');
     }
-    private function updateOngoingActivities()
+    private function updateInProgressActivities()
     {
-        $now = Carbon::now()->format('Y-m-d');
+        $now = Carbon::today();
 
         Activity::where('actstartdate', '<=', $now)
             ->where('actenddate', '>=', $now)
-            ->where('actremark', '!=', 'Completed')
-            ->update(['actremark' => 'Ongoing']);
+            ->whereNotIn('actremark', ['Completed'])
+            ->update(['actremark' => 'In Progress']);
+    }
+
+    private function updateScheduledActivities()
+    {
+        $now = Carbon::today();
+
+        Activity::where('actstartdate', '>', $now)
+            ->whereNotIn('actremark', ['Upcoming'])
+            ->update(['actremark' => 'Scheduled']);
     }
 
     private function updateUpcomingActivities()
     {
-        $now = Carbon::now()->format('Y-m-d');
+        $now = Carbon::today();
+
         $upcomingDateRange = [
             Carbon::parse($now)->addDay(),           // Tomorrow
             Carbon::parse($now)->addDays(2)          // Day after tomorrow
         ];
 
-        Activity::whereBetween('actstartdate', $upcomingDateRange)
-            ->where('actremark', '!=', 'Completed')
-            ->where('actremark', '!=', 'Ongoing')
-            ->update(['actremark' => 'Upcoming']);
+        //  Activity::whereBetween('actstartdate', $upcomingDateRange)
+        //    ->where('actremark', '!=', 'Completed')
+        //    ->where('actremark', '!=', 'Ongoing')
+        //   ->update(['actremark' => 'Upcoming']);
     }
 
     private function updateIncompleteActivities()
