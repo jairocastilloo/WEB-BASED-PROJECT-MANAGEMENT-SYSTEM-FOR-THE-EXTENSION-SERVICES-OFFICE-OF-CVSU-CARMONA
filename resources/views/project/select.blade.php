@@ -344,11 +344,11 @@
         </div>
     </div> -->
 
-    <div class="container">
+    <div class="tablecontainer">
 
         <table class="firsttable">
             <thead>
-                <tr>
+                <tr id="objheader">
                     <th>OBJECTIVES</th>
                 </tr>
             </thead>
@@ -392,7 +392,7 @@
 
         <table class="secondtable">
             <thead>
-                <tr>
+                <tr id="actheader">
                     <th>ACTIVITIES</th>
                     <th>EXPECTED OUTPUT</th>
                     <th>START DATE</th>
@@ -766,7 +766,7 @@
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
 
-
+        $(`#objheader`).height($(`#actheader`).height());
         while (currentrow < rowcount) {
 
             var objectiveheight = $(`#objective-${currentrow}`).height();
@@ -831,11 +831,14 @@
             function() {
                 // Code to run when the mouse enters the 'tr' element
                 currenthover = $(this).attr('name').match(/\d+/)[0];
-
+                $(this).css('cursor', 'pointer');
+                $(this).css('background-color', '#e6e7e9');
                 $(`tr[name="objective-${currenthover}"`).css('background-color', '#e6e7e9');
             },
             function() {
                 // Code to run when the mouse leaves the 'tr' element
+                $(this).css('cursor', 'default');
+                $(this).css('background-color', '');
                 $(`tr[name="objective-${currenthover}"`).css('background-color', '');
             }
         );

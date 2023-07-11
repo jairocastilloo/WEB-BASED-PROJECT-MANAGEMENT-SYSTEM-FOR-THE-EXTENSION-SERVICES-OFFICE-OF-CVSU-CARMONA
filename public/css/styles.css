@@ -21,16 +21,45 @@
     table-layout: fixed;
   } */
 
-  .container {
+  .tablecontainer {
+
     margin: 0 auto;
-    overflow-x: auto;
+    overflow-x: scroll;
      display: flex; /* Add flexbox */
       flex-wrap: nowrap; /* Prevent wrapping */
+      width: 100%;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-right: auto;
+  margin-left: auto;
+  }
+  @media (min-width: 576px) {
+    .tablecontainer {
+      max-width: 540px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .tablecontainer {
+      max-width: 720px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .tablecontainer {
+      max-width: 960px;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .tablecontainer {
+      max-width: 1140px;
+    }
   }
   table, th, td {
     border: 1px solid #ccc;
-    min-width: 400px;
-    max-width: 400px;
+    min-width: 150px;
+    max-width: 150px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     padding: 5px;
