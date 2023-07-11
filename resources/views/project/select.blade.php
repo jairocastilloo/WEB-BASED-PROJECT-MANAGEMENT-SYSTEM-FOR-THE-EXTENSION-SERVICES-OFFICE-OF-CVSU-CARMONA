@@ -205,8 +205,7 @@
         </table>
     </div>
 -->
-
-    <div class="container-fluid table-responsive">
+    <!--    <div class="container-fluid table-responsive">
         <div class="row">
             <div class="col-2 p-0">
                 <table class="table border border-dark border-1">
@@ -343,6 +342,143 @@
                 </table>
             </div>
         </div>
+    </div> -->
+
+    <div class="container">
+
+        <table class="firsttable">
+            <thead>
+                <tr>
+                    <th>OBJECTIVES</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @php
+
+                $lastObject = $objectives->last();
+                $lastObjectivesetId = $lastObject['objectiveset_id'];
+                $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                $x = 0;
+                $y = 1;
+                @endphp
+
+                @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                    @endphp
+                    <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
+                        <td>
+                            <ul class="list-unstyled">
+                                @foreach($objectives->where('objectiveset_id', $x) as $objective)
+                                <li>
+                                    {{ __($y) . '. ' . $objective['name'] }}
+                                </li>
+                                <br>
+                                @php
+                                $y++;
+                                @endphp
+                                @endforeach
+
+                            </ul>
+                        </td>
+                    </tr>
+                    @php
+                    $x++;
+                    @endphp
+                    @endwhile
+
+            </tbody>
+        </table>
+
+
+        <table class="secondtable">
+            <thead>
+                <tr>
+                    <th>ACTIVITIES</th>
+                    <th>EXPECTED OUTPUT</th>
+                    <th>START DATE</th>
+                    <th>END DATE</th>
+                    <th>BUDGET</th>
+                    <th>SOURCE</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @php
+
+                $lastObject = $objectives->last();
+                $lastObjectivesetId = $lastObject['objectiveset_id'];
+                $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                $x = 0;
+                $y = 1;
+                @endphp
+
+                @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                    @endphp
+                    @foreach($activities->where('actobjectives', $x) as $activity)
+                    <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]">
+                        <td data-value="{{ $activity['id'] }}" id="actid">
+                            {{ $activity['actname'] }}
+                            <div class="w-100">
+                                <button type="button" class="btn btn-success btn-sm float-end show-assignees">Assignees</button>
+                                <button type="button" class="btn btn-success btn-sm float-end me-2 dropdown-toggle" id="myDropdownSubtask">
+                                    Subtasks
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="myDropdownSubtask">
+
+                                    @foreach ($subtasks as $subtask)
+                                    @if ($subtask->activity_id == $activity['id'] )
+                                    <li value="{{ $activity['id'] }}"><a class="dropdown-item subtaskhour-link">{{ $subtask->subtask_name }}</a></li>
+
+                                    @endif
+                                    @endforeach
+                                    <li value="{{ $activity['id'] }}"><a class="dropdown-item subtask-link">Add subtask</a></li>
+                                </ul>
+                                <form data-url="{{ route('activity.complete') }}">
+                                    @csrf
+                                    <input type="number" name="completedactid" class="d-none" value="{{ $activity['id'] }}">
+                                    <button type="button" class="btn btn-success btn-sm float-end me-2 markasdone-button">
+                                        Mark as Done
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                        <td>{{ $activity['actoutput'] }}
+                            <div id="outputdropdown" class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="myDropdownButton">
+                                    Output
+                                </button>
+
+                                <ul class="dropdown-menu" aria-labelledby="myDropdownButton">
+                                    @php
+                                    $uniqueOutputTypes = [];
+                                    @endphp
+                                    @foreach ($outputs as $output)
+                                    @if ($output->activity_id == $activity['id'] && !in_array($output->output_type, $uniqueOutputTypes))
+                                    <li value="{{ $activity['id'] }}" data-actname="{{ $activity['actname'] }}"><a class="dropdown-item output-link">{{ $output->output_type }}</a></li>
+                                    @php
+                                    $uniqueOutputTypes[] = $output->output_type;
+                                    @endphp
+                                    @endif
+                                    @endforeach
+
+                                </ul>
+                            </div>
+
+                        </td>
+                        <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
+                        <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
+                        <td>&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                        <td>{{ $activity['actsource'] }}</td>
+                    </tr>
+                    @endforeach
+                    @php
+                    $x++;
+                    @endphp
+                    @endwhile
+            </tbody>
+        </table>
+
     </div>
 
     <!-- Add activity -->

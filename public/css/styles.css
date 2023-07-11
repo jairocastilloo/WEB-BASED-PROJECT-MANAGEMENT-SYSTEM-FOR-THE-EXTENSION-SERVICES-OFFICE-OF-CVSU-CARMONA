@@ -10,16 +10,38 @@
     content: "\2022"; /* Unicode bullet symbol */
     margin-right: 5px; /* Optional: Add spacing between bullet and content */
   }
-  .fixed-width-column {
+  /*.fixed-width-column { */
      /* Adjust the maximum width as per your requirements */
-    max-width: 8.33%;
-    overflow-wrap: break-word;
-  word-wrap: break-word;
+   /* max-width: 8.33%; */
+   /* overflow-wrap: break-word; */
+  /* word-wrap: break-word; */
    
-  }
+  /*}
   .table {
     table-layout: fixed;
+  } */
+
+  .container {
+    margin: 0 auto;
+    overflow-x: auto;
+     display: flex; /* Add flexbox */
+      flex-wrap: nowrap; /* Prevent wrapping */
   }
+  table, th, td {
+    border: 1px solid #ccc;
+    min-width: 400px;
+    max-width: 400px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    padding: 5px;
+  }
+    .firsttable {
+     float:left;
+    }
+    .secondtable {
+    flex-shrink: 0;
+    }
+
   .btn-danger:hover {
     color: #dc3545;
     background-color: transparent;
