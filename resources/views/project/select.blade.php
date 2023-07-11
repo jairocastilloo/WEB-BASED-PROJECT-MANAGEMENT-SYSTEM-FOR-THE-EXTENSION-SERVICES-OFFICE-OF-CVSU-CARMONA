@@ -129,23 +129,15 @@
                                                 <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                                 <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
                                                 <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
-
                                             </div>
                                         </div>
                                         <button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button>
                                         <hr>
                                     </div>
-
                                 </form>
-
-
-
                                 <button type="button" class="addset btn btn-success w-100" id="addset">Add Objective Set</button>
-
                             </div>
-
                         </div>
-
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -304,13 +296,14 @@
                                             @endforeach
                                             <li value="{{ $activity['id'] }}"><a class="dropdown-item subtask-link">Add subtask</a></li>
                                         </ul>
-                                        <form method="POST" action="{{ route('activity.complete') }}">
+                                        <form data-url="{{ route('activity.complete') }}">
                                             @csrf
                                             <input type="number" name="completedactid" class="d-none" value="{{ $activity['id'] }}">
-                                            <button type="submit" class="btn btn-success btn-sm float-end me-2">
+                                            <button type="button" class="btn btn-success btn-sm float-end me-2 markasdone-button">
                                                 Mark as Done
                                             </button>
                                         </form>
+
                                     </div>
                                 </td>
                                 <td class="border border-dark border-1">{{ $activity['actoutput'] }}

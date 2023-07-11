@@ -350,5 +350,34 @@ $('#submithours').click((event) => {
     });
 
 });
+$(document).on('click', '.markasdone-button', function() {
+    event.preventDefault();
+    
+    console.log("asdasd");
+
+    var dataurl = $(this).parent().attr('data-url');
+    var data1 = $(this).parent().serialize();
+
+    // send data via AJAX
+    $.ajax({
+        url: dataurl,
+        type: 'POST',
+        data: data1,
+        success: function(response) {
+            console.log(response);
+            window.location.href = url;
+
+        },
+        error: function(xhr, status, error) {
+            console.log(xhr.responseText);
+            console.error(error);
+
+        }
+    });
+});
+$('#markasdone-button').click((event) => {
+    
+
+});
 
 });
