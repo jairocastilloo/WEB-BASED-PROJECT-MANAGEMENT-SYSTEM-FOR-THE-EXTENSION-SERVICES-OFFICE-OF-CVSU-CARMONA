@@ -5,17 +5,26 @@
     <div class="row ">
         <div class="col-8">
             <div class="basiccont">
-                {{ $activity['actname'] }} </br>
-                {{ $activity['actoutput'] }} </br>
-                {{ $activity['actstartdate'] }} </br>
-                {{ $activity['actenddate'] }}
+                <h4><b> {{ $activity['actname'] }} </b></h4>
+                Expected Output: {{ $activity['actoutput'] }} </br>
+                Start Date: {{ $activity['actstartdate'] }} </br>
+                End Date: {{ $activity['actenddate'] }} </br>
+                Budget: {{ $activity['actbudget'] }} </br>
+                Source: {{ $activity['actsource'] }} </br>
             </div>
             <div class="basiccont">
-                as
+
             </div>
         </div>
         <div class="col-4 basiccont">
-            zxc
+            <b>Assignees: </b>
+            <ul class="list-unstyled">
+
+                @foreach ($assignees as $assignee)
+                <li>{{ $assignee->name . ' ' . $assignee->last_name }}</li>
+
+                @endforeach
+            </ul>
         </div>
 
     </div>

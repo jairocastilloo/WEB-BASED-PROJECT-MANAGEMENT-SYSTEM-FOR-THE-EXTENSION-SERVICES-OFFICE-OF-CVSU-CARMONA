@@ -67,7 +67,12 @@ class ProjectController extends Controller
     public function getactivity($id, $activityid)
     {
         $activity = Activity::find($activityid);
-        return view('activity.index', ['activity' => $activity]);
+        $activityUser = ActivityUser::where('activity_id', $activityid)->get();
+
+        $assignees = $activityUser->map(function ($item) {
+            return $item->user;
+        });
+        return view('activity.index', ['activity' => $activity, 'assignees' => $assignees]);
     }
 
     public function store(Request $request)
