@@ -72,7 +72,19 @@ class ProjectController extends Controller
         $assignees = $activityUser->map(function ($item) {
             return $item->user;
         });
-        return view('activity.index', ['activity' => $activity, 'assignees' => $assignees]);
+
+        $subtasks = Subtask::where('activity_id', $activityid)->get();
+        $outputs = Output::where('activity_id', $activityid)->get();
+
+        $outputTypes = $outputs->unique('output_type')->pluck('output_type');
+
+        return view('activity.index', [
+            'activity' => $activity,
+            'assignees' => $assignees,
+            'subtasks' => $subtasks,
+            'outputs' => $outputs,
+            'outputTypes' => $outputTypes,
+        ]);
     }
 
     public function store(Request $request)
