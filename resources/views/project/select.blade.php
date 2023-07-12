@@ -389,7 +389,6 @@
             </tbody>
         </table>
 
-
         <table class="secondtable">
             <thead>
                 <tr id="actheader">
@@ -415,10 +414,10 @@
                 @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                     @endphp
                     @foreach($activities->where('actobjectives', $x) as $activity)
-                    <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]">
-                        <td data-value="{{ $activity['id'] }}" id="actid">
+                    <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
+                        <td data-value=" {{ $activity['id'] }}" id="actid">
                             {{ $activity['actname'] }}
-                            <div class="w-100">
+                            <!--<div class="w-100">
                                 <button type="button" class="btn btn-success btn-sm float-end show-assignees">Assignees</button>
                                 <button type="button" class="btn btn-success btn-sm float-end me-2 dropdown-toggle" id="myDropdownSubtask">
                                     Subtasks
@@ -442,9 +441,10 @@
                                 </form>
 
                             </div>
+-->
                         </td>
                         <td>{{ $activity['actoutput'] }}
-                            <div id="outputdropdown" class="dropdown">
+                            <!--<div id="outputdropdown" class="dropdown">
                                 <button class="btn btn-primary dropdown-toggle" type="button" id="myDropdownButton">
                                     Output
                                 </button>
@@ -464,7 +464,7 @@
 
                                 </ul>
                             </div>
-
+-->
                         </td>
                         <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
                         <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
@@ -766,34 +766,37 @@
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
 
-        $(`#objheader`).height($(`#actheader`).height());
-        while (currentrow < rowcount) {
+        $('#objheader').height($('#actheader').height());
 
+        while (currentrow < rowcount) {
             var objectiveheight = $(`#objective-${currentrow}`).height();
             var allactheight = 0;
 
             $(`tr[name="activity-${currentrow}[]"]`).each(function() {
-                allactheight = allactheight + $(this).height();
-
+                allactheight += $(this).outerHeight(); // Use outerHeight() instead of height()
             });
 
             if (objectiveheight < allactheight) {
-                $(`#objective-${currentrow}`).height(allactheight);
-
+                $(`#objective-${currentrow}`).css({
+                    'height': allactheight, // Set the height directly instead of using height()
+                    'min-height': allactheight,
+                    'max-height': allactheight
+                });
             } else if (allactheight < objectiveheight) {
                 var heightneeded = objectiveheight - allactheight;
                 var addheight = heightneeded / $(`tr[name="activity-${currentrow}[]"]`).length;
 
-                $('#activity-' + currentrow).each(function() {
-                    var actheight = $(this).height();
-                    $(this).height(addheight + actheight);
-
+                $(`tr[name="activity-${currentrow}[]"]`).each(function() {
+                    $(this).css({
+                        'min-height': addheight + $(this).outerHeight(),
+                        'max-height': addheight + $(this).outerHeight()
+                    });
                 });
-
             }
 
             currentrow++;
         }
+
         $.each(objectives, function(index, objective) {
 
             if (objective.objectiveset_id === count) {
@@ -842,6 +845,17 @@
                 $(`tr[name="objective-${currenthover}"`).css('background-color', '');
             }
         );
+
+        $('tr[name^="activity-"]').click(function(event) {
+            event.preventDefault();
+
+            var activityid = $(this).data('value');
+
+            var url = '{{ route("get.activity", ["id" => Auth::user()->id, "activityid" => ":activityid"]) }}';
+            url = url.replace(':activityid', activityid);
+            window.location.href = url;
+        });
+
 
         $.each(objectives, function(index, item) {
             if (item.objectiveset_id === "1") {

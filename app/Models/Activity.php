@@ -30,23 +30,4 @@ class Activity extends Model
     {
         return $this->hasMany(Subtask::class);
     }
-    protected $appends = ['actremark'];
-
-    public function getActRemarkAttribute()
-    {
-        $today = Carbon::today();
-        $startdate = Carbon::parse($this->actstartdate);
-        $enddate = Carbon::parse($this->actenddate);
-
-
-        if ($enddate->isPast()) {
-            return 'Completed';
-        } elseif ($startdate->isFuture()) {
-            return 'Upcoming';
-        } elseif ($startdate->isPast() && $enddate->isFuture()) {
-            return 'Ongoing';
-        } else {
-            return 'Incomplete';
-        }
-    }
 }

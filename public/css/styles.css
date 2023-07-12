@@ -1,3 +1,22 @@
+body {
+  background-color: #c5c7c7;
+}
+.row{
+  background-color: #dadadc;
+  padding-top: 5px;
+  padding-right: 10px;
+}
+
+.basiccont{
+  background-color: white;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding: 5px;
+  overflow-wrap: break-word;
+    word-wrap: break-word;
+    border-radius: 5px;
+}
+
 .dropdown-menu {
     display: none;
   }
@@ -20,7 +39,9 @@
   .table {
     table-layout: fixed;
   } */
-
+  table {
+    border-collapse: collapse; /* Improve cell spacing */
+  }
   .tablecontainer {
 
     margin: 0 auto;
@@ -28,10 +49,20 @@
      display: flex; /* Add flexbox */
       flex-wrap: nowrap; /* Prevent wrapping */
       width: 100%;
-  padding-right: 10px;
-  padding-left: 10px;
-  margin-right: auto;
-  margin-left: auto;
+  
+  }
+  .tablecontainer::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */ 
+    background-color: #f5f5f5; /* Background color of the scrollbar */
+  }
+  
+  .tablecontainer::-webkit-scrollbar-thumb {
+    background-color: #888; /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Rounded corners for the scrollbar thumb */
+  }
+  
+  .tablecontainer::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* Color of the scrollbar thumb on hover */
   }
   @media (min-width: 576px) {
     .tablecontainer {
@@ -63,7 +94,9 @@
     overflow-wrap: break-word;
     word-wrap: break-word;
     padding: 5px;
+  
   }
+
     .firsttable {
      float:left;
     }
