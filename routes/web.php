@@ -47,3 +47,4 @@ Route::post('/upload', [FileController::class, 'upload'])->name('upload.file');
 Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrendered'])->name('hoursrendered.submit');
 Route::post('/completeactivity', [ActivityController::class, 'completeactivity'])->name('activity.complete');
 Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
+Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.subtask');

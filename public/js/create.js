@@ -11,6 +11,9 @@ $(document).ready(function() {
       $('#account .dropdown-menu').toggleClass('shows');
   });
 
+  
+
+
   users.sort(function(a, b) {
     var lastNameA = a.last_name.toUpperCase();
     var lastNameB = b.last_name.toUpperCase();

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subtask;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 
@@ -31,5 +33,25 @@ class SubtaskController extends Controller
 
 
         return response()->json(['success' => true]);
+    }
+    public function addsubtask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'subtaskname' => 'required|max:255',
+            'activitynumber' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $subtaskname = $request->input('subtaskname');
+        $activitynumber = $request->input('activitynumber');
+
+        $subtasks = new Subtask();
+
+        $subtasks->subtask_name = $subtaskname;
+        $subtasks->activity_id = $activitynumber;
+        $subtasks->save();
     }
 }

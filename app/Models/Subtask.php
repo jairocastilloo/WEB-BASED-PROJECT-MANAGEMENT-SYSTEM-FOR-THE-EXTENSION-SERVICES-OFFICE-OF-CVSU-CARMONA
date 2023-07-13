@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Subtask extends Model
 {
     use HasFactory;
-    protected $fillable = ['subtask_name', 'subtask_assignee', 'activity_id', 'project_id', 'user_id'];
+    protected $fillable = ['subtask_name', 'activity_id', 'project_id'];
 
     public function activity()
     {
