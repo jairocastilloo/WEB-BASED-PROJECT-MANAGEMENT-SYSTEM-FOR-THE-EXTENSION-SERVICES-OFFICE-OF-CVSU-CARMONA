@@ -66,16 +66,27 @@ class ProjectController extends Controller
 
     public function getactivity($id, $activityid)
     {
+        // activity details
         $activity = Activity::find($activityid);
+        // activity assignees
         $activityUser = ActivityUser::where('activity_id', $activityid)->get();
 
         $assignees = $activityUser->map(function ($item) {
             return $item->user;
         });
+        // assignees that can be added
+        $user = User::findOrFail($id);
+        $department = $user->department;
+        $excludeUserIds = $activityUser->pluck('user_id')->toArray();
 
+        $addassignees = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->whereNotIn('id', $excludeUserIds)
+            ->get(['id', 'name']);
+        // activity subtasks
         $subtasks = Subtask::where('activity_id', $activityid)->get();
+        // activity outputs
         $outputs = Output::where('activity_id', $activityid)->get();
-
         $outputTypes = $outputs->unique('output_type')->pluck('output_type');
 
         return view('activity.index', [
@@ -84,8 +95,10 @@ class ProjectController extends Controller
             'subtasks' => $subtasks,
             'outputs' => $outputs,
             'outputTypes' => $outputTypes,
+            'addassignees' => $addassignees,
         ]);
     }
+
 
     public function store(Request $request)
     {

@@ -29,14 +29,23 @@
                 <div class="border-bottom ps-3">
                     <h6 class="fw-bold small">Assignees</h6>
                 </div>
+                @php $count = 0; @endphp
+
                 @foreach ($assignees as $key => $assignee)
-                {{ $assignee->name . ' ' . $assignee->last_name }}
-                @if (!$loop->last)
-                ,
+                @if ($count % 2 == 0)
+                <div class="row">
+                    @endif
+                    <div class="col-6 p-2 border-bottom">
+                        {{ $assignee->name . ' ' . $assignee->last_name }}
+                    </div>
+                    @if ($count % 2 == 1 || $loop->last)
+                </div>
                 @endif
+                @php $count++; @endphp
                 @endforeach
+
                 <div class="border-bottom d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Add Assignees</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addassignees-btn">Add Assignees</button>
                 </div>
             </div>
             <div class="basiccont">
@@ -80,7 +89,7 @@
 
 </div>
 
-<!-- subtask -->
+<!-- add subtask -->
 <div class="modal" id="subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
     <div class="modal-dialog">
 
@@ -110,6 +119,32 @@
         </div>
     </div>
 </div>
+<!--add activity assignees-->
+<div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    @csrf
+                    <div class="mb-3">
+                        <label for="assigneeSelect" class="form-label">Assignee</label>
+                        <select class="form-select" id="assigneeSelect" name="assigneeSelect">
+                            <option value="" disabled>Select Assignee</option>
+                            @foreach($addassignees as $assignee)
+                            <option value="{{ $assignee->id }}">{{ $assignee->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Assignee</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -122,6 +157,10 @@
             $('#subtask-modal').modal('show');
         });
 
+        $('.addassignees-btn').click(function(event) {
+            event.preventDefault();
+            $('#addAssigneeModal').modal('show');
+        });
         $('#createsubtask-btn').click(function(event) {
             event.preventDefault();
 
