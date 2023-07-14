@@ -185,4 +185,25 @@ class ActivityController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function addassignee(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'assigneeselect' => 'required|integer',
+            'assigneeactnumber' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $assigneeid = $request->input('assigneeselect');
+        $assigneeactnumber = $request->input('assigneeactnumber');
+
+        $addassignee = new ActivityUser();
+
+        $addassignee->user_id = $assigneeid;
+        $addassignee->activity_id = $assigneeactnumber;
+        $addassignee->save();
+    }
 }

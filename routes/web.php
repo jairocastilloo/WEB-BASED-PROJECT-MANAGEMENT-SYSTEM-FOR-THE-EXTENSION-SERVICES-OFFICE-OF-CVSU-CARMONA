@@ -48,3 +48,4 @@ Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrende
 Route::post('/completeactivity', [ActivityController::class, 'completeactivity'])->name('activity.complete');
 Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
 Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.subtask');
+Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');

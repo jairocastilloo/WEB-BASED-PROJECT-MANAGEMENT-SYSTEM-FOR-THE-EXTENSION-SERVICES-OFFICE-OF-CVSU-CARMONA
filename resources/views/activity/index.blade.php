@@ -128,19 +128,25 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="assigneeform" data-url="{{ route('add.assignee') }}">
                     @csrf
                     <div class="mb-3">
                         <label for="assigneeSelect" class="form-label">Assignee</label>
-                        <select class="form-select" id="assigneeSelect" name="assigneeSelect">
+                        <input type="number" class="d-none" name="assigneeactnumber" value="{{ $activity['id'] }}">
+                        <select class="form-select" id="assigneeselect" name="assigneeselect">
                             <option value="" disabled>Select Assignee</option>
                             @foreach($addassignees as $assignee)
+
                             <option value="{{ $assignee->id }}">{{ $assignee->name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Assignee</button>
+
                 </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addassignee-btn">Add Assignee</button>
             </div>
         </div>
     </div>
@@ -176,7 +182,6 @@
                 data: data1,
                 success: function(response) {
                     console.log(response);
-                    $('#new-subtask-modal').modal('toggle');
                     window.location.href = url;
 
                 },
@@ -186,6 +191,33 @@
 
                 }
             });
+        });
+        $('#addassignee-btn').click(function(event) {
+
+            event.preventDefault();
+
+
+            var dataurl = $('#assigneeform').attr('data-url');
+            var data1 = $('#assigneeform').serialize();
+
+
+            // send data via AJAX
+            $.ajax({
+                url: dataurl,
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.error(error);
+
+                }
+            });
+
         });
     });
 </script>
