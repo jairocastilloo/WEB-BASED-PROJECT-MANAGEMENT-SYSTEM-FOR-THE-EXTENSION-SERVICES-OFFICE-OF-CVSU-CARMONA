@@ -64,7 +64,7 @@
                 </div>
                 @endforeach
                 <div class="border-bottom d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Add Output</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addoutput-btn">Add Output</button>
                 </div>
             </div>
         </div>
@@ -140,6 +140,7 @@
                             <option value="{{ $assignee->id }}">{{ $assignee->name }}</option>
                             @endforeach
                         </select>
+
                     </div>
 
                 </form>
@@ -151,6 +152,56 @@
         </div>
     </div>
 </div>
+<!-- add output -->
+<div class="modal fade" id="addoutputmodal" tabindex="-1" aria-labelledby="addoutputmodalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAssigneeModalLabel">Add Output</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="outputform">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="assigneeSelect" class="form-label">Select the type of output to be submitted.</label>
+                        <input type="number" class="d-none" name="assigneeactnumber" value="{{ $activity['id'] }}">
+
+                        <select class="form-select" id="outputtype-select" name="outputtype">
+                            <option value="" selected disabled>Select Output Type</option>
+                            <option value="Capacity building">Capacity building</option>
+                            <option value="IEC Material">IEC Material</option>
+                            <option value="Advisory services">Advisory services</option>
+                            <option value="Others">Others</option>
+                        </select>
+
+
+                    </div>
+                    <label class="form-label">Output</label>
+
+                    <div class="divhover pt-2 pb-1 ps-1 outputnamediv d-none">
+                        <h6></h6>
+                    </div>
+                    <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
+                        <div class="col-9">
+                            <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
+                        </div>
+                        <div class="col-3">
+                            <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+                        </div>
+
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createoutput-btn">Add Output</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -158,6 +209,68 @@
 <script>
     var url = "";
     $(document).ready(function() {
+
+        $(document).on('change', '#outputtype-select', function(event) {
+            var selectedOutputType = $(this).val();
+
+            // Remove existing elements except the first one
+            $('#outputform .outputnamediv:not(:first)').remove();
+            $('#outputform .outputinputdiv:not(:first)').remove();
+            $('.outputnamediv:first').removeClass('d-none');
+            if (selectedOutputType === "Capacity building") {
+                var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
+            <h6>Training</h6>
+        </div>
+        <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
+            <div class="col-9">
+                <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+            </div>
+        </div>`;
+
+                $('.outputnamediv:first h6').text("Number of trainees");
+                $('#outputform').append(divtoadd);
+            } else if (selectedOutputType === "IEC Material") {
+                var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
+            <h6>IEC Material</h6>   
+        </div>
+        <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
+            <div class="col-9">
+                <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
+            </div>
+            <div class="col-3">
+                <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+            </div>
+        </div>`;
+
+                $('.outputnamediv:first h6').text("Recipients");
+                $('#outputform').append(divtoadd);
+            } else if (selectedOutputType === "Advisory services") {
+                $('.outputnamediv:first h6').text("Recipients");
+            }
+        });
+
+        $(document).on('click', '.outputnamediv', function() {
+            $(this).addClass("d-none");
+            $(this).next().find("input").val($(this).find("h6").text());
+            $(this).next().removeClass("d-none");
+            $(this).next().find("input").focus();
+        });
+
+        $(document).on('keydown', '.outputinputdiv input', function(event) {
+            if (event.which === 13) {
+                event.preventDefault();
+
+                var $outputDiv = $(this).closest('.outputinputdiv').prev();
+                $outputDiv.find("h6").text($(this).val());
+                $outputDiv.removeClass("d-none");
+                $(this).closest('.outputinputdiv').addClass("d-none");
+            }
+        });
+
+
         $('.addsubtask-btn').click(function(event) {
             event.preventDefault();
             $('#subtask-modal').modal('show');
@@ -166,6 +279,10 @@
         $('.addassignees-btn').click(function(event) {
             event.preventDefault();
             $('#addAssigneeModal').modal('show');
+        });
+        $('.addoutput-btn').click(function(event) {
+            event.preventDefault();
+            $('#addoutputmodal').modal('show');
         });
         $('#createsubtask-btn').click(function(event) {
             event.preventDefault();

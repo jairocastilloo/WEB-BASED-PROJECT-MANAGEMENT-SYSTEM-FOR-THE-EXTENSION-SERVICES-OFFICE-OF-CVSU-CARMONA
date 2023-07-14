@@ -145,6 +145,12 @@ body {
 
 #subtask li:hover {
   background-color: #f2f2f2; /* Replace with the desired hover background color */
+  cursor: pointer;
+}
+
+.divhover:hover{
+  background-color: #f2f2f2;
+  cursor: pointer;
 }
 
 .navtohover {
