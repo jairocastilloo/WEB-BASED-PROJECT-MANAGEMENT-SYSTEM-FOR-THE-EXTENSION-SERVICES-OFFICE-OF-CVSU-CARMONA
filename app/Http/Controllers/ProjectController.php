@@ -69,11 +69,14 @@ class ProjectController extends Controller
         // activity details
         $activity = Activity::find($activityid);
         // activity assignees
-        $activityUser = ActivityUser::where('activity_id', $activityid)->get();
+        $activityUser = ActivityUser::where('activity_id', $activityid)
+            ->with('user:id,name,middle_name,last_name,email,role')
+            ->get();
 
         $assignees = $activityUser->map(function ($item) {
             return $item->user;
         });
+
         // activity assignees that can be added
         $user = User::findOrFail($id);
         $department = $user->department;
