@@ -187,13 +187,16 @@
                             <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
                         </div>
                         <div class="col-3">
-                            <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+                            <button type="button" class="btn btn-danger btn-sm removeoutput-btn">Remove</button>
                         </div>
 
                     </div>
 
 
                 </form>
+                <div class="w-60">
+                    <button type="button" class="btn btn-success addmoreoutput-btn btn-sm"> Add more Output </button>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -209,14 +212,15 @@
 <script>
     var url = "";
     $(document).ready(function() {
-
+        $('.addmoreoutput-btn').hide();
         $(document).on('change', '#outputtype-select', function(event) {
             var selectedOutputType = $(this).val();
-
+            $('.addmoreoutput-btn').show();
             // Remove existing elements except the first one
             $('#outputform .outputnamediv:not(:first)').remove();
             $('#outputform .outputinputdiv:not(:first)').remove();
             $('.outputnamediv:first').removeClass('d-none');
+            $('.outputinputdiv:first').addClass('d-none');
             if (selectedOutputType === "Capacity building") {
                 var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
             <h6>Training</h6>
@@ -226,7 +230,7 @@
                 <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
             </div>
             <div class="col-3">
-                <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+                <button type="button" class="btn btn-danger btn-sm removeoutput-btn">Remove</button>
             </div>
         </div>`;
 
@@ -250,25 +254,77 @@
             } else if (selectedOutputType === "Advisory services") {
                 $('.outputnamediv:first h6').text("Recipients");
             }
+
+            $('.outputinputdiv input').each(function() {
+                var input = $(this);
+                var parentDiv = input.closest('.outputinputdiv');
+                var value = parentDiv.prev().find("h6").text();
+                input.val(value);
+            });
         });
 
         $(document).on('click', '.outputnamediv', function() {
+
             $(this).addClass("d-none");
-            $(this).next().find("input").val($(this).find("h6").text());
+            //$(this).next().find("input").val($(this).find("h6").text());
             $(this).next().removeClass("d-none");
             $(this).next().find("input").focus();
+        });
+
+        $(document).on('click', '.removeoutput-btn', function() {
+            var parentElement = $(this).parent().parent();
+            parentElement.prev().remove();
+            parentElement.remove();
+        });
+
+        $('.addmoreoutput-btn').click(function(event) {
+            event.preventDefault();
+
+            var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
+      <h6>Unnamed Output</h6>
+    </div>
+    <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
+      <div class="col-9">
+        <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+      </div>
+    </div>`;
+
+            $('#outputform').append(divtoadd);
+            $('#outputform').find('.outputnamediv:last').next('.outputinputdiv').find('input').val($('.outputnamediv:last h6').text());
         });
 
         $(document).on('keydown', '.outputinputdiv input', function(event) {
             if (event.which === 13) {
                 event.preventDefault();
-
+                $('.addmoreoutput-btn').show();
                 var $outputDiv = $(this).closest('.outputinputdiv').prev();
                 $outputDiv.find("h6").text($(this).val());
                 $outputDiv.removeClass("d-none");
                 $(this).closest('.outputinputdiv').addClass("d-none");
             }
         });
+        $(document).on('focus', '.outputinputdiv input', function(event) {
+            var isClicked = false;
+
+            $(document).on('click', function() {
+                isClicked = true;
+            });
+
+            $(this).on('blur', function() {
+                if (!isClicked) {
+                    event.preventDefault();
+                    $('.addmoreoutput-btn').show();
+                    var $outputDiv = $(this).closest('.outputinputdiv').prev();
+                    $outputDiv.find("h6").text($(this).val());
+                    $outputDiv.removeClass("d-none");
+                    $(this).closest('.outputinputdiv').addClass("d-none");
+                }
+            });
+        });
+
 
 
         $('.addsubtask-btn').click(function(event) {
