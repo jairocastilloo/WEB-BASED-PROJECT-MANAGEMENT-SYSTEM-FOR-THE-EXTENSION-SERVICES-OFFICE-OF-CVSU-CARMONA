@@ -33,9 +33,9 @@
 
                 @foreach ($assignees as $key => $assignee)
                 @if ($count % 2 == 0)
-                <div class="row">
+                <div class="row p-0">
                     @endif
-                    <div class="col-6 p-2 border-bottom">
+                    <div class="col border-bottom m-2 p-2 divhover">
                         {{ $assignee->name . ' ' . $assignee->last_name }}
                     </div>
                     @if ($count % 2 == 1 || $loop->last)
@@ -52,9 +52,14 @@
                 <div class="border-bottom ps-3">
                     <h6 class="fw-bold small">Output</h6>
                 </div>
-
+                @php
+                $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
+                @endphp
                 @foreach ($outputTypes as $outputType)
-                <div class="border-bottom p-2">
+                <div class="border-bottom p-2 divhover">
+                    @php
+                    $outputarray = array_diff($outputarray, [$outputType]);
+                    @endphp
                     <h5>{{ $outputType }}:</h5>
                     @foreach ($outputs as $output)
                     @if ($output->output_type === $outputType)
@@ -137,7 +142,7 @@
                             <option value="" disabled>Select Assignee</option>
                             @foreach($addassignees as $assignee)
 
-                            <option value="{{ $assignee->id }}">{{ $assignee->name }}</option>
+                            <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
                             @endforeach
                         </select>
 
@@ -161,19 +166,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="outputform">
+                <form id="outputform" data-url="{{ route('add.output') }}">
                     @csrf
+                    <input type="number" class="d-none" name="outputactnumber" value="{{ $activity['id'] }}">
+                    <input type="number" class="d-none" name="outputindex" id="outputindex">
                     <div class="mb-3">
                         <label for="assigneeSelect" class="form-label">Select the type of output to be submitted.</label>
-                        <input type="number" class="d-none" name="assigneeactnumber" value="{{ $activity['id'] }}">
+
 
                         <select class="form-select" id="outputtype-select" name="outputtype">
                             <option value="" selected disabled>Select Output Type</option>
-                            <option value="Capacity building">Capacity building</option>
-                            <option value="IEC Material">IEC Material</option>
-                            <option value="Advisory services">Advisory services</option>
-                            <option value="Others">Others</option>
+                            @foreach($outputarray as $outputarr)
+                            <option value="{{ $outputarr }}">{{ $outputarr }}</option>
+                            @endforeach
                         </select>
+
 
 
                     </div>
@@ -195,7 +202,7 @@
 
                 </form>
                 <div class="w-60">
-                    <button type="button" class="btn btn-success addmoreoutput-btn btn-sm"> Add more Output </button>
+                    <button type="button" class="btn btn-success addmoreoutput-btn btn-sm d-none"> Add more Output </button>
                 </div>
             </div>
             <div class="modal-footer">
@@ -211,19 +218,22 @@
 
 <script>
     var url = "";
+    var assignees = <?php echo json_encode($assignees) ?>;
     $(document).ready(function() {
-        $('.addmoreoutput-btn').hide();
+
+
         $(document).on('change', '#outputtype-select', function(event) {
             var selectedOutputType = $(this).val();
-            $('.addmoreoutput-btn').show();
+
+            $('.addmoreoutput-btn').removeClass("d-none");
             // Remove existing elements except the first one
             $('#outputform .outputnamediv:not(:first)').remove();
             $('#outputform .outputinputdiv:not(:first)').remove();
             $('.outputnamediv:first').removeClass('d-none');
             $('.outputinputdiv:first').addClass('d-none');
-            if (selectedOutputType === "Capacity building") {
+            if (selectedOutputType === "Capacity Building") {
                 var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-            <h6>Training</h6>
+            <h6>Number of Training</h6>
         </div>
         <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
             <div class="col-9">
@@ -238,7 +248,7 @@
                 $('#outputform').append(divtoadd);
             } else if (selectedOutputType === "IEC Material") {
                 var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-            <h6>IEC Material</h6>   
+            <h6>Number of IEC Material</h6>   
         </div>
         <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
             <div class="col-9">
@@ -249,10 +259,12 @@
             </div>
         </div>`;
 
-                $('.outputnamediv:first h6').text("Recipients");
+                $('.outputnamediv:first h6').text("Number of Recipients");
                 $('#outputform').append(divtoadd);
-            } else if (selectedOutputType === "Advisory services") {
-                $('.outputnamediv:first h6').text("Recipients");
+            } else if (selectedOutputType === "Advisory Services") {
+                $('.outputnamediv:first h6').text("Number of Recipients");
+            } else if (selectedOutputType === "Others") {
+                $('.outputnamediv:first h6').text("Untitled Output");
             }
 
             $('.outputinputdiv input').each(function() {
@@ -281,7 +293,7 @@
             event.preventDefault();
 
             var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-      <h6>Unnamed Output</h6>
+      <h6>Untitled Output</h6>
     </div>
     <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
       <div class="col-9">
@@ -299,7 +311,6 @@
         $(document).on('keydown', '.outputinputdiv input', function(event) {
             if (event.which === 13) {
                 event.preventDefault();
-                $('.addmoreoutput-btn').show();
                 var $outputDiv = $(this).closest('.outputinputdiv').prev();
                 $outputDiv.find("h6").text($(this).val());
                 $outputDiv.removeClass("d-none");
@@ -316,13 +327,18 @@
             $(this).on('blur', function() {
                 if (!isClicked) {
                     event.preventDefault();
-                    $('.addmoreoutput-btn').show();
+                    if ($(this).val() === "") {
+                        $(this).val("Untitled Output");
+                    }
                     var $outputDiv = $(this).closest('.outputinputdiv').prev();
                     $outputDiv.find("h6").text($(this).val());
                     $outputDiv.removeClass("d-none");
                     $(this).closest('.outputinputdiv').addClass("d-none");
                 }
             });
+        });
+        $(document).on('click select', '.outputinputdiv input', function(event) {
+            $(this).focus();
         });
 
 
@@ -373,6 +389,44 @@
             var dataurl = $('#assigneeform').attr('data-url');
             var data1 = $('#assigneeform').serialize();
 
+
+            // send data via AJAX
+            $.ajax({
+                url: dataurl,
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.error(error);
+
+                }
+            });
+
+        });
+
+        $('#createoutput-btn').click((event) => {
+            event.preventDefault();
+
+
+            var outputindex = $('input[name="newoutput[]"]').length;
+
+            // Iterate over each select element and set its name attribute
+
+
+
+            $('input[name="newoutput[]"]').each(function(index) {
+                $(this).attr('name', 'newoutput[' + index + ']');
+            });
+
+            $('#outputindex').val(outputindex);
+
+            var dataurl = $('#outputform').attr('data-url');
+            var data1 = $('#outputform').serialize();
 
             // send data via AJAX
             $.ajax({

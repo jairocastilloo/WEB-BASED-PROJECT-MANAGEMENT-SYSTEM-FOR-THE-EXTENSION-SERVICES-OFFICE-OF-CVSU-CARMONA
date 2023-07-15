@@ -33,4 +33,22 @@ class OutputController extends Controller
         }
         return response()->json(['success' => true]);
     }
+    public function addoutput(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'outputactnumber' => 'required|integer',
+            'outputindex' => 'required|integer',
+            'outputtype' => 'required|max:255',
+            'newoutput.*' => 'required|max:255'
+        ]);
+
+        for ($i = 0; $i < $validatedData['outputindex']; $i++) {
+            $output = new Output();
+            $output->output_type = $validatedData['outputtype'];
+            $output->output_name = $validatedData['newoutput'][$i];
+            $output->activity_id = $validatedData['outputactnumber'];
+            $output->save();
+        }
+    }
 }

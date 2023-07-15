@@ -74,7 +74,7 @@ class ProjectController extends Controller
         $assignees = $activityUser->map(function ($item) {
             return $item->user;
         });
-        // assignees that can be added
+        // activity assignees that can be added
         $user = User::findOrFail($id);
         $department = $user->department;
         $excludeUserIds = $activityUser->pluck('user_id')->toArray();
@@ -82,7 +82,7 @@ class ProjectController extends Controller
         $addassignees = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->whereNotIn('id', $excludeUserIds)
-            ->get(['id', 'name']);
+            ->get(['id', 'name', 'last_name']);
         // activity subtasks
         $subtasks = Subtask::where('activity_id', $activityid)->get();
         // activity outputs
