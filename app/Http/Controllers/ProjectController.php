@@ -57,6 +57,7 @@ class ProjectController extends Controller
         $objectives = $project->objectives;
         $activities = Project::findOrFail($projectid);
         $activities = $project->activities;
+
         $sortedActivities = $activities->sortBy('actobjectives');
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
@@ -95,6 +96,10 @@ class ProjectController extends Controller
         $activity = Activity::findOrFail($activityid);
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
+        $objectiveset = $activity->actobjectives;
+        $objectives = Objective::where('project_id', $projectId)
+            ->where('objectiveset_id', $objectiveset)
+            ->get('name');
         return view('activity.index', [
             'activity' => $activity,
             'assignees' => $assignees,
@@ -104,6 +109,7 @@ class ProjectController extends Controller
             'addassignees' => $addassignees,
             'projectName' => $projectName,
             'projectId' => $projectId,
+            'objectives' => $objectives,
         ]);
     }
 

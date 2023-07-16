@@ -24,6 +24,10 @@
                     </div>
                     <h5><b>{{ $activity['actname'] }}</b></h5>
                     Expected Output: {{ $activity['actoutput'] }} <br>
+                    Objectives:
+                    @foreach ($objectives as $objective)
+                    {{ $objective['name'] }} </br>
+                    @endforeach
                     Start Date: {{ $activity['actstartdate'] }} <br>
                     End Date: {{ $activity['actenddate'] }} <br>
                     Budget: {{ $activity['actbudget'] }} <br>
