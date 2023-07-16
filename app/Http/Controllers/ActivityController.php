@@ -206,4 +206,22 @@ class ActivityController extends Controller
         $addassignee->activity_id = $assigneeactnumber;
         $addassignee->save();
     }
+
+    public function unassignassignee(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'unassignassigneeid' => 'required|integer',
+            'unassignactivityid' => 'required|integer',
+        ]);
+        $unassignassigneeid = $request->input('unassignassigneeid');
+        $unassignactivityid = $request->input('unassignactivityid');
+
+        $unassignassignee = new ActivityUser();
+
+        $unassignassignee = ActivityUser::where('activity_id', $unassignactivityid)
+            ->where('user_id', $unassignassigneeid)
+            ->delete();
+
+        return response()->json(['success' => true], 200);
+    }
 }

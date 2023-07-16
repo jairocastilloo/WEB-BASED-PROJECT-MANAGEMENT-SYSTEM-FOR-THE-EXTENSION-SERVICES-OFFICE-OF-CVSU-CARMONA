@@ -7,11 +7,7 @@ body {
   padding: 10px;
 }
 
-.mainnav{
-  width:100%; 
-  background-color: white;
-  
-}
+
 .basiccont{
   background-color: white;
   padding:5px;
@@ -171,4 +167,58 @@ body {
 
 .navtohover:hover::after {
   transform: scaleX(1);
+}
+
+/*container for a selected activity*/
+.maincontainer {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #dadadc;
+}
+
+@media (min-width: 576px) {
+  .maincontainer {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .maincontainer {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .maincontainer {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .maincontainer {
+    max-width: 1140px;
+  }
+}
+
+.mainnav{
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  color: #1b651b;
+}
+.position-triangle {
+  position: relative;
+}
+.position-triangle:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #dadadc;
 }

@@ -2,98 +2,112 @@
 
 @section('content')
 
-<div class="container">
-    <div class="mainnav mb-2 m-0 ps-3 font-black">
-        asd
+<div class="maincontainer">
+    <div class="mainnav mb-2">
+        <div class="col-4 p-2 pt-3 border-end text-center text-secondary bg-light">
+            <h6><b>Project: {{ $projectName }}</b></h6>
+        </div>
+        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
+            <h6><b>Activity</b></h6>
+        </div>
+
+
     </div>
-    <div class="row">
-        <div class="col-8">
+    <div class="container">
 
-            <div class="basiccont">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Activity</h6>
-                </div>
-                <h5><b>{{ $activity['actname'] }}</b></h5>
-                Expected Output: {{ $activity['actoutput'] }} <br>
-                Start Date: {{ $activity['actstartdate'] }} <br>
-                End Date: {{ $activity['actenddate'] }} <br>
-                Budget: {{ $activity['actbudget'] }} <br>
-                Source: {{ $activity['actsource'] }} <br>
-                <div class="border-bottom d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Edit Activity</button>
-                </div>
+        <div class="row">
+            <div class="col-8">
 
-            </div>
-
-            <div class="basiccont">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Assignees</h6>
-                </div>
-                @php $count = 0; @endphp
-
-                @foreach ($assignees as $key => $assignee)
-                @if ($count % 2 == 0)
-                <div class="row p-0">
-                    @endif
-                    <div class="col border-bottom m-2 p-2 divhover">
-                        {{ $assignee->name . ' ' . $assignee->last_name }}
+                <div class="basiccont">
+                    <div class="border-bottom ps-3">
+                        <h6 class="fw-bold small">Activity</h6>
                     </div>
-                    @if ($count % 2 == 1 || $loop->last)
-                </div>
-                @endif
-                @php $count++; @endphp
-                @endforeach
+                    <h5><b>{{ $activity['actname'] }}</b></h5>
+                    Expected Output: {{ $activity['actoutput'] }} <br>
+                    Start Date: {{ $activity['actstartdate'] }} <br>
+                    End Date: {{ $activity['actenddate'] }} <br>
+                    Budget: {{ $activity['actbudget'] }} <br>
+                    Source: {{ $activity['actsource'] }} <br>
+                    <div class="border-bottom d-flex justify-content-center">
+                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Edit Activity</button>
+                    </div>
 
-                <div class="border-bottom d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addassignees-btn">Add Assignees</button>
                 </div>
-            </div>
-            <div class="basiccont">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Output</h6>
-                </div>
-                @php
-                $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
-                @endphp
-                @foreach ($outputTypes as $outputType)
-                <div class="border-bottom p-2 divhover">
-                    @php
-                    $outputarray = array_diff($outputarray, [$outputType]);
-                    @endphp
-                    <h5>{{ $outputType }}:</h5>
-                    @foreach ($outputs as $output)
-                    @if ($output->output_type === $outputType)
-                    {{ $output->output_name }} <br>
+
+                <div class="basiccont">
+                    <div class="border-bottom ps-3">
+                        <h6 class="fw-bold small">Assignees</h6>
+                    </div>
+                    @php $count = 0; @endphp
+                    <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
+                        @csrf
+                        <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
+                        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
+                    </form>
+                    @foreach ($assignees as $key=> $assignee)
+                    @if ($count % 2 == 0)
+                    <div class="row p-0">
+                        @endif
+                        <div class="col border-bottom m-2 p-2 divhover checkassignee" value="{{ $assignee->id }}">
+
+                            {{ $assignee->name . ' ' . $assignee->last_name }}
+                        </div>
+                        @if ($count % 2 == 1 || $loop->last)
+                    </div>
                     @endif
+                    @php $count++; @endphp
                     @endforeach
+
+                    <div class="border-bottom d-flex justify-content-center">
+                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addassignees-btn">Add Assignees</button>
+                    </div>
                 </div>
-                @endforeach
-                <div class="border-bottom d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addoutput-btn">Add Output</button>
+                <div class="basiccont">
+                    <div class="border-bottom ps-3">
+                        <h6 class="fw-bold small">Output</h6>
+                    </div>
+                    @php
+                    $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
+                    @endphp
+                    @foreach ($outputTypes as $outputType)
+                    <div class="border-bottom p-2 divhover">
+                        @php
+                        $outputarray = array_diff($outputarray, [$outputType]);
+                        @endphp
+                        <h5>{{ $outputType }}:</h5>
+                        @foreach ($outputs as $output)
+                        @if ($output->output_type === $outputType)
+                        {{ $output->output_name }} <br>
+                        @endif
+                        @endforeach
+                    </div>
+                    @endforeach
+                    <div class="border-bottom d-flex justify-content-center">
+                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addoutput-btn">Add Output</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-4">
-            <div class="basiccont">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Subtasks</h6>
+            <div class="col-4">
+                <div class="basiccont">
+                    <div class="border-bottom ps-3">
+                        <h6 class="fw-bold small">Subtasks</h6>
+                    </div>
+                    <ul class="list-unstyled" id="subtask">
+                        @foreach ($subtasks as $subtask)
+                        <li class="p-2 border-bottom">{{ $subtask->subtask_name }}</li>
+                        @endforeach
+                    </ul>
+                    <div class="border-bottom d-flex justify-content-center">
+                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addsubtask-btn">Add Subtask</button>
+                    </div>
                 </div>
-                <ul class="list-unstyled" id="subtask">
-                    @foreach ($subtasks as $subtask)
-                    <li class="p-2 border-bottom">{{ $subtask->subtask_name }}</li>
-                    @endforeach
-                </ul>
-                <div class="border-bottom d-flex justify-content-center">
-                    <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addsubtask-btn">Add Subtask</button>
-                </div>
+
             </div>
 
         </div>
 
     </div>
-
 </div>
-
 <!-- add subtask -->
 <div class="modal" id="subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
     <div class="modal-dialog">
@@ -110,7 +124,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="subtask-name" class="form-label">Subtask Name</label>
-                        <input type="number" class="d-none" name="activitynumber" value="{{ $activity['id'] }}">
+                        <input type="number" class="d-none" name="activitynumber" id="actid" value="{{ $activity['id'] }}">
                         <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
                     </div>
                 </form>
@@ -139,7 +153,7 @@
                         <label for="assigneeSelect" class="form-label">Assignee</label>
                         <input type="number" class="d-none" name="assigneeactnumber" value="{{ $activity['id'] }}">
                         <select class="form-select" id="assigneeselect" name="assigneeselect">
-                            <option value="" disabled>Select Assignee</option>
+                            <option value="" selected disabled>Select Assignee</option>
                             @foreach($addassignees as $assignee)
 
                             <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
@@ -172,17 +186,12 @@
                     <input type="number" class="d-none" name="outputindex" id="outputindex">
                     <div class="mb-3">
                         <label for="assigneeSelect" class="form-label">Select the type of output to be submitted.</label>
-
-
                         <select class="form-select" id="outputtype-select" name="outputtype">
                             <option value="" selected disabled>Select Output Type</option>
                             @foreach($outputarray as $outputarr)
                             <option value="{{ $outputarr }}">{{ $outputarr }}</option>
                             @endforeach
                         </select>
-
-
-
                     </div>
                     <label class="form-label">Output</label>
 
@@ -212,12 +221,36 @@
         </div>
     </div>
 </div>
+<!--assignees details-->
+<div class="modal fade" id="assigneedetails" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong></p>
+                <p id="assigneename"> John Doe</p>
+                <p><strong>Email:</strong></p>
+                <p id="assigneeemail"> johndoe@example.com</p>
+                <p><strong>Role:</strong> </p>
+                <p id="assigneerole">Developer</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" id="unassignassignee-btn">Unassign</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 
 <script>
     var url = "";
+    var unassignassigneeid;
     var assignees = <?php echo json_encode($assignees) ?>;
     $(document).ready(function() {
 
@@ -341,7 +374,29 @@
             $(this).focus();
         });
 
+        $(document).on('click', '.checkassignee', function(event) {
+            unassignassigneeid = $(this).attr('value');
+            var name, email, role;
 
+            // Find the assignee object with the matching ID
+            var assignee = assignees.find(function(assignee) {
+                return assignee.id == unassignassigneeid;
+            });
+
+            // Check if the assignee object exists
+            if (assignee) {
+                name = assignee.name + " " + assignee.last_name;
+                email = assignee.email;
+                role = assignee.role;
+            }
+
+            $('#assigneename').text(name);
+            $('#assigneeemail').text(email);
+            $('#assigneerole').text(role);
+
+            // Open the modal or perform other actions
+            $('#assigneedetails').modal('show');
+        });
 
         $('.addsubtask-btn').click(function(event) {
             event.preventDefault();
@@ -446,6 +501,28 @@
             });
 
         });
+        $('#unassignassignee-btn').click(function(event) {
+            event.preventDefault();
+
+            $('#unassignassigneeid').val(unassignassigneeid);
+            var dataurl = $('#unassignassigneeform').attr('data-url');
+            var data = $('#unassignassigneeform').serialize();
+
+            $.ajax({
+                url: dataurl,
+                type: 'POST',
+                data: data,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
+
     });
 </script>
 

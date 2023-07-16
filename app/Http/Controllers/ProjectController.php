@@ -91,7 +91,8 @@ class ProjectController extends Controller
         // activity outputs
         $outputs = Output::where('activity_id', $activityid)->get();
         $outputTypes = $outputs->unique('output_type')->pluck('output_type');
-
+        // project name
+        $projectName = Activity::findOrFail($activityid)->project->projecttitle;
         return view('activity.index', [
             'activity' => $activity,
             'assignees' => $assignees,
@@ -99,6 +100,7 @@ class ProjectController extends Controller
             'outputs' => $outputs,
             'outputTypes' => $outputTypes,
             'addassignees' => $addassignees,
+            'projectName' => $projectName,
         ]);
     }
 
