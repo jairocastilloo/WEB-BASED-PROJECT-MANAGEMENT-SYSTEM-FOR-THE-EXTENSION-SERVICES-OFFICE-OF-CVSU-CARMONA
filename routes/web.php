@@ -51,3 +51,4 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
 Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
 Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
+Route::get('/user/{id}/getactivity/{activityid}/getoutput/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');

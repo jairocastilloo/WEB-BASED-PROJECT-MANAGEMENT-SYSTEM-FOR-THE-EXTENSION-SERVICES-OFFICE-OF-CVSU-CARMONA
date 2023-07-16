@@ -74,14 +74,14 @@
                     $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
                     @endphp
                     @foreach ($outputTypes as $outputType)
-                    <div class="border-bottom p-2 divhover">
+                    <div class="border-bottom p-2 divhover selectoutputdiv" data-value="{{ $outputType }}">
                         @php
                         $outputarray = array_diff($outputarray, [$outputType]);
                         @endphp
-                        <h5>{{ $outputType }}:</h5>
+                        <h5>{{ $outputType }}</h5>
                         @foreach ($outputs as $output)
                         @if ($output->output_type === $outputType)
-                        {{ $output->output_name }} <br>
+                        {{ $output->output_name . ': ' .  $output->output_submitted }} <br>
                         @endif
                         @endforeach
                     </div>
@@ -266,6 +266,18 @@
             url = url.replace(':projectid', projectid);
             window.location.href = url;
         });
+
+        $(document).on('click', '.selectoutputdiv', function() {
+            var outputtype = $(this).attr('data-value');
+            var actid = $('#actid').val();
+
+            var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':outputtype', outputtype);
+            window.location.href = url;
+        });
+
+
 
         $(document).on('change', '#outputtype-select', function(event) {
             var selectedOutputType = $(this).val();

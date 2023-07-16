@@ -224,4 +224,26 @@ class ActivityController extends Controller
 
         return response()->json(['success' => true], 200);
     }
+
+    public function getoutput($id, $activityid, $outputtype)
+    {
+        // activity details
+        $activity = Activity::findOrFail($activityid);
+
+        // activity outputs
+        $outputs = Output::where('activity_id', $activityid)
+            ->where('output_type', $outputtype)
+            ->get();
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        return view('activity.output', [
+            'activity' => $activity,
+            'outputs' => $outputs,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'outputtype' => $outputtype,
+        ]);
+    }
 }
