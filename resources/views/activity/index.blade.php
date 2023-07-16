@@ -4,8 +4,8 @@
 
 <div class="maincontainer">
     <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center text-secondary bg-light">
-            <h6><b>Project: {{ $projectName }}</b></h6>
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}">
+            <h6><b>Project: {{ $projectName }} </b></h6>
         </div>
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
             <h6><b>Activity</b></h6>
@@ -254,6 +254,14 @@
     var assignees = <?php echo json_encode($assignees) ?>;
     $(document).ready(function() {
 
+        $('#projectdiv').click(function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+
+            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+            url = url.replace(':projectid', projectid);
+            window.location.href = url;
+        });
 
         $(document).on('change', '#outputtype-select', function(event) {
             var selectedOutputType = $(this).val();

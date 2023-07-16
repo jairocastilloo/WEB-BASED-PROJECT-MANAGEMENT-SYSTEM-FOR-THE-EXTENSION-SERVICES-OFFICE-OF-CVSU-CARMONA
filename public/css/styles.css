@@ -222,3 +222,12 @@ body {
   border-right: 8px solid transparent;
   border-bottom: 8px solid #dadadc;
 }
+.mainnavpassive{
+  background-color: #ffffff;
+  color: rgb(68, 68, 68);
+}
+.mainnavpassive:hover {
+  background-color: rgb(236, 236, 236);
+  color: rgb(39, 39, 39); 
+  cursor: pointer;
+}
