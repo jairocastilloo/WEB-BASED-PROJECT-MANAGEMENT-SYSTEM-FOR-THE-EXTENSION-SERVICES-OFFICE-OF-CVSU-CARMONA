@@ -231,19 +231,23 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($activityid);
 
         // activity outputs
-        $outputs = Output::where('activity_id', $activityid)
+        $currentoutputtype = Output::where('activity_id', $activityid)
             ->where('output_type', $outputtype)
             ->get();
+        // all output type
+        $outputs = Output::where('activity_id', $activityid)->get();
+        $allOutputTypes = $outputs->where('output_type', '!=', $outputtype)->pluck('output_type')->unique();;
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
         return view('activity.output', [
             'activity' => $activity,
-            'outputs' => $outputs,
+            'currentoutputtype' => $currentoutputtype,
             'projectName' => $projectName,
             'projectId' => $projectId,
             'outputtype' => $outputtype,
+            'alloutputtypes' => $allOutputTypes,
         ]);
     }
 }

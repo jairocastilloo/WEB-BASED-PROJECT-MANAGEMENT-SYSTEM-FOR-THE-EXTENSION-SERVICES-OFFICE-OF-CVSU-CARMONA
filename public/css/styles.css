@@ -10,12 +10,14 @@ body {
 
 .basiccont{
   background-color: white;
-  padding:5px;
+  position: relative;
   margin-bottom: 10px;
   overflow-wrap: break-word;
     word-wrap: break-word;
     border-radius: 5px;
+
 }
+
 
 .stretch-button {
   width: 60%; /* Adjust the width as needed */
@@ -230,4 +232,19 @@ body {
   background-color: rgb(236, 236, 236);
   color: rgb(39, 39, 39); 
   cursor: pointer;
+}
+.sidecont{
+  position:relative;
+  border-bottom: 1px solid #dee2e6 !important;
+  padding: 5px;
+}
+
+.sidecont::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 3px;
+  background-color: gold;
 }
