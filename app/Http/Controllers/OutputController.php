@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Output;
+use App\Models\Activity;
 
 class OutputController extends Controller
 {
@@ -50,5 +51,30 @@ class OutputController extends Controller
             $output->activity_id = $validatedData['outputactnumber'];
             $output->save();
         }
+    }
+
+    public function complyoutput($id, $activityid, $outputtype)
+    {
+
+        // activity details
+        $activity = Activity::findOrFail($activityid);
+
+        // activity outputs
+        $currentoutputtype = Output::where('activity_id', $activityid)
+            ->where('output_type', $outputtype)
+            ->get();
+        // all output type
+
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        return view('activity.submitoutput', [
+            'activity' => $activity,
+            'currentoutputtype' => $currentoutputtype,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'outputtype' => $outputtype,
+        ]);
     }
 }

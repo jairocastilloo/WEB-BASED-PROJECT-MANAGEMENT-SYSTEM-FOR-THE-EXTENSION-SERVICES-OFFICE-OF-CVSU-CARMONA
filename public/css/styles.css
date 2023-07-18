@@ -233,18 +233,34 @@ body {
   color: rgb(39, 39, 39); 
   cursor: pointer;
 }
-.sidecont{
+.sidecont1{
   position:relative;
   border-bottom: 1px solid #dee2e6 !important;
   padding: 5px;
 }
 
-.sidecont::after {
+.sidecont1::after {
   content: "";
   position: absolute;
   top: 0;
   right: 0;
   height: 100%;
-  width: 3px;
+  width: 4px;
   background-color: gold;
+}
+
+.sidecont2{
+  position:relative;
+  border-bottom: 1px solid #dee2e6 !important;
+  padding: 5px;
+}
+
+.sidecont2::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 4px;
+  background-color: #1b651b;
 }

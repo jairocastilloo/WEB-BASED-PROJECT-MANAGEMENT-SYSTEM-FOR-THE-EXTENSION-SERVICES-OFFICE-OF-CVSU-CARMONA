@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-8">
 
-                <div class="basiccont">
+                <div class="basiccont p-2">
                     <div class="border-bottom ps-3">
                         <h6 class="fw-bold small">Activity</h6>
                     </div>
@@ -38,7 +38,7 @@
 
                 </div>
 
-                <div class="basiccont">
+                <div class="basiccont p-2">
                     <div class="border-bottom ps-3">
                         <h6 class="fw-bold small">Assignees</h6>
                     </div>
@@ -66,7 +66,7 @@
                         <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addassignees-btn">Add Assignees</button>
                     </div>
                 </div>
-                <div class="basiccont">
+                <div class="basiccont p-2">
                     <div class="border-bottom ps-3">
                         <h6 class="fw-bold small">Output</h6>
                     </div>
@@ -96,11 +96,15 @@
                     <div class="border-bottom ps-3">
                         <h6 class="fw-bold small">Subtasks</h6>
                     </div>
-                    <ul class="list-unstyled" id="subtask">
-                        @foreach ($subtasks as $subtask)
-                        <li class="p-2 border-bottom">{{ $subtask->subtask_name }}</li>
-                        @endforeach
-                    </ul>
+                    @foreach ($subtasks as $index => $subtask)
+                    @if ($index % 2 == 0)
+                    <div class="sidecont1 divhover p-2">{{ $subtask->subtask_name }}</div>
+                    @else
+                    <div class="sidecont2 divhover p-2">{{ $subtask->subtask_name }}</div>
+                    @endif
+                    @endforeach
+
+
                     <div class="border-bottom d-flex justify-content-center">
                         <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addsubtask-btn">Add Subtask</button>
                     </div>
@@ -277,277 +281,7 @@
             window.location.href = url;
         });
 
-
-
-        $(document).on('change', '#outputtype-select', function(event) {
-            var selectedOutputType = $(this).val();
-
-            $('.addmoreoutput-btn').removeClass("d-none");
-            // Remove existing elements except the first one
-            $('#outputform .outputnamediv:not(:first)').remove();
-            $('#outputform .outputinputdiv:not(:first)').remove();
-            $('.outputnamediv:first').removeClass('d-none');
-            $('.outputinputdiv:first').addClass('d-none');
-            if (selectedOutputType === "Capacity Building") {
-                var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-            <h6>Number of Training</h6>
-        </div>
-        <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
-            <div class="col-9">
-                <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
-            </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-danger btn-sm removeoutput-btn">Remove</button>
-            </div>
-        </div>`;
-
-                $('.outputnamediv:first h6').text("Number of trainees");
-                $('#outputform').append(divtoadd);
-            } else if (selectedOutputType === "IEC Material") {
-                var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-            <h6>Number of IEC Material</h6>   
-        </div>
-        <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
-            <div class="col-9">
-                <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
-            </div>
-            <div class="col-3">
-                <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
-            </div>
-        </div>`;
-
-                $('.outputnamediv:first h6').text("Number of Recipients");
-                $('#outputform').append(divtoadd);
-            } else if (selectedOutputType === "Advisory Services") {
-                $('.outputnamediv:first h6').text("Number of Recipients");
-            } else if (selectedOutputType === "Others") {
-                $('.outputnamediv:first h6').text("Untitled Output");
-            }
-
-            $('.outputinputdiv input').each(function() {
-                var input = $(this);
-                var parentDiv = input.closest('.outputinputdiv');
-                var value = parentDiv.prev().find("h6").text();
-                input.val(value);
-            });
-        });
-
-        $(document).on('click', '.outputnamediv', function() {
-
-            $(this).addClass("d-none");
-            //$(this).next().find("input").val($(this).find("h6").text());
-            $(this).next().removeClass("d-none");
-            $(this).next().find("input").focus();
-        });
-
-        $(document).on('click', '.removeoutput-btn', function() {
-            var parentElement = $(this).parent().parent();
-            parentElement.prev().remove();
-            parentElement.remove();
-        });
-
-        $('.addmoreoutput-btn').click(function(event) {
-            event.preventDefault();
-
-            var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-      <h6>Untitled Output</h6>
-    </div>
-    <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
-      <div class="col-9">
-        <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
-      </div>
-      <div class="col-3">
-        <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
-      </div>
-    </div>`;
-
-            $('#outputform').append(divtoadd);
-            $('#outputform').find('.outputnamediv:last').next('.outputinputdiv').find('input').val($('.outputnamediv:last h6').text());
-        });
-
-        $(document).on('keydown', '.outputinputdiv input', function(event) {
-            if (event.which === 13) {
-                event.preventDefault();
-                var $outputDiv = $(this).closest('.outputinputdiv').prev();
-                $outputDiv.find("h6").text($(this).val());
-                $outputDiv.removeClass("d-none");
-                $(this).closest('.outputinputdiv').addClass("d-none");
-            }
-        });
-        $(document).on('focus', '.outputinputdiv input', function(event) {
-            var isClicked = false;
-
-            $(document).on('click', function() {
-                isClicked = true;
-            });
-
-            $(this).on('blur', function() {
-                if (!isClicked) {
-                    event.preventDefault();
-                    if ($(this).val() === "") {
-                        $(this).val("Untitled Output");
-                    }
-                    var $outputDiv = $(this).closest('.outputinputdiv').prev();
-                    $outputDiv.find("h6").text($(this).val());
-                    $outputDiv.removeClass("d-none");
-                    $(this).closest('.outputinputdiv').addClass("d-none");
-                }
-            });
-        });
-        $(document).on('click select', '.outputinputdiv input', function(event) {
-            $(this).focus();
-        });
-
-        $(document).on('click', '.checkassignee', function(event) {
-            unassignassigneeid = $(this).attr('value');
-            var name, email, role;
-
-            // Find the assignee object with the matching ID
-            var assignee = assignees.find(function(assignee) {
-                return assignee.id == unassignassigneeid;
-            });
-
-            // Check if the assignee object exists
-            if (assignee) {
-                name = assignee.name + " " + assignee.last_name;
-                email = assignee.email;
-                role = assignee.role;
-            }
-
-            $('#assigneename').text(name);
-            $('#assigneeemail').text(email);
-            $('#assigneerole').text(role);
-
-            // Open the modal or perform other actions
-            $('#assigneedetails').modal('show');
-        });
-
-        $('.addsubtask-btn').click(function(event) {
-            event.preventDefault();
-            $('#subtask-modal').modal('show');
-        });
-
-        $('.addassignees-btn').click(function(event) {
-            event.preventDefault();
-            $('#addAssigneeModal').modal('show');
-        });
-        $('.addoutput-btn').click(function(event) {
-            event.preventDefault();
-            $('#addoutputmodal').modal('show');
-        });
-        $('#createsubtask-btn').click(function(event) {
-            event.preventDefault();
-
-
-            var dataurl = $('#subtaskform').attr('data-url');
-            var data1 = $('#subtaskform').serialize();
-
-
-            // send data via AJAX
-            $.ajax({
-                url: dataurl,
-                type: 'POST',
-                data: data1,
-                success: function(response) {
-                    console.log(response);
-                    window.location.href = url;
-
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    console.error(error);
-
-                }
-            });
-        });
-        $('#addassignee-btn').click(function(event) {
-
-            event.preventDefault();
-
-
-            var dataurl = $('#assigneeform').attr('data-url');
-            var data1 = $('#assigneeform').serialize();
-
-
-            // send data via AJAX
-            $.ajax({
-                url: dataurl,
-                type: 'POST',
-                data: data1,
-                success: function(response) {
-                    console.log(response);
-                    window.location.href = url;
-
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    console.error(error);
-
-                }
-            });
-
-        });
-
-        $('#createoutput-btn').click((event) => {
-            event.preventDefault();
-
-
-            var outputindex = $('input[name="newoutput[]"]').length;
-
-            // Iterate over each select element and set its name attribute
-
-
-
-            $('input[name="newoutput[]"]').each(function(index) {
-                $(this).attr('name', 'newoutput[' + index + ']');
-            });
-
-            $('#outputindex').val(outputindex);
-
-            var dataurl = $('#outputform').attr('data-url');
-            var data1 = $('#outputform').serialize();
-
-            // send data via AJAX
-            $.ajax({
-                url: dataurl,
-                type: 'POST',
-                data: data1,
-                success: function(response) {
-                    console.log(response);
-                    window.location.href = url;
-
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    console.error(error);
-
-                }
-            });
-
-        });
-        $('#unassignassignee-btn').click(function(event) {
-            event.preventDefault();
-
-            $('#unassignassigneeid').val(unassignassigneeid);
-            var dataurl = $('#unassignassigneeform').attr('data-url');
-            var data = $('#unassignassigneeform').serialize();
-
-            $.ajax({
-                url: dataurl,
-                type: 'POST',
-                data: data,
-                success: function(response) {
-                    console.log(response);
-                    window.location.href = url;
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr.responseText);
-                    console.error(error);
-                }
-            });
-        });
-
     });
 </script>
-
+<script src="{{ asset('js/activityindex.js') }}"></script>
 @endsection
