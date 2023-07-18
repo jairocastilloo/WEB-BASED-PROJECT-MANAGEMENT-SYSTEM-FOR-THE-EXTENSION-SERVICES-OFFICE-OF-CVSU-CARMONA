@@ -26,13 +26,16 @@
                     <div class="border-bottom ps-1 mb-2">
                         <h6 class="small"><b>Output to be Submitted - </b>{{ $outputtype }}</h6>
                     </div>
-                    @foreach ($currentoutputtype as $currentoutput)
-                    <div class="mb-3">
-                        <label class="form-label">{{ $currentoutput['output_name'] }}:</label>
-                        <input type="number" class="form-control" id="hours-rendered-input" placeholder="Enter the quantity" min="0" step="1">
-                    </div>
-                    @endforeach
-
+                    <form id="addtooutputform" data-url="{{ route('addto.output' }}">
+                        <input type="number" class="d-none" id="output-facilitator-0" name="output-facilitator[0]">
+                        @foreach ($currentoutputtype as $currentoutput)
+                        <div class="mb-3">
+                            <label class="form-label">{{ $currentoutput['output_name'] }}:</label>
+                            <input type="number" class="d-none" id="output-id" name="output-id[]" value="{{ $currentoutput['id'] }}">
+                            <input type="number" class="form-control" id="output-quantity" name="output-quantity[]" placeholder="Enter the quantity" min="0" step="1">
+                        </div>
+                        @endforeach
+                    </form>
                 </div>
                 <div class="basiccont p-2">
                     <div class="border-bottom ps-1">
@@ -47,11 +50,13 @@
                     <div class="border-bottom ps-1 mb-2">
                         <h6 class="fw-bold small">Supporting documents</h6>
                     </div>
-                    <label class="form-label" for="customFile">Submit Activity Report:</label>
-                    <input type="file" class="form-control" id="customFile" accept=".docx" />
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
-                    </div>
+                    <form id="addoutoutputform2">
+                        <label class="form-label" for="customFile">Submit Activity Report:</label>
+                        <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs" />
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="col-1">
@@ -95,7 +100,7 @@
 <script>
     var assignees = <?php echo json_encode($assignees);
                     ?>;
-
+    var assigneeindex = 0;
     $(document).ready(function() {
         $('#addfacilitator-btn').click(function(event) {
             $('#selectfacilitator').children().not(':first').remove();
@@ -126,8 +131,16 @@
                         </div>`
 
             $('.assignees-name').append(assigneediv);
+            if (assigneeindex === 0) {
+                $(`#output-facilitator-${assigneeindex}`).val(parseInt($('#selectfacilitator').val()));
+                assigneeindex++;
+            } else {
+                var assigneename = parseInt($('#selectfacilitator').val());
+                var outputfacilitatordiv = `<input type="number" class="d-none" id="output-facilitator-${assigneeindex}" name="output-facilitator[${assigneeindex}]" value="${assigneename}">`
+                $('#addtooutputform').append(outputfacilitatordiv);
+                assigneeindex++;
+            }
             var assigneeid = parseInt($('#selectfacilitator').val());
-            console.log(assignees);
             assignees = assignees.filter(function(assignee) {
                 return assignee.id !== assigneeid;
             });
@@ -136,6 +149,44 @@
 
 
             $('#addFacilitatorModal').modal('hide');
+        });
+
+        $('#submitreport-btn').click(function(event) {
+
+            $('input[name="output-id[]"]').each(function(index) {
+                $(this).attr('name', 'output-id[' + index + ']');
+            });
+            $('input[name="output-quantity[]"]').each(function(index) {
+                $(this).attr('name', 'output-quantity[' + index + ']');
+            });
+
+            var dataurl = $('#addtooutputform').attr('data-url');
+            var data1 = $('#addtooutputform').serialize();
+            var data2 = $('#addtooutputform2').serialize();
+
+
+
+            // concatenate serialized data into a single string
+            var formData = data1 + '&' + data2;
+
+
+            // send data via AJAX
+            $.ajax({
+                url: dataurl,
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    console.log(response);
+
+                    window.location.href = url;
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.error(error);
+
+                }
+            });
         });
     });
 </script>

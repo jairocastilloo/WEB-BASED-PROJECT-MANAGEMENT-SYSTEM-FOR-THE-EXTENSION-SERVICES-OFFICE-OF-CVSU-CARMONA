@@ -54,4 +54,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Activity::class);
     }
+    public function outputs()
+    {
+        return $this->belongsToMany(Output::class);
+    }
 }
