@@ -9,6 +9,8 @@ use App\Models\Output;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\ActivityUser;
+use App\Models\OutputUser;
+use Illuminate\Support\Str;
 
 class OutputController extends Controller
 {
@@ -85,5 +87,50 @@ class OutputController extends Controller
             'outputtype' => $outputtype,
             'assignees' => $assignees,
         ]);
+    }
+
+    public function addtooutput(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'output-id.*' => 'required|integer',
+            'output-quantity.*' => 'required|integer',
+            'output-facilitator' => 'required',
+            'outputnumber' => 'required|integer',
+            'facilitatornumber' => 'required|integer',
+            'outputdocs' => 'required|mimes:docx|max:2048',
+        ]);
+
+        for ($i = 0; $i < $validatedData['outputnumber']; $i++) {
+            $output = Output::where('id', $validatedData['output-id'][$i])
+                ->first();
+
+            if ($output) {
+                // Update the value of output_submitted
+                $output->output_submitted = $validatedData['output-quantity'][$i];
+                $output->save();
+            }
+        }
+        for ($i = 0; $i < $validatedData['facilitatornumber']; $i++) {
+
+            for ($j = 0; $j < $validatedData['outputnumber']; $j++) {
+                $outputuser = new OutputUser();
+                $outputuser->output_id = $validatedData['output-id'][$j];
+                $outputuser->user_id = $validatedData['output-facilitator'][$i];
+                $outputuser->save();
+            }
+        }
+
+        $file = $request->file('outputdocs');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+
+        // Store the file
+        $path = $request->file('file')->storeAs('uploads', $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+
+        return 'File uploaded successfully.';
     }
 }

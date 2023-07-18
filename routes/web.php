@@ -53,3 +53,4 @@ Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.out
 Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
 Route::get('/user/{id}/getactivity/{activityid}/getoutput/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
 Route::get('/user/{id}/getactivity/{activityid}/complyoutput/{outputtype}', [OutputController::class, 'complyoutput'])->name('comply.output');
+Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');

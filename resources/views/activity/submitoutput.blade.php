@@ -26,7 +26,10 @@
                     <div class="border-bottom ps-1 mb-2">
                         <h6 class="small"><b>Output to be Submitted - </b>{{ $outputtype }}</h6>
                     </div>
-                    <form id="addtooutputform" data-url="{{ route('addto.output' }}">
+                    <form id="addtooutputform" data-url="{{ route('addto.output') }}">
+                        @csrf
+                        <input type="number" class="d-none" id="outputnumber" name="outputnumber">
+                        <input type="number" class="d-none" id="facilitatornumber" name="facilitatornumber">
                         <input type="number" class="d-none" id="output-facilitator-0" name="output-facilitator[0]">
                         @foreach ($currentoutputtype as $currentoutput)
                         <div class="mb-3">
@@ -50,9 +53,10 @@
                     <div class="border-bottom ps-1 mb-2">
                         <h6 class="fw-bold small">Supporting documents</h6>
                     </div>
-                    <form id="addoutoutputform2">
+                    <form id="addtooutputform2">
+                        @csrf
                         <label class="form-label" for="customFile">Submit Activity Report:</label>
-                        <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs" />
+                        <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs">
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
                         </div>
@@ -100,6 +104,7 @@
 <script>
     var assignees = <?php echo json_encode($assignees);
                     ?>;
+    var url = "";
     var assigneeindex = 0;
     $(document).ready(function() {
         $('#addfacilitator-btn').click(function(event) {
@@ -120,6 +125,7 @@
                 }
 
             });
+            $('#selectfacilitator option:first').prop('selected', true);
             $('#addFacilitatorModal').modal('show');
         });
 
@@ -131,16 +137,20 @@
                         </div>`
 
             $('.assignees-name').append(assigneediv);
+
+
+            var assigneeid = parseInt($('#selectfacilitator').val());
             if (assigneeindex === 0) {
-                $(`#output-facilitator-${assigneeindex}`).val(parseInt($('#selectfacilitator').val()));
+                $(`#output-facilitator-${assigneeindex}`).val(assigneeid);
                 assigneeindex++;
             } else {
                 var assigneename = parseInt($('#selectfacilitator').val());
-                var outputfacilitatordiv = `<input type="number" class="d-none" id="output-facilitator-${assigneeindex}" name="output-facilitator[${assigneeindex}]" value="${assigneename}">`
+                var outputfacilitatordiv = `<input type="number" class="d-none" id="output-facilitator-${assigneeindex}" name="output-facilitator[${assigneeindex}]">`
                 $('#addtooutputform').append(outputfacilitatordiv);
+                $(`#output-facilitator-${assigneeindex}`).val(assigneeid);
                 assigneeindex++;
             }
-            var assigneeid = parseInt($('#selectfacilitator').val());
+
             assignees = assignees.filter(function(assignee) {
                 return assignee.id !== assigneeid;
             });
@@ -152,7 +162,8 @@
         });
 
         $('#submitreport-btn').click(function(event) {
-
+            $("#outputnumber").val($('input[name="output-quantity[]"]').length);
+            $("#facilitatornumber").val($('input[name="output-facilitator[]"]').length);
             $('input[name="output-id[]"]').each(function(index) {
                 $(this).attr('name', 'output-id[' + index + ']');
             });
