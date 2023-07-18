@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Output;
 use App\Models\Activity;
+use App\Models\User;
+use App\Models\ActivityUser;
 
 class OutputController extends Controller
 {
@@ -63,8 +65,14 @@ class OutputController extends Controller
         $currentoutputtype = Output::where('activity_id', $activityid)
             ->where('output_type', $outputtype)
             ->get();
-        // all output type
+        // activity assignees
+        $activityUser = ActivityUser::where('activity_id', $activityid)
+            ->with('user:id,name,middle_name,last_name,email,role')
+            ->get();
 
+        $assignees = $activityUser->map(function ($item) {
+            return $item->user;
+        });
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
@@ -75,6 +83,7 @@ class OutputController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'outputtype' => $outputtype,
+            'assignees' => $assignees,
         ]);
     }
 }
