@@ -11,7 +11,7 @@ class FileController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:docx|max:2048',
+            'outputdocs' => 'required|mimes:docx|max:2048',
         ]);
 
 
@@ -21,7 +21,7 @@ class FileController extends Controller
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
 
         // Store the file
-        $path = $request->file('file')->storeAs('uploads', $fileName);
+        $path = $request->file('outputdocs')->storeAs('uploads', $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
 

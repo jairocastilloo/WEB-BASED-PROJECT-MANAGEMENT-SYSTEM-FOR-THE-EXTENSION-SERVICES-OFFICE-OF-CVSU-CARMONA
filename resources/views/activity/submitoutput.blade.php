@@ -53,14 +53,17 @@
                     <div class="border-bottom ps-1 mb-2">
                         <h6 class="fw-bold small">Supporting documents</h6>
                     </div>
-                    <form id="addtooutputform2">
+
+                    <label class="form-label" for="customFile">Submit Activity Report:</label>
+                    <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data" id="addtooutputform2">
                         @csrf
-                        <label class="form-label" for="customFile">Submit Activity Report:</label>
                         <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs">
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
-                        </div>
                     </form>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
+                    </div>
+
                 </div>
             </div>
             <div class="col-1">
@@ -140,17 +143,21 @@
 
 
             var assigneeid = parseInt($('#selectfacilitator').val());
+
             if (assigneeindex === 0) {
                 $(`#output-facilitator-${assigneeindex}`).val(assigneeid);
-                assigneeindex++;
+
             } else {
-                var assigneename = parseInt($('#selectfacilitator').val());
-                var outputfacilitatordiv = `<input type="number" class="d-none" id="output-facilitator-${assigneeindex}" name="output-facilitator[${assigneeindex}]">`
+                var outputfacilitatordiv = `<input type="number" class="d-none" id="output-facilitator-${assigneeindex}" name="output-facilitator[${assigneeindex}]">`;
                 $('#addtooutputform').append(outputfacilitatordiv);
                 $(`#output-facilitator-${assigneeindex}`).val(assigneeid);
-                assigneeindex++;
-            }
 
+            }
+            console.log(typeof $(`input[name="output-facilitator[${assigneeindex}]"]`).val());
+            console.log($(`input[name="output-facilitator[${assigneeindex}]"]`).val());
+
+
+            assigneeindex++;
             assignees = assignees.filter(function(assignee) {
                 return assignee.id !== assigneeid;
             });
@@ -162,8 +169,10 @@
         });
 
         $('#submitreport-btn').click(function(event) {
+            event.preventDefault();
+
             $("#outputnumber").val($('input[name="output-quantity[]"]').length);
-            $("#facilitatornumber").val($('input[name="output-facilitator[]"]').length);
+            $("#facilitatornumber").val($('input[name^="output-facilitator["][name$="]"]').length);
             $('input[name="output-id[]"]').each(function(index) {
                 $(this).attr('name', 'output-id[' + index + ']');
             });
@@ -171,33 +180,37 @@
                 $(this).attr('name', 'output-quantity[' + index + ']');
             });
 
+            // Serialize the input data
             var dataurl = $('#addtooutputform').attr('data-url');
             var data1 = $('#addtooutputform').serialize();
-            var data2 = $('#addtooutputform2').serialize();
+
+            // Create FormData object for file data
 
 
-
-            // concatenate serialized data into a single string
-            var formData = data1 + '&' + data2;
+            // Append file data to the serialized form data
 
 
-            // send data via AJAX
+            // Send data via AJAX
+
+
             $.ajax({
                 url: dataurl,
-                type: 'POST',
-                data: formData,
+                type: "POST",
+                data: data1,
                 success: function(response) {
                     console.log(response);
-
+                    $('#addtooutputform2').submit();
                     window.location.href = url;
-
+                    // Handle the successful response here
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);
                     console.error(error);
-
+                    // Handle the error here
                 }
             });
+
+
         });
     });
 </script>

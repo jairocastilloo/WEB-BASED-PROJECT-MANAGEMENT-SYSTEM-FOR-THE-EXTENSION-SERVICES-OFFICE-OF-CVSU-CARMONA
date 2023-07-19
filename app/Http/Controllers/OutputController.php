@@ -95,10 +95,9 @@ class OutputController extends Controller
         $validatedData = $request->validate([
             'output-id.*' => 'required|integer',
             'output-quantity.*' => 'required|integer',
-            'output-facilitator' => 'required',
+            'output-facilitator.*' => 'required|integer',
             'outputnumber' => 'required|integer',
             'facilitatornumber' => 'required|integer',
-            'outputdocs' => 'required|mimes:docx|max:2048',
         ]);
 
         for ($i = 0; $i < $validatedData['outputnumber']; $i++) {
@@ -111,6 +110,7 @@ class OutputController extends Controller
                 $output->save();
             }
         }
+
         for ($i = 0; $i < $validatedData['facilitatornumber']; $i++) {
 
             for ($j = 0; $j < $validatedData['outputnumber']; $j++) {
@@ -120,14 +120,14 @@ class OutputController extends Controller
                 $outputuser->save();
             }
         }
-
+        /*
         $file = $request->file('outputdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
 
         // Store the file
-        $path = $request->file('file')->storeAs('uploads', $fileName);
+        $path = $request->file('file')->storeAs('uploads', $fileName);*/
         // Save the file path to the database or perform any other necessary actions
         // ...
 
