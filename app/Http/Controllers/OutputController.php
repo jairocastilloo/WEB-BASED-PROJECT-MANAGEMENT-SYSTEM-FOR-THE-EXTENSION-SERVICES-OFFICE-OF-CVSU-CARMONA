@@ -120,14 +120,19 @@ class OutputController extends Controller
                 $outputuser->save();
             }
         }
-        /*
+
+        $request->validate([
+            'outputdocs' => 'required|mimes:docx|max:2048',
+        ]);
+
+
         $file = $request->file('outputdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
 
         // Store the file
-        $path = $request->file('file')->storeAs('uploads', $fileName);*/
+        $path = $request->file('outputdocs')->storeAs('uploads', $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
 

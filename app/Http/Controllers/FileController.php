@@ -15,7 +15,7 @@ class FileController extends Controller
         ]);
 
 
-        $file = $request->file('file');
+        $file = $request->file('outputdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;

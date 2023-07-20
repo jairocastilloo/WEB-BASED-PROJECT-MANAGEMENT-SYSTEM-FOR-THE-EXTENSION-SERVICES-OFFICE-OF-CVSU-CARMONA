@@ -22,11 +22,12 @@
 
             </div>
             <div class="col-10">
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-1 mb-2">
-                        <h6 class="small"><b>Output to be Submitted - </b>{{ $outputtype }}</h6>
-                    </div>
-                    <form id="addtooutputform" data-url="{{ route('addto.output') }}">
+                <form id="addtooutputform" data-url="{{ route('addto.output') }}">
+                    <div class="basiccont p-2">
+                        <div class="border-bottom ps-1 mb-2">
+                            <h6 class="small"><b>Output to be Submitted - </b>{{ $outputtype }}</h6>
+                        </div>
+
                         @csrf
                         <input type="number" class="d-none" id="outputnumber" name="outputnumber">
                         <input type="number" class="d-none" id="facilitatornumber" name="facilitatornumber">
@@ -38,41 +39,41 @@
                             <input type="number" class="form-control" id="output-quantity" name="output-quantity[]" placeholder="Enter the quantity" min="0" step="1">
                         </div>
                         @endforeach
-                    </form>
-                </div>
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-1">
-                        <h6 class="fw-bold small">Facilitator Involved</h6>
-                    </div>
-                    <div class="row p-1 assignees-name">
 
                     </div>
-                    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addfacilitator-btn">Add Facilitator</button>
-                </div>
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-1 mb-2">
-                        <h6 class="fw-bold small">Supporting documents</h6>
-                    </div>
+                    <div class="basiccont p-2">
+                        <div class="border-bottom ps-1">
+                            <h6 class="fw-bold small">Facilitator Involved</h6>
+                        </div>
+                        <div class="row p-1 assignees-name">
 
-                    <label class="form-label" for="customFile">Submit Activity Report:</label>
-                    <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data" id="addtooutputform2">
-                        @csrf
+                        </div>
+                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addfacilitator-btn">Add Facilitator</button>
+                    </div>
+                    <div class="basiccont p-2">
+                        <div class="border-bottom ps-1 mb-2">
+                            <h6 class="fw-bold small">Supporting documents</h6>
+                        </div>
+
+                        <label class="form-label" for="customFile">Submit Activity Report:</label>
+                        <!-- <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data" id="addtooutputform2">
+                        @csrf-->
                         <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs">
-                    </form>
 
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
-                    </div>
-
-                </div>
+                        <!--  <button type="button" class="btn btn-outline-primary mt-2" id="submitreport2">Submit Report</button> -->
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
+                        </div>
+                </form>
             </div>
-            <div class="col-1">
-
-            </div>
+        </div>
+        <div class="col-1">
 
         </div>
 
     </div>
+
+</div>
 </div>
 
 <div class="modal fade" id="addFacilitatorModal" tabindex="-1" aria-labelledby="addFacilitatorModalLabel" aria-hidden="true">
@@ -110,6 +111,7 @@
     var url = "";
     var assigneeindex = 0;
     $(document).ready(function() {
+
         $('#addfacilitator-btn').click(function(event) {
             $('#selectfacilitator').children().not(':first').remove();
             $.each(assignees, function(index, assignee) {
@@ -179,11 +181,12 @@
             $('input[name="output-quantity[]"]').each(function(index) {
                 $(this).attr('name', 'output-quantity[' + index + ']');
             });
-
-            // Serialize the input data
             var dataurl = $('#addtooutputform').attr('data-url');
-            var data1 = $('#addtooutputform').serialize();
-
+            var formData = new FormData($("#addtooutputform")[0]);
+            // Serialize the input data
+            /**  
+             var data1 = $('#addtooutputform').serialize();
+             var formData = new FormData($("#myForm")[0]);*/
             // Create FormData object for file data
 
 
@@ -196,10 +199,12 @@
             $.ajax({
                 url: dataurl,
                 type: "POST",
-                data: data1,
+                data: formData,
+                contentType: false,
+                processData: false,
                 success: function(response) {
                     console.log(response);
-                    $('#addtooutputform2').submit();
+
                     window.location.href = url;
                     // Handle the successful response here
                 },
