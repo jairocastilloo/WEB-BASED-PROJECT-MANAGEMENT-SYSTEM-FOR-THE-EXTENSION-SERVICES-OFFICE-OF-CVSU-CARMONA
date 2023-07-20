@@ -20,13 +20,17 @@
             <div class="col-8">
                 <div class="basiccont p-2">
                     <div class="border-bottom ps-1">
-                        <h6 class="fw-bold small">Hours Rendered</h6>
+                        <h6 class="fw-bold small">Hours rendered</h6>
                     </div>
-
+                    <h5>{{ $subtask['subtask_name'] }}</h5>
+                    Hours Rendered: {{ $subtask['hours_rendered'] }}
+                    <hr>
+                    Assignees:
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="add-subtaskassignees">+</button>
                 </div>
                 <div class="basiccont p-2">
                     <div class="border-bottom ps-1">
-                        <h6 class="fw-bold small">Unevaluated Hours Rendered</h6>
+                        <h6 class="fw-bold small">Unevaluated Hours rendered</h6>
                     </div>
 
 
@@ -37,7 +41,15 @@
                     <div class="border-bottom ps-2 pt-2">
                         <h6 class="fw-bold small">Other Subtask</h6>
                     </div>
-
+                    @foreach ($subtasks as $index => $sub)
+                    @if ($sub->subtask_name != $subtask['subtask_name'])
+                    @if ($index % 2 == 0)
+                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $sub->subtask_name }}</div>
+                    @else
+                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $sub->subtask_name }}</div>
+                    @endif
+                    @endif
+                    @endforeach
 
                 </div>
             </div>
@@ -46,4 +58,46 @@
 
     </div>
 </div>
+<!--add activity assignees-->
+<div class="modal fade" id="addSubtaskAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="assigneeform" data-url="{{ route('add.subtaskassignee') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="assigneeSelect" class="form-label">Assignee</label>
+                        <input type="number" class="d-none" name="subtaskassignid" value="{{ $subtask['id'] }}">
+                        <select class="form-select" id="subtaskassigneeselect" name="subtaskassignee">
+                            <option value="" selected disabled>Select Assignee</option>
+                            @foreach($assignees as $assignee)
+
+                            <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
+                            @endforeach
+                        </select>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="addassignee-btn">Add Assignee</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#add-subtaskassignees').click(function() {
+            $('#addSubtaskAssigneeModal').modal('show');
+        });
+    });
+</script>
 @endsection

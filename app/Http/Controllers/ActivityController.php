@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Subtask;
+use App\Models\SubtaskUser;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -234,6 +235,8 @@ class ActivityController extends Controller
         $currentoutputtype = Output::where('activity_id', $activityid)
             ->where('output_type', $outputtype)
             ->get();
+
+
         // all output type
         $outputs = Output::where('activity_id', $activityid)->get();
         $allOutputTypes = $outputs->where('output_type', '!=', $outputtype)->pluck('output_type')->unique();
@@ -248,6 +251,7 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
+
         ]);
     }
 
@@ -256,15 +260,30 @@ class ActivityController extends Controller
         // activity details
         $activity = Activity::findOrFail($activityid);
         $subtask = Subtask::findOrFail($subtaskid);
+        $subtasks = Subtask::where('activity_id', $activityid)->get();
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
+
+        $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
+
+        $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
+        $activityUser = ActivityUser::where('activity_id', $activityid)
+            ->whereNotIn('id', $excludeUserIds)
+            ->with('user:id,name,middle_name,last_name,email,role')
+            ->get();
+
+        $assignees = $activityUser->map(function ($item) {
+            return $item->user;
+        });
 
 
         return view('activity.subtask', [
             'activity' => $activity,
             'subtask' => $subtask,
+            'subtasks' => $subtasks,
             'projectName' => $projectName,
             'projectId' => $projectId,
+            'assignees' => $assignees,
         ]);
     }
 }

@@ -55,3 +55,4 @@ Route::get('/user/{id}/getactivity/{activityid}/getoutput/{outputtype}', [Activi
 Route::get('/user/{id}/getactivity/{activityid}/complyoutput/{outputtype}', [OutputController::class, 'complyoutput'])->name('comply.output');
 Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
 Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
+Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassignee'])->name('add.subtaskassignee');

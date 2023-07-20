@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use App\Models\SubtaskUser;
 
 class SubtaskController extends Controller
 {
@@ -53,5 +54,24 @@ class SubtaskController extends Controller
         $subtasks->subtask_name = $subtaskname;
         $subtasks->activity_id = $activitynumber;
         $subtasks->save();
+    }
+    public function addsubtaskassignee(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'usernumber' => 'required|integer',
+            'subtaskid' => 'required|integer',
+            'userid.*' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        for ($i = 0; $i < $validator['usernumber']; $i++) {
+            $subtaskuser = new SubtaskUser();
+            $subtaskuser->subtask_id = $validator['subtaskid'];
+            $subtaskuser->subtask_id = $validator['userid'][$i];
+            $subtaskuser->save();
+        }
     }
 }
