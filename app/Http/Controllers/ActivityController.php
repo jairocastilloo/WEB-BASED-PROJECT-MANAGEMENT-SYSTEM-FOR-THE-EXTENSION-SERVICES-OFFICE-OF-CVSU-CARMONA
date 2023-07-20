@@ -268,15 +268,15 @@ class ActivityController extends Controller
         $projectName = $activity->project->projecttitle;
 
         $currentassignees = $subtask->users;
+
         $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
+
 
         $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
         $activityUser = ActivityUser::where('activity_id', $activityid)
-            ->whereNotIn('id', $excludeUserIds)
+            ->whereNotIn('user_id', $excludeUserIds)
             ->with('user:id,name,middle_name,last_name,email,role')
             ->get();
-
-
 
         $assignees = $activityUser->map(function ($item) {
             return $item->user;

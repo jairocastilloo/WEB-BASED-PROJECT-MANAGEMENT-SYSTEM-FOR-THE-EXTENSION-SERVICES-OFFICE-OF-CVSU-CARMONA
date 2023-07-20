@@ -72,10 +72,10 @@
                 <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="assigneeform" data-url="{{ route('add.subtaskassignee') }}">
-                @csrf
-                <div class="modal-body">
 
+            <div class="modal-body">
+                <form id="assigneeform" data-url="{{ route('add.subtaskassignee') }}">
+                    @csrf
                     <div class="mb-3">
                         <label for="assigneeSelect" class="form-label">Assignee</label>
                         <input type="number" class="d-none" name="subtaskid" value="{{ $subtask['id'] }}">
@@ -88,14 +88,14 @@
                         </select>
 
                     </div>
+                </form>
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmsubtaskassignee-btn">Add Assignee</button>
+            </div>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirmsubtaskassignee-btn">Add Assignee</button>
-                </div>
-            </form>
         </div>
     </div>
 </div>
