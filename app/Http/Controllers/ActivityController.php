@@ -236,7 +236,7 @@ class ActivityController extends Controller
             ->get();
         // all output type
         $outputs = Output::where('activity_id', $activityid)->get();
-        $allOutputTypes = $outputs->where('output_type', '!=', $outputtype)->pluck('output_type')->unique();;
+        $allOutputTypes = $outputs->where('output_type', '!=', $outputtype)->pluck('output_type')->unique();
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
@@ -248,6 +248,23 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
+        ]);
+    }
+
+    public function getsubtask($id, $activityid, $subtaskid)
+    {
+        // activity details
+        $activity = Activity::findOrFail($activityid);
+        $subtask = Subtask::findOrFail($subtaskid);
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+
+        return view('activity.subtask', [
+            'activity' => $activity,
+            'subtask' => $subtask,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
         ]);
     }
 }

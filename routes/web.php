@@ -54,3 +54,4 @@ Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee']
 Route::get('/user/{id}/getactivity/{activityid}/getoutput/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
 Route::get('/user/{id}/getactivity/{activityid}/complyoutput/{outputtype}', [OutputController::class, 'complyoutput'])->name('comply.output');
 Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
+Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');

@@ -98,9 +98,9 @@
                     </div>
                     @foreach ($subtasks as $index => $subtask)
                     @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2">{{ $subtask->subtask_name }}</div>
+                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $subtask->subtask_name }}</div>
                     @else
-                    <div class="sidecont2 divhover p-2">{{ $subtask->subtask_name }}</div>
+                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $subtask->subtask_name }}</div>
                     @endif
                     @endforeach
 
@@ -278,6 +278,16 @@
             var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
             url = url.replace(':outputtype', outputtype);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.subtaskdiv', function() {
+            var subtaskid = $(this).attr('data-value');
+            var actid = $('#actid').val();
+
+            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':subtaskid', subtaskid);
             window.location.href = url;
         });
 
