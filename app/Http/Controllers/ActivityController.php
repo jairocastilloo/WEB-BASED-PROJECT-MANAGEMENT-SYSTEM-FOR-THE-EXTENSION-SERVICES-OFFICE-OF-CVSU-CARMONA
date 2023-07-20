@@ -244,6 +244,9 @@ class ActivityController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
+
+
+
         return view('activity.output', [
             'activity' => $activity,
             'currentoutputtype' => $currentoutputtype,
@@ -264,6 +267,7 @@ class ActivityController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
+        $currentassignees = $subtask->users;
         $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
 
         $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
@@ -271,6 +275,8 @@ class ActivityController extends Controller
             ->whereNotIn('id', $excludeUserIds)
             ->with('user:id,name,middle_name,last_name,email,role')
             ->get();
+
+
 
         $assignees = $activityUser->map(function ($item) {
             return $item->user;
@@ -284,6 +290,7 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'assignees' => $assignees,
+            'currentassignees' => $currentassignees,
         ]);
     }
 }

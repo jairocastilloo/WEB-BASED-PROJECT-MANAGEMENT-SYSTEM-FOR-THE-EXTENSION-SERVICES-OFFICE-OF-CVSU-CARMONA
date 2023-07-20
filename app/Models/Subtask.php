@@ -15,9 +15,9 @@ class Subtask extends Model
         return $this->belongsTo(Activity::class);
     }
 
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'subtask_user');
     }
 
     public function project()

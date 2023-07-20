@@ -26,6 +26,12 @@
                     Hours Rendered: {{ $subtask['hours_rendered'] }}
                     <hr>
                     Assignees:
+                    @foreach($currentassignees as $currentassignee)
+                    {{ $currentassignee->name . ' ' . $currentassignee->last_name }}
+
+                    @endforeach
+
+
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="add-subtaskassignees">+</button>
                 </div>
                 <div class="basiccont p-2">
@@ -66,13 +72,14 @@
                 <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="assigneeform" data-url="{{ route('add.subtaskassignee') }}">
-                    @csrf
+            <form id="assigneeform" data-url="{{ route('add.subtaskassignee') }}">
+                @csrf
+                <div class="modal-body">
+
                     <div class="mb-3">
                         <label for="assigneeSelect" class="form-label">Assignee</label>
-                        <input type="number" class="d-none" name="subtaskassignid" value="{{ $subtask['id'] }}">
-                        <select class="form-select" id="subtaskassigneeselect" name="subtaskassignee">
+                        <input type="number" class="d-none" name="subtaskid" value="{{ $subtask['id'] }}">
+                        <select class="form-select" id="subtaskassigneeselect" name="userid">
                             <option value="" selected disabled>Select Assignee</option>
                             @foreach($assignees as $assignee)
 
@@ -82,21 +89,47 @@
 
                     </div>
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="addassignee-btn">Add Assignee</button>
-            </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmsubtaskassignee-btn">Add Assignee</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 @endsection
 @section('scripts')
 <script>
+    url = "";
     $(document).ready(function() {
         $('#add-subtaskassignees').click(function() {
             $('#addSubtaskAssigneeModal').modal('show');
+        });
+        $('#confirmsubtaskassignee-btn').click(function(event) {
+            event.preventDefault();
+            var dataurl = $('#assigneeform').attr('data-url');
+            var data1 = $('#assigneeform').serialize();
+
+
+
+            // send data via AJAX
+            $.ajax({
+                url: dataurl,
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.error(error);
+
+                }
+            });
         });
     });
 </script>

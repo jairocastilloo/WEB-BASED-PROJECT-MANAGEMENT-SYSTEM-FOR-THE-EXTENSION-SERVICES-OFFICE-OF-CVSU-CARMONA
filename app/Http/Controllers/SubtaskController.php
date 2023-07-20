@@ -58,20 +58,22 @@ class SubtaskController extends Controller
     public function addsubtaskassignee(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'usernumber' => 'required|integer',
+
             'subtaskid' => 'required|integer',
-            'userid.*' => 'required|integer',
+            'userid' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
         }
 
-        for ($i = 0; $i < $validator['usernumber']; $i++) {
-            $subtaskuser = new SubtaskUser();
-            $subtaskuser->subtask_id = $validator['subtaskid'];
-            $subtaskuser->subtask_id = $validator['userid'][$i];
-            $subtaskuser->save();
-        }
+        $subtaskid = $request->input('subtaskid');
+        $userid = $request->input('userid');
+
+        $subtaskuser = new SubtaskUser();
+
+        $subtaskuser->subtask_id = $subtaskid;
+        $subtaskuser->user_id = $userid;
+        $subtaskuser->save();
     }
 }
