@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subtask;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\SubtaskUser;
+use App\Models\ActivityUser;
 
 class SubtaskController extends Controller
 {
@@ -75,5 +77,41 @@ class SubtaskController extends Controller
         $subtaskuser->subtask_id = $subtaskid;
         $subtaskuser->user_id = $userid;
         $subtaskuser->save();
+    }
+
+    public function complysubtask($id, $activityid, $subtaskid)
+    {
+        // activity details
+        $activity = Activity::findOrFail($activityid);
+        $subtask = Subtask::findOrFail($subtaskid);
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        $currentassignees = $subtask->users;
+
+        $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
+
+
+        $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
+        $activityUser = ActivityUser::where('activity_id', $activityid)
+            ->whereNotIn('user_id', $excludeUserIds)
+            ->with('user:id,name,middle_name,last_name,email,role')
+            ->get();
+
+        $assignees = $activityUser->map(function ($item) {
+            return $item->user;
+        });
+
+
+        return view('activity.submitsubtask', [
+            'activity' => $activity,
+            'subtask' => $subtask,
+
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'assignees' => $assignees,
+            'currentassignees' => $currentassignees,
+        ]);
     }
 }

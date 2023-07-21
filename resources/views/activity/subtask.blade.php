@@ -18,12 +18,14 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
-                <div class="basiccont p-2">
+                <div class="basiccont p-2" data-value="{{ $subtask['id'] }}">
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Hours rendered</h6>
                     </div>
                     <h5>{{ $subtask['subtask_name'] }}</h5>
                     Hours Rendered: {{ $subtask['hours_rendered'] }}
+
+                    <button type="button" class="btn btn-sm btn-outline-secondary" id="submithoursrendered-btn">Submit hours rendered</button>
                     <hr>
                     Assignees:
                     @foreach($currentassignees as $currentassignee)
@@ -106,6 +108,16 @@
     $(document).ready(function() {
         $('#add-subtaskassignees').click(function() {
             $('#addSubtaskAssigneeModal').modal('show');
+        });
+        $('#submithoursrendered-btn').click(function(event) {
+            event.preventDefault();
+            var subtaskid = $(this).parent().attr('data-value');
+            var actid = $('#actid').val();
+
+            var url = '{{ route("comply.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':subtaskid', subtaskid);
+            window.location.href = url;
         });
         $('#confirmsubtaskassignee-btn').click(function(event) {
             event.preventDefault();
