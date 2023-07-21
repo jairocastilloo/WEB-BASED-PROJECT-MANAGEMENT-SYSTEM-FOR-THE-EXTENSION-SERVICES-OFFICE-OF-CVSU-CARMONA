@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\SubtaskUser;
+use App\Models\SubtaskContributor;
 use App\Models\ActivityUser;
 
 class SubtaskController extends Controller
@@ -90,11 +91,6 @@ class SubtaskController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
-
-
-
-
-
         return view('activity.submitsubtask', [
             'activity' => $activity,
             'subtask' => $subtask,
@@ -102,5 +98,44 @@ class SubtaskController extends Controller
             'projectId' => $projectId,
             'currentassignees' => $currentassignees,
         ]);
+    }
+
+    public function addtosubtask(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'subtask-id' => 'required|integer',
+            'subtask-contributor.*' => 'required|integer',
+            'contributornumber' => 'required|integer',
+            'hours-rendered' => 'required|integer',
+        ]);
+
+
+        for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
+
+
+            $subtaskcontributor = new SubtaskContributor();
+            $subtaskcontributor->user_id = $validatedData['subtask-contributor'][$i];
+            $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
+            $subtaskcontributor->hours_rendered = $validatedData['hours_rendered'];
+            $subtaskcontributor->save();
+        }
+
+        $request->validate([
+            'subtaskdocs' => 'required|mimes:docx|max:2048',
+        ]);
+
+
+        $file = $request->file('subtaskdocs');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+
+        // Store the file
+        $path = $request->file('subtaskdocs')->storeAs('uploads', $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+
+        return 'File uploaded successfully.';
     }
 }

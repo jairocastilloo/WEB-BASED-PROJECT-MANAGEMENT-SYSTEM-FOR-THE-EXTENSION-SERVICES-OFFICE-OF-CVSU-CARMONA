@@ -156,8 +156,6 @@
                 $(`#output-facilitator-${assigneeindex}`).val(assigneeid);
 
             }
-            console.log(typeof $(`input[name="output-facilitator[${assigneeindex}]"]`).val());
-            console.log($(`input[name="output-facilitator[${assigneeindex}]"]`).val());
 
 
             assigneeindex++;

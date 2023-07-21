@@ -22,7 +22,7 @@
 
             </div>
             <div class="col-10">
-                <form id="addtooutputform">
+                <form id="addtosubtaskform">
                     <div class="basiccont p-2">
                         <div class="border-bottom ps-1 mb-2">
                             <h6 class="small"><b>Hours rendered </b></h6>
@@ -30,8 +30,8 @@
 
                         @csrf
 
-                        <input type="number" class="d-none" id="executornumber" name="executornumber">
-                        <input type="number" class="d-none" id="subtask-executor-0" name="subtask-executor[0]">
+                        <input type="number" class="d-none" id="contributornumber" name="contributornumber">
+                        <input type="number" class="d-none" id="subtask-contributor-0" name="subtask-contributor[0]">
 
                         <div class="mb-3">
                             <label class="form-label">Hours rendered</label>
@@ -82,23 +82,22 @@
                 <h5 class="modal-title" id="contributorModalLabel">Add Contributor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="contributorForm">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="contributorSelect" class="form-label">Contributor for the task</label>
-                        <select class="form-select" id="contributorselect" name="contributorname" required>
-                            <option value="" selected disabled>Select Contributor</option>
 
-                        </select>
-                    </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="contributorSelect" class="form-label">Contributor for the task</label>
+                    <select class="form-select" id="contributorselect" name="contributorname" required>
+                        <option value="" selected disabled>Select Contributor</option>
 
+                    </select>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="addcontributor-confirm">Confirm</button>
-                </div>
-            </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="addcontributor-confirm">Confirm</button>
+            </div>
+
         </div>
     </div>
 </div>
@@ -108,6 +107,7 @@
 <script>
     var currentassignees = <?php echo json_encode($currentassignees);
                             ?>;
+    var contributorindex = 0;
     $(document).ready(function() {
         $('#addcontributor-btn').click(function() {
             event.preventDefault();
@@ -126,6 +126,29 @@
 
         $('#addcontributor-confirm').click(function(event) {
             event.preventDefault();
+            var contributorname = $('#contributorselect option:selected').text();
+            var contributordiv = `<div class="col-6 divhover p-2">
+                            ${contributorname}
+                            <button type="button" class="btn btn-outline-danger btn-sm float-end"> x </button>
+                        </div>`
+
+            $('.contributor-name').append(contributordiv);
+
+            var contributorid = parseInt($('#contributorselect').val());
+
+            if (contributorindex === 0) {
+                $(`#output-contributor-${contributorindex}`).val(contributorid);
+
+            } else {
+                var subtaskcontributordiv = `<input type="number" class="d-none" id="subtask-contributor-${contributorindex}" name="subtask-contributor[${contributorindex}]">`;
+                $('#addtosubtaskform').append(subtaskcontributordiv);
+                $(`#subtask-contributor-${contributorindex}`).val(contributorid);
+
+            }
+
+
+            contributorindex++;
+
             currentassignees = currentassignees.filter(function(assignee) {
                 return assignee.id !== parseInt($('#contributorselect').val());
             });
