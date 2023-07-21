@@ -65,13 +65,73 @@
                         </div>
                 </form>
             </div>
-        </div>
-        <div class="col-1">
+            <div class="col-1">
 
+            </div>
         </div>
+
 
     </div>
 
 </div>
+
+<div class="modal fade" id="contributorModal" tabindex="-1" aria-labelledby="contributorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contributorModalLabel">Add Contributor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="contributorForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="contributorSelect" class="form-label">Contributor for the task</label>
+                        <select class="form-select" id="contributorselect" name="contributorname" required>
+                            <option value="" selected disabled>Select Contributor</option>
+
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="addcontributor-confirm">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+@endsection
+@section('scripts')
+
+<script>
+    var currentassignees = <?php echo json_encode($currentassignees);
+                            ?>;
+    $(document).ready(function() {
+        $('#addcontributor-btn').click(function() {
+            event.preventDefault();
+            $('#contributorselect').find("option:not(:first-child)").remove();
+            $.each(currentassignees, function(index, item) {
+
+                $('#contributorselect').append($('<option>', {
+                    value: item.id,
+                    text: item.name + ' ' + item.last_name,
+                }));
+
+            });
+            $('#contributorselect').val($('#contributorselect').find("option:first").val());
+            $('#contributorModal').modal('show');
+        });
+
+        $('#addcontributor-confirm').click(function(event) {
+            event.preventDefault();
+            currentassignees = currentassignees.filter(function(assignee) {
+                return assignee.id !== parseInt($('#contributorselect').val());
+            });
+            $('#contributorModal').modal('hide');
+        });
+
+    });
+</script>
 @endsection

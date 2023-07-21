@@ -84,33 +84,22 @@ class SubtaskController extends Controller
         // activity details
         $activity = Activity::findOrFail($activityid);
         $subtask = Subtask::findOrFail($subtaskid);
+        $currentassignees = $subtask->users;
+
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
-        $currentassignees = $subtask->users;
-
-        $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
 
 
-        $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
-        $activityUser = ActivityUser::where('activity_id', $activityid)
-            ->whereNotIn('user_id', $excludeUserIds)
-            ->with('user:id,name,middle_name,last_name,email,role')
-            ->get();
 
-        $assignees = $activityUser->map(function ($item) {
-            return $item->user;
-        });
 
 
         return view('activity.submitsubtask', [
             'activity' => $activity,
             'subtask' => $subtask,
-
             'projectName' => $projectName,
             'projectId' => $projectId,
-            'assignees' => $assignees,
             'currentassignees' => $currentassignees,
         ]);
     }

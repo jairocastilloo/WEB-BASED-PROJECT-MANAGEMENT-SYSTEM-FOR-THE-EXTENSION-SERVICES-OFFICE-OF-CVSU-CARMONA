@@ -66,15 +66,16 @@
                         </div>
                 </form>
             </div>
-        </div>
-        <div class="col-1">
+            <div class="col-1">
 
+            </div>
         </div>
 
     </div>
+</div>
 
-</div>
-</div>
+
+
 
 <div class="modal fade" id="addFacilitatorModal" tabindex="-1" aria-labelledby="addFacilitatorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
