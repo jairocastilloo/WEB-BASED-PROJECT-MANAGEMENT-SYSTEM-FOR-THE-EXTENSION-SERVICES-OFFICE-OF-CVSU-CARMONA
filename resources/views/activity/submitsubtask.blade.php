@@ -108,7 +108,7 @@
     var currentassignees = <?php echo json_encode($currentassignees);
                             ?>;
     var contributorindex = 0;
-    var url = "";
+
     $(document).ready(function() {
         $('#addcontributor-btn').click(function() {
             event.preventDefault();
@@ -147,7 +147,6 @@
 
             }
 
-
             contributorindex++;
 
             currentassignees = currentassignees.filter(function(assignee) {
@@ -159,23 +158,17 @@
         $('#submitreport-btn').click(function(event) {
             event.preventDefault();
 
+            var subtaskid = $('#subtask-id').val();
+            var actid = $('#actid').val();
+
+            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':subtaskid', subtaskid);
 
             $("#contributornumber").val($('input[name^="subtask-contributor["][name$="]"]').length);
 
             var dataurl = $('#addtosubtaskform').attr('data-url');
             var formData = new FormData($("#addtosubtaskform")[0]);
-            // Serialize the input data
-            /**  
-             var data1 = $('#addtooutputform').serialize();
-             var formData = new FormData($("#myForm")[0]);*/
-            // Create FormData object for file data
-
-
-            // Append file data to the serialized form data
-
-
-            // Send data via AJAX
-
 
             $.ajax({
                 url: dataurl,
@@ -195,7 +188,6 @@
                     // Handle the error here
                 }
             });
-
 
         });
     });

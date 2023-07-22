@@ -14,6 +14,8 @@ class OutputUser extends Model
     protected $fillable = [
         'output_id',
         'user_id',
+        'output_submitted',
+        'approval',
     ];
 
     public function output()

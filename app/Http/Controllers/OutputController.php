@@ -100,16 +100,6 @@ class OutputController extends Controller
             'facilitatornumber' => 'required|integer',
         ]);
 
-        for ($i = 0; $i < $validatedData['outputnumber']; $i++) {
-            $output = Output::where('id', $validatedData['output-id'][$i])
-                ->first();
-
-            if ($output) {
-                // Update the value of output_submitted
-                $output->output_submitted = $validatedData['output-quantity'][$i];
-                $output->save();
-            }
-        }
 
         for ($i = 0; $i < $validatedData['facilitatornumber']; $i++) {
 
@@ -117,6 +107,7 @@ class OutputController extends Controller
                 $outputuser = new OutputUser();
                 $outputuser->output_id = $validatedData['output-id'][$j];
                 $outputuser->user_id = $validatedData['output-facilitator'][$i];
+                $outputuser->output_submitted = $validatedData['output-quantity'][$j];
                 $outputuser->save();
             }
         }

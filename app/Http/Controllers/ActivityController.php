@@ -13,6 +13,7 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Subtask;
 use App\Models\SubtaskUser;
+use App\Models\SubtaskContributor;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -282,6 +283,15 @@ class ActivityController extends Controller
             return $item->user;
         });
 
+        $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
+            ->where('subtask_id', $subtaskid)
+            ->groupByRaw('created_at')
+            ->pluck('id');
+
+
+        $unapprovedsubtaskdata = SubtaskContributor::whereIn('id', $unapprovedsubtask)
+            ->get();
+
 
         return view('activity.subtask', [
             'activity' => $activity,
@@ -291,6 +301,7 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'assignees' => $assignees,
             'currentassignees' => $currentassignees,
+            'unapprovedsubtaskdata' => $unapprovedsubtaskdata
         ]);
     }
 }

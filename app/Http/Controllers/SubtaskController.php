@@ -91,6 +91,8 @@ class SubtaskController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
+
+
         return view('activity.submitsubtask', [
             'activity' => $activity,
             'subtask' => $subtask,

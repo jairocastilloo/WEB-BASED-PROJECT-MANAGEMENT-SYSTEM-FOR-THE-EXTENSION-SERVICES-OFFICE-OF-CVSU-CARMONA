@@ -40,7 +40,18 @@
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Unevaluated Hours rendered</h6>
                     </div>
+                    <ul class="unordered-list">
+                        @foreach ($unapprovedsubtaskdata as $unapprovedsub)
 
+                        <li>
+                            <h5>{{ $subtask['subtask_name'] }}</h5>
+                            Hours rendered: {{ $unapprovedsub['hours_rendered'] }}
+
+                        </li>
+
+                        @endforeach
+                    </ul>
+                    <hr>
 
                 </div>
             </div>
