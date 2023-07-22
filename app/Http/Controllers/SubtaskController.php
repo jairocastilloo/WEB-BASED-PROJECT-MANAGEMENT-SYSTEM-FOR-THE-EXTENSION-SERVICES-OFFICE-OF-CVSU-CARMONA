@@ -117,7 +117,7 @@ class SubtaskController extends Controller
             $subtaskcontributor = new SubtaskContributor();
             $subtaskcontributor->user_id = $validatedData['subtask-contributor'][$i];
             $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
-            $subtaskcontributor->hours_rendered = $validatedData['hours_rendered'];
+            $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
             $subtaskcontributor->save();
         }
 

@@ -22,7 +22,7 @@
 
             </div>
             <div class="col-10">
-                <form id="addtosubtaskform">
+                <form id="addtosubtaskform" data-url="{{ route('addto.subtask') }}">
                     <div class="basiccont p-2">
                         <div class="border-bottom ps-1 mb-2">
                             <h6 class="small"><b>Hours rendered </b></h6>
@@ -35,7 +35,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Hours rendered</label>
-                            <input type="number" class="d-none" id="subtask-id" name="subtask-id">
+                            <input type="number" class="d-none" id="subtask-id" name="subtask-id" value="{{ $subtask['id'] }}">
                             <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
                         </div>
 
@@ -108,6 +108,7 @@
     var currentassignees = <?php echo json_encode($currentassignees);
                             ?>;
     var contributorindex = 0;
+    var url = "";
     $(document).ready(function() {
         $('#addcontributor-btn').click(function() {
             event.preventDefault();
@@ -137,7 +138,7 @@
             var contributorid = parseInt($('#contributorselect').val());
 
             if (contributorindex === 0) {
-                $(`#output-contributor-${contributorindex}`).val(contributorid);
+                $(`#subtask-contributor-${contributorindex}`).val(contributorid);
 
             } else {
                 var subtaskcontributordiv = `<input type="number" class="d-none" id="subtask-contributor-${contributorindex}" name="subtask-contributor[${contributorindex}]">`;
@@ -155,6 +156,48 @@
             $('#contributorModal').modal('hide');
         });
 
+        $('#submitreport-btn').click(function(event) {
+            event.preventDefault();
+
+
+            $("#contributornumber").val($('input[name^="subtask-contributor["][name$="]"]').length);
+
+            var dataurl = $('#addtosubtaskform').attr('data-url');
+            var formData = new FormData($("#addtosubtaskform")[0]);
+            // Serialize the input data
+            /**  
+             var data1 = $('#addtooutputform').serialize();
+             var formData = new FormData($("#myForm")[0]);*/
+            // Create FormData object for file data
+
+
+            // Append file data to the serialized form data
+
+
+            // Send data via AJAX
+
+
+            $.ajax({
+                url: dataurl,
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+
+                    window.location.href = url;
+                    // Handle the successful response here
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    console.error(error);
+                    // Handle the error here
+                }
+            });
+
+
+        });
     });
 </script>
 @endsection

@@ -13,9 +13,16 @@ class CreateSubtaskContributorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subtask_contributors', function (Blueprint $table) {
+        Schema::create('subtask_contributor', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('subtask_id');
+            $table->unsignedBigInteger('user_id');
+            $table->integer('hours_rendered')->default(0);
             $table->timestamps();
+
+            // Define foreign key constraints
+            $table->foreign('subtask_id')->references('id')->on('subtasks')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,6 +33,6 @@ class CreateSubtaskContributorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subtask_contributors');
+        Schema::dropIfExists('subtask_contributor');
     }
 }
