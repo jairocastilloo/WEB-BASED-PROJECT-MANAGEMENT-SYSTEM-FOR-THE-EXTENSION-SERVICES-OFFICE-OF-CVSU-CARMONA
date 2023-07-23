@@ -23,7 +23,7 @@
                         <h6 class="fw-bold small">Hours rendered</h6>
                     </div>
                     <h5>{{ $subtask['subtask_name'] }}</h5>
-                    Hours Rendered: {{ $subtask['hours_rendered'] }}
+                    Total Hours Rendered: {{ $subtask['hours_rendered'] }}
 
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="submithoursrendered-btn">Submit hours rendered</button>
                     <hr>
@@ -37,11 +37,12 @@
                     <button type="button" class="btn btn-sm btn-outline-secondary" id="add-subtaskassignees">+</button>
                 </div>
                 <div class="basiccont p-2">
-                    <div class="border-bottom ps-1">
+                    <div class="border-bottom ps-1 mb-2">
                         <h6 class="fw-bold small">Unevaluated Hours rendered</h6>
                     </div>
 
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled small">
+
                         @foreach ($unapprovedsubtaskdata as $unapprovedsub)
                         @php
                         $hasSameDate = false;
@@ -54,9 +55,9 @@
                             $userIds = explode(',', $samedateusers->user_ids);
                             @endphp
 
-                            Hours rendered: {{ $unapprovedsub['hours_rendered'] }} <br>
-                            Date Submitted: {{ \Carbon\Carbon::parse($unapprovedsub['created_at'])->format('F d, Y') }} <br>
-                            Contributor:
+                            <b>Hours rendered:</b> {{ $unapprovedsub['hours_rendered'] }} <br>
+                            <b>Date Submitted:</b> {{ \Carbon\Carbon::parse($unapprovedsub['created_at'])->format('F d, Y') }} <br>
+                            <b>Contributor:</b>
                             @foreach ($userIds as $userId)
                             @php
                             $user = \App\Models\User::find($userId);
@@ -94,9 +95,9 @@
                     @foreach ($subtasks as $index => $sub)
                     @if ($sub->subtask_name != $subtask['subtask_name'])
                     @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $sub->subtask_name }}</div>
+                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}">{{ $sub->subtask_name }}</div>
                     @else
-                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $sub->subtask_name }}</div>
+                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}">{{ $sub->subtask_name }}</div>
                     @endif
                     @endif
                     @endforeach
@@ -148,6 +149,37 @@
 <script>
     url = "";
     $(document).ready(function() {
+
+        $('#projectdiv').click(function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+
+            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+            url = url.replace(':projectid', projectid);
+            window.location.href = url;
+        });
+
+        $('#activitydiv').click(function(event) {
+
+            event.preventDefault();
+
+            var activityid = $('#actid').val();
+
+            var url = '{{ route("get.activity", ["id" => Auth::user()->id, "activityid" => ":activityid"]) }}';
+            url = url.replace(':activityid', activityid);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.subtaskdiv', function() {
+            var subtaskid = $(this).attr('data-value');
+            var actid = $('#actid').val();
+            console.log(subtaskid);
+            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':subtaskid', subtaskid);
+            window.location.href = url;
+        });
+
         $('#add-subtaskassignees').click(function() {
             $('#addSubtaskAssigneeModal').modal('show');
         });
