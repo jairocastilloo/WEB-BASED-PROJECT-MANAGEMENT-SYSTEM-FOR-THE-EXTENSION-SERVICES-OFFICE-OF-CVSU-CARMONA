@@ -12,7 +12,7 @@
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
-            <h6><b>Subtask</b></h6>
+            <h6><b>Subtask: {{ $subtask['subtask_name'] }}</b></h6>
         </div>
     </div>
     <div class="container">

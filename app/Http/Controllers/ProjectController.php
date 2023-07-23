@@ -62,7 +62,7 @@ class ProjectController extends Controller
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'activityassignees' => $activityassignees, 'subtasks' => $subtasks, 'outputs' => $outputs]);
+        return view('project.select', ['members' => $users, 'projects' => $projects, 'project' => $project, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'activityassignees' => $activityassignees, 'subtasks' => $subtasks, 'outputs' => $outputs]);
     }
 
     public function getactivity($id, $activityid)
