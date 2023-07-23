@@ -10,31 +10,64 @@
     </div>
 
     <div class="basiccont m-4 p-3" style="background-color:#e5e5e5;">
-        <section class="row">
 
-            <div class="col-4 mb-2">
-                <div class="position-relative" id="#projectdropdown">
-                    <label class="small">Select Project:</label>
-                    <select id="project-select" class="form-select" aria-label="Select an option">
-                        <option value="" selected disabled>Select Project</option>
-                        @foreach($projects as $project)
-                        <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
-                            {{ $project->projecttitle }}
-                        </option>
-                        @endforeach
+        <div class="position-relative" id="#projectdropdown">
 
-                    </select>
 
-                </div>
+            <div class="form-floating">
+                <select id="project-select" class="form-select" aria-label="Select an option">
+                    <option value="" selected disabled>Select Project</option>
+                    @foreach($projects as $project)
+                    <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
+                        {{ $project->projecttitle }}
+                    </option>
+                    @endforeach
 
+                </select>
+                <label for="project-select">Select Project:</label>
             </div>
-            <div class="col-8">
-                <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject">Add Project</button>
-                <button type="button" class="btn btn-sm add-assignees-btn text-success shadow m-1 bg-body rounded" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
-                    <b>Add Activity</b>
-                </button>
-            </div>
-        </section>
+
+
+        </div>
+
+
+
+        <button type="button" class="btn btn-sm mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
+
+
+    </div>
+
+    <div class="basiccont m-4 p-3">
+        <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
+        <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($project['projectenddate'])) }}</u></div>
+        <div class="flex-container">
+            <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+            <div class="underline-space inline-div ps-2">{{ $project['programtitle'] }}</div>
+        </div>
+        <div class="flex-container">
+            <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+            <div class="underline-space inline-div ps-2">{{ $project['programleader'] }}</div>
+        </div>
+        <div class="flex-container">
+            <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+            <div class="underline-space inline-div ps-2">{{ $project['projecttitle'] }}</div>
+        </div>
+        <div class="flex-container">
+            <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+            <div class="underline-space inline-div ps-2">{{ $project['projectleader'] }}</div>
+        </div>
+        <div class="flex-container">
+            <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+            <div class="underline-space inline-div ps-2">{{ $project['projectenddate'] }}</div>
+        </div>
+
+
+
+        <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
+            <b class="small">Add Activity</b>
+        </button>
+
+
     </div>
 
     <div class="basiccont m-4 d-flex justify-content-center align-items-center border">
@@ -110,7 +143,7 @@
                         @foreach($activities->where('actobjectives', $x) as $activity)
                         <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
                             <td data-value=" {{ $activity['id'] }}" id="actid">
-                                {{ $activity['actname'] }}
+                                &bull; {{ $activity['actname'] }}
                                 <!--<div class="w-100">
                         <button type="button" class="btn btn-success btn-sm float-end show-assignees">Assignees</button>
                         <button type="button" class="btn btn-success btn-sm float-end me-2 dropdown-toggle" id="myDropdownSubtask">

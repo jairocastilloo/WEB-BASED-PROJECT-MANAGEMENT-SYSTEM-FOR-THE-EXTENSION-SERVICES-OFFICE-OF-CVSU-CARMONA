@@ -94,8 +94,7 @@ body {
     }
   }
   th{
- background-color:rgb(235, 235, 235);
-    color: darkgreen;
+ background-color:#dbffdb;
     
   }
   table, th, td {
@@ -268,4 +267,20 @@ body {
   height: 100%;
   width: 4px;
   background-color: #1b651b;
+}
+
+.underline-space {
+  border-bottom: 1px solid #000;
+}
+.flex-container {
+  display: flex;
+  align-items: center; /* Optional: Align items vertically in the center */
+}
+.inline-div {
+  flex: 1; /* or inline-block, whichever suits your layout better */
+}
+
+.flexmid {
+  display: flex;
+  justify-content: center;
 }
