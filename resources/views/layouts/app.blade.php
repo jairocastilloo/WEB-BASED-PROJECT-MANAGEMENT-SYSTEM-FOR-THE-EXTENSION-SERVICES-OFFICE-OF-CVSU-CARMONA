@@ -17,13 +17,13 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
-    <link href="{{ mix('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
-    <link href="{{ mix('css/bootstrap-icons.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-icons.css') }}" type="text/css" rel="stylesheet">
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
-    <script src="{{ mix('js/app.js') }}"></script>
+    <!--<script src="{{ mix('js/app.js') }}"></script>-->
 
 
 </head>
@@ -113,7 +113,10 @@
         <main class="p-0">
 
             @yield('content')
-            <script src="{{ mix('js/app.js') }}"></script>
+            <script src="{{ asset('js/jquery.min.js') }}"></script>
+            <script src="{{ asset('js/popper.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
             @yield('scripts')
 
         </main>

@@ -9,31 +9,28 @@
 
     </div>
 
-    <div class="basiccont m-4 p-3" style="background-color:#e5e5e5;">
-
-        <div class="position-relative" id="#projectdropdown">
+    <div class="basiccont m-4 p-3">
 
 
-            <div class="form-floating">
-                <select id="project-select" class="form-select" aria-label="Select an option">
-                    <option value="" selected disabled>Select Project</option>
-                    @foreach($projects as $project)
-                    <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
-                        {{ $project->projecttitle }}
-                    </option>
-                    @endforeach
-
-                </select>
-                <label for="project-select">Select Project:</label>
-            </div>
 
 
+        <div class="form-floating">
+            <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
+                <option value="" selected disabled>Select Project</option>
+                @foreach($projects as $project)
+                <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
+                    {{ $project->projecttitle }}
+                </option>
+                @endforeach
+
+            </select>
+            <label for="project-select" style="color:darkgreen;"><strong>Select Project:</strong></label>
         </div>
 
 
 
-        <button type="button" class="btn btn-sm mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
 
+        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
 
     </div>
 
@@ -58,17 +55,29 @@
         </div>
         <div class="flex-container">
             <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-            <div class="underline-space inline-div ps-2">{{ $project['projectenddate'] }}</div>
+            <div class="underline-space inline-div ps-2">{{ date('F', strtotime($project['projectenddate'])) . '-' . date('F Y', strtotime($project['projectenddate'])) }}</div>
         </div>
 
+        <div class="btn-group dropdown dropend mt-3">
+            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <b class="small">Edit Project</b>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Details</b></a>
+                <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Objectives</b></a>
+                <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Add Activity</b></a>
 
-
+            </div>
+        </div>
+        <!--
         <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
             <b class="small">Add Activity</b>
         </button>
-
+        -->
 
     </div>
+
+
 
     <div class="basiccont m-4 d-flex justify-content-center align-items-center border">
         <div class="tablecontainer">

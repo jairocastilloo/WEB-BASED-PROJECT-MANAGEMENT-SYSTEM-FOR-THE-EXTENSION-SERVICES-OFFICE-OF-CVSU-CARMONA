@@ -94,25 +94,34 @@ body {
     }
   }
   th{
- background-color:#dbffdb;
+ background-color:#e2ebda;
     
   }
-  table, th, td {
+  .firsttable, .firsttable th, .firsttable td {
     border: 1px solid #bababa;
     min-width: 155px;
     max-width: 155px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     padding: 15px;
+    border-right: 0;
   }
-
+  .secondtable, .secondtable th, .secondtable td {
+    border: 1px solid #bababa;
+    min-width: 155px;
+    max-width: 155px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    padding: 15px;
+    
+  }
     .firsttable {
      float:left;
     }
     .secondtable {
     flex-shrink: 0;
     }
-
+    
   .btn-danger:hover {
     color: #dc3545;
     background-color: transparent;
