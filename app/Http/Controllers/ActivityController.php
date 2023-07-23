@@ -283,6 +283,9 @@ class ActivityController extends Controller
             return $item->user;
         });
 
+        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+            ->groupBy('created_at')
+            ->get();
         $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
             ->where('subtask_id', $subtaskid)
             ->groupByRaw('created_at')
@@ -301,7 +304,8 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'assignees' => $assignees,
             'currentassignees' => $currentassignees,
-            'unapprovedsubtaskdata' => $unapprovedsubtaskdata
+            'unapprovedsubtaskdata' => $unapprovedsubtaskdata,
+            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
 }

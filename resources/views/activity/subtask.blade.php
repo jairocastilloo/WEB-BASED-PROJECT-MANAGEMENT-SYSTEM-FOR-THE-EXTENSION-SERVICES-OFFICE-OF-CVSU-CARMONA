@@ -40,15 +40,46 @@
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Unevaluated Hours rendered</h6>
                     </div>
-                    <ul class="unordered-list">
+
+                    <ul class="list-unstyled">
                         @foreach ($unapprovedsubtaskdata as $unapprovedsub)
+                        @php
+                        $hasSameDate = false;
+                        @endphp
 
                         <li>
-                            <h5>{{ $subtask['subtask_name'] }}</h5>
-                            Hours rendered: {{ $unapprovedsub['hours_rendered'] }}
+                            @foreach ($usersWithSameCreatedAt as $samedateusers)
+                            @if($unapprovedsub['created_at'] == $samedateusers->created_at)
+                            @php
+                            $userIds = explode(',', $samedateusers->user_ids);
+                            @endphp
+
+                            Hours rendered: {{ $unapprovedsub['hours_rendered'] }} <br>
+                            Date Submitted: {{ \Carbon\Carbon::parse($unapprovedsub['created_at'])->format('F d, Y') }} <br>
+                            Contributor:
+                            @foreach ($userIds as $userId)
+                            @php
+                            $user = \App\Models\User::find($userId);
+                            @endphp
+                            @if ($user)
+                            {{ $user->name . ' ' . $user->last_name}}
+                            @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
+                            {{ ', ' }}
+                            @endif
+                            @endif
+
+                            @endforeach
+                            <hr>
+                            @break
+                            @endif
+
+                            @endforeach
+
+
+
+
 
                         </li>
-
                         @endforeach
                     </ul>
                     <hr>
