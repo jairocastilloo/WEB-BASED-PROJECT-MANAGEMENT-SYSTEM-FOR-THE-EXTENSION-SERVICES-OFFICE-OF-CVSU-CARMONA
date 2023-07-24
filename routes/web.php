@@ -48,6 +48,8 @@ Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrende
 Route::post('/completeactivity', [ActivityController::class, 'completeactivity'])->name('activity.complete');
 Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
 Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.subtask');
+
+// management
 Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
 Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
 Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
@@ -58,3 +60,5 @@ Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [Activi
 Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassignee'])->name('add.subtaskassignee');
 Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
 Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
+
+// monitoring
