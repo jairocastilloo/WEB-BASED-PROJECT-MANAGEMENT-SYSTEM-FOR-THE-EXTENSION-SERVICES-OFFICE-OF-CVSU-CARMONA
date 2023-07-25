@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Activity;
+use App\Models\SubtaskContributor;
 
 class TasksController extends Controller
 {
@@ -15,13 +16,20 @@ class TasksController extends Controller
     {
         $user = User::where('username', $username)->firstOrFail();
 
-        $department = $user->department;
+        $userid = $user->id;
         $projects = $user->projects;
+        $activities = $user->activities;
+        $subtasks = $user->subtasks;
+        $contributions = SubtaskContributor::where('user_id', $userid)
+            ->get();
 
 
-
-
-        return view('implementer.index', ['projects' => $projects, 'department' => $department]);
+        return view('implementer.index', [
+            'projects' => $projects,
+            'activities' => $activities,
+            'subtasks' => $subtasks,
+            'contributions' => $contributions
+        ]);
     }
 
     public function showactivities($username)

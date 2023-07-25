@@ -2,38 +2,76 @@
 
 @section('content')
 <div class="maincontainer">
-    <input type="text" class="d-none" id="userid" value="{{ Auth::user()->username }}">
-    <div class="mainnav mb-4">
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
-            <h6><b>My Projects</b></h6>
-        </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="actdiv">
-            <h6><b>My Activities</b></h6>
-        </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive">
-            <h6><b>To-do Subtasks</b></h6>
-        </div>
-    </div>
+    &nbsp;
     <div class="row">
-        <div class="col-8">
-            <div class="basiccont ms-4 rounded">
-                @foreach($projects as $project)
-                <div class="border-bottom p-2 divhover" id="projectdiv" data-url="{{ $project['id'] }}">
-                    <h5><b>Project Title: {{ $project['projecttitle'] }}</b></h5>
+        <div class="col-6">
+            <div class="basiccont ms-3 rounded">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small">Tasks</h6>
+                </div>
 
-                    <h6 class="text-secondary">Project Leader: {{ $project['projectleader'] }}</h6>
 
+                @foreach($subtasks as $subtask)
+                @php
+                $totalhoursrendered = 0;
+                @endphp
+
+                @foreach ($contributions as $contribution)
+                @if($contribution['subtask_id'] == $subtask['subtask_id'])
+                @php
+                $totalhoursrendered += $contribution['hours_rendered'];
+                @endphp
+                @endif
+                @endforeach
+
+                <div class="border-bottom p-2 divhover" id="projectdiv">
+                    <h5><b>{{ $subtask['subtask_name'] }}</b></h5>
+                    <h6 class="text-secondary">{{ $totalhoursrendered }} hours rendered</h6>
+                </div>
+                @endforeach
+
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="basiccont rounded">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small">Activities</h6>
+                </div>
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedActivities = $activities->sortBy('actstartdate');
+                @endphp
+
+                @foreach ($sortedActivities as $activity)
+                <div class="border-bottom p-2 divhover" id="projectdiv">
+                    <h5><b>{{ $activity['actname'] }}</b></h5>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    @endphp
+
+                    <h6 class="text-secondary"> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
             </div>
         </div>
-        <div class="col-4">
-            <div class="basiccont me-4 rounded">
+        <div class="col-3">
+            <div class="basiccont me-3 rounded">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small">Projects</h6>
+                </div>
                 @foreach($projects as $project)
                 <div class="border-bottom p-2 divhover" id="projectdiv" data-url="{{ $project['id'] }}">
-                    <h5><b>Project Title: {{ $project['projecttitle'] }}</b></h5>
+                    <h5><b>{{ $project['projecttitle'] }}</b></h5>
 
-                    <h6 class="text-secondary">Project Leader: {{ $project['projectleader'] }}</h6>
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="text-secondary"> {{ $startDate }} - {{ $endDate }}</h6>
 
                 </div>
                 @endforeach
