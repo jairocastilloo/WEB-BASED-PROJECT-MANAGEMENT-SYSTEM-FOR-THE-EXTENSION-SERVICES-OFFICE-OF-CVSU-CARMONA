@@ -64,4 +64,4 @@ Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('
 
 Route::get('/{username}/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
 Route::get('/{username}/activities', [TasksController::class, 'showactivities'])->name('activities.show');
-Route::get('/{projectid}/{projectname}', [ProjectController::class, 'showactivities'])->name('activities.show');
+Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('display.subtask');

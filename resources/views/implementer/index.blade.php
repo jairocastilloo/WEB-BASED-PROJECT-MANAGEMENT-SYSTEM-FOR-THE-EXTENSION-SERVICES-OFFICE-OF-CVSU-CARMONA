@@ -24,7 +24,7 @@
                 @endif
                 @endforeach
 
-                <div class="border-bottom p-2 divhover" id="projectdiv">
+                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
                     <h5><b>{{ $subtask['subtask_name'] }}</b></h5>
                     <h6 class="text-secondary">{{ $totalhoursrendered }} hours rendered</h6>
                 </div>
@@ -44,7 +44,7 @@
                 @endphp
 
                 @foreach ($sortedActivities as $activity)
-                <div class="border-bottom p-2 divhover" id="projectdiv">
+                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
                     <h5><b>{{ $activity['actname'] }}</b></h5>
 
                     @php
@@ -62,8 +62,12 @@
                 <div class="border-bottom ps-3">
                     <h6 class="fw-bold small">Projects</h6>
                 </div>
-                @foreach($projects as $project)
-                <div class="border-bottom p-2 divhover" id="projectdiv" data-url="{{ $project['id'] }}">
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedProjects = $projects->sortBy('projectstartdate');
+                @endphp
+                @foreach($sortedProjects as $project)
+                <div class="border-bottom p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
                     <h5><b>{{ $project['projecttitle'] }}</b></h5>
 
                     @php
@@ -91,13 +95,15 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        $('#actdiv').click(function(event) {
-
+        $(document).on('click', '.subtaskdiv', function(event) {
             event.preventDefault();
-            var userid = $('#userid').val();
 
-            url = '{{ route("activities.show", ["username" => ":userid"]) }}';
-            url = url.replace(':userid', userid);
+            var subtaskname = $(this).find("h5").text();
+            var subtaskid = $(this).attr("data-value");
+
+            var url = '{{ route("display.subtask", ["id" => Auth::user()->id, "subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
+            url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
         });
 

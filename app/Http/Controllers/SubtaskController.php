@@ -140,4 +140,59 @@ class SubtaskController extends Controller
 
         return 'File uploaded successfully.';
     }
+
+    public function displaysubtask($subtaskid, $subtaskname)
+    {
+        // activity details
+
+        $subtask = Subtask::findOrFail($subtaskid);
+        $activityid = Subtask::where('id', $subtaskid)
+            ->value('activity_id');
+        $activity = Activity::findOrFail($activityid);
+        $subtasks = Subtask::where('activity_id', $activityid)->get();
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        $currentassignees = $subtask->users;
+
+        $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
+
+
+        $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
+        $activityUser = ActivityUser::where('activity_id', $activityid)
+            ->whereNotIn('user_id', $excludeUserIds)
+            ->with('user:id,name,middle_name,last_name,email,role')
+            ->get();
+
+        $assignees = $activityUser->map(function ($item) {
+            return $item->user;
+        });
+
+        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+            ->where('approval', 0)
+            ->groupBy('created_at')
+            ->get();
+        $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
+            ->where('approval', 0)
+            ->where('subtask_id', $subtaskid)
+            ->groupByRaw('created_at')
+            ->pluck('id');
+
+
+        $unapprovedsubtaskdata = SubtaskContributor::whereIn('id', $unapprovedsubtask)
+            ->get();
+
+
+        return view('activity.subtask', [
+            'activity' => $activity,
+            'subtask' => $subtask,
+            'subtasks' => $subtasks,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'assignees' => $assignees,
+            'currentassignees' => $currentassignees,
+            'unapprovedsubtaskdata' => $unapprovedsubtaskdata,
+            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
+        ]);
+    }
 }
