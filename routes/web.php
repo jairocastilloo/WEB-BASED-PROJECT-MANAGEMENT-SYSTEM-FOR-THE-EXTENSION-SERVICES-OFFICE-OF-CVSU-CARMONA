@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OutputController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\SubtaskController;
+use App\Http\Controllers\TasksController;
 use App\Models\Activity;
 
 /*
@@ -49,7 +50,7 @@ Route::post('/completeactivity', [ActivityController::class, 'completeactivity']
 Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
 Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.subtask');
 
-// management
+
 Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
 Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
 Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
@@ -61,4 +62,5 @@ Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassigne
 Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
 Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
 
-// monitoring
+Route::get('/{id}/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
+Route::get('/{id}/activities', [TasksController::class, 'showactivities'])->name('activities.show');
