@@ -62,5 +62,5 @@ Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassigne
 Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
 Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
 
-Route::get('/{id}/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
-Route::get('/{id}/activities', [TasksController::class, 'showactivities'])->name('activities.show');
+Route::get('/{username}/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
+Route::get('/{username}/activities', [TasksController::class, 'showactivities'])->name('activities.show');

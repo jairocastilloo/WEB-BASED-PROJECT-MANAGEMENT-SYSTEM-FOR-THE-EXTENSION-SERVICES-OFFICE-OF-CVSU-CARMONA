@@ -64,7 +64,7 @@
                         @else
                         @if (Auth::user()->approval === 1)
                         @if (Auth::user()->role === 'Coordinator')
-                        <a class="nav-link navtohover" href="{{ route('tasks.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link navtohover" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Tasks
                         </a>
                         <a class="nav-link navtohover" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>

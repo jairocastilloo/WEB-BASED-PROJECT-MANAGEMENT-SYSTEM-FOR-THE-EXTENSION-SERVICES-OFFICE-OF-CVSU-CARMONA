@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="maincontainer">
-    <input type="number" class="d-none" id="userid" value="{{ Auth::user()->id }}">
+    <input type="text" class="d-none" id="userid" value="{{ Auth::user()->username }}">
     <div class="mainnav mb-2">
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive">
             <h6><b>My Projects</b></h6>

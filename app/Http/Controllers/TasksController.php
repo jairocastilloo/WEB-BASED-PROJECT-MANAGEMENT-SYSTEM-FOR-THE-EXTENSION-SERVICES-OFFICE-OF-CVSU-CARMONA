@@ -11,9 +11,10 @@ class TasksController extends Controller
 {
     //
 
-    public function showtasks($id)
+    public function showtasks($username)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('username', $username)->firstOrFail();
+
         $department = $user->department;
         $projects = $user->projects;
 
@@ -23,9 +24,11 @@ class TasksController extends Controller
         return view('implementer.index', ['projects' => $projects, 'department' => $department]);
     }
 
-    public function showactivities($id)
+    public function showactivities($username)
     {
-        $user = User::findOrFail($id);
+        $user = User::where('username', $username)->firstOrFail();
+
+
         $activities = $user->activities;
 
         return view('implementer.activities', ['activities' => $activities]);
