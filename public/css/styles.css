@@ -190,6 +190,7 @@ body {
   margin-right: auto;
   margin-left: auto;
   background-color: #dadadc;
+  min-height: 1080px;
 }
 
 @media (min-width: 576px) {

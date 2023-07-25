@@ -16,7 +16,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-8">
+            <div class="col-6">
 
                 <div class="basiccont p-2">
                     <div class="border-bottom ps-3">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <div class="basiccont">
                     <div class="border-bottom ps-3">
                         <h6 class="fw-bold small">Subtasks</h6>

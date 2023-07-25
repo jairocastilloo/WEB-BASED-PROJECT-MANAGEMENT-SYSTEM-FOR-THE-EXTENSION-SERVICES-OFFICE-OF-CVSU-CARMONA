@@ -8,169 +8,177 @@
         </div>
 
     </div>
+    <div class="row">
+        <div class="col-9">
 
-    <div class="basiccont m-4 p-3">
+            <div class="basiccont m-4 p-3 rounded">
 
+                <div class="form-floating">
+                    <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
+                        <option value="" selected disabled>Select Project</option>
+                        @foreach($projects as $project)
+                        <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
+                            {{ $project->projecttitle }}
+                        </option>
+                        @endforeach
 
-
-
-        <div class="form-floating">
-            <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
-                <option value="" selected disabled>Select Project</option>
-                @foreach($projects as $project)
-                <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
-                    {{ $project->projecttitle }}
-                </option>
-                @endforeach
-
-            </select>
-            <label for="project-select" style="color:darkgreen;"><strong>Select Project:</strong></label>
-        </div>
-
+                    </select>
+                    <label for="project-select" style="color:darkgreen;"><strong>Select Project:</strong></label>
+                </div>
 
 
 
-        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
 
-    </div>
-
-    <div class="basiccont m-4 p-3">
-        <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-        <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($project['projectenddate'])) }}</u></div>
-        <div class="flex-container">
-            <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-            <div class="underline-space inline-div ps-2">{{ $project['programtitle'] }}</div>
-        </div>
-        <div class="flex-container">
-            <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-            <div class="underline-space inline-div ps-2">{{ $project['programleader'] }}</div>
-        </div>
-        <div class="flex-container">
-            <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-            <div class="underline-space inline-div ps-2">{{ $project['projecttitle'] }}</div>
-        </div>
-        <div class="flex-container">
-            <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-            <div class="underline-space inline-div ps-2">{{ $project['projectleader'] }}</div>
-        </div>
-        <div class="flex-container">
-            <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-            <div class="underline-space inline-div ps-2">{{ date('F', strtotime($project['projectenddate'])) . '-' . date('F Y', strtotime($project['projectenddate'])) }}</div>
-        </div>
-
-        <div class="btn-group dropdown dropend mt-3">
-            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <b class="small">Edit Project</b>
-            </button>
-            <div class="dropdown-menu">
-                <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Details</b></a>
-                <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Objectives</b></a>
-                <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Add Activity</b></a>
+                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
 
             </div>
-        </div>
-        <!--
+
+            <div class="basiccont m-4 p-3 rounded">
+                <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
+                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($project['projectenddate'])) }}</u></div>
+                <div class="flex-container">
+                    <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <div class="underline-space inline-div ps-2">{{ $project['programtitle'] }}</div>
+                </div>
+                <div class="flex-container">
+                    <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <div class="underline-space inline-div ps-2">{{ $project['programleader'] }}</div>
+                </div>
+                <div class="flex-container">
+                    <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <div class="underline-space inline-div ps-2">{{ $project['projecttitle'] }}</div>
+                </div>
+                <div class="flex-container">
+                    <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <div class="underline-space inline-div ps-2">{{ $project['projectleader'] }}</div>
+                </div>
+                <div class="flex-container">
+                    <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <div class="underline-space inline-div ps-2">{{ date('F', strtotime($project['projectenddate'])) . '-' . date('F Y', strtotime($project['projectenddate'])) }}</div>
+                </div>
+
+                <div class="btn-group dropdown dropend mt-3">
+                    <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <b class="small">Edit Project</b>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Details</b></a>
+                        <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Objectives</b></a>
+                        <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Add Activity</b></a>
+
+                    </div>
+                </div>
+                <!--
         <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
             <b class="small">Add Activity</b>
         </button>
         -->
 
-    </div>
+            </div>
 
 
-    <div class="basiccont m-4 d-flex justify-content-center align-items-center border">
-        <div class="tablecontainer">
+            <div class="basiccont m-4 d-flex justify-content-center align-items-center border rounded">
+                <div class="tablecontainer">
 
-            <table class="firsttable">
-                <thead>
-                    <tr id="objheader">
-                        <th>OBJECTIVES</th>
-                    </tr>
-                </thead>
+                    <table class="firsttable">
+                        <thead>
+                            <tr id="objheader">
+                                <th>OBJECTIVES</th>
+                            </tr>
+                        </thead>
 
-                <tbody>
-                    @php
+                        <tbody>
+                            @php
 
-                    $lastObject = $objectives->last();
-                    $lastObjectivesetId = $lastObject['objectiveset_id'];
-                    $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
-                    $x = 0;
-                    $y = 1;
-                    @endphp
+                            $lastObject = $objectives->last();
+                            $lastObjectivesetId = $lastObject['objectiveset_id'];
+                            $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                            $x = 0;
+                            $y = 1;
+                            @endphp
 
-                    @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
-                        @endphp
-                        <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
-                            <td>
-                                <ul class="list-unstyled">
-                                    @foreach($objectives->where('objectiveset_id', $x) as $objective)
-                                    <li>
-                                        {{ __($y) . '. ' . $objective['name'] }}
-                                    </li>
-                                    <br>
-                                    @php
-                                    $y++;
-                                    @endphp
-                                    @endforeach
+                            @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                                @endphp
+                                <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
+                                    <td>
+                                        <ul class="list-unstyled">
+                                            @foreach($objectives->where('objectiveset_id', $x) as $objective)
+                                            <li>
+                                                {{ __($y) . '. ' . $objective['name'] }}
+                                            </li>
+                                            <br>
+                                            @php
+                                            $y++;
+                                            @endphp
+                                            @endforeach
 
-                                </ul>
-                            </td>
-                        </tr>
-                        @php
-                        $x++;
-                        @endphp
-                        @endwhile
+                                        </ul>
+                                    </td>
+                                </tr>
+                                @php
+                                $x++;
+                                @endphp
+                                @endwhile
 
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
 
-            <table class="secondtable">
-                <thead>
-                    <tr id="actheader">
-                        <th>ACTIVITIES</th>
-                        <th>EXPECTED OUTPUT</th>
-                        <th>START DATE</th>
-                        <th>END DATE</th>
-                        <th>BUDGET</th>
-                        <th>SOURCE</th>
-                    </tr>
+                    <table class="secondtable">
+                        <thead>
+                            <tr id="actheader">
+                                <th>ACTIVITIES</th>
+                                <th>EXPECTED OUTPUT</th>
+                                <th>START DATE</th>
+                                <th>END DATE</th>
+                                <th>BUDGET</th>
+                                <th>SOURCE</th>
+                            </tr>
 
-                </thead>
-                <tbody>
-                    @php
+                        </thead>
+                        <tbody>
+                            @php
 
-                    $lastObject = $objectives->last();
-                    $lastObjectivesetId = $lastObject['objectiveset_id'];
-                    $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
-                    $x = 0;
-                    $y = 1;
-                    @endphp
+                            $lastObject = $objectives->last();
+                            $lastObjectivesetId = $lastObject['objectiveset_id'];
+                            $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                            $x = 0;
+                            $y = 1;
+                            @endphp
 
-                    @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
-                        @endphp
-                        @foreach($activities->where('actobjectives', $x) as $activity)
-                        <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
-                            <td data-value=" {{ $activity['id'] }}" id="actid">
-                                &bull; {{ $activity['actname'] }}
+                            @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                                @endphp
+                                @foreach($activities->where('actobjectives', $x) as $activity)
+                                <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
+                                    <td data-value=" {{ $activity['id'] }}" id="actid">
+                                        &bull; {{ $activity['actname'] }}
 
-                            </td>
-                            <td>{{ $activity['actoutput'] }}
+                                    </td>
+                                    <td>{{ $activity['actoutput'] }}
 
-                            </td>
-                            <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
-                            <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                            <td>&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
-                            <td>{{ $activity['actsource'] }}</td>
-                        </tr>
-                        @endforeach
-                        @php
-                        $x++;
-                        @endphp
-                        @endwhile
-                </tbody>
-            </table>
+                                    </td>
+                                    <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
+                                    <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
+                                    <td>&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                                    <td>{{ $activity['actsource'] }}</td>
+                                </tr>
+                                @endforeach
+                                @php
+                                $x++;
+                                @endphp
+                                @endwhile
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
 
         </div>
+        <div class="col-3">
+
+
+        </div>
+
     </div>
 
 </div>
