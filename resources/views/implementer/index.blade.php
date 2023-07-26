@@ -3,6 +3,7 @@
 @section('content')
 <div class="maincontainer">
     &nbsp;
+    <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <div class="row">
         <div class="col-6">
             <div class="basiccont ms-3 rounded">
@@ -45,6 +46,7 @@
 
                 @foreach ($sortedActivities as $activity)
                 <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+
                     <h5><b>{{ $activity['actname'] }}</b></h5>
 
                     @php
@@ -101,9 +103,37 @@
             var subtaskname = $(this).find("h5").text();
             var subtaskid = $(this).attr("data-value");
 
-            var url = '{{ route("display.subtask", ["id" => Auth::user()->id, "subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
+            var url = '{{ route("display.subtask", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
             url = url.replace(':subtaskname', subtaskname);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.activitydiv', function(event) {
+            event.preventDefault();
+
+            var activityname = $(this).find("h5").text();
+            var activityid = $(this).attr("data-value");
+            var department = $('#userdept').val();
+
+            var url = '{{ route("display.activity", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.projectdiv', function(event) {
+            event.preventDefault();
+
+            var projectname = $(this).find("h5").text();
+            var projectid = $(this).attr("data-value");
+            var department = $('#userdept').val();
+
+            var url = '{{ route("display.project", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            url = url.replace(':projectid', projectid)
+                .replace(':department', department)
+                .replace(':projectname', projectname);
             window.location.href = url;
         });
 

@@ -62,6 +62,10 @@ Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassigne
 Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
 Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
 
-Route::get('/{username}/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
-Route::get('/{username}/activities', [TasksController::class, 'showactivities'])->name('activities.show');
-Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('display.subtask');
+Route::prefix('{username}')->group(function () {
+    Route::get('/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
+});
+
+Route::get('/subtask/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('display.subtask');
+Route::get('/activity/{activityid}/{department}/{activityname}', [ActivityController::class, 'displayactivity'])->name('display.activity');
+Route::get('/project/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('display.project');

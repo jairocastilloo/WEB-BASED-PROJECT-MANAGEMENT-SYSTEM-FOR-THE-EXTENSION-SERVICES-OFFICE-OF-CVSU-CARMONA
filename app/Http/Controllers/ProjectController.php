@@ -181,4 +181,36 @@ class ProjectController extends Controller
         //return redirect($url);
         return response()->json(['success' => true]);
     }
+
+    public function displayproject($projectid, $department, $projectname)
+    {
+
+        $projects = Project::findOrFail($projectid);
+        $assignees = $projects->users; //get all members of project
+
+
+        $user = User::where('department', $department)->first();
+
+
+        $projects = $user->projects;
+
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name', 'middle_name', 'last_name']);
+        $activityassignees = ActivityUser::where('project_id', $projectid)
+            ->get(['activity_id', 'assignees_name']);
+        $subtasks = Subtask::where('project_id', $projectid)
+            ->get(['activity_id', 'subtask_name', 'subtask_assignee']);
+        $outputs = Output::where('project_id', $projectid)->get();
+        $project = Project::findOrFail($projectid);
+        $objectives = $project->objectives;
+        $activities = Project::findOrFail($projectid);
+        $activities = $project->activities;
+
+        $sortedActivities = $activities->sortBy('actobjectives');
+        //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
+
+        //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
+        return view('project.select', ['members' => $users, 'projects' => $projects, 'project' => $project, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'activityassignees' => $activityassignees, 'subtasks' => $subtasks, 'outputs' => $outputs]);
+    }
 }

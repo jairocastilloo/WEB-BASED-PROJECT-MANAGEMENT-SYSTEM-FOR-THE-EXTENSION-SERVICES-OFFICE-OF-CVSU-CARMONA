@@ -310,4 +310,49 @@ class ActivityController extends Controller
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
+
+    public function displayactivity($activityid, $department, $activityname)
+    {
+        // activity details
+        $activity = Activity::find($activityid);
+        // activity assignees
+        $activityUser = ActivityUser::where('activity_id', $activityid)
+            ->with('user:id,name,middle_name,last_name,email,role')
+            ->get();
+
+        $assignees = $activityUser->map(function ($item) {
+            return $item->user;
+        });
+
+        $excludeUserIds = $activityUser->pluck('user_id')->toArray();
+
+        $addassignees = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->whereNotIn('id', $excludeUserIds)
+            ->get(['id', 'name', 'last_name']);
+        // activity subtasks
+        $subtasks = Subtask::where('activity_id', $activityid)->get();
+        // activity outputs
+        $outputs = Output::where('activity_id', $activityid)->get();
+        $outputTypes = $outputs->unique('output_type')->pluck('output_type');
+        // project name
+        $activity = Activity::findOrFail($activityid);
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+        $objectiveset = $activity->actobjectives;
+        $objectives = Objective::where('project_id', $projectId)
+            ->where('objectiveset_id', $objectiveset)
+            ->get('name');
+        return view('activity.index', [
+            'activity' => $activity,
+            'assignees' => $assignees,
+            'subtasks' => $subtasks,
+            'outputs' => $outputs,
+            'outputTypes' => $outputTypes,
+            'addassignees' => $addassignees,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'objectives' => $objectives,
+        ]);
+    }
 }
