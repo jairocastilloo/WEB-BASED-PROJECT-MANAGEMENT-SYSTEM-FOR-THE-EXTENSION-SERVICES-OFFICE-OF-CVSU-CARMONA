@@ -50,14 +50,13 @@ body {
   }
   .tablecontainer {
     margin-right: 1px;
-    margin-left: 3px;
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-left: 4px;
+    margin-top:4px;
+    margin-bottom:4px;
     overflow-x: scroll;
-     display: flex; /* Add flexbox */
-      flex-wrap: nowrap; /* Prevent wrapping */
-      width: 100%;
-      
+    display: flex; /* Add flexbox */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    width: 100%;
   }
   .tablecontainer::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */ 
@@ -102,8 +101,8 @@ body {
   }
   .firsttable, .firsttable th, .firsttable td {
     border: 1px solid #bababa;
-    min-width: 113px;
-    max-width: 113px;
+    min-width: 115px;
+    max-width: 115px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     padding: 10px;
@@ -111,8 +110,8 @@ body {
   }
   .secondtable, .secondtable th, .secondtable td {
     border: 1px solid #bababa;
-    min-width: 113px;
-    max-width: 113px;
+    min-width: 115px;
+    max-width: 115px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     

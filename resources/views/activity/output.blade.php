@@ -26,9 +26,12 @@
                     @foreach ($currentoutputtype as $currentoutput)
                     {{ $currentoutput['output_name'] . ': ' . $currentoutput['output_submitted' ]}}</br>
                     @endforeach
+                    @if( Auth::user()-> role === "Admin")
                     <button type="button" class="btn btn-outline-secondary" id="editoutput-btn">Edit</button>
+                    @endif
                     <button type="button" class="btn btn-outline-secondary" id="submitoutput-btn">Submit Output</button>
                 </div>
+
                 <div class="basiccont p-2">
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Unevaluated Output</h6>
@@ -36,6 +39,7 @@
 
 
                 </div>
+
             </div>
             <div class="col-4">
                 <div class="basiccont">

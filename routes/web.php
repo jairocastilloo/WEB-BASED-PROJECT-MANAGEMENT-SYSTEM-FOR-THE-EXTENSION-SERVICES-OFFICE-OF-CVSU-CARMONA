@@ -63,9 +63,17 @@ Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [Sub
 Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
 
 Route::prefix('{username}')->group(function () {
-    Route::get('/tasks', [TasksController::class, 'showtasks'])->name('tasks.show');
+    Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
 });
 
-Route::get('/subtask/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('display.subtask');
-Route::get('/activity/{activityid}/{department}/{activityname}', [ActivityController::class, 'displayactivity'])->name('display.activity');
-Route::get('/project/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('display.project');
+Route::prefix('/subtasks')->group(function () {
+    Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('subtasks.display');
+});
+
+Route::prefix('/activities')->group(function () {
+    Route::get('/{activityid}/{department}/{activityname}', [ActivityController::class, 'displayactivity'])->name('activities.display');
+});
+
+Route::prefix('/projects')->group(function () {
+    Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('projects.display');
+});

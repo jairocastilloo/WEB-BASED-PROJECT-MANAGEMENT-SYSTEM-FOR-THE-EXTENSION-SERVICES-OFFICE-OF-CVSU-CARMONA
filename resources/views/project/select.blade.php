@@ -11,7 +11,7 @@
     <div class="row">
         <div class="col-9">
 
-            <div class="basiccont m-4 p-3 rounded">
+            <div class="basiccont m-4 me-2 p-3 rounded">
 
                 <div class="form-floating">
                     <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
@@ -29,11 +29,11 @@
 
 
                 @if ( Auth::user()->role === "Admin")
-                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
+                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Start New Project</b></button>
                 @endif
             </div>
 
-            <div class="basiccont m-4 p-3 rounded">
+            <div class="basiccont m-4 me-2 p-3 rounded">
                 <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
                 <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($project['projectenddate'])) }}</u></div>
                 <div class="flex-container">
@@ -76,8 +76,7 @@
 
             </div>
 
-
-            <div class="basiccont m-4 d-flex justify-content-center align-items-center border rounded small">
+            <div class="basiccont m-4 me-2 d-flex justify-content-center align-items-center border rounded small">
                 <div class="tablecontainer">
 
                     <table class="firsttable">
@@ -175,8 +174,28 @@
 
         </div>
         <div class="col-3">
+            <div class="basiccont me-4 mt-4 rounded">
+                <div class="border-bottom mt-4 ps-3">
+                    <h6 class="fw-bold small text-secondary">Projects</h6>
+                </div>
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedProjects = $projects->sortBy('projectstartdate');
+                @endphp
+                @foreach($sortedProjects as $project)
+                <div class="border-bottom p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                    <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
 
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
 
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+
+                </div>
+                @endforeach
+            </div>
         </div>
 
     </div>

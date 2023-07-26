@@ -11,7 +11,6 @@
                     <h6 class="fw-bold small text-secondary">Tasks</h6>
                 </div>
 
-
                 @foreach($subtasks as $subtask)
                 @php
                 $totalhoursrendered = 0;
@@ -47,7 +46,7 @@
                 @foreach ($sortedActivities as $activity)
                 <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
-                    <h5 class="fw-bold small">{{ $activity['actname'] }}</h5>
+                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($activity['actstartdate']));
@@ -70,7 +69,7 @@
                 @endphp
                 @foreach($sortedProjects as $project)
                 <div class="border-bottom p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
-                    <h4 class="small fw-bold">{{ $project['projecttitle'] }}</h4>
+                    <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -85,10 +84,6 @@
         </div>
     </div>
 
-
-
-
-
     &nbsp;
 </div>
 
@@ -100,10 +95,10 @@
         $(document).on('click', '.subtaskdiv', function(event) {
             event.preventDefault();
 
-            var subtaskname = $(this).find("h5").text();
+            var subtaskname = $(this).find("h6:first").text();
             var subtaskid = $(this).attr("data-value");
 
-            var url = '{{ route("display.subtask", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
             url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
@@ -112,11 +107,11 @@
         $(document).on('click', '.activitydiv', function(event) {
             event.preventDefault();
 
-            var activityname = $(this).find("h5").text();
+            var activityname = $(this).find("h6:first").text();
             var activityid = $(this).attr("data-value");
             var department = $('#userdept').val();
 
-            var url = '{{ route("display.activity", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
             url = url.replace(':activityid', activityid);
             url = url.replace(':department', department);
             url = url.replace(':activityname', activityname);
@@ -126,11 +121,11 @@
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
 
-            var projectname = $(this).find("h5").text();
+            var projectname = $(this).find("h6:first").text();
             var projectid = $(this).attr("data-value");
             var department = $('#userdept').val();
 
-            var url = '{{ route("display.project", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid)
                 .replace(':department', department)
                 .replace(':projectname', projectname);
