@@ -9,9 +9,9 @@
 
     </div>
     <div class="row">
-        <div class="col-9">
+        <div class="col-10">
 
-            <div class="basiccont m-4 me-2 p-3 rounded">
+            <div class="basiccont m-4 me-0 p-3 rounded">
 
                 <div class="form-floating">
                     <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
@@ -33,7 +33,7 @@
                 @endif
             </div>
 
-            <div class="basiccont m-4 me-2 p-3 rounded">
+            <div class="basiccont m-4 me-0 p-3 rounded">
                 <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
                 <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($project['projectenddate'])) }}</u></div>
                 <div class="flex-container">
@@ -76,8 +76,8 @@
 
             </div>
 
-            <div class="basiccont m-4 me-2 d-flex justify-content-center align-items-center border rounded small">
-                <div class="tablecontainer">
+            <div class="basiccont m-4 me-0 d-flex justify-content-center align-items-center border rounded small">
+                <div class="tablecontainer pb-2">
 
                     <table class="firsttable">
                         <thead>
@@ -148,8 +148,10 @@
                                 @endphp
                                 @foreach($activities->where('actobjectives', $x) as $activity)
                                 <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
-                                    <td data-value=" {{ $activity['id'] }}" id="actid">
-                                        &bull; {{ $activity['actname'] }}
+                                    <td class="pt-2 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
+                                        <ul>
+                                            <li>{{ $activity['actname'] }}</li>
+                                        </ul>
 
                                     </td>
                                     <td>{{ $activity['actoutput'] }}
@@ -173,7 +175,7 @@
 
 
         </div>
-        <div class="col-3">
+        <div class="col-2">
             <div class="basiccont me-4 mt-4 rounded">
                 <div class="border-bottom mt-4 ps-3">
                     <h6 class="fw-bold small text-secondary">Projects</h6>
@@ -202,7 +204,125 @@
 
 </div>
 
+<!-- New Project -->
 
+<div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newproject">New Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Project Details</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Project Members</button>
+                    </li>.
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Project Objectives</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                        <!-- Form for tab 1 -->
+                        <form id="form1" data-url="{{ route('project.store') }}">
+                            @csrf
+                            <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
+                            <input type="number" class="d-none" id="memberindex" name="memberindex">
+                            <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
+                            <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
+                            <div class="mb-3">
+                                <label for="projecttitle" class="form-label">Project Title</label>
+                                <input type="text" class="form-control" id="projecttitle" name="projecttitle">
+                            </div>
+                            <div class="mb-3">
+                                <label for="projectleader" class="form-label">Project Leader</label>
+                                <select class="form-select" name="projectleader" id="projectleader">
+                                    <option selected disabled>Select Project Leader</option>
+
+
+                                </select>
+                                <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
+                            </div>
+                            <div class="mb-3">
+                                <label for="programtitle" class="form-label">Program Title</label>
+                                <input type="text" class="form-control" id="programtitle" name="programtitle">
+                            </div>
+                            <div class="mb-3">
+                                <label for="programleader" class="form-label">Program Leader</label>
+                                <input type="text" class="form-control" id="programleader" name="programleader">
+                            </div>
+                            <div class="mb-3">
+                                <label for="projectstartdate" class="form-label">Project Start Date</label>
+                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="projectenddate" class="form-label">Project End Date</label>
+                                <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                        <!-- Form for tab 2 -->
+
+                        <div class="container-fluid" id="memberform">
+                            <form id="form2">
+                                @csrf
+                                <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
+                                <div class="mb-2 row" id="selectmember">
+                                    <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
+                                        <option value="" selected disabled>Select a Member</option>
+                                    </select>
+                                    <button type="button" class="remove-member btn btn-danger col-2 m-1 float-end" id="removemember">Remove</button>
+                                </div>
+
+                            </form>
+                            <button type="button" class="addmember-button btn btn-success w-100" id="addmember">Add Member</button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+                        <!-- Form for tab 2 -->
+
+                        <div class="container-fluid" id="objform">
+                            <form id="form3">
+                                @csrf
+                                <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
+                                <div class="container-fluid" id="objectiveset">
+                                    <div>
+                                        <div class="mb-2 row" id="selectobjectives">
+                                            <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                            <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
+                                            <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
+                                            <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button>
+                                    <hr>
+                                </div>
+                            </form>
+                            <button type="button" class="addset btn btn-success w-100" id="addset">Add Objective Set</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" id="prevproject">Previous</button>
+                <button type="button" class="btn btn-info" id="nextproject">Next</button>
+                <button type="button" class="btn btn-primary" id="createproject">Create Project</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Add activity -->
 
 <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">

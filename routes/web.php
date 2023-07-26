@@ -76,4 +76,5 @@ Route::prefix('/activities')->group(function () {
 
 Route::prefix('/projects')->group(function () {
     Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('projects.display');
+    Route::get('/{department}/newproject', [ProjectController::class, 'newproject'])->name('projects.new');
 });

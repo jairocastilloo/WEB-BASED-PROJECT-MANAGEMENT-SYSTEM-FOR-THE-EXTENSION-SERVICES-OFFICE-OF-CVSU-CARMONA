@@ -4,29 +4,96 @@
 <div class="maincontainer">
     &nbsp;
     <div class="basiccont m-4 p-3">
-
-
-
-
-        <div class="form-floating">
-            <select id="project-select" class="form-select" aria-label="Select an option" style="border: 1px solid darkgreen;">
-                <option value="" selected disabled>Select Project</option>
-                @foreach($projects as $project)
-                <option value="{{ $project->id }}">
-                    {{ $project->projecttitle }}
-                </option>
-                @endforeach
-
+        <div class="border-bottom ps-3">
+            <h6 class="fw-bold small text-secondary">Program Details</h6>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="email">Program Title</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <select class="form-select" id="sel1" name="sellist">
+                <option selected disabled>Program Leader</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
             </select>
-
-            <label for="project-select" style="color:darkgreen;"><strong>Select Project:</strong></label>
+            <label for="sel1" class="form-label">Assign one</label>
+        </div>
+        <div class="border-bottom ps-3">
+            <h6 class="fw-bold small text-secondary">Project Details</h6>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="email">Project Title</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <select class="form-select" id="sel1" name="sellist">
+                <option selected>Project Leader</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+            <label for="sel1" class="form-label">Assign one</label>
+        </div>
+        <div class="border-bottom ps-3">
+            <h6 class="fw-bold small text-secondary">Duration</h6>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3 mt-3">
+                    <input type="date" class="form-control form-control-sm" id="email" placeholder="Enter email" name="email">
+                    <label for="email">Start Date</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3 mt-3">
+                    <input type="date" class="form-control" id="email" placeholder="Enter email" name="email">
+                    <label for="email">End Date</label>
+                </div>
+            </div>
         </div>
 
+    </div>
 
-
-
-        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal"><b class="small">Create New Project</b></button>
-
+    <div class="basiccont m-4 p-3">
+        <div class="border-bottom ps-3">
+            <h6 class="fw-bold small text-secondary">Objectives</h6>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="email">Program Title</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <select class="form-select" id="sel1" name="sellist">
+                <option selected disabled>Program Leader</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+            <label for="sel1" class="form-label">Program Leader</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="email">Project Title</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <select class="form-select" id="sel1" name="sellist">
+                <option selected disabled>Project Leader</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+            <label for="sel1" class="form-label">Project Leader</label>
+        </div>
+        <div class="form-floating mb-3 mt-3">
+            <input type="text" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="email">Duration</label>
+        </div>
     </div>
     &nbsp;
 </div>

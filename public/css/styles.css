@@ -101,23 +101,21 @@ body {
   }
   .firsttable, .firsttable th, .firsttable td {
     border: 1px solid #bababa;
-    min-width: 115px;
-    max-width: 115px;
+    min-width: 130px;
+    max-width: 130px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    padding: 10px;
     border-right: 0;
   }
   .secondtable, .secondtable th, .secondtable td {
     border: 1px solid #bababa;
-    min-width: 115px;
-    max-width: 115px;
+    min-width: 130px;
+    max-width: 130px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     
-    padding: 10px;
-    
   }
+  
     .firsttable {
      float:left;
     }

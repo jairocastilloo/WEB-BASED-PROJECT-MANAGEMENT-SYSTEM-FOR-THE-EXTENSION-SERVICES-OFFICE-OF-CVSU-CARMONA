@@ -33,7 +33,37 @@
     &nbsp;
 </div>
 
+<!-- new project -->
+<div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="departmentModalLabel">New Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-floating">
+                        <select class="form-select" id="departmentSelect" name="department" aria-label="Select department" style="border: 1px solid darkgreen;">
 
+                            <option value="Department of Industrial and Information Technology">Department of Industrial and Information Technology</option>
+                            <option value="Department of Teacher Education">Department of Teacher Education</option>
+                            <option value="Department of Management">Department of Management</option>
+                            <option value="Departments of Arts and Science">Departments of Arts and Science</option>
+                        </select>
+
+                        <label for="project-select" style="color:darkgreen;"><strong>Create New Project for:</strong></label>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmnewproject">Create New Project</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -215,34 +245,6 @@
 
 
 
-<div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="departmentModalLabel">Select Department</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="departmentSelect" class="form-label">Department</label>
-                        <select class="form-select" id="departmentSelect" name="department">
-                            <option value="" selected disabled>Select Department</option>
-                            <option value="Department of Industrial and Information Technology">Department of Industrial and Information Technology</option>
-                            <option value="Department of Teacher Education">Department of Teacher Education</option>
-                            <option value="Department of Management">Department of Management</option>
-                            <option value="Departments of Arts and Science">Departments of Arts and Science</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 @endsection
@@ -263,11 +265,18 @@
             var url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
             url = url.replace(':projectid', projectid);
             window.location.href = url;
-
         });
 
-        $('#newproject').click(function(event) {
+        $('#confirmnewproject').click(function(event) {
             event.preventDefault();
+            var selectedOption = $('#departmentSelect').find(':selected');
+            var department = selectedOption.val();
+
+            var url = '{{ route("projects.new", ["department" => ":department"]) }}';
+            url = url.replace(':department', department);
+            window.location.href = url;
+
+
         });
     });
     // Add an event listener to the select element
