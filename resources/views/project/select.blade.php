@@ -28,9 +28,9 @@
 
 
 
-
+                @if ( Auth::user()->role === "Admin")
                 <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Create New Project</b></button>
-
+                @endif
             </div>
 
             <div class="basiccont m-4 p-3 rounded">
@@ -77,7 +77,7 @@
             </div>
 
 
-            <div class="basiccont m-4 d-flex justify-content-center align-items-center border rounded">
+            <div class="basiccont m-4 d-flex justify-content-center align-items-center border rounded small">
                 <div class="tablecontainer">
 
                     <table class="firsttable">
@@ -476,14 +476,13 @@
             var allactheight = 0;
 
             $(`tr[name="activity-${currentrow}[]"]`).each(function() {
-                allactheight += $(this).outerHeight(); // Use outerHeight() instead of height()
+                allactheight += $(this).height(); // Use outerHeight() instead of height()
             });
 
             if (objectiveheight < allactheight) {
                 $(`#objective-${currentrow}`).css({
                     'height': allactheight, // Set the height directly instead of using height()
-                    'min-height': allactheight,
-                    'max-height': allactheight
+
                 });
             } else if (allactheight < objectiveheight) {
                 var heightneeded = objectiveheight - allactheight;
@@ -491,8 +490,8 @@
 
                 $(`tr[name="activity-${currentrow}[]"]`).each(function() {
                     $(this).css({
-                        'min-height': addheight + $(this).outerHeight(),
-                        'max-height': addheight + $(this).outerHeight()
+                        'height': addheight + $(this).height(),
+
                     });
                 });
             }

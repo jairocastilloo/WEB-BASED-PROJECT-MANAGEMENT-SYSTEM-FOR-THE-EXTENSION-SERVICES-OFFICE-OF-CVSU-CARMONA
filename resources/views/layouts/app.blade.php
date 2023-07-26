@@ -63,15 +63,12 @@
                         @endif
                         @else
                         @if (Auth::user()->approval === 1)
-                        @if (Auth::user()->role === 'Coordinator')
+                        @if (Auth::user()->role === 'Coordinator' || Auth::user()->role === 'Admin')
                         <a class="nav-link navtohover" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Tasks
+                            Home
                         </a>
                         <a class="nav-link navtohover" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Management
-                        </a>
-                        <a class="nav-link navtohover" href="{{ route('user.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Monitoring
+                            Projects
                         </a>
                         <a class="nav-link navtohover" href="{{ route('project.show', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports

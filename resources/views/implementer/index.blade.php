@@ -8,7 +8,7 @@
         <div class="col-6">
             <div class="basiccont ms-3 rounded">
                 <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Tasks</h6>
+                    <h6 class="fw-bold small text-secondary">Tasks</h6>
                 </div>
 
 
@@ -26,8 +26,8 @@
                 @endforeach
 
                 <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
-                    <h5><b>{{ $subtask['subtask_name'] }}</b></h5>
-                    <h6 class="text-secondary">{{ $totalhoursrendered }} hours rendered</h6>
+                    <h6><b>{{ $subtask['subtask_name'] }}</b></h6>
+                    <h6>{{ $totalhoursrendered }} hours rendered</h6>
                 </div>
                 @endforeach
 
@@ -37,7 +37,7 @@
         <div class="col-3">
             <div class="basiccont rounded">
                 <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Activities</h6>
+                    <h6 class="fw-bold small text-secondary">Activities</h6>
                 </div>
                 @php
                 // Sort the $activities array by actstartdate in ascending order
@@ -47,14 +47,14 @@
                 @foreach ($sortedActivities as $activity)
                 <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
-                    <h5><b>{{ $activity['actname'] }}</b></h5>
+                    <h5 class="fw-bold small">{{ $activity['actname'] }}</h5>
 
                     @php
                     $startDate = date('M d, Y', strtotime($activity['actstartdate']));
                     $endDate = date('M d, Y', strtotime($activity['actenddate']));
                     @endphp
 
-                    <h6 class="text-secondary"> {{ $startDate }} - {{ $endDate }}</h6>
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
             </div>
@@ -62,7 +62,7 @@
         <div class="col-3">
             <div class="basiccont me-3 rounded">
                 <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small">Projects</h6>
+                    <h6 class="fw-bold small text-secondary">Projects</h6>
                 </div>
                 @php
                 // Sort the $activities array by actstartdate in ascending order
@@ -70,14 +70,14 @@
                 @endphp
                 @foreach($sortedProjects as $project)
                 <div class="border-bottom p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
-                    <h5><b>{{ $project['projecttitle'] }}</b></h5>
+                    <h4 class="small fw-bold">{{ $project['projecttitle'] }}</h4>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
                     $endDate = date('M d, Y', strtotime($project['projectenddate']));
                     @endphp
 
-                    <h6 class="text-secondary"> {{ $startDate }} - {{ $endDate }}</h6>
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
 
                 </div>
                 @endforeach

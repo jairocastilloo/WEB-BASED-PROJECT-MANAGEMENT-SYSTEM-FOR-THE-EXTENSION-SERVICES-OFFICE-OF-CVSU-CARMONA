@@ -49,7 +49,10 @@ body {
     border-collapse: collapse; /* Improve cell spacing */
   }
   .tablecontainer {
-    margin: 1px;
+    margin-right: 1px;
+    margin-left: 3px;
+    margin-top:3px;
+    margin-bottom:3px;
     overflow-x: scroll;
      display: flex; /* Add flexbox */
       flex-wrap: nowrap; /* Prevent wrapping */
@@ -99,20 +102,21 @@ body {
   }
   .firsttable, .firsttable th, .firsttable td {
     border: 1px solid #bababa;
-    min-width: 155px;
-    max-width: 155px;
+    min-width: 113px;
+    max-width: 113px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    padding: 15px;
+    padding: 10px;
     border-right: 0;
   }
   .secondtable, .secondtable th, .secondtable td {
     border: 1px solid #bababa;
-    min-width: 155px;
-    max-width: 155px;
+    min-width: 113px;
+    max-width: 113px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    padding: 15px;
+    
+    padding: 10px;
     
   }
     .firsttable {
