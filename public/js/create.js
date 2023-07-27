@@ -151,7 +151,7 @@ $.each(users, function(index, user) {
     $('#createproject').click((event) => {
         event.preventDefault();
        
-      /**   var memberindex = $('select[name="projectmember[]"]').length;*/
+         var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
 // Iterate over each select element and set its name attribute
@@ -163,13 +163,13 @@ $.each(users, function(index, user) {
           $(this).attr('name', 'objectivesetid[' + index + ']');
      
           });
-       /**  $('select[name="projectmember[]"]').each(function(index) {
+         $('select[name="projectmember[]"]').each(function(index) {
           $(this).prop('disabled', false);
             $(this).attr('name', 'projectmember[' + index + ']');
            
-            });*/
+            });
         
-       /**  $('#memberindex').val(memberindex);*/
+        $('#memberindex').val(memberindex);
         $('#objectiveindex').val(objectiveindex);
         var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
@@ -199,7 +199,7 @@ $.each(users, function(index, user) {
         
     });
     
-/** 
+
     // CREATE PROJECT
     users.sort(function(a, b) {
         var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare
@@ -219,9 +219,9 @@ $.each(users, function(index, user) {
             text: user.name + " " + user.last_name
         }));
     });
-    */
+    
 
-/** 
+
     $('#addmember').click((event) => {
         event.preventDefault();
         var $newSelect = $(`<select class="member-select col-7 m-1" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
@@ -242,10 +242,19 @@ $.each(users, function(index, user) {
           });
 
         $.each(users, function(index, user) {
+          if (user.last_name){
             $('#memberform form div:last #member-select').append($('<option>', {
                 value: user.id,
-                text: user.name 
+                text: user.name + ' ' + user.last_name
             }));
+          }  else {
+            $('#memberform form div:last #member-select').append($('<option>', {
+              value: user.id,
+              text: user.name
+          }));
+
+          }
+          
         });
         $('#addmember').hide();
       });
@@ -303,10 +312,22 @@ $.each(users, function(index, user) {
             return 0; // Names are equal
           });
         $.each(users, function(index, user) {
+          if (user.last_name){
             $(prevSelect).append($('<option>', {
-                value: user.id,
-                text: user.name
+                
+                  value: user.id,
+                  text: user.name + ' ' + user.last_name,
+                
             }));
+          } else {
+            $(prevSelect).append($('<option>', {
+                
+              value: user.id,
+              text: user.name,
+            
+        }));
+
+          }
         });
 
       
@@ -333,7 +354,7 @@ $.each(users, function(index, user) {
         $(this).parent().remove();
     });
 
-    */
+    
 
 
 });

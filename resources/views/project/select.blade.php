@@ -64,15 +64,15 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Details</b></a>
                         <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Edit Objectives</b></a>
-                        <a class="dropdown-item small" href="#" style="color:darkgreen;"><b class="small">Add Activity</b></a>
+                        <a class="dropdown-item small" style="color:darkgreen;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
 
                     </div>
                 </div>
-                <!--
-        <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
-            <b class="small">Add Activity</b>
-        </button>
-        -->
+
+                <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
+                    <b class="small">Add Activity</b>
+                </button>
+
 
             </div>
 
