@@ -68,11 +68,11 @@
 
                     </div>
                 </div>
-
+                <!--
                 <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
                     <b class="small">Add Activity</b>
                 </button>
-
+-->
 
             </div>
 
@@ -82,7 +82,7 @@
                     <table class="firsttable">
                         <thead>
                             <tr id="objheader">
-                                <th>OBJECTIVES</th>
+                                <th class="p-2 text-center">OBJECTIVES</th>
                             </tr>
                         </thead>
 
@@ -99,7 +99,7 @@
                             @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                                 @endphp
                                 <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
-                                    <td>
+                                    <td class="p-2">
                                         <ul class="list-unstyled">
                                             @foreach($objectives->where('objectiveset_id', $x) as $objective)
                                             <li>
@@ -125,12 +125,12 @@
                     <table class="secondtable">
                         <thead>
                             <tr id="actheader">
-                                <th>ACTIVITIES</th>
-                                <th>EXPECTED OUTPUT</th>
-                                <th>START DATE</th>
-                                <th>END DATE</th>
-                                <th>BUDGET</th>
-                                <th>SOURCE</th>
+                                <th class="p-2 text-center">ACTIVITIES</th>
+                                <th class="p-2 text-center">EXPECTED OUTPUT</th>
+                                <th class="p-2 text-center">START DATE</th>
+                                <th class="p-2 text-center">END DATE</th>
+                                <th class="p-2 text-center">BUDGET</th>
+                                <th class="p-2 text-center">SOURCE</th>
                             </tr>
 
                         </thead>
@@ -146,27 +146,40 @@
 
                             @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                                 @endphp
+
+                                @if ($actcount > 0)
                                 @foreach($activities->where('actobjectives', $x) as $activity)
                                 <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
                                     <td class="pt-2 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
                                         <ul>
                                             <li>{{ $activity['actname'] }}</li>
                                         </ul>
-
                                     </td>
-                                    <td>{{ $activity['actoutput'] }}
-
-                                    </td>
-                                    <td>{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
-                                    <td>{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                                    <td>&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
-                                    <td>{{ $activity['actsource'] }}</td>
+                                    <td class="p-2">{{ $activity['actoutput'] }}</td>
+                                    <td class="p-2">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
+                                    <td class="p-2">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
+                                    <td class="p-2">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                                    <td class="p-2">{{ $activity['actsource'] }}</td>
                                 </tr>
                                 @endforeach
+                                @else
+                                <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="0">
+                                    <td class="pt-2 pb-2 pe-2" data-value="0" id="actid">
+                                        &nbsp;
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                @endif
+
                                 @php
                                 $x++;
                                 @endphp
                                 @endwhile
+
                         </tbody>
                     </table>
 

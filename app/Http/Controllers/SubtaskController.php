@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\SubtaskUser;
 use App\Models\SubtaskContributor;
 use App\Models\ActivityUser;
+use Illuminate\Support\Carbon;
 
 class SubtaskController extends Controller
 {
@@ -132,9 +133,9 @@ class SubtaskController extends Controller
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
-
+        $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
-        $path = $request->file('subtaskdocs')->storeAs('uploads', $fileName);
+        $path = $request->file('subtaskdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
 
@@ -194,5 +195,24 @@ class SubtaskController extends Controller
             'unapprovedsubtaskdata' => $unapprovedsubtaskdata,
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
+    }
+
+    public function accepthours(Request $request)
+    {
+
+        $acceptIds = $request->input('acceptids');
+
+        // Update the 'approval' field in SubtaskContributor table
+        SubtaskContributor::where('created_at', $acceptIds)->update(['approval' => 1]);
+
+        // Get the subtask_id and hours_rendered for the first record with the specified created_at value
+        $subtaskContributor = SubtaskContributor::where('created_at', $acceptIds)->first();
+        $subtaskid = $subtaskContributor->subtask_id;
+        $hoursrendered = $subtaskContributor->hours_rendered;
+
+        // Update the 'hours_rendered' field in the Subtask table
+        Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
+
+        return 'File uploaded successfully.';
     }
 }

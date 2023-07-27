@@ -55,6 +55,7 @@
                             $userIds = explode(',', $samedateusers->user_ids);
                             @endphp
 
+
                             <b>Hours rendered:</b> {{ $unapprovedsub['hours_rendered'] }} <br>
                             <b>Date Submitted:</b> {{ \Carbon\Carbon::parse($unapprovedsub['created_at'])->format('F d, Y') }} <br>
                             <b>Contributor:</b>
@@ -70,6 +71,11 @@
                             @endif
 
                             @endforeach
+                            <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
+                                @csrf
+                                <input type="text" class="d-none" value="{{ $samedateusers->created_at }}" name="acceptids" id="acceptids">
+                                <button type="button" class="btn btn-sm btn-outline-success accepthours-btn">Accept</button>
+                            </form>
                             <hr>
                             @break
                             @endif
@@ -193,6 +199,30 @@
             url = url.replace(':subtaskid', subtaskid);
             window.location.href = url;
         });
+
+        $(document).on('click', '.accepthours-btn', function() {
+            var acceptIdsValue = $(this).prev().val();
+            var dataurl = $(this).parent().attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $(this).parent().serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
+
         $('#confirmsubtaskassignee-btn').click(function(event) {
             event.preventDefault();
             var dataurl = $('#assigneeform').attr('data-url');

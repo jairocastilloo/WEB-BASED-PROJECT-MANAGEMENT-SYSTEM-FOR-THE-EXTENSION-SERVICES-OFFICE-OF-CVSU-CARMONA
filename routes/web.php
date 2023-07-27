@@ -68,6 +68,7 @@ Route::prefix('{username}')->group(function () {
 
 Route::prefix('/subtasks')->group(function () {
     Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('subtasks.display');
+    Route::post('/accepthours', [SubtaskController::class, 'accepthours'])->name('hours.accept');
 });
 
 Route::prefix('/activities')->group(function () {

@@ -16,7 +16,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-6">
+            <div class="col-9">
 
                 <div class="basiccont p-2">
                     <div class="border-bottom ps-3">
@@ -81,7 +81,7 @@
                         <h5>{{ $outputType }}</h5>
                         @foreach ($outputs as $output)
                         @if ($output->output_type === $outputType)
-                        {{ $output->output_name . ': ' .  $output->output_submitted }} <br>
+                        {{ $output->output_name . ': ' .  $output->totaloutput_submitted }} <br>
                         @endif
                         @endforeach
                     </div>
