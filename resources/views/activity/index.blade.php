@@ -22,7 +22,11 @@
                     <div class="border-bottom ps-3">
                         <h6 class="fw-bold small">Activity</h6>
                     </div>
-                    <h5><b>{{ $activity['actname'] }}</b></h5>
+                    <h5><b>{{ $activity['actname'] }}
+                            @if ( $activity['actremark'] === 'Completed')
+                            -<em class="text-success"> Completed</em>
+                            @endif
+                        </b></h5>
                     Expected Output: {{ $activity['actoutput'] }} <br>
                     Objectives:
                     @foreach ($objectives as $objective)
