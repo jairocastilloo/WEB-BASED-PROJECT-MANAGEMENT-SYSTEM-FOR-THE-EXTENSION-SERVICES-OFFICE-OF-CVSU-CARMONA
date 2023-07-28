@@ -252,8 +252,16 @@ class ActivityController extends Controller
 
         $outputcreated_at_list = []; // Initialize an empty array to store the $outputcreated_at values
         $unapprovedoutputs = [];
-
+        $first = true;
         foreach ($outputids as $outputid) {
+            if ($first) {
+                $usersWithSameCreatedAt = OutputUser::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+                    ->where('approval', 0)
+                    ->where('output_id', $outputid)
+                    ->groupBy('created_at')
+                    ->get();
+                $first = false;
+            }
             $unapprovedoutput = OutputUser::selectRaw('MAX(id) as id')
                 ->where('approval', 0)
                 ->where('output_id', $outputid)
@@ -276,11 +284,7 @@ class ActivityController extends Controller
         $unapprovedoutputdata = OutputUser::whereIn('id', $unapprovedoutputs)
             ->get();
 
-        $usersWithSameCreatedAt = OutputUser::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-            ->where('approval', 0)
-            ->whereIn('output_id', $outputids)
-            ->groupBy('created_at')
-            ->get();
+
 
         return view('activity.output', [
             'activity' => $activity,

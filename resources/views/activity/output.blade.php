@@ -40,15 +40,46 @@
 
                     @foreach($unapprovedoutputdata as $unapprovedoutput)
                     @if ($outputcreated == $unapprovedoutput['created_at'])
-                    Output ID: {{ $unapprovedoutput['output_id']  }}, Output Submitted: {{ $unapprovedoutput['output_submitted']  }}<br>
-                    User ID:{{ $unapprovedoutput['user_id']  }}
+                    @php
+                    $output = \App\Models\Output::find($unapprovedoutput['output_id']);
+                    @endphp
+                    @if ($output)
+                    {{ $output->output_name  }}
+                    @endif
+                    : {{ $unapprovedoutput['output_submitted']  }}<br>
+                    @endif
+                    @endforeach
+
+
+
+                    Facilitator:
+                    @foreach($usersWithSameCreatedAt as $usersame)
+                    @if ($usersame['created_at'] == $outputcreated)
+                    @php
+                    $userIds = explode(',', $usersame->user_ids);
+                    @endphp
+                    @foreach ($userIds as $userId)
+                    @php
+                    $user = \App\Models\User::find($userId);
+                    @endphp
+                    @if ($user)
+                    {{ $user->name . ' ' . $user->last_name}}
+                    @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
+                    {{ ', ' }}
+                    @endif
+                    @endif
+
+                    @endforeach
+
+
+
                     @endif
                     @endforeach
 
                     <hr>
                     @endforeach
 
-                    {{ $usersWithSameCreatedAt }}
+
 
                     <hr>
 
