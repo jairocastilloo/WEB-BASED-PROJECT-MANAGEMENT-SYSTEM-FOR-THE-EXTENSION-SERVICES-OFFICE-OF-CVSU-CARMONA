@@ -34,16 +34,34 @@
         </div>
 
         <div class="col-3">
-            <div class="basiccont rounded">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Activities</h6>
-                </div>
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedActivities = $activities->sortBy('actstartdate');
-                @endphp
 
-                @foreach ($sortedActivities as $activity)
+
+            @php
+            // Sort the $activities array by actstartdate in ascending order
+            $sortedActivities = $activities->sortBy('actstartdate');
+
+            $inProgressActivities = $sortedActivities->filter(function ($activity) {
+            return $activity['actremark'] === 'In Progress';
+            });
+            $pendingActivities = $sortedActivities->filter(function ($activity) {
+            return $activity['actremark'] === 'Pending';
+            });
+            $scheduledActivities = $sortedActivities->filter(function ($activity) {
+            return $activity['actremark'] === 'Scheduled';
+            });
+            $overdueActivities = $sortedActivities->filter(function ($activity) {
+            return $activity['actremark'] === 'Overdue';
+            });
+            $completedActivities = $sortedActivities->filter(function ($activity) {
+            return $activity['actremark'] === 'Completed';
+            });
+            @endphp
+            @if ($inProgressActivities && count($inProgressActivities) > 0)
+            <div class="basiccont rounded mb-2">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small text-secondary">In Progress Activities</h6>
+                </div>
+                @foreach ($inProgressActivities as $activity)
                 <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
@@ -57,6 +75,89 @@
                 </div>
                 @endforeach
             </div>
+            @endif
+            @if ($pendingActivities && count($pendingActivities) > 0)
+            <div class="basiccont rounded mb-2">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small text-secondary">Pending Activities</h6>
+                </div>
+                @foreach ($pendingActivities as $activity)
+                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+
+            @endif
+            @if ($scheduledActivities && count($scheduledActivities) > 0)
+            <div class="basiccont rounded mb-2">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small text-secondary">Scheduled Activities</h6>
+                </div>
+                @foreach ($scheduledActivities as $activity)
+                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+
+                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($overdueActivities && count($overdueActivities) > 0)
+            <div class="basiccont rounded mb-2">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small text-secondary">Overdue Activities</h6>
+                </div>
+                @foreach ($overdueActivities as $activity)
+                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+
+                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($completedActivities && count($completedActivities) > 0)
+            <div class="basiccont rounded mb-3">
+                <div class="border-bottom ps-3">
+                    <h6 class="fw-bold small text-secondary">Completed Activities</h6>
+                </div>
+                @foreach ($completedActivities as $activity)
+                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+
+                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+
         </div>
         <div class="col-3">
             <div class="basiccont me-3 rounded">

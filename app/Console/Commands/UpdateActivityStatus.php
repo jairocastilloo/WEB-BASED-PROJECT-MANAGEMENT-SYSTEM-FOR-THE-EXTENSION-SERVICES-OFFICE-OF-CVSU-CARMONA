@@ -63,9 +63,6 @@ class UpdateActivityStatus extends Command
     {
         $now = Carbon::today();
 
-
-
-
         Activity::where('actenddate', '<', $now)
             ->where('actremark', '<>', 'Completed') // Use 'where' method with '<>' for not equal comparison
             ->update(['actremark' => 'Overdue']);
