@@ -11,6 +11,7 @@ use App\Models\User;
 
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\OutputUser;
 use App\Models\Subtask;
 use App\Models\SubtaskUser;
 use App\Models\SubtaskContributor;
@@ -245,8 +246,41 @@ class ActivityController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
+        $outputids = Output::where('activity_id', $activityid)
+            ->where('output_type', $outputtype)
+            ->pluck('id');
 
+        $outputcreated_at_list = []; // Initialize an empty array to store the $outputcreated_at values
+        $unapprovedoutputs = [];
 
+        foreach ($outputids as $outputid) {
+            $unapprovedoutput = OutputUser::selectRaw('MAX(id) as id')
+                ->where('approval', 0)
+                ->where('output_id', $outputid)
+                ->groupByRaw('created_at')
+                ->pluck('id')
+                ->toArray(); // Convert the plucked collection to an array
+
+            $unapprovedoutputs = array_merge($unapprovedoutputs, $unapprovedoutput);
+
+            $outputcreated_at = OutputUser::where('output_id', $outputid)
+                ->where('approval', 0)
+                ->pluck('created_at')
+                ->toArray(); // Convert the plucked collection to an array
+
+            $outputcreated_at_list = array_merge($outputcreated_at_list, $outputcreated_at);
+        }
+
+        $unique_outputcreated = array_unique($outputcreated_at_list);
+
+        $unapprovedoutputdata = OutputUser::whereIn('id', $unapprovedoutputs)
+            ->get();
+
+        $usersWithSameCreatedAt = OutputUser::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+            ->where('approval', 0)
+            ->whereIn('output_id', $outputids)
+            ->groupBy('created_at')
+            ->get();
 
         return view('activity.output', [
             'activity' => $activity,
@@ -255,7 +289,9 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
-
+            'unique_outputcreated' => $unique_outputcreated,
+            'unapprovedoutputdata' => $unapprovedoutputdata,
+            'usersWithSameCreatedAt' => $usersWithSameCreatedAt
         ]);
     }
 

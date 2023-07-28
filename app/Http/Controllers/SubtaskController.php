@@ -171,6 +171,7 @@ class SubtaskController extends Controller
 
         $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
             ->where('approval', 0)
+            ->where('subtask_id', $subtaskid)
             ->groupBy('created_at')
             ->get();
         $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')

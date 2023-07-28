@@ -36,6 +36,21 @@
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Unevaluated Output</h6>
                     </div>
+                    @foreach ($unique_outputcreated as $outputcreated)
+
+                    @foreach($unapprovedoutputdata as $unapprovedoutput)
+                    @if ($outputcreated == $unapprovedoutput['created_at'])
+                    Output ID: {{ $unapprovedoutput['output_id']  }}, Output Submitted: {{ $unapprovedoutput['output_submitted']  }}<br>
+                    User ID:{{ $unapprovedoutput['user_id']  }}
+                    @endif
+                    @endforeach
+
+                    <hr>
+                    @endforeach
+
+                    {{ $usersWithSameCreatedAt }}
+
+                    <hr>
 
 
                 </div>
