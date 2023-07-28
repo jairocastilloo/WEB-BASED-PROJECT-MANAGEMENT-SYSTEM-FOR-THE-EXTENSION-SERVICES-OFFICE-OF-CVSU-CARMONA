@@ -66,7 +66,7 @@
                             @if ($user)
                             {{ $user->name . ' ' . $user->last_name}}
                             @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
-                            {{ ', ' }}
+                            {{ ' | ' }}
                             @endif
                             @endif
 

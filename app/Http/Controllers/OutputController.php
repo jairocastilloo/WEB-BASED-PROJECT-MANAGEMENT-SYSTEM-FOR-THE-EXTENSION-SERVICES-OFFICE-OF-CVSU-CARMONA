@@ -129,4 +129,26 @@ class OutputController extends Controller
 
         return 'File uploaded successfully.';
     }
+
+    public function acceptoutput(Request $request)
+    {
+
+        $acceptIds = $request->input('acceptids');
+
+        // Update the 'approval' field in SubtaskContributor table
+        OutputUser::where('created_at', $acceptIds)->update(['approval' => 1]);
+
+        $outputids = OutputUser::where('created_at', $acceptIds)
+            ->pluck('output_id');
+
+        foreach ($outputids as $outputid) {
+
+            $outputuser = OutputUser::where('created_at', $acceptIds)
+                ->where('output_id', $outputid)
+                ->first();
+            $outputsubmitted = $outputuser->output_submitted;
+            Output::where('id', $outputid)->increment('totaloutput_submitted', $outputsubmitted);
+        }
+        return 'File uploaded successfully.';
+    }
 }

@@ -62,7 +62,7 @@
 
                         <!--  <button type="button" class="btn btn-outline-primary mt-2" id="submitreport2">Submit Report</button> -->
                         <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
+                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn" data-value="{{ $outputtype }}">Submit Report</button>
                         </div>
                 </form>
             </div>
@@ -171,6 +171,12 @@
 
         $('#submitreport-btn').click(function(event) {
             event.preventDefault();
+            var outputtype = $(this).attr('data-value');
+            var actid = $('#actid').val();
+
+            var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':outputtype', outputtype);
 
             $("#outputnumber").val($('input[name="output-quantity[]"]').length);
             $("#facilitatornumber").val($('input[name^="output-facilitator["][name$="]"]').length);

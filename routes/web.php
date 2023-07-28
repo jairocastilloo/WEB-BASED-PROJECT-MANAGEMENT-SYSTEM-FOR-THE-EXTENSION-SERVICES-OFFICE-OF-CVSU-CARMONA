@@ -73,6 +73,7 @@ Route::prefix('/subtasks')->group(function () {
 
 Route::prefix('/activities')->group(function () {
     Route::get('/{activityid}/{department}/{activityname}', [ActivityController::class, 'displayactivity'])->name('activities.display');
+    Route::post('/acceptoutput', [OutputController::class, 'acceptoutput'])->name('output.accept');
 });
 
 Route::prefix('/projects')->group(function () {

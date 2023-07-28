@@ -24,7 +24,7 @@
                     </div>
                     <h5>{{ $outputtype }}</h5>
                     @foreach ($currentoutputtype as $currentoutput)
-                    {{ $currentoutput['output_name'] . ': ' . $currentoutput['output_submitted' ]}}</br>
+                    {{ $currentoutput['output_name'] . ': ' . $currentoutput['totaloutput_submitted' ]}}</br>
                     @endforeach
                     @if( Auth::user()-> role === "Admin")
                     <button type="button" class="btn btn-outline-secondary" id="editoutput-btn">Edit</button>
@@ -36,53 +36,62 @@
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Unevaluated Output</h6>
                     </div>
-                    @foreach ($unique_outputcreated as $outputcreated)
+                    <ul class="list-unstyled small">
+                        @foreach ($unique_outputcreated as $outputcreated)
 
-                    @foreach($unapprovedoutputdata as $unapprovedoutput)
-                    @if ($outputcreated == $unapprovedoutput['created_at'])
-                    @php
-                    $output = \App\Models\Output::find($unapprovedoutput['output_id']);
-                    @endphp
-                    @if ($output)
-                    {{ $output->output_name  }}
-                    @endif
-                    : {{ $unapprovedoutput['output_submitted']  }}<br>
-                    @endif
-                    @endforeach
-
-
-
-                    Facilitator:
-                    @foreach($usersWithSameCreatedAt as $usersame)
-                    @if ($usersame['created_at'] == $outputcreated)
-                    @php
-                    $userIds = explode(',', $usersame->user_ids);
-                    @endphp
-                    @foreach ($userIds as $userId)
-                    @php
-                    $user = \App\Models\User::find($userId);
-                    @endphp
-                    @if ($user)
-                    {{ $user->name . ' ' . $user->last_name}}
-                    @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
-                    {{ ', ' }}
-                    @endif
-                    @endif
-
-                    @endforeach
+                        <li>
+                            @foreach($unapprovedoutputdata as $unapprovedoutput)
+                            @if ($outputcreated == $unapprovedoutput['created_at'])
+                            @php
+                            $output = \App\Models\Output::find($unapprovedoutput['output_id']);
+                            @endphp
+                            @if ($output)
+                            <b>{{ $output->output_name  }}:</b>
+                            @endif
+                            {{ $unapprovedoutput['output_submitted']  }}<br>
+                            @endif
+                            @endforeach
 
 
 
-                    @endif
-                    @endforeach
+                            Facilitator:
+                            @foreach($usersWithSameCreatedAt as $usersame)
+                            @if ($usersame['created_at'] == $outputcreated)
+                            @php
+                            $userIds = explode(',', $usersame->user_ids);
+                            @endphp
+                            @foreach ($userIds as $userId)
+                            @php
+                            $user = \App\Models\User::find($userId);
+                            @endphp
+                            @if ($user)
+                            {{ $user->name . ' ' . $user->last_name}}
+                            @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
+                            {{ ' | ' }}
+                            @endif
+                            @endif
 
-                    <hr>
-                    @endforeach
+                            @endforeach
 
 
 
-                    <hr>
+                            @endif
+                            @endforeach
 
+                            <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
+                                @csrf
+
+                                <input type="text" value="{{ $outputcreated }}" name="acceptids" id="acceptids">
+                                <button type="button" class="btn btn-sm btn-outline-success acceptoutput-btn">Accept</button>
+                            </form>
+                        </li>
+                        <hr>
+                        @endforeach
+
+
+
+
+                    </ul>
 
                 </div>
 
@@ -113,6 +122,7 @@
 
 @section('scripts')
 <script>
+    var url = "";
     $(document).ready(function() {
 
         $('#projectdiv').click(function(event) {
@@ -153,7 +163,27 @@
             url = url.replace(':activityid', activityid);
             window.location.href = url;
         });
+        $(document).on('click', '.acceptoutput-btn', function() {
+            var acceptIdsValue = $(this).prev().val();
+            var dataurl = $(this).parent().attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $(this).parent().serialize();
 
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
     });
 </script>
 @endsection
