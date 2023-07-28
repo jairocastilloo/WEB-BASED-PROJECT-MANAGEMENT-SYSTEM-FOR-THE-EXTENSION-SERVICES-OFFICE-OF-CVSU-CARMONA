@@ -16,60 +16,51 @@
     </div>
 
     <div class="container">
-        <div class="row">
-            <div class="col-1">
 
+        <form id="addtooutputform" data-url="{{ route('addto.output') }}">
+            <div class="basiccont p-2">
+                <div class="border-bottom ps-1 mb-2">
+                    <h6 class="small"><b>Output to be Submitted - </b>{{ $outputtype }}</h6>
+                </div>
+
+                @csrf
+                <input type="number" class="d-none" id="outputnumber" name="outputnumber">
+                <input type="number" class="d-none" id="facilitatornumber" name="facilitatornumber">
+                <input type="number" class="d-none" id="output-facilitator-0" name="output-facilitator[0]">
+                @foreach ($currentoutputtype as $currentoutput)
+                <div class="mb-3">
+                    <label class="form-label">{{ $currentoutput['output_name'] }}:</label>
+                    <input type="number" class="d-none" id="output-id" name="output-id[]" value="{{ $currentoutput['id'] }}">
+                    <input type="number" class="form-control" id="output-quantity" name="output-quantity[]" placeholder="Enter the quantity" min="0" step="1">
+                </div>
+                @endforeach
 
             </div>
-            <div class="col-10">
-                <form id="addtooutputform" data-url="{{ route('addto.output') }}">
-                    <div class="basiccont p-2">
-                        <div class="border-bottom ps-1 mb-2">
-                            <h6 class="small"><b>Output to be Submitted - </b>{{ $outputtype }}</h6>
-                        </div>
+            <div class="basiccont p-2">
+                <div class="border-bottom ps-1">
+                    <h6 class="fw-bold small">Facilitator Involved</h6>
+                </div>
+                <div class="row p-1 assignees-name">
 
-                        @csrf
-                        <input type="number" class="d-none" id="outputnumber" name="outputnumber">
-                        <input type="number" class="d-none" id="facilitatornumber" name="facilitatornumber">
-                        <input type="number" class="d-none" id="output-facilitator-0" name="output-facilitator[0]">
-                        @foreach ($currentoutputtype as $currentoutput)
-                        <div class="mb-3">
-                            <label class="form-label">{{ $currentoutput['output_name'] }}:</label>
-                            <input type="number" class="d-none" id="output-id" name="output-id[]" value="{{ $currentoutput['id'] }}">
-                            <input type="number" class="form-control" id="output-quantity" name="output-quantity[]" placeholder="Enter the quantity" min="0" step="1">
-                        </div>
-                        @endforeach
+                </div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addfacilitator-btn">Add Facilitator</button>
+            </div>
+            <div class="basiccont p-2">
+                <div class="border-bottom ps-1 mb-2">
+                    <h6 class="fw-bold small">Supporting documents</h6>
+                </div>
 
-                    </div>
-                    <div class="basiccont p-2">
-                        <div class="border-bottom ps-1">
-                            <h6 class="fw-bold small">Facilitator Involved</h6>
-                        </div>
-                        <div class="row p-1 assignees-name">
-
-                        </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addfacilitator-btn">Add Facilitator</button>
-                    </div>
-                    <div class="basiccont p-2">
-                        <div class="border-bottom ps-1 mb-2">
-                            <h6 class="fw-bold small">Supporting documents</h6>
-                        </div>
-
-                        <label class="form-label" for="customFile">Submit Activity Report:</label>
-                        <!-- <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data" id="addtooutputform2">
+                <label class="form-label" for="customFile">Submit Activity Report:</label>
+                <!-- <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data" id="addtooutputform2">
                         @csrf-->
-                        <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs">
+                <input type="file" class="form-control" id="customFile" accept=".docx" name="outputdocs">
 
-                        <!--  <button type="button" class="btn btn-outline-primary mt-2" id="submitreport2">Submit Report</button> -->
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn" data-value="{{ $outputtype }}">Submit Report</button>
-                        </div>
-                </form>
-            </div>
-            <div class="col-1">
+                <!--  <button type="button" class="btn btn-outline-primary mt-2" id="submitreport2">Submit Report</button> -->
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn" data-value="{{ $outputtype }}">Submit Report</button>
+                </div>
+        </form>
 
-            </div>
-        </div>
 
     </div>
 </div>

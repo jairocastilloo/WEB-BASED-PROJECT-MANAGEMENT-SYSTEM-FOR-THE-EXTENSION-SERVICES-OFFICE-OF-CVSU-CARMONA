@@ -15,63 +15,55 @@
         </div>
     </div>
 
+
     <div class="container">
-        <div class="row">
-            <div class="col-1">
+        <form id="addtosubtaskform" data-url="{{ route('addto.subtask') }}">
+            <div class="basiccont p-2">
+                <div class="border-bottom ps-1 mb-2">
+                    <h6 class="small"><b>Hours rendered </b></h6>
+                </div>
+
+                @csrf
+
+                <input type="number" class="d-none" id="contributornumber" name="contributornumber">
+                <input type="number" class="d-none" id="subtask-contributor-0" name="subtask-contributor[0]">
+
+                <div class="mb-3">
+                    <label class="form-label">Hours rendered</label>
+                    <input type="number" class="d-none" id="subtask-id" name="subtask-id" value="{{ $subtask['id'] }}">
+                    <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
+                </div>
 
 
             </div>
-            <div class="col-10">
-                <form id="addtosubtaskform" data-url="{{ route('addto.subtask') }}">
-                    <div class="basiccont p-2">
-                        <div class="border-bottom ps-1 mb-2">
-                            <h6 class="small"><b>Hours rendered </b></h6>
-                        </div>
+            <div class="basiccont p-2">
+                <div class="border-bottom ps-1">
+                    <h6 class="fw-bold small">Contributor</h6>
+                </div>
+                <div class="row p-1 contributor-name">
 
-                        @csrf
-
-                        <input type="number" class="d-none" id="contributornumber" name="contributornumber">
-                        <input type="number" class="d-none" id="subtask-contributor-0" name="subtask-contributor[0]">
-
-                        <div class="mb-3">
-                            <label class="form-label">Hours rendered</label>
-                            <input type="number" class="d-none" id="subtask-id" name="subtask-id" value="{{ $subtask['id'] }}">
-                            <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
-                        </div>
-
-
-                    </div>
-                    <div class="basiccont p-2">
-                        <div class="border-bottom ps-1">
-                            <h6 class="fw-bold small">Contributor</h6>
-                        </div>
-                        <div class="row p-1 contributor-name">
-
-                        </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addcontributor-btn">Add Contributor</button>
-                    </div>
-                    <div class="basiccont p-2">
-                        <div class="border-bottom ps-1 mb-2">
-                            <h6 class="fw-bold small">Supporting documents</h6>
-                        </div>
-
-                        <label class="form-label" for="customFile">Submit Subtask Report:</label>
-
-                        <input type="file" class="form-control" id="customFile" accept=".docx" name="subtaskdocs">
-
-
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
-                        </div>
-                </form>
+                </div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addcontributor-btn">Add Contributor</button>
             </div>
-            <div class="col-1">
+            <div class="basiccont p-2">
+                <div class="border-bottom ps-1 mb-2">
+                    <h6 class="fw-bold small">Supporting documents</h6>
+                </div>
 
-            </div>
-        </div>
+                <label class="form-label" for="customFile">Submit Subtask Report:</label>
+
+                <input type="file" class="form-control" id="customFile" accept=".docx" name="subtaskdocs">
 
 
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-primary mt-2" id="submitreport-btn">Submit Report</button>
+                </div>
+        </form>
     </div>
+
+
+
+</div>
 
 </div>
 

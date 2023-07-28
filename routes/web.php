@@ -10,6 +10,7 @@ use App\Http\Controllers\OutputController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\ReportController;
 use App\Models\Activity;
 
 /*
@@ -80,4 +81,8 @@ Route::prefix('/activities')->group(function () {
 Route::prefix('/projects')->group(function () {
     Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('projects.display');
     Route::get('/{department}/newproject', [ProjectController::class, 'newproject'])->name('projects.new');
+});
+Route::prefix('/projectinsights')->group(function () {
+    Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
+    Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
 });
