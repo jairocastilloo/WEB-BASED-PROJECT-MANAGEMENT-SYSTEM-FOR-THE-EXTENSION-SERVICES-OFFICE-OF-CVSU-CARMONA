@@ -210,6 +210,8 @@ class ActivityController extends Controller
         $addassignee->save();
     }
 
+
+
     public function unassignassignee(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -394,5 +396,22 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'objectives' => $objectives,
         ]);
+    }
+
+    public function markcomplete(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'actid' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $actid = $request->input('actid');
+
+        $unassignassignee = Activity::where('id', $actid)
+            ->update(['actremark' => 'Completed']);
+        return response()->json(['success' => true], 200);
     }
 }

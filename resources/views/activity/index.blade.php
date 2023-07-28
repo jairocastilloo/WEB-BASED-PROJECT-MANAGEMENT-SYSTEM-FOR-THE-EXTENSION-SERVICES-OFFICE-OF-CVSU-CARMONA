@@ -33,6 +33,7 @@
                     Budget: {{ $activity['actbudget'] }} <br>
                     Source: {{ $activity['actsource'] }} <br>
                     <div class="border-bottom d-flex justify-content-center">
+                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button" id="completeactivity-btn">Mark as Completed</button>
                         <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Edit Activity</button>
                     </div>
 
@@ -252,6 +253,28 @@
         </div>
     </div>
 </div>
+<!-- mark as completed -->
+<div class="modal fade" id="completeactivitymodal" tabindex="-1" aria-labelledby="completeactivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="completeactivityModalLabel">Complete Activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="markcompleteform" data-url="{{ route('activity.markcomplete') }}">
+                    @csrf
+                    <input type="number" class="d-none" name="actid" value="{{ $activity['id'] }}">
+                    <p> Are you sure you want to mark the Activity: "{{ $activity['actname'] }}" as completed?
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="markcomplete-btn">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -262,6 +285,34 @@
     var assignees = <?php echo json_encode($assignees) ?>;
     $(document).ready(function() {
 
+        $('#completeactivity-btn').click(function(event) {
+            event.preventDefault();
+            $('#completeactivitymodal').modal('show');
+
+        });
+
+        $('#markcomplete-btn').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#markcompleteform').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#markcompleteform').serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
         $('#projectdiv').click(function(event) {
             event.preventDefault();
             var projectid = $(this).attr('data-value');
