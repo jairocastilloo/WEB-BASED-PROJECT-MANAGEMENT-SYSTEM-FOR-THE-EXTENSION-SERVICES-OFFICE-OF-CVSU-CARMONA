@@ -81,7 +81,7 @@
                             <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
                                 @csrf
 
-                                <input type="text" value="{{ $outputcreated }}" name="acceptids" id="acceptids">
+                                <input type="text" class="d-none" value="{{ $outputcreated }}" name="acceptids" id="acceptids">
                                 <button type="button" class="btn btn-sm btn-outline-success acceptoutput-btn">Accept</button>
                             </form>
                         </li>

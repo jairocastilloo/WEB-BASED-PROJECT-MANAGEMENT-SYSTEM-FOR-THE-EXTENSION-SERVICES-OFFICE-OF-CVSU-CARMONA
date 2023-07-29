@@ -38,7 +38,15 @@ $.each(users, function(index, user) {
   select.append(option);
 });
 
-
+// CREATE PROJECT
+   
+$.each(users, function(index, user) {
+        
+  $('#member-select').append($('<option>', {
+      value: user.id,
+      text: user.name + " " + user.last_name
+  }));
+});
     function updateButtons(){
       if (currentstep == 0){
         $('#prevproject').hide();
@@ -200,25 +208,7 @@ $.each(users, function(index, user) {
     });
     
 
-    // CREATE PROJECT
-    users.sort(function(a, b) {
-        var nameA = a.name.toUpperCase(); // Convert name to uppercase to compare
-        var nameB = b.name.toUpperCase(); // Convert name to uppercase to compare
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0; // Names are equal
-      });
-    $.each(users, function(index, user) {
-        
-        $('#member-select').append($('<option>', {
-            value: user.id,
-            text: user.name + " " + user.last_name
-        }));
-    });
+    
     
 
 

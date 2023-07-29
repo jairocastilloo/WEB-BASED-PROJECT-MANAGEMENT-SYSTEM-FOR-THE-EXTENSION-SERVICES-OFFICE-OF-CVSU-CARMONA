@@ -63,6 +63,7 @@ class ActivityController extends Controller
             'project_id' => $projectindex,
         ];
         DB::table('activities')->insert($activityData);
+        /*
         $newactivityId = DB::getPdo()->lastInsertId();
 
         $validatedData = $request->validate([
@@ -132,7 +133,7 @@ class ActivityController extends Controller
             }
         }
 
-
+*/
         return response()->json(['success' => true]);
     }
 

@@ -30,7 +30,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-Route::get('/user/{id}/project', [ProjectController::class, 'showproject'])->name('project.show');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
@@ -79,9 +79,15 @@ Route::prefix('/activities')->group(function () {
 });
 
 Route::prefix('/projects')->group(function () {
+    Route::get('/{department}', [ProjectController::class, 'showproject'])->name('project.show');
     Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('projects.display');
     Route::get('/{department}/newproject', [ProjectController::class, 'newproject'])->name('projects.new');
 });
+Route::prefix('/projectinsights')->group(function () {
+    Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
+    Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
+});
+
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
     Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');

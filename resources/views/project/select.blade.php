@@ -28,9 +28,9 @@
 
 
 
-                @if ( Auth::user()->role === "Admin")
+
                 <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Start New Project</b></button>
-                @endif
+
             </div>
 
             <div class="basiccont m-4 me-0 p-3 rounded">
@@ -397,6 +397,7 @@
                             </div>
                         </form>
                     </div>
+                    <!--
                     <div class="tab-pane fade" id="assignees" role="tabpanel" aria-labelledby="assignees-tab">
                         <div class="container-fluid" id="assigneesform">
                             <form id="act2">
@@ -433,6 +434,7 @@
                             <button type="button" class="addoutput-button btn btn-success" id="addoutput">Add Output</button>
                         </div>
                     </div>
+-->
                 </div>
             </div>
             <div class="modal-footer">

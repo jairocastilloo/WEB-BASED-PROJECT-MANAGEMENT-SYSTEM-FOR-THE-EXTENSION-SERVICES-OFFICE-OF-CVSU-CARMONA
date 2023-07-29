@@ -353,7 +353,6 @@ $('#submithours').click((event) => {
 $(document).on('click', '.markasdone-button', function() {
     event.preventDefault();
     
-    console.log("asdasd");
 
     var dataurl = $(this).parent().attr('data-url');
     var data1 = $(this).parent().serialize();

@@ -34,16 +34,16 @@
         });
         if (approval === '1') {
             if (role === 'Coordinator') {
-                url = '{{ route("user.show", ["id" => Auth::user()->id]) }}';
+                url = '{{ route("tasks.show", ["username" => Auth::user()->username]) }}';
 
                 window.location.href = url;
             } else if (role === 'Implementer') {
-                url = '{{ route("user.show", ["id" => Auth::user()->id]) }}';
+                url = '{{ route("tasks.show", ["username" => Auth::user()->username]) }}';
 
                 window.location.href = url;
 
             } else if (role === 'Admin') {
-                url = '{{ route("admin.manage", ["id" => Auth::user()->id]) }}';
+                url = '{{ route("tasks.show", ["username" => Auth::user()->username]) }}';
 
                 window.location.href = url;
             }

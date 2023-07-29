@@ -97,6 +97,8 @@
 
 
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
+        <!-- New Project -->
+
         <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -119,7 +121,6 @@
                         <div class="tab-content">
 
                             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-
                                 <!-- Form for tab 1 -->
                                 <form id="form1" data-url="{{ route('project.store') }}">
                                     @csrf
@@ -133,7 +134,12 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="projectleader" class="form-label">Project Leader</label>
-                                        <input type="text" class="form-control" id="projectleader" name="projectleader">
+                                        <select class="form-select" name="projectleader" id="projectleader">
+                                            <option selected disabled>Select Project Leader</option>
+
+
+                                        </select>
+                                        <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
                                     </div>
                                     <div class="mb-3">
                                         <label for="programtitle" class="form-label">Program Title</label>
@@ -161,7 +167,7 @@
                                 <div class="container-fluid" id="memberform">
                                     <form id="form2">
                                         @csrf
-                                        <label for="projectmembers" class="form-label mt-2">Assign Members for the Project</label>
+                                        <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                         <div class="mb-2 row" id="selectmember">
                                             <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
                                                 <option value="" selected disabled>Select a Member</option>
@@ -170,7 +176,8 @@
                                         </div>
 
                                     </form>
-                                    <button type="button" class="addmember-button btn btn-success" id="addmember">Add Member</button>
+                                    <button type="button" class="addmember-button btn btn-success w-100" id="addmember">Add Member</button>
+
                                 </div>
 
                             </div>
@@ -178,31 +185,33 @@
                             <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
                                 <!-- Form for tab 2 -->
 
-                                <div class="container-fluid" id="objectiveform">
+                                <div class="container-fluid" id="objform">
                                     <form id="form3">
                                         @csrf
                                         <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
-                                        <div class="mb-2 row" id="#selectobjectives">
-                                            <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
-                                            <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
-                                            <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
+                                        <div class="container-fluid" id="objectiveset">
+                                            <div>
+                                                <div class="mb-2 row" id="selectobjectives">
+                                                    <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                                    <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
+                                                    <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
+                                                    <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button>
+                                            <hr>
                                         </div>
-
                                     </form>
-                                    <button type="button" class="addobjective-button btn btn-success" id="addobjective">Add Objective</button>
+                                    <button type="button" class="addset btn btn-success w-100" id="addset">Add Objective Set</button>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-secondary" id="prevproject">Previous</button>
                         <button type="button" class="btn btn-info" id="nextproject">Next</button>
                         <button type="button" class="btn btn-primary" id="createproject">Create Project</button>
-
                     </div>
                 </div>
             </div>

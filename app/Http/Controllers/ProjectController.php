@@ -21,19 +21,15 @@ class ProjectController extends Controller
 {
     //
 
-    public function showproject($id)
+    public function showproject($department)
     {
-        $user = User::findOrFail($id);
-        $department = $user->department;
+        $user = User::where('department', $department)->first();
+
         $projects = $user->projects;
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
-            ->get(['id', 'name']);
-        $activities = Activity::all();
+            ->get(['id', 'name', 'middle_name', 'last_name']);
 
-        $activities->map(function ($activity) {
-            return $activity->actremark;
-        });
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
     public function getobjectives($id, $projectid)
@@ -212,11 +208,5 @@ class ProjectController extends Controller
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
         return view('project.select', ['members' => $users, 'projects' => $projects, 'project' => $project, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'activityassignees' => $activityassignees, 'subtasks' => $subtasks, 'outputs' => $outputs]);
-    }
-
-    public function newproject($department)
-    {
-
-        return view('project.new');
     }
 }
