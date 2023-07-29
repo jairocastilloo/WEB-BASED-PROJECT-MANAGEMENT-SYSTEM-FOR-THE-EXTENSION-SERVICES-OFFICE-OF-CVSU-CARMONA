@@ -1,6 +1,9 @@
 
 
 $(document).ready(function() {
+
+
+  
     var currentstep = 0;
     var setcount = 0;
 
@@ -28,6 +31,7 @@ $(document).ready(function() {
 
   // Populate the select options
 var select = $("#projectleader");
+
 $.each(users, function(index, user) {
   if (user.middle_name) {
     user.middle_name = user.middle_name.charAt(0).toUpperCase() + '.';
@@ -39,14 +43,31 @@ $.each(users, function(index, user) {
 });
 
 // CREATE PROJECT
-   
+var select1 = $("#member-select");
+var select2 = $("#programleader");
 $.each(users, function(index, user) {
-        
-  $('#member-select').append($('<option>', {
-      value: user.id,
-      text: user.name + " " + user.last_name
-  }));
+  if (user.middle_name) {
+    user.middle_name = user.middle_name.charAt(0).toUpperCase() + '.';
+  }
+  var optionText = user.last_name + ', ' + user.name + ' ' + (user.middle_name || '');
+  var optionValue = user.id;
+  var option = $('<option>').text(optionText).val(optionValue);
+  select1.append(option);
+  
 });
+
+$.each(users, function(index, user) {
+  if (user.middle_name) {
+    user.middle_name = user.middle_name.charAt(0).toUpperCase() + '.';
+  }
+  var optionText = user.last_name + ', ' + user.name + ' ' + (user.middle_name || '');
+  var optionValue = user.id;
+  var option = $('<option>').text(optionText).val(optionValue);
+  select2.append(option);
+  
+});
+
+
     function updateButtons(){
       if (currentstep == 0){
         $('#prevproject').hide();
@@ -88,8 +109,9 @@ $.each(users, function(index, user) {
     $('#addproj').click((event) => {
 
       event.preventDefault();
-  
+      
       updateButtons();
+      $('#newproject').modal('show');
     });
     $('#tab1-tab').click((event) => {
 
@@ -231,11 +253,14 @@ $.each(users, function(index, user) {
             return 0; // Names are equal
           });
 
-        $.each(users, function(index, user) {
+       $.each(users, function(index, user) {
+        if (user.middle_name) {
+          user.middle_name = user.middle_name.charAt(0).toUpperCase() + '.';
+        }
           if (user.last_name){
             $('#memberform form div:last #member-select').append($('<option>', {
                 value: user.id,
-                text: user.name + ' ' + user.last_name
+                text: user.last_name + ', ' + user.name + ' ' + user.middle_name
             }));
           }  else {
             $('#memberform form div:last #member-select').append($('<option>', {
@@ -246,6 +271,8 @@ $.each(users, function(index, user) {
           }
           
         });
+        
+        
         $('#addmember').hide();
       });
     
@@ -319,7 +346,6 @@ $.each(users, function(index, user) {
 
           }
         });
-
       
         $(this).remove();
         $('#form2 div .edit-member').hide();
