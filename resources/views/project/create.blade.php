@@ -38,7 +38,7 @@ $newprojectID = $lastProject->id + 1;
 
 
 
-        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" id="addproj">
+        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-1 border-warning text-body" style="background-color: gold;" id="addproj">
             <b class="small">Start New Project</b>
         </button>
         <!--
@@ -120,7 +120,7 @@ $newprojectID = $lastProject->id + 1;
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
-                                <input type="text" class="form-control" id="projecttitle" name="projecttitle">
+                                <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
                             </div>
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
@@ -132,7 +132,7 @@ $newprojectID = $lastProject->id + 1;
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
-                                <input type="text" class="form-control" id="programtitle" name="programtitle">
+                                <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
                             </div>
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Project Leader</label>
@@ -161,7 +161,7 @@ $newprojectID = $lastProject->id + 1;
                                 @csrf
                                 <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row rounded" id="selectmember">
-                                    <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
+                                    <select class="col-7 m-1 member-select p-2 rounded" id="member-select" name="projectmember[]">
                                         <option value="" selected disabled>Select a Member</option>
                                     </select>
                                     <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
@@ -188,7 +188,7 @@ $newprojectID = $lastProject->id + 1;
                                 <div class="container-fluid" id="objectiveset">
                                     <div>
                                         <div class="mb-2 row" id="selectobjectives">
-                                            <input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
                                         </div>
@@ -200,7 +200,7 @@ $newprojectID = $lastProject->id + 1;
                                     <hr>
                                 </div>
                             </form>
-                            <button type="button" class="addset btn btn-sm btn-outline-secondary w-100" id="addset">
+                            <button type="button" class="addset btn btn-outline-secondary w-100" id="addset">
                                 <b class="small">Add Objective Set</b>
                             </button>
                         </div>
@@ -208,12 +208,12 @@ $newprojectID = $lastProject->id + 1;
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn shadow rounded border border-2 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
+                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
                 <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-success" id="createproject">
+                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 

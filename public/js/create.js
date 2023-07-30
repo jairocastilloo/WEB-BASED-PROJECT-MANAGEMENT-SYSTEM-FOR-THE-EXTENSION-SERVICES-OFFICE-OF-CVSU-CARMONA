@@ -138,7 +138,7 @@ $.each(users, function(index, user) {
     $('#objectiveset').on('click', '.add-objective', function() {
       var setid = $(this).prev().find('div:first .objectivesetid').val();
        
-        var $newInput = $('<input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+        var $newInput = $('<input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
         var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setid + '" class="objectivesetid d-none">');
        
         var $newButton2 = $('<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>');
@@ -166,7 +166,7 @@ $.each(users, function(index, user) {
     $('#addset').click((event) => {
       event.preventDefault();
       setcount++;
-      var $newInput = $('<input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+      var $newInput = $('<input type="text" class="col-8 m-1 input-objective p-2 rounded autocapital" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
       var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setcount + '" class="objectivesetid d-none">');
         var $newButton2 = $('<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>');
         var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton2);
@@ -245,7 +245,7 @@ $.each(users, function(index, user) {
 
     $('#addmember').click((event) => {
         event.preventDefault();
-        var $newSelect = $(`<select class="member-select col-7 m-1" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
+        var $newSelect = $(`<select class="member-select col-7 m-1 p-2 rounded" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
         var $newButton = $('<button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember"><b class="small">Remove</b></button>');
         var $newDiv = $('<div class="mb-2 row bg-info rounded" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);

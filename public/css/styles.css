@@ -139,6 +139,7 @@ body {
     border-color: #0dcaf0;
   }
   
+  
   .btn.btn-success:hover {
     background-color: transparent;
     color: #198754;
@@ -175,6 +176,10 @@ body {
   cursor: pointer;
 }
 
+.hrefnav:hover{
+  color: darkgreen;
+ 
+}
 .navtohover {
   position: relative;
   
@@ -305,3 +310,4 @@ body {
   display: flex;
   justify-content: center;
 }
+

@@ -18,8 +18,8 @@ $newprojectID = $lastProject->id + 1;
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
 <div class="maincontainer">
-    <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
+    <div class="mainnav mb-2 shadow">
+        <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
             <h6><b>Project: {{ $currentproject['projecttitle'] }}</b></h6>
         </div>
 
@@ -27,9 +27,9 @@ $newprojectID = $lastProject->id + 1;
     <div class="row">
         <div class="col-10">
 
-            <div class="basiccont m-4 me-0 p-3 rounded">
+            <div class="basiccont m-4 me-0 p-3 rounded shadow">
                 <input type="text" class="d-none" id="department" value="{{ Auth::user()->department }}">
-                <div class="form-floating">
+                <div class="form-floating shadow">
                     <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
                         <option value="" selected disabled>Select Project</option>
                         @foreach($projects as $project1)
@@ -42,13 +42,13 @@ $newprojectID = $lastProject->id + 1;
                     <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
                 </div>
 
-                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning btn-gold text-body" id="addproj">
+                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-1 border-warning btn-gold text-body" id="addproj">
                     <b class="small">Start New Project</b>
                 </button>
 
             </div>
 
-            <div class="basiccont m-4 me-0 p-3 rounded">
+            <div class="basiccont m-4 me-0 p-3 rounded shadow">
                 <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
                 <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($currentproject['projectenddate'])) }}</u></div>
                 <div class="flex-container">
@@ -97,14 +97,14 @@ $newprojectID = $lastProject->id + 1;
                     <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($currentproject['projectstartdate'])) . '-' . date('F Y', strtotime($currentproject['projectenddate'])) }}</div>
                 </div>
 
-                <div class="btn-group dropdown dropend mt-3">
-                    <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-2 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="btn-group dropdown mt-3">
+                    <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <b class="small">Edit Project</b>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item small text-primary" href="#"><b class="small">Edit Details</b></a>
-                        <a class="dropdown-item small text-primary" href="#"><b class="small">Edit Objectives</b></a>
-                        <a class="dropdown-item small text-primary" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
+                        <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
+                        <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Objectives</b></a>
+                        <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
 
                     </div>
                 </div>
@@ -116,7 +116,7 @@ $newprojectID = $lastProject->id + 1;
 
             </div>
 
-            <div class="basiccont m-4 me-0 d-flex justify-content-center align-items-center border rounded small">
+            <div class="basiccont m-4 me-0 d-flex justify-content-center align-items-center border rounded small shadow">
                 <div class="tablecontainer pb-2">
 
                     <table class="firsttable">
@@ -139,19 +139,20 @@ $newprojectID = $lastProject->id + 1;
                             @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                                 @endphp
                                 <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
-                                    <td class="p-2">
-                                        <ul class="list-unstyled">
-                                            @foreach($objectives->where('objectiveset_id', $x) as $objective)
-                                            <li>
-                                                {{ __($y) . '. ' . $objective['name'] }}
-                                            </li>
-                                            <br>
-                                            @php
-                                            $y++;
-                                            @endphp
-                                            @endforeach
+                                    <td class="ps-3 pt-3">
 
-                                        </ul>
+                                        @foreach($objectives->where('objectiveset_id', $x) as $objective)
+
+
+                                        <p class="lh-sm">{{ __($y) . '. ' . $objective['name'] }}</p>
+
+
+                                        @php
+                                        $y++;
+                                        @endphp
+                                        @endforeach
+
+
                                     </td>
                                 </tr>
                                 @php
@@ -190,7 +191,7 @@ $newprojectID = $lastProject->id + 1;
                                 @if ($actcount > 0)
                                 @foreach($activities->where('actobjectives', $x) as $activity)
                                 <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}" act-name="{{ $activity['actname'] }}">
-                                    <td class="pt-2 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
+                                    <td class="pt-4 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
                                         <ul>
                                             <li>{{ $activity['actname'] }}</li>
                                         </ul>
@@ -229,16 +230,16 @@ $newprojectID = $lastProject->id + 1;
 
         </div>
         <div class="col-2">
-            <div class="basiccont me-4 mt-4 rounded">
-                <div class="border-bottom mt-4 ps-3">
-                    <h6 class="fw-bold small text-secondary">Projects</h6>
+            <div class="basiccont me-4 mt-4 rounded shadow">
+                <div class="border-bottom mt-4 ps-2 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 @php
                 // Sort the $activities array by actstartdate in ascending order
                 $sortedProjects = $projects->sortBy('projectstartdate');
                 @endphp
                 @foreach($sortedProjects as $project)
-                <div class="border-bottom p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                <div class="border-bottom p-2 divhover projectdiv text-wrap" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
                     <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
@@ -290,7 +291,7 @@ $newprojectID = $lastProject->id + 1;
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
-                                <input type="text" class="form-control" id="projecttitle" name="projecttitle">
+                                <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
                             </div>
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
@@ -302,7 +303,7 @@ $newprojectID = $lastProject->id + 1;
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
-                                <input type="text" class="form-control" id="programtitle" name="programtitle">
+                                <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
                             </div>
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Project Leader</label>
@@ -331,7 +332,7 @@ $newprojectID = $lastProject->id + 1;
                                 @csrf
                                 <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row rounded" id="selectmember">
-                                    <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
+                                    <select class="col-7 m-1 member-select p-2 rounded" id="member-select" name="projectmember[]">
                                         <option value="" selected disabled>Select a Member</option>
                                     </select>
                                     <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
@@ -358,7 +359,7 @@ $newprojectID = $lastProject->id + 1;
                                 <div class="container-fluid" id="objectiveset">
                                     <div>
                                         <div class="mb-2 row" id="selectobjectives">
-                                            <input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
                                         </div>
@@ -370,7 +371,7 @@ $newprojectID = $lastProject->id + 1;
                                     <hr>
                                 </div>
                             </form>
-                            <button type="button" class="addset btn btn-sm btn-outline-secondary w-100" id="addset">
+                            <button type="button" class="addset btn btn-outline-secondary w-100" id="addset">
                                 <b class="small">Add Objective Set</b>
                             </button>
                         </div>
@@ -378,12 +379,12 @@ $newprojectID = $lastProject->id + 1;
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn shadow rounded border border-2 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
+                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
                 <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-success" id="createproject">
+                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 
@@ -405,7 +406,7 @@ $newprojectID = $lastProject->id + 1;
                 <form id="act1" data-url="{{ route('activity.store') }}">
                     @csrf
 
-                    <input type="number" id="projectindex" name="projectindex" value="{{ $currentproject['id'] }}">
+                    <input type="number" id="projectindex" name="projectindex" value="{{ $currentproject['id'] }}" class="d-none">
                     <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                     <div class="mb-3">
                         <label for="activityname" class="form-label">Activity Name</label>
@@ -443,8 +444,12 @@ $newprojectID = $lastProject->id + 1;
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="confirmactivity">Add activity</button>
+                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal">
+                    <b class="small">Close</b>
+                </button>
+                <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
+                    <b class="small">Add activity</b>
+                </button>
             </div>
         </div>
     </div>
@@ -579,6 +584,19 @@ $newprojectID = $lastProject->id + 1;
             }
         });
 
+        $(document).on('click', '.projectdiv', function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
+            window.location.href = url;
+        });
 
         // Add an event listener to the select element
         selectElement.change(function() {
@@ -595,7 +613,12 @@ $newprojectID = $lastProject->id + 1;
             window.location.href = url;
         });
 
-
+        $(document).on('input', '.autocapital', function() {
+            var inputValue = $(this).val();
+            if (inputValue.length > 0) {
+                $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+            }
+        });
 
 
     });

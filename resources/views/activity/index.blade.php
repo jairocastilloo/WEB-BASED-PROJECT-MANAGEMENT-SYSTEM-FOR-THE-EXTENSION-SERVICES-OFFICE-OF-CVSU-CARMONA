@@ -4,7 +4,8 @@
 
 <div class="maincontainer">
     <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }} </b></h6>
         </div>
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle longword">
@@ -320,9 +321,14 @@
         $('#projectdiv').click(function(event) {
             event.preventDefault();
             var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+            var department = $('#department').val();
 
-            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
 
