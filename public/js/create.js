@@ -181,6 +181,16 @@ $.each(users, function(index, user) {
     $('#createproject').click((event) => {
         event.preventDefault();
        
+        var incrementedid = $('#newprojectID').val();
+        var department = $('#department').val();
+        var projectname = $('#projecttitle').val();
+    
+        var projecturl = $('#projecturl').attr('data-url');
+        projecturl = projecturl.replace(':projectid', incrementedid);
+        projecturl = projecturl.replace(':department', department);
+        projecturl = projecturl.replace(':projectname', projectname);
+
+
          var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -217,7 +227,7 @@ $.each(users, function(index, user) {
         success: function(response) {
             console.log(response);
             $('#newproject').modal('toggle');
-            window.location.href = url;
+            window.location.href = projecturl;
             
         },
         error: function(xhr, status, error) {

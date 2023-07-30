@@ -4,11 +4,19 @@
 <!-- for adding activity -->
 @php
 use App\Models\Activity;
+use App\Models\Project;
 $lastActivity = Activity::latest('id')->first();
+$lastProject = Project::latest('id')->first();
+
 $incrementedID = $lastActivity->id + 1;
+$newprojectID = $lastProject->id + 1;
 @endphp
 <input class="d-none" type="number" id="incrementedID" value="{{ $incrementedID }}">
 <input class="d-none" type="number" id="acturl" data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
+
+<input class="d-none" type="number" id="newprojectID" value="{{ $newprojectID }}">
+<input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
+
 <div class="maincontainer">
     <div class="mainnav mb-2">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
@@ -358,97 +366,46 @@ $incrementedID = $lastActivity->id + 1;
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Details</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="assignees-tab" data-bs-toggle="tab" data-bs-target="#assignees" type="button" role="tab" aria-controls="assignees" aria-selected="false">Assignees</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="output-tab" data-bs-toggle="tab" data-bs-target="#output" type="button" role="tab" aria-controls="output" aria-selected="false">Output</button>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-                        <form id="act1" data-url="{{ route('activity.store') }}">
-                            @csrf
-                            <input type="number" class="d-none" id="assigneesindex" name="assigneesindex">
-                            <input type="number" class="d-none" id="outputindex" name="outputindex">
-                            <input type="number" class="d-none" id="projectindex" name="projectindex">
-                            <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
-                            <div class="mb-3">
-                                <label for="activityname" class="form-label">Activity Name</label>
-                                <input type="text" class="form-control" id="activityname" name="activityname">
-                            </div>
-                            <div class="mb-3">
-                                <label for="objectives" class="form-label">Objectives</label>
-                                <select class="form-select" id="objective-select" name="objectives">
-                                    <option value="" selected disabled>Choose Objectives</option>
-                                    <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="expectedoutput" class="form-label">Expected Output</label>
-                                <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
-                            </div>
-                            <div class="mb-3">
-                                <label for="startdate" class="form-label">Activity Start Date</label>
-                                <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
-                            </div>
-                            <div class="mb-3">
-                                <label for="enddate" class="form-label">Activity End Date</label>
-                                <input type="date" class="form-control" id="activityenddate" name="activityenddate">
-                            </div>
-                            <div class="mb-3">
-                                <label for="budget" class="form-label">Budget</label>
-                                <input type="number" class="form-control" id="budget" name="budget">
-                            </div>
-                            <div class="mb-3">
-                                <label for="Source" class="form-label">Source</label>
-                                <input type="text" class="form-control" id="Source" name="source">
-                            </div>
-                        </form>
+
+                <form id="act1" data-url="{{ route('activity.store') }}">
+                    @csrf
+
+                    <input type="number" class="d-none" id="projectindex" name="projectindex" value="{{ $project['id'] }}">
+                    <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
+                    <div class="mb-3">
+                        <label for="activityname" class="form-label">Activity Name</label>
+                        <input type="text" class="form-control" id="activityname" name="activityname">
                     </div>
-                    <!--
-                    <div class="tab-pane fade" id="assignees" role="tabpanel" aria-labelledby="assignees-tab">
-                        <div class="container-fluid" id="assigneesform">
-                            <form id="act2">
-                                @csrf
-                                <label for="assignees" class="form-label mt-2">Assign project members for the activity</label>
-                                <div class="mb-2 row" id="selectassignees">
-                                    <select class="col-9 m-1" id="assignees-select" name="assignees[]">
-                                        <option value="" selected disabled>Select a Member</option>
-                                    </select>
-                                    <button type="button" class="remove-assignees btn btn-danger col-2 m-1" id="removeassignees">Remove</button>
-                                </div>
+                    <div class="mb-3">
+                        <label for="objectives" class="form-label">Objectives</label>
+                        <select class="form-select" id="objective-select" name="objectives">
+                            <option value="" selected disabled>Choose Objectives</option>
+                            <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="expectedoutput" class="form-label">Expected Output</label>
+                        <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
+                    </div>
+                    <div class="mb-3">
+                        <label for="startdate" class="form-label">Activity Start Date</label>
+                        <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="enddate" class="form-label">Activity End Date</label>
+                        <input type="date" class="form-control" id="activityenddate" name="activityenddate">
+                    </div>
+                    <div class="mb-3">
+                        <label for="budget" class="form-label">Budget</label>
+                        <input type="number" class="form-control" id="budget" name="budget">
+                    </div>
+                    <div class="mb-3">
+                        <label for="Source" class="form-label">Source</label>
+                        <input type="text" class="form-control" id="Source" name="source">
+                    </div>
+                </form>
 
 
-                            </form>
-                            <button type="button" class="addassignees-button btn btn-success" id="addassignees">Add Assignees</button>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="output" role="tabpanel" aria-labelledby="output-tab">
-                        <div class="container-fluid" id="outputform">
-                            <form id="act3">
-                                @csrf
-                                <label for="output" class="form-label mt-2">Select what output should be submitted to this activity.</label>
-                                <div class="mb-2 row" id="selectoutput">
-                                    <select class="col-9 m-1" id="output-select" name="output[]">
-                                        <option value="" selected disabled>Select Output Type</option>
-                                        <option value="Capacity building">Capacity building</option>
-                                        <option value="IEC Material">IEC Material</option>
-                                        <option value="Advisory services">Advisory services</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                    <button type="button" class="remove-output btn btn-danger col-2 m-1" id="removeoutput">Remove</button>
-                                </div>
-                            </form>
-                            <button type="button" class="addoutput-button btn btn-success" id="addoutput">Add Output</button>
-                        </div>
-                    </div>
--->
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -458,155 +415,6 @@ $incrementedID = $lastActivity->id + 1;
     </div>
 </div>
 
-</div>
-<!--subtask -->
-
-<div class="modal" id="new-subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="subtaskform" data-url="{{ route('subtask.store') }}">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="new-subtask-modal-label">New Subtask</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="mb-3">
-                        <label for="subtask-name" class="form-label">Subtask Name</label>
-                        <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
-                    </div>
-                    <div class="mb-3">
-                        <label for="assignee" class="form-label">Subtask Assignee</label>
-                        <select class="form-select" id="subtaskassignee" name="subtaskassignee">
-                            <option value="" selected disabled>Select subtask assignee</option>
-                        </select>
-                        <input type="number" class="form-control d-none" id="activitynumber" name="activitynumber">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="createsubtask">Add Subtask</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!--assignees-->
-<div class="modal fade" id="assigneesModal" tabindex="-1" aria-labelledby="namesModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="namesModalLabel">Assignees</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <label id="labeltoselect"></label>
-                <form id="activityassigneesform">
-                    <div class="mb-2 row firstselect" id="selectactivityassignees">
-                        <select class="col-9 m-1" id="firstactivityassignees" name="activityassignees[]" disabled>
-                        </select>
-                        <button type="button" class="delete-activityassignees btn btn-sm btn-danger col-2 m-1 btn-hover-toggle d-none btn-sm">Delete</button>
-                    </div>
-                </form>
-                <div class="row mb-2 btn-activityassignees">
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-sm btn-primary btn-hover-outline-primary add-activityassignees">Add Assignees</button>
-                    </div>
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-sm btn-danger" id="remove-activityassignees">Remove Assignees</button>
-                    </div>
-                </div>
-                <div class="row mb-2 d-none btn-confirmremoveactivityassignees">
-
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-sm btn-primary btn-hover-outline-primary confirm-removeactivityassignees">Confirm Deleting</button>
-                    </div>
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-sm btn-danger cancel-activityassignees">Cancel Deleting</button>
-                    </div>
-                </div>
-                <div class="row mb-2 d-none btn-confirmaddactivityassignees">
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-sm btn-primary btn-hover-outline-primary confirm-addactivityassignees">Confirm Adding</button>
-                    </div>
-
-                    <div class="col-6 d-flex justify-content-center align-items-center">
-                        <button type="button" class="btn btn-sm btn-danger cancel-activityassignees">Cancel Removing</button>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--output-->
-<div class="modal fade" id="output-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="outputmodallabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="outputformdiv">
-                <form id="outputformsubmit" data-url="{{ route('output.submit') }}">
-                    @csrf
-                    <input type="number" class="d-none" id="submitoutputindex" name="submitoutputindex">
-                    <div class="mb-2 row" id="firstoutput-container">
-                        <label class="col-7 m-1 output-label"></label>
-                        <input type="number" class="col-4 m-1" name="output-number[0]">
-                        <input type="text" class="d-none firstoutput-name" name="out-name[0]">
-                        <input type="text" class="d-none firstoutput-type" name="out-type[0]">
-                    </div>
-                </form>
-
-
-            </div>
-            <form method="POST" action="{{ route('upload.file') }}" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="file" accept=".docx">
-                <button type="submit">Upload report</button>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="submitoutput">Submit output</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--hours rendered -->
-
-<div class="modal fade" id="hours-rendered-modal" tabindex="-1" aria-labelledby="hours-rendered-modal-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="hours-rendered-modal-label">Add Hours Rendered</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="hoursform" data-url="{{ route('hoursrendered.submit') }}">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="hours-rendered-input" class="form-label">Hours Rendered:</label>
-                        <input type="number" class="form-control" name="hours-rendered-input" id="hours-rendered-input" placeholder="Enter hours rendered" min="0" step="0.5">
-                        <input type="text" class="d-none hours-subname" name="hours-subname">
-                        <input type="text" class="d-none hours-actid" name="hours-actid">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="submithours">Submit hours</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection
 

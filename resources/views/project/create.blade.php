@@ -1,6 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+
+@php
+
+use App\Models\Project;
+
+$lastProject = Project::latest('id')->first();
+
+$newprojectID = $lastProject->id + 1;
+@endphp
+
+<input class="d-none" type="number" id="newprojectID" value="{{ $newprojectID }}">
+<input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
+
 <div class="maincontainer">
     &nbsp;
     <div class="basiccont m-4 p-3">
