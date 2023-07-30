@@ -20,7 +20,7 @@ $newprojectID = $lastProject->id + 1;
 <div class="maincontainer">
     <div class="mainnav mb-2">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
-            <h6><b>Project: {{ $project['projecttitle'] }}</b></h6>
+            <h6><b>Project: {{ $currentproject['projecttitle'] }}</b></h6>
         </div>
 
     </div>
@@ -32,9 +32,9 @@ $newprojectID = $lastProject->id + 1;
                 <div class="form-floating">
                     <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
                         <option value="" selected disabled>Select Project</option>
-                        @foreach($projects as $project)
-                        <option value="{{ $project->id }}" {{ $project->id == $projectid ? 'selected' : '' }}>
-                            {{ $project->projecttitle }}
+                        @foreach($projects as $project1)
+                        <option value="{{ $project1->id }}" {{ $project1->id == $projectid ? 'selected' : '' }}>
+                            {{ $project1->projecttitle }}
                         </option>
                         @endforeach
 
@@ -50,18 +50,18 @@ $newprojectID = $lastProject->id + 1;
 
             <div class="basiccont m-4 me-0 p-3 rounded">
                 <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($project['projectenddate'])) }}</u></div>
+                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($currentproject['projectenddate'])) }}</u></div>
                 <div class="flex-container">
                     <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $project['programtitle'] }}</div>
+                    <div class="underline-space inline-div ps-2">{{ $currentproject['programtitle'] }}</div>
                 </div>
                 <div class="flex-container">
                     <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                     <div class="underline-space inline-div ps-2">
                         @php
                         use App\Models\User;
-                        $programleader = User::where('id', $project['programleader'])->first(['name', 'middle_name', 'last_name']);
-                        $projectleader = User::where('id', $project['projectleader'])->first(['name', 'middle_name', 'last_name']);
+                        $programleader = User::where('id', $currentproject['programleader'])->first(['name', 'middle_name', 'last_name']);
+                        $projectleader = User::where('id', $currentproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
                         @endphp
 
                         @if ($programleader)
@@ -77,7 +77,7 @@ $newprojectID = $lastProject->id + 1;
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $project['projecttitle'] }}</div>
+                    <div class="underline-space inline-div ps-2">{{ $currentproject['projecttitle'] }}</div>
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
@@ -94,7 +94,7 @@ $newprojectID = $lastProject->id + 1;
                 </div>
                 <div class="flex-container">
                     <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($project['projectstartdate'])) . '-' . date('F Y', strtotime($project['projectenddate'])) }}</div>
+                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($currentproject['projectstartdate'])) . '-' . date('F Y', strtotime($currentproject['projectenddate'])) }}</div>
                 </div>
 
                 <div class="btn-group dropdown dropend mt-3">
@@ -405,7 +405,7 @@ $newprojectID = $lastProject->id + 1;
                 <form id="act1" data-url="{{ route('activity.store') }}">
                     @csrf
 
-                    <input type="number" class="d-none" id="projectindex" name="projectindex" value="{{ $project['id'] }}">
+                    <input type="number" id="projectindex" name="projectindex" value="{{ $currentproject['id'] }}">
                     <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                     <div class="mb-3">
                         <label for="activityname" class="form-label">Activity Name</label>
@@ -579,12 +579,6 @@ $newprojectID = $lastProject->id + 1;
             }
         });
 
-        $.each(assignees, function(index, assignee) {
-            $('#assigneesform form div:last #assignees-select').append($('<option>', {
-                value: assignee.id,
-                text: assignee.name
-            }));
-        });
 
         // Add an event listener to the select element
         selectElement.change(function() {

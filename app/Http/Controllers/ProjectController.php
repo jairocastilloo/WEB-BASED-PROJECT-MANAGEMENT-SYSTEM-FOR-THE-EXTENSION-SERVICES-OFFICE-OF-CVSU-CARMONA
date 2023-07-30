@@ -46,16 +46,16 @@ class ProjectController extends Controller
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
-        $project = Project::findOrFail($projectid);
-        $objectives = $project->objectives;
+        $currentproject = Project::findOrFail($projectid);
+        $objectives = $currentproject->objectives;
         $activities = Project::findOrFail($projectid);
-        $activities = $project->activities;
+        $activities = $currentproject->activities;
 
         $sortedActivities = $activities->sortBy('actobjectives');
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'projects' => $projects, 'project' => $project, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities]);
+        return view('project.select', ['members' => $users, 'projects' => $projects, 'currentproject' => $currentproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities]);
     }
 
     public function getactivity($id, $activityid)

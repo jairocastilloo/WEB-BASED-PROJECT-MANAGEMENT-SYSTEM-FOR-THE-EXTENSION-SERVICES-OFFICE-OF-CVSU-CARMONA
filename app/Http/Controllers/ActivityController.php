@@ -298,10 +298,6 @@ class ActivityController extends Controller
 
         $excludeUserIds = $activityUser->pluck('user_id')->toArray();
 
-        $addassignees = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
-            ->whereNotIn('id', $excludeUserIds)
-            ->get(['id', 'name', 'last_name']);
         // activity subtasks
         $subtasks = Subtask::where('activity_id', $activityid)->get();
         // activity outputs
@@ -315,6 +311,16 @@ class ActivityController extends Controller
         $objectives = Objective::where('project_id', $projectId)
             ->where('objectiveset_id', $objectiveset)
             ->get('name');
+
+        //add assignees
+        $projectuser = ProjectUser::where('project_id', $projectId)
+            ->whereNotIn('user_id', $excludeUserIds)
+            ->with('user:id,name,middle_name,last_name')
+            ->get();
+        $addassignees = $projectuser->map(function ($item) {
+            return $item->user;
+        });
+
         return view('activity.index', [
             'activity' => $activity,
             'assignees' => $assignees,
