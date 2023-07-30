@@ -57,7 +57,23 @@ $newprojectID = $lastProject->id + 1;
                 </div>
                 <div class="flex-container">
                     <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $project['programleader'] }}</div>
+                    <div class="underline-space inline-div ps-2">
+                        @php
+                        use App\Models\User;
+                        $programleader = User::where('id', $project['programleader'])->first(['name', 'middle_name', 'last_name']);
+                        $projectleader = User::where('id', $project['projectleader'])->first(['name', 'middle_name', 'last_name']);
+                        @endphp
+
+                        @if ($programleader)
+                        {{ $programleader->name }}
+                        @if ($programleader->middle_name)
+                        {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
+                        @endif
+                        {{ $programleader->last_name }}
+                        @endif
+                    </div>
+
+
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
@@ -65,11 +81,20 @@ $newprojectID = $lastProject->id + 1;
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $project['projectleader'] }}</div>
+                    <div class="underline-space inline-div ps-2">
+
+                        @if ($projectleader)
+                        {{ $projectleader->name }}
+                        @if ($projectleader->middle_name)
+                        {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
+                        @endif
+                        {{ $projectleader->last_name }}
+                        @endif
+                    </div>
                 </div>
                 <div class="flex-container">
                     <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ date('F', strtotime($project['projectenddate'])) . '-' . date('F Y', strtotime($project['projectenddate'])) }}</div>
+                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($project['projectstartdate'])) . '-' . date('F Y', strtotime($project['projectenddate'])) }}</div>
                 </div>
 
                 <div class="btn-group dropdown dropend mt-3">
@@ -164,7 +189,7 @@ $newprojectID = $lastProject->id + 1;
 
                                 @if ($actcount > 0)
                                 @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}">
+                                <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}" act-name="{{ $activity['actname'] }}">
                                     <td class="pt-2 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
                                         <ul>
                                             <li>{{ $activity['actname'] }}</li>
@@ -527,10 +552,17 @@ $newprojectID = $lastProject->id + 1;
             event.preventDefault();
 
             var activityid = $(this).data('value');
+            var activityname = $(this).attr('act-name');
+            var department = $('#department').val();
 
-            var url = '{{ route("get.activity", ["id" => Auth::user()->id, "activityid" => ":activityid"]) }}';
-            url = url.replace(':activityid', activityid);
-            window.location.href = url;
+            if (activityid != 0) {
+
+                var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+                url = url.replace(':activityid', activityid);
+                url = url.replace(':department', department);
+                url = url.replace(':activityname', activityname);
+                window.location.href = url;
+            }
         });
 
 
