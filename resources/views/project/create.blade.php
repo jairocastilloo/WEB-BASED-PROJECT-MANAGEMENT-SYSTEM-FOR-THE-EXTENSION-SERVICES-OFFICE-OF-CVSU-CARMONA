@@ -19,7 +19,7 @@
 
             </select>
 
-            <label for="project-select" style="color:darkgreen;"><strong>Select Project:</strong></label>
+            <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
         </div>
 
 

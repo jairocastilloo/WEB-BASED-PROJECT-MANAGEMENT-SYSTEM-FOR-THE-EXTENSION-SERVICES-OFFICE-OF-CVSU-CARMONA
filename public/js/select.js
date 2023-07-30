@@ -114,6 +114,16 @@ $('#memberform form').on('click', '.remove-member', function() {
 $('#confirmactivity').click((event) => {
     event.preventDefault();
     
+    var incrementedid = $('#incrementedID').val();
+    var department = $('#department').val();
+    var activityname = $('#activityname').val();
+
+    var acturl = $('#acturl').attr('data-url');
+    acturl = acturl.replace(':activityid', incrementedid);
+    acturl = acturl.replace(':department', department);
+    acturl = acturl.replace(':activityname', activityname);
+
+
     var assigneesindex = $('select[name="assignees[]"]').length;
     var outputindex = $('select[name="output[]"]').length;
    
@@ -160,7 +170,8 @@ $('#confirmactivity').click((event) => {
     success: function(response) {
         console.log(response);
         $('#newactivity').modal('toggle');
-        window.location.href = url;
+        
+        window.location.href = acturl;
         
     },
     error: function(xhr, status, error) {

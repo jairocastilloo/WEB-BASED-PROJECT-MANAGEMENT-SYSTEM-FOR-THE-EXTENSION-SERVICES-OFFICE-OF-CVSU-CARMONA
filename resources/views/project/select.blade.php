@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- for adding activity -->
+@php
+use App\Models\Activity;
+$lastActivity = Activity::latest('id')->first();
+$incrementedID = $lastActivity->id + 1;
+@endphp
+<input class="d-none" type="number" id="incrementedID" value="{{ $incrementedID }}">
+<input class="d-none" type="number" id="acturl" data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
 <div class="maincontainer">
     <div class="mainnav mb-2">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
@@ -12,7 +20,7 @@
         <div class="col-10">
 
             <div class="basiccont m-4 me-0 p-3 rounded">
-
+                <input type="text" class="d-none" id="department" value="{{ Auth::user()->department }}">
                 <div class="form-floating">
                     <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
                         <option value="" selected disabled>Select Project</option>
@@ -26,10 +34,9 @@
                     <label for="project-select" style="color:darkgreen;"><strong>Select Project:</strong></label>
                 </div>
 
-
-
-
-                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#newproject"><b class="small">Start New Project</b></button>
+                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" id="addproj">
+                    <b class="small">Start New Project</b>
+                </button>
 
             </div>
 
@@ -257,7 +264,6 @@
                                 <select class="form-select" name="projectleader" id="projectleader">
                                     <option selected disabled>Select Project Leader</option>
 
-
                                 </select>
                                 <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
                             </div>
@@ -266,8 +272,11 @@
                                 <input type="text" class="form-control" id="programtitle" name="programtitle">
                             </div>
                             <div class="mb-3">
-                                <label for="programleader" class="form-label">Program Leader</label>
-                                <input type="text" class="form-control" id="programleader" name="programleader">
+                                <label for="programleader" class="form-label">Project Leader</label>
+                                <select class="form-select" name="programleader" id="programleader">
+                                    <option selected disabled>Select Program Leader</option>
+
+                                </select>
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
@@ -328,10 +337,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-secondary" id="prevproject">Previous</button>
-                <button type="button" class="btn btn-info" id="nextproject">Next</button>
-                <button type="button" class="btn btn-primary" id="createproject">Create Project</button>
+                <button type="button" class="btn btn-sm shadow rounded border border-2 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
+                <button type="button" class="btn btn-sm shadow rounded btn-outline-primary" id="prevproject"><b class="small">Previous</b></button>
+                <button type="button" class="btn btn-sm shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
+                <button type="button" class="btn btn-sm shadow rounded btn-success" id="createproject">
+                    <b class="small">Create Project</b>
+                </button>
+
             </div>
         </div>
     </div>
@@ -360,6 +372,7 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
                         <form id="act1" data-url="{{ route('activity.store') }}">
+                            @csrf
                             <input type="number" class="d-none" id="assigneesindex" name="assigneesindex">
                             <input type="number" class="d-none" id="outputindex" name="outputindex">
                             <input type="number" class="d-none" id="projectindex" name="projectindex">
@@ -735,11 +748,15 @@
 
             var selectedOption = $(this).find(':selected');
             var projectid = selectedOption.val();
+            var projectname = selectedOption.text();
+            var department = $('#department').val();
 
-            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid);
+            url = url.replace(':department', department);
+            url = url.replace(':projectname', projectname);
             window.location.href = url;
-
         });
 
 
