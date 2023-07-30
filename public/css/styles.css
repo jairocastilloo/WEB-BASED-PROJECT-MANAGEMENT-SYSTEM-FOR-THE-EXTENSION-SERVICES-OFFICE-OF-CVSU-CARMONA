@@ -122,11 +122,21 @@ body {
     .secondtable {
     flex-shrink: 0;
     }
-    
-  .btn-danger:hover {
-    color: #dc3545;
+    .btn-gold {
+      color: black;
+      background-color: gold;
+      
+    }
+
+  .btn-gold:hover {
+    color: black;
     background-color: transparent;
-    border-color: #dc3545;
+    border-color: gold;
+  }
+  .btn-info:hover {
+    color: black;
+    background-color: transparent;
+    border-color: #0dcaf0;
   }
   
   .btn.btn-success:hover {

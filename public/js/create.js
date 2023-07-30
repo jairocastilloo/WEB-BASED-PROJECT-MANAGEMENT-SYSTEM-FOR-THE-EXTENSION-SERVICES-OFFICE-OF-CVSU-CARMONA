@@ -138,11 +138,11 @@ $.each(users, function(index, user) {
     $('#objectiveset').on('click', '.add-objective', function() {
       var setid = $(this).prev().find('div:first .objectivesetid').val();
        
-        var $newInput = $('<input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+        var $newInput = $('<input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
         var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setid + '" class="objectivesetid d-none">');
-        var $newButton1 = $('<button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>');
-        var $newButton2 = $('<button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>');
-        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton1, $newButton2);
+       
+        var $newButton2 = $('<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>');
+        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton2);
         $(this).prev().append($newDiv);
         
   });
@@ -166,13 +166,12 @@ $.each(users, function(index, user) {
     $('#addset').click((event) => {
       event.preventDefault();
       setcount++;
-      var $newInput = $('<input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+      var $newInput = $('<input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
       var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setcount + '" class="objectivesetid d-none">');
-        var $newButton1 = $('<button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>');
-        var $newButton2 = $('<button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>');
-        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton1, $newButton2);
+        var $newButton2 = $('<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>');
+        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton2);
         var $newDiv1 = $('<div>').append($newDiv);
-        var $newButton3 = $('<button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button><hr>');
+        var $newButton3 = $('<button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective"><b class="small">Add Objective</b></button><hr>');
         $('#objectiveset').append($newDiv1, $newButton3);
         
   });
@@ -247,8 +246,8 @@ $.each(users, function(index, user) {
     $('#addmember').click((event) => {
         event.preventDefault();
         var $newSelect = $(`<select class="member-select col-7 m-1" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
-        var $newButton = $('<button type="button" class="remove-member btn btn-danger col-2 m-1 float-end" id="removemember">Remove</button>');
-        var $newDiv = $('<div class="mb-2 row bg-info" id="selectmember">').append($newSelect, $newButton);
+        var $newButton = $('<button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember"><b class="small">Remove</b></button>');
+        var $newDiv = $('<div class="mb-2 row bg-info rounded" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);
 
         users.sort(function(a, b) {
@@ -282,7 +281,7 @@ $.each(users, function(index, user) {
           
         });
         
-        
+        $('#form2 div .edit-member').hide();
         $('#addmember').hide();
       });
     
@@ -293,7 +292,7 @@ $.each(users, function(index, user) {
         let index = users.findIndex(user => user.id === parseInt(memberId));
         users.splice(index, 1);
         $(this).prop('disabled', true);
-        $(this).after('<button type="button" class="edit-member btn btn-success col-2 m-1 float-end" id="editmember">Edit</button>');
+        $(this).after('<button type="button" class="edit-member btn btn-sm btn-outline-success col-2 m-1 float-end" id="editmember"><b class="small">Edit</b></button>');
         $('#form2 div .edit-member').show();
         $('#addmember').show();
        
@@ -359,7 +358,7 @@ $.each(users, function(index, user) {
       
         $(this).remove();
         $('#form2 div .edit-member').hide();
-     
+        $('#addmember').hide();
     });
 
     $('#memberform form').on('click', '.remove-member', function() {

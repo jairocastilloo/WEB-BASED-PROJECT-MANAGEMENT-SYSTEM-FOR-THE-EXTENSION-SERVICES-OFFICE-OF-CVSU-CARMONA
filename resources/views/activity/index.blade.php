@@ -4,10 +4,10 @@
 
 <div class="maincontainer">
     <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}">
             <h6><b>Project: {{ $projectName }} </b></h6>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
+        <div class="col-4 p-2 pt-3 border-end text-center position-triangle longword">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
 

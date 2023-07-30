@@ -160,15 +160,19 @@ $newprojectID = $lastProject->id + 1;
                             <form id="form2">
                                 @csrf
                                 <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
-                                <div class="mb-2 row" id="selectmember">
+                                <div class="mb-2 row rounded" id="selectmember">
                                     <select class="col-7 m-1 member-select" id="member-select" name="projectmember[]">
                                         <option value="" selected disabled>Select a Member</option>
                                     </select>
-                                    <button type="button" class="remove-member btn btn-danger col-2 m-1 float-end" id="removemember">Remove</button>
+                                    <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
+                                        <b class="small">Remove</b>
+                                    </button>
                                 </div>
 
                             </form>
-                            <button type="button" class="addmember-button btn btn-success w-100" id="addmember">Add Member</button>
+                            <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
+                                <b class="small">Add Member</b>
+                            </button>
 
                         </div>
 
@@ -184,26 +188,32 @@ $newprojectID = $lastProject->id + 1;
                                 <div class="container-fluid" id="objectiveset">
                                     <div>
                                         <div class="mb-2 row" id="selectobjectives">
-                                            <input type="text" class="col-7 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                            <input type="text" class="col-8 m-1 input-objective" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
-                                            <button type="button" class="edit-objective btn btn-success col-2 m-1" id="editobjective">Edit</button>
-                                            <button type="button" class="remove-objective btn btn-danger col-2 m-1" id="removeobjective">Remove</button>
+                                            <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
                                         </div>
                                     </div>
-                                    <button type="button" class="add-objective btn btn-success" id="addobjective">Add Objective</button>
+                                    <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
+                                        <b class="small">Add Objective</b>
+                                    </button>
+
                                     <hr>
                                 </div>
                             </form>
-                            <button type="button" class="addset btn btn-success w-100" id="addset">Add Objective Set</button>
+                            <button type="button" class="addset btn btn-sm btn-outline-secondary w-100" id="addset">
+                                <b class="small">Add Objective Set</b>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm shadow rounded border border-2 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
-                <button type="button" class="btn btn-sm shadow rounded btn-outline-primary" id="prevproject"><b class="small">Previous</b></button>
-                <button type="button" class="btn btn-sm shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
-                <button type="button" class="btn btn-sm shadow rounded btn-success" id="createproject">
+                <button type="button" class="btn shadow rounded border border-2 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
+                <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
+                    <b class="small">Previous</b>
+                </button>
+                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
+                <button type="button" class="btn shadow rounded btn-success" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 
@@ -225,17 +235,15 @@ $newprojectID = $lastProject->id + 1;
     $(document).ready(function() {
         selectElement.change(function() {
             // Get the currently selected option
-
             var selectedOption = $(this).find(':selected');
             var projectid = selectedOption.val();
-            var projectname = selectedOption.text();
+            var projectname = selectedOption.text().trim(); // Trim leading and trailing whitespaces
             var department = $('#department').val();
-
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid);
-            url = url.replace(':department', department);
-            url = url.replace(':projectname', projectname);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
         /** selecting which department first (exclusive for admin)
