@@ -32,7 +32,7 @@
 
                     <div class="btn-group ms-3 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="editoutput-btn">
-                            <b class="small">Edit Output</b>
+                            <b class="small">Edit Details</b>
                         </button>
                     </div>
 
@@ -116,17 +116,17 @@
 
             </div>
             <div class="col-4">
-                <div class="basiccont">
-                    <div class="border-bottom ps-2 pt-2">
-                        <h6 class="fw-bold small">Other Outputs</h6>
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Outputs</h6>
                     </div>
 
-                    @foreach ($alloutputtypes as $index => $alloutputtype)
-                    @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover selectoutputdiv p-2" data-value="{{ $alloutputtype }}">{{ $alloutputtype }}</div>
-                    @else
-                    <div class="sidecont2 divhover selectoutputdiv p-2" data-value="{{ $alloutputtype }}">{{ $alloutputtype }}</div>
-                    @endif
+                    @foreach ($alloutputtypes as $alloutputtype)
+
+                    <div class="divhover selectoutputdiv p-2 ps-4" data-value="{{ $alloutputtype }}">
+                        <b class="small">{{ $alloutputtype }}</b>
+                    </div>
+
                     @endforeach
 
 
@@ -157,7 +157,7 @@
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();
 
-            var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
             url = url.replace(':outputtype', outputtype);
             window.location.href = url;
@@ -168,7 +168,7 @@
 
             var actid = $('#actid').val();
 
-            var url = '{{ route("comply.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            var url = '{{ route("comply.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
             url = url.replace(':outputtype', outputtype);
             window.location.href = url;

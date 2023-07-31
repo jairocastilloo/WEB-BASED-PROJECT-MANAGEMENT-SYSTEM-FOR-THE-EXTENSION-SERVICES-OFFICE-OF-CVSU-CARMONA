@@ -18,27 +18,30 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
-                <div class="basiccont p-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
-                    <div class="border-bottom ps-1">
-                        <h6 class="fw-bold small">Hours rendered</h6>
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Subtask Hours</h6>
                     </div>
-                    <h5>{{ $subtask['subtask_name'] }}</h5>
-                    Total Hours Rendered: {{ $subtask['hours_rendered'] }}
+                    <p class="ps-4 lh-1 pt-2"><b>{{ $subtask['subtask_name'] }}</b></p>
+                    <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
+                    <p class="ps-5 lh-1">Assignees:
+                        @foreach($currentassignees as $currentassignee)
+                        {{ $currentassignee->name . ' ' . $currentassignee->last_name . ' |'}}
 
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="submithoursrendered-btn">Submit hours rendered</button>
-                    <hr>
-                    Assignees:
-                    @foreach($currentassignees as $currentassignee)
-                    {{ $currentassignee->name . ' ' . $currentassignee->last_name }}
+                        @endforeach
+                        <button type="button" class="btn btn-sm btn-outline-secondary ms-1" id="add-subtaskassignees">+</button>
+                    </p>
+                    <div class="btn-group ms-3 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
+                            <b class="small">Submit Hours</b>
+                        </button>
+                    </div>
 
-                    @endforeach
-
-
-                    <button type="button" class="btn btn-sm btn-outline-secondary" id="add-subtaskassignees">+</button>
                 </div>
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-1 mb-2">
-                        <h6 class="fw-bold small">Unevaluated Hours rendered</h6>
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours Rendered</h6>
                     </div>
 
                     <ul class="list-unstyled small">
@@ -48,7 +51,7 @@
                         $hasSameDate = false;
                         @endphp
 
-                        <li>
+                        <li class="ps-4">
                             @foreach ($usersWithSameCreatedAt as $samedateusers)
                             @if($unapprovedsub['created_at'] == $samedateusers->created_at)
                             @php
@@ -82,10 +85,6 @@
 
                             @endforeach
 
-
-
-
-
                         </li>
                         @endforeach
                     </ul>
@@ -94,17 +93,17 @@
                 </div>
             </div>
             <div class="col-4">
-                <div class="basiccont">
-                    <div class="border-bottom ps-2 pt-2">
-                        <h6 class="fw-bold small">Other Subtask</h6>
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Subtasks</h6>
                     </div>
-                    @foreach ($subtasks as $index => $sub)
+                    @foreach ($subtasks as $sub)
                     @if ($sub->subtask_name != $subtask['subtask_name'])
-                    @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">{{ $sub->subtask_name }}</div>
-                    @else
-                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">{{ $sub->subtask_name }}</div>
-                    @endif
+
+                    <div class="divhover p-2 ps-4 subtaskdiv" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">
+                        <b class="small">{{ $sub->subtask_name }}</b>
+                    </div>
+
                     @endif
                     @endforeach
 
@@ -193,8 +192,9 @@
         });
         $('#submithoursrendered-btn').click(function(event) {
             event.preventDefault();
-            var subtaskid = $(this).parent().attr('data-value');
-            var subtaskname = $(this).parent().attr('data-name');
+            var subtaskid = $(this).closest('[data-value]').attr('data-value');
+            var subtaskname = $(this).closest('[data-name]').attr('data-name');
+
 
 
             var url = '{{ route("comply.subtask", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';

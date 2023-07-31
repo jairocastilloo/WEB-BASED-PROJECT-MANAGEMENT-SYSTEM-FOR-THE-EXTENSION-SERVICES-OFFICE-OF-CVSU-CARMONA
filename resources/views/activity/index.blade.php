@@ -17,7 +17,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-7">
+            <div class="col-6">
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2">
@@ -112,7 +112,7 @@
                 </div>
 
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4">
                     <div class="border-bottom ps-3 pt-2">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
@@ -141,7 +141,7 @@
                     </div>
                     @foreach ($activities as $act)
 
-                    <div class="divhover p-3 pe-2 ps-4 actdiv" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
+                    <div class="divhover p-3 pe-2 ps-4 actdiv border-bottom" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
                         <b class="small">{{ $act->actname }}</b>
                     </div>
 

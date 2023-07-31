@@ -139,7 +139,9 @@ class OutputController extends Controller
         OutputUser::where('created_at', $acceptIds)->update(['approval' => 1]);
 
         $outputids = OutputUser::where('created_at', $acceptIds)
+            ->distinct()
             ->pluck('output_id');
+
 
         foreach ($outputids as $outputid) {
 
