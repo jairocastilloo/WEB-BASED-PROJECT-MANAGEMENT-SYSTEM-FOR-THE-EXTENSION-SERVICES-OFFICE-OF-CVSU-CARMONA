@@ -35,12 +35,11 @@ $newprojectID = $lastProject->id + 1;
             <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
         </div>
 
-
-
-
-        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-1 border-warning text-body" style="background-color: gold;" id="addproj">
-            <b class="small">Start New Project</b>
-        </button>
+        <div class="btn-group mt-3 shadow">
+            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                <b class="small">Start New Project</b>
+            </button>
+        </div>
         <!--
         <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal">
             <b class="small">Start New Project</b>

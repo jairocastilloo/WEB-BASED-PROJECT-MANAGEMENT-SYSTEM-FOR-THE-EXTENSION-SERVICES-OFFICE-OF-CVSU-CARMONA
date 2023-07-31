@@ -41,11 +41,11 @@ $newprojectID = $lastProject->id + 1;
                     </select>
                     <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
                 </div>
-
-                <button type="button" class="btn btn-sm mt-3 shadow rounded border border-1 border-warning btn-gold text-body" id="addproj">
-                    <b class="small">Start New Project</b>
-                </button>
-
+                <div class="btn-group mt-3 shadow">
+                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                        <b class="small">Start New Project</b>
+                    </button>
+                </div>
             </div>
 
             <div class="basiccont m-4 me-0 p-3 rounded shadow">
@@ -97,7 +97,7 @@ $newprojectID = $lastProject->id + 1;
                     <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($currentproject['projectstartdate'])) . '-' . date('F Y', strtotime($currentproject['projectenddate'])) }}</div>
                 </div>
 
-                <div class="btn-group dropdown mt-3">
+                <div class="btn-group dropdown mt-3 shadow">
                     <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <b class="small">Edit Project</b>
                     </button>

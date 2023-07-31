@@ -93,6 +93,8 @@ class ProjectController extends Controller
         $objectives = Objective::where('project_id', $projectId)
             ->where('objectiveset_id', $objectiveset)
             ->get('name');
+
+
         return view('activity.index', [
             'activity' => $activity,
             'assignees' => $assignees,

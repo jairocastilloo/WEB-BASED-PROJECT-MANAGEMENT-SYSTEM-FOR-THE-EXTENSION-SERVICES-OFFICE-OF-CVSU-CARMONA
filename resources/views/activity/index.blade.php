@@ -3,12 +3,12 @@
 @section('content')
 
 <div class="maincontainer">
-    <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+    <div class="mainnav mb-2 shadow">
+        <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
-            <h6><b>Project: {{ $projectName }} </b></h6>
+            <b class="small">Project: {{ $projectName }} </b>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle longword">
+        <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
 
@@ -17,64 +17,47 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-9">
+            <div class="col-6">
 
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Activity</h6>
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                     </div>
-                    <h5><b>{{ $activity['actname'] }}
-                            @if ( $activity['actremark'] === 'Completed')
-                            -<em class="text-success"> Completed</em>
-                            @endif
-                        </b></h5>
-                    Expected Output: {{ $activity['actoutput'] }} <br>
-                    Objectives:
-                    @foreach ($objectives as $objective)
-                    {{ $objective['name'] }} </br>
-                    @endforeach
-                    Start Date: {{ $activity['actstartdate'] }} <br>
-                    End Date: {{ $activity['actenddate'] }} <br>
-                    Budget: {{ $activity['actbudget'] }} <br>
-                    Source: {{ $activity['actsource'] }} <br>
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button" id="completeactivity-btn">Mark as Completed</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Edit Activity</button>
-                    </div>
+                    <p class="lh-sm ms-3 mt-2 me-2"><strong class="text-secondary">Activity Name:</strong>
+                        {{ $activity['actname'] }}
+                        <em class="text-success fw-bold">( {{ $activity['actremark'] }} )</em>
+                    </p>
 
-                </div>
-
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Assignees</h6>
-                    </div>
-                    @php $count = 0; @endphp
-                    <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
-                        @csrf
-                        <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
-                        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
-                    </form>
-                    @foreach ($assignees as $key=> $assignee)
-                    @if ($count % 2 == 0)
-                    <div class="row p-0">
-                        @endif
-                        <div class="col border-bottom m-2 p-2 divhover checkassignee" value="{{ $assignee->id }}">
-
-                            {{ $assignee->name . ' ' . $assignee->last_name }}
-                        </div>
-                        @if ($count % 2 == 1 || $loop->last)
-                    </div>
+                    @foreach ($objectives as $index => $objective)
+                    @if ($index === 0)
+                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Objectives:</strong> {{ $objective['name'] }}</p>
+                    @else
+                    <p class="lh-1 ms-5 me-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $objective['name'] }}</p>
                     @endif
-                    @php $count++; @endphp
                     @endforeach
+                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Expected Output:</strong> {{ $activity['actoutput'] }} </p>
+                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
+                    </p>
+                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">End Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
+                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
+                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
 
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addassignees-btn">Add Assignees</button>
+
+                    <div class="btn-group dropdown ms-3 mb-3 shadow">
+                        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <b class="small">Edit Activity</b>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
+                            <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
+                        </div>
                     </div>
+
                 </div>
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Output</h6>
+                <div class="basiccont p-2 mt-4 ms-2 shadow">
+
+                    <div class="border-bottom ps-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
                     </div>
                     @php
                     $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
@@ -84,40 +67,95 @@
                         @php
                         $outputarray = array_diff($outputarray, [$outputType]);
                         @endphp
-                        <h5>{{ $outputType }}</h5>
+                        <p class="lh-base fw-bold">{{ $outputType }}</p>
                         @foreach ($outputs as $output)
                         @if ($output->output_type === $outputType)
-                        {{ $output->output_name . ': ' .  $output->totaloutput_submitted }} <br>
+                        <p class="lh-1 ps-4">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }}</p>
                         @endif
                         @endforeach
                     </div>
                     @endforeach
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addoutput-btn">Add Output</button>
+
+                    <div class="btn-group ms-2 mt-2 mb-2 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addoutput-btn">
+                            <b class="small">Add Output</b>
+                        </button>
                     </div>
                 </div>
+                <div class="basiccont shadow p-2 mt-4 ms-2 mb-4">
+                    <div class="border-bottom ps-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
+                    </div>
+                    @php $count = 0; @endphp
+                    <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
+                        @csrf
+                        <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
+                        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
+                    </form>
+                    @foreach ($assignees as $key=> $assignee)
+                    @if ($count % 2 == 0)
+                    <div class="row p-1">
+                        @endif
+                        <div class="col border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
+
+                            <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
+                        </div>
+                        @if ($count % 2 == 1 || $loop->last)
+                    </div>
+                    @endif
+                    @php $count++; @endphp
+                    @endforeach
+                    <div class="btn-group ms-2 mt-2 mb-2 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn">
+                            <b class="small">Add Assignees</b>
+                        </button>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-3">
-                <div class="basiccont">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Subtasks</h6>
+            <div class="col-4">
+                <div class="basiccont shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
                     </div>
                     @foreach ($subtasks as $index => $subtask)
+
+                    <div class="divhover p-2 ps-4 subtaskdiv" data-value="{{ $subtask->id }}">
+                        {{ $subtask->subtask_name }}
+                    </div>
+
+                    @endforeach
+
+                    <div class="btn-group ms-4 mt-2 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addsubtask-btn">
+                            <b class="small">Add Subtask</b>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-2">
+                <div class="basiccont shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Activities</h6>
+                    </div>
+                    @foreach ($activities as $index => $act)
                     @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $subtask->subtask_name }}</div>
+                    <div class="sidecont1 divhover p-2 ps-4 actdiv" data-value="{{ $act->id }}">
+                        {{ $act->actname }}
+                    </div>
                     @else
-                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $subtask->subtask_name }}</div>
+                    <div class="sidecont2 divhover p-2 ps-4 actdiv" data-value="{{ $act->id }}">
+                        {{ $act->actname }}
+                    </div>
                     @endif
                     @endforeach
 
 
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addsubtask-btn">Add Subtask</button>
-                    </div>
                 </div>
 
             </div>
-
         </div>
 
     </div>

@@ -321,8 +321,15 @@ class ActivityController extends Controller
             return $item->user;
         });
 
+        // all activities in a project
+        $activities = Activity::where('project_id', $projectId)
+            ->whereNotIn('id', [$activityid])
+            ->get();
+
+
         return view('activity.index', [
             'activity' => $activity,
+            'activities' => $activities,
             'assignees' => $assignees,
             'subtasks' => $subtasks,
             'outputs' => $outputs,
