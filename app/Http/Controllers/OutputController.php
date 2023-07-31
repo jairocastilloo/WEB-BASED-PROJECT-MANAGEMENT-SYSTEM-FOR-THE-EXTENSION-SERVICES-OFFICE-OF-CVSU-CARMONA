@@ -57,7 +57,7 @@ class OutputController extends Controller
         }
     }
 
-    public function complyoutput($id, $activityid, $outputtype)
+    public function complyoutput($activityid, $outputtype)
     {
 
         // activity details

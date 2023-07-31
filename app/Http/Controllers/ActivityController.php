@@ -160,7 +160,7 @@ class ActivityController extends Controller
         return response()->json(['success' => true], 200);
     }
 
-    public function getoutput($id, $activityid, $outputtype)
+    public function getoutput($activityid, $outputtype)
     {
         // activity details
         $activity = Activity::findOrFail($activityid);

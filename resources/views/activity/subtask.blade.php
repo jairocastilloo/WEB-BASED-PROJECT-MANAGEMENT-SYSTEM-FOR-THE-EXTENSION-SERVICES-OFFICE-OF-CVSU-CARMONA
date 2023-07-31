@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
-                <div class="basiccont p-2" data-value="{{ $subtask['id'] }}">
+                <div class="basiccont p-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-1">
                         <h6 class="fw-bold small">Hours rendered</h6>
                     </div>
@@ -101,9 +101,9 @@
                     @foreach ($subtasks as $index => $sub)
                     @if ($sub->subtask_name != $subtask['subtask_name'])
                     @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}">{{ $sub->subtask_name }}</div>
+                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">{{ $sub->subtask_name }}</div>
                     @else
-                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}">{{ $sub->subtask_name }}</div>
+                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">{{ $sub->subtask_name }}</div>
                     @endif
                     @endif
                     @endforeach
@@ -177,12 +177,14 @@
         });
 
         $(document).on('click', '.subtaskdiv', function() {
-            var subtaskid = $(this).attr('data-value');
-            var actid = $('#actid').val();
-            console.log(subtaskid);
-            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
-            url = url.replace(':activityid', actid);
+            event.preventDefault();
+
+            var subtaskname = $(this).attr("data-name");
+            var subtaskid = $(this).attr("data-value");
+
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
         });
 
@@ -192,11 +194,13 @@
         $('#submithoursrendered-btn').click(function(event) {
             event.preventDefault();
             var subtaskid = $(this).parent().attr('data-value');
-            var actid = $('#actid').val();
+            var subtaskname = $(this).parent().attr('data-name');
 
-            var url = '{{ route("comply.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
-            url = url.replace(':activityid', actid);
+
+            var url = '{{ route("comply.subtask", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
+
             window.location.href = url;
         });
 

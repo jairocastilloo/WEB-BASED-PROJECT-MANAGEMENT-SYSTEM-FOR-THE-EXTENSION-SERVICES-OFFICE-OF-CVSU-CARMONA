@@ -55,12 +55,9 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
 Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
 Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
-Route::get('/user/{id}/getactivity/{activityid}/getoutput/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
-Route::get('/user/{id}/getactivity/{activityid}/complyoutput/{outputtype}', [OutputController::class, 'complyoutput'])->name('comply.output');
 Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
-Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
+//Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
 Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassignee'])->name('add.subtaskassignee');
-Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
 Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
 
 Route::prefix('{username}')->group(function () {
@@ -69,6 +66,7 @@ Route::prefix('{username}')->group(function () {
 
 Route::prefix('/subtasks')->group(function () {
     Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('subtasks.display');
+    Route::get('/{subtaskid}/{subtaskname}/complysubtask', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
     Route::post('/accepthours', [SubtaskController::class, 'accepthours'])->name('hours.accept');
 });
 
@@ -91,4 +89,8 @@ Route::prefix('/projectinsights')->group(function () {
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
     Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
+});
+Route::prefix('/output')->group(function () {
+    Route::get('/{activityid}/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
+    Route::get('/{activityid}/{outputtype}/complyoutput', [OutputController::class, 'complyoutput'])->name('comply.output');
 });

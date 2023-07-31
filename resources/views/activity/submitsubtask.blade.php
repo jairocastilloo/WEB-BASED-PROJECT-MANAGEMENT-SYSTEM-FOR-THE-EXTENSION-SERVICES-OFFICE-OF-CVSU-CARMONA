@@ -31,6 +31,7 @@
                 <div class="mb-3">
                     <label class="form-label">Hours rendered</label>
                     <input type="number" class="d-none" id="subtask-id" name="subtask-id" value="{{ $subtask['id'] }}">
+                    <input type="number" class="d-none" id="subtask-name" name="subtask-name" value="{{ $subtask['subtask_name'] }}">
                     <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
                 </div>
 
@@ -151,11 +152,12 @@
             event.preventDefault();
 
             var subtaskid = $('#subtask-id').val();
-            var actid = $('#actid').val();
+            var subtaskname = $('#subtask-name').val();
 
-            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
-            url = url.replace(':activityid', actid);
+
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
 
             $("#contributornumber").val($('input[name^="subtask-contributor["][name$="]"]').length);
 

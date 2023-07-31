@@ -17,30 +17,30 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-6">
+            <div class="col-7">
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2">
                         <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                     </div>
-                    <p class="lh-sm ms-3 mt-2 me-2"><strong class="text-secondary">Activity Name:</strong>
+                    <p class="lh-sm ms-4 mt-2 me-2"><strong class="text-secondary">Activity Name:</strong>
                         {{ $activity['actname'] }}
                         <em class="text-success fw-bold">( {{ $activity['actremark'] }} )</em>
                     </p>
 
                     @foreach ($objectives as $index => $objective)
                     @if ($index === 0)
-                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Objectives:</strong> {{ $objective['name'] }}</p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Objectives:</strong> {{ $objective['name'] }}</p>
                     @else
-                    <p class="lh-1 ms-5 me-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $objective['name'] }}</p>
+                    <p class="lh-1 ms-5 me-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $objective['name'] }}</p>
                     @endif
                     @endforeach
-                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Expected Output:</strong> {{ $activity['actoutput'] }} </p>
-                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Expected Output:</strong> {{ $activity['actoutput'] }} </p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
                     </p>
-                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">End Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
-                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
-                    <p class="lh-sm ms-3 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">End Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
 
 
                     <div class="btn-group dropdown ms-3 mb-3 shadow">
@@ -54,9 +54,8 @@
                     </div>
 
                 </div>
-                <div class="basiccont p-2 mt-4 ms-2 shadow">
-
-                    <div class="border-bottom ps-2">
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2">
                         <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
                     </div>
                     @php
@@ -67,16 +66,16 @@
                         @php
                         $outputarray = array_diff($outputarray, [$outputType]);
                         @endphp
-                        <p class="lh-base fw-bold">{{ $outputType }}</p>
+                        <p class="lh-base fw-bold ps-3">{{ $outputType }}</p>
                         @foreach ($outputs as $output)
                         @if ($output->output_type === $outputType)
-                        <p class="lh-1 ps-4">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }}</p>
+                        <p class="lh-1 ps-5">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }}</p>
                         @endif
                         @endforeach
                     </div>
                     @endforeach
 
-                    <div class="btn-group ms-2 mt-2 mb-2 shadow">
+                    <div class="btn-group ms-3 mt-2 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addoutput-btn">
                             <b class="small">Add Output</b>
                         </button>
@@ -113,20 +112,20 @@
                 </div>
 
             </div>
-            <div class="col-4">
-                <div class="basiccont shadow mt-4">
+            <div class="col-3">
+                <div class="basiccont word-wrap shadow mt-4">
                     <div class="border-bottom ps-3 pt-2">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
                     </div>
                     @foreach ($subtasks as $index => $subtask)
 
-                    <div class="divhover p-2 ps-4 subtaskdiv" data-value="{{ $subtask->id }}">
+                    <div class="divhover p-3 pe-2 ps-4 subtaskdiv border-bottom" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
                         {{ $subtask->subtask_name }}
                     </div>
 
                     @endforeach
 
-                    <div class="btn-group ms-4 mt-2 mb-3 shadow">
+                    <div class="btn-group ms-3 mt-2 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addsubtask-btn">
                             <b class="small">Add Subtask</b>
                         </button>
@@ -142,12 +141,12 @@
                     </div>
                     @foreach ($activities as $index => $act)
                     @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2 ps-4 actdiv" data-value="{{ $act->id }}">
-                        {{ $act->actname }}
+                    <div class="sidecont1 divhover p-3 pe-2 ps-4 actdiv" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
+                        <b class="small">{{ $act->actname }}</b>
                     </div>
                     @else
-                    <div class="sidecont2 divhover p-2 ps-4 actdiv" data-value="{{ $act->id }}">
-                        {{ $act->actname }}
+                    <div class="sidecont2 divhover p-3 pe-2 ps-4 actdiv" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
+                        <b class="small">{{ $act->actname }}</b>
                     </div>
                     @endif
                     @endforeach
@@ -374,20 +373,40 @@
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();
 
-            var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
             url = url.replace(':outputtype', outputtype);
             window.location.href = url;
         });
 
         $(document).on('click', '.subtaskdiv', function() {
-            var subtaskid = $(this).attr('data-value');
-            var actid = $('#actid').val();
 
-            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
-            url = url.replace(':activityid', actid);
+            event.preventDefault();
+
+            var subtaskname = $(this).attr("data-name");
+            var subtaskid = $(this).attr("data-value");
+
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
+        });
+
+        $(document).on('click', '.actdiv', function() {
+            event.preventDefault();
+
+            var activityid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+
         });
 
     });
