@@ -20,7 +20,7 @@
         <form id="addtosubtaskform" data-url="{{ route('addto.subtask') }}">
             @csrf
             <div class="basiccont word-wrap shadow mt-4 me-4 ms-4">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Submit Hours Rendered</b>
                         <span class="text-dark">({{ $subtask['subtask_name'] }})</span>
                     </h6>
@@ -30,7 +30,7 @@
                     <input type="number" class="d-none" id="subtask-contributor-0" name="subtask-contributor[0]">
 
                     <div class="m-2 ms-4 me-4">
-                        <label class="form-label fw-bold">Hours Rendered:</label>
+                        <label class="form-label">Hours Rendered:</label>
                         <input type="number" class="d-none" id="subtask-id" name="subtask-id" value="{{ $subtask['id'] }}">
                         <input type="text" class="d-none" id="subtask-name" name="subtask-name" value="{{ $subtask['subtask_name'] }}">
                         <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
@@ -38,7 +38,7 @@
 
 
                 </div>
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Contributor</b>
 
                     </h6>
@@ -54,13 +54,13 @@
                     </div>
                 </div>
 
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Supporting Documents</b>
 
                     </h6>
 
                     <div class="mt-2 ms-4 me-4">
-                        <label class="form-label fw-bold" for="customFile">Submit Subtask Report:</label>
+                        <label class="form-label" for="customFile">Submit Subtask Report:</label>
 
                         <input type="file" class="form-control" id="customFile" accept=".docx" name="subtaskdocs">
                     </div>

@@ -6,11 +6,11 @@
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <div class="row">
         <div class="col-6">
-            <div class="basiccont ms-3 rounded">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Tasks</h6>
-                </div>
 
+            <div class="basiccont word-wrap shadow ms-4 mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">My Tasks</h6>
+                </div>
                 @foreach($subtasks as $subtask)
                 @php
                 $totalhoursrendered = 0;

@@ -4,10 +4,11 @@
 
 <div class="maincontainer">
     <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv" data-name="{{ $activity['actname'] }}">
             <input type="number" class="d-none" id="actid" value="{{ $activity['id'] }}">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
@@ -147,9 +148,14 @@
         $('#projectdiv').click(function(event) {
             event.preventDefault();
             var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+            var department = $('#department').val();
 
-            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
 
@@ -177,10 +183,14 @@
 
             event.preventDefault();
 
-            var activityid = $('#actid').val();
+            var actid = $('#actid').val();
+            var activityname = $(this).attr('data-name');
+            var department = $('#department').val();
 
-            var url = '{{ route("get.activity", ["id" => Auth::user()->id, "activityid" => ":activityid"]) }}';
-            url = url.replace(':activityid', activityid);
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
             window.location.href = url;
         });
         $(document).on('click', '.acceptoutput-btn', function() {

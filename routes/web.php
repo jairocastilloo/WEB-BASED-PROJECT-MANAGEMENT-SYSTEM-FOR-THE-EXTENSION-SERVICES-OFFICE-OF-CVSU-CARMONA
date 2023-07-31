@@ -34,7 +34,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
-Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
+//Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');
@@ -48,7 +48,7 @@ Route::post('/submitoutput', [OutputController::class, 'submitoutput'])->name('o
 Route::post('/upload', [FileController::class, 'upload'])->name('upload.file');
 Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrendered'])->name('hoursrendered.submit');
 Route::post('/completeactivity', [ActivityController::class, 'completeactivity'])->name('activity.complete');
-Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
+//Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
 Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.subtask');
 
 
