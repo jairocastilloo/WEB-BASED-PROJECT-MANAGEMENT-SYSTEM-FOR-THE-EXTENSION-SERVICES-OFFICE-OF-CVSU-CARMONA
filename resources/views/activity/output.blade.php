@@ -18,28 +18,41 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
-                <div class="basiccont p-2" data-value="{{ $outputtype }}">
-                    <div class="border-bottom ps-1">
-                        <h6 class="fw-bold small">Output Submitted</h6>
+                <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $outputtype }}">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Output Submitted</h6>
                     </div>
-                    <h5>{{ $outputtype }}</h5>
-                    @foreach ($currentoutputtype as $currentoutput)
-                    {{ $currentoutput['output_name'] . ': ' . $currentoutput['totaloutput_submitted' ]}}</br>
-                    @endforeach
-                    @if( Auth::user()-> role === "Admin")
-                    <button type="button" class="btn btn-outline-secondary" id="editoutput-btn">Edit</button>
-                    @endif
-                    <button type="button" class="btn btn-outline-secondary" id="submitoutput-btn">Submit Output</button>
+                    <div class="p-2">
+
+                        <p class="lh-base fw-bold ps-3">{{ $outputtype }}</p>
+                        @foreach ($currentoutputtype as $currentoutput)
+                        <p class="lh-1 ps-5">{{ $currentoutput['output_name'] . ': ' . $currentoutput['totaloutput_submitted' ]}}</p>
+                        @endforeach
+                    </div>
+
+                    <div class="btn-group ms-3 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="editoutput-btn">
+                            <b class="small">Edit Output</b>
+                        </button>
+                    </div>
+
+                    <div class="btn-group ms-3 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submitoutput-btn">
+                            <b class="small">Submit Output</b>
+                        </button>
+                    </div>
+
                 </div>
 
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-1">
-                        <h6 class="fw-bold small">Unevaluated Output</h6>
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Output</h6>
                     </div>
-                    <ul class="list-unstyled small">
+                    <ul class="list-unstyled small pt-2">
                         @foreach ($unique_outputcreated as $outputcreated)
 
-                        <li>
+                        <li class="ps-4 pe-2">
                             @foreach($unapprovedoutputdata as $unapprovedoutput)
                             @if ($outputcreated == $unapprovedoutput['created_at'])
                             @php
@@ -54,7 +67,7 @@
 
 
 
-                            Facilitator:
+                            <b>Facilitator:</b>
                             @foreach($usersWithSameCreatedAt as $usersame)
                             @if ($usersame['created_at'] == $outputcreated)
                             @php
@@ -77,13 +90,19 @@
 
                             @endif
                             @endforeach
+                            <br>
+                            <div class="btn-group mt-2 shadow">
+                                <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
+                                    @csrf
 
-                            <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
-                                @csrf
+                                    <input type="text" class="d-none" value="{{ $outputcreated }}" name="acceptids" id="acceptids">
 
-                                <input type="text" class="d-none" value="{{ $outputcreated }}" name="acceptids" id="acceptids">
-                                <button type="button" class="btn btn-sm btn-outline-success acceptoutput-btn">Accept</button>
-                            </form>
+                                    <button type="button" class="btn btn-sm rounded border border-1 border-success btn-light shadow acceptoutput-btn">
+                                        <b class="small">Approve Output</b>
+                                    </button>
+
+                                </form>
+                            </div>
                         </li>
                         <hr>
                         @endforeach
@@ -145,7 +164,8 @@
         });
         $('#submitoutput-btn').click(function(event) {
             event.preventDefault();
-            var outputtype = $(this).parent().attr('data-value');
+            var outputtype = $(this).closest('[data-value]').attr('data-value');
+
             var actid = $('#actid').val();
 
             var url = '{{ route("comply.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';

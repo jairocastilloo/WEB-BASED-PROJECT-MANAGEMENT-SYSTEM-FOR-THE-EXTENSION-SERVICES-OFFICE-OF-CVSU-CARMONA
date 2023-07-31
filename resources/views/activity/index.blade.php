@@ -139,16 +139,12 @@
                     <div class="border-bottom ps-3 pt-2">
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Activities</h6>
                     </div>
-                    @foreach ($activities as $index => $act)
-                    @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-3 pe-2 ps-4 actdiv" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
+                    @foreach ($activities as $act)
+
+                    <div class="divhover p-3 pe-2 ps-4 actdiv" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
                         <b class="small">{{ $act->actname }}</b>
                     </div>
-                    @else
-                    <div class="sidecont2 divhover p-3 pe-2 ps-4 actdiv" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
-                        <b class="small">{{ $act->actname }}</b>
-                    </div>
-                    @endif
+
                     @endforeach
 
 
