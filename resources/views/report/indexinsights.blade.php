@@ -158,6 +158,13 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+
+        $('#navbarDropdown').click(function(event) {
+            // Add your function here
+            event.preventDefault();
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+
         $('#project-select').change(function() {
             // Get the currently selected option
 

@@ -114,6 +114,13 @@
     var contributorindex = 0;
 
     $(document).ready(function() {
+
+        $('#navbarDropdown').click(function(event) {
+            // Add your function here
+            event.preventDefault();
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+
         $('#addcontributor-btn').click(function() {
             event.preventDefault();
             $('#contributorselect').find("option:not(:first-child)").remove();
@@ -195,6 +202,8 @@
             });
 
         });
+
+
     });
 </script>
 @endsection

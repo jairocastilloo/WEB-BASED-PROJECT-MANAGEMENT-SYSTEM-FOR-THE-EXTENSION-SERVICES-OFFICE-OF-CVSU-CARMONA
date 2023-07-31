@@ -199,6 +199,13 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+
+        $('#navbarDropdown').click(function(event) {
+            // Add your function here
+            event.preventDefault();
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+
         $(document).on('click', '.subtaskdiv', function(event) {
             event.preventDefault();
 

@@ -231,7 +231,10 @@ $newprojectID = $lastProject->id + 1;
 
     var selectElement = $('#project-select');
     var url = "";
+
     $(document).ready(function() {
+
+
         selectElement.change(function() {
             // Get the currently selected option
             var selectedOption = $(this).find(':selected');
@@ -245,6 +248,7 @@ $newprojectID = $lastProject->id + 1;
             url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
+
         /** selecting which department first (exclusive for admin)
                 $('#confirmnewproject').click(function(event) {
                     event.preventDefault();
