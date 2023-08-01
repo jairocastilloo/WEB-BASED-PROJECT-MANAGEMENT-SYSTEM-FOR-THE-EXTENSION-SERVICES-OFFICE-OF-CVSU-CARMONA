@@ -13,14 +13,14 @@ class ReportController extends Controller
 
     public function showinsights($department)
     {
-        $user = User::where('department', $department)->firstOrFail();
-        $projects = $user->projects;
+
+        $projects = Project::where('department', $department)->get();
         return view('report.selectinsights', ['projects' => $projects]);
     }
     public function indexinsights($projectid, $department, $projectname)
     {
-        $user = User::where('department', $department)->firstOrFail();
-        $projects = $user->projects;
+
+        $projects = Project::where('department', $department)->get();
 
         $selectedproject = Project::findOrFail($projectid);
         $activities = $selectedproject->activities;
