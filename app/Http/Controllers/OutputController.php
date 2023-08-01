@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\ActivityUser;
 use App\Models\OutputUser;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
 
 class OutputController extends Controller
 {
@@ -151,6 +152,7 @@ class OutputController extends Controller
             $outputsubmitted = $outputuser->output_submitted;
             Output::where('id', $outputid)->increment('totaloutput_submitted', $outputsubmitted);
         }
+        Artisan::call('activity:status:update');
         return 'File uploaded successfully.';
     }
 }
