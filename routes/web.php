@@ -11,6 +11,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RecordController;
 use App\Models\Activity;
 
 /*
@@ -62,6 +63,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
+    Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
 Route::prefix('/subtasks')->group(function () {
