@@ -1,20 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- for adding activity -->
-@php
-use App\Models\Activity;
-use App\Models\Project;
-$lastActivity = Activity::latest('id')->first();
-$lastProject = Project::latest('id')->first();
 
-$incrementedID = $lastActivity->id + 1;
-$newprojectID = $lastProject->id + 1;
-@endphp
-<input class="d-none" type="number" id="incrementedID" value="{{ $incrementedID }}">
 <input class="d-none" type="number" id="acturl" data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
 
-<input class="d-none" type="number" id="newprojectID" value="{{ $newprojectID }}">
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
 <div class="maincontainer">
@@ -28,7 +17,7 @@ $newprojectID = $lastProject->id + 1;
         <div class="col-10">
 
             <div class="basiccont m-4 me-0 p-3 rounded shadow">
-                <input type="text" class="d-none" id="department" value="{{ Auth::user()->department }}">
+
                 <div class="form-floating shadow">
                     <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
                         <option value="" selected disabled>Select Project</option>
@@ -286,6 +275,7 @@ $newprojectID = $lastProject->id + 1;
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
+                            <input type="text" class="d-none" id="department" name="department" value="{{ Auth::user()->department }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>

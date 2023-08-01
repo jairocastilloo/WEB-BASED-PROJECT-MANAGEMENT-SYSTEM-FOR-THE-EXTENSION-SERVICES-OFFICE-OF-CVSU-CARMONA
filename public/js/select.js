@@ -16,7 +16,7 @@ $('#confirmactivity').click((event) => {
     var activityname = $('#activityname').val();
 
     var acturl = $('#acturl').attr('data-url');
-    acturl = acturl.replace(':activityid', incrementedid);
+    
     acturl = acturl.replace(':department', department);
     acturl = acturl.replace(':activityname', activityname);
 
@@ -31,6 +31,8 @@ $('#confirmactivity').click((event) => {
     data: data1,
     success: function(response) {
         console.log(response);
+        var actId = response.actid;
+        acturl = acturl.replace(':activityid', actId);
         window.location.href = acturl;
         
     },

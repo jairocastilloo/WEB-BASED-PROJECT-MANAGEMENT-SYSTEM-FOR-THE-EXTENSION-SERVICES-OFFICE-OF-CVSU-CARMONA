@@ -2,25 +2,13 @@
 
 @section('content')
 
-@php
 
-use App\Models\Project;
-
-$lastProject = Project::latest('id')->first();
-
-$newprojectID = $lastProject->id + 1;
-@endphp
-
-<input class="d-none" type="number" id="newprojectID" value="{{ $newprojectID }}">
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
 <div class="maincontainer">
     &nbsp;
     <div class="basiccont m-4 p-3">
 
-
-
-        <input type="text" class="d-none" id="department" value="{{ Auth::user()->department }}">
         <div class="form-floating">
             <select id="project-select" class="form-select" aria-label="Select an option" style="border: 1px solid darkgreen;">
                 <option value="" selected disabled>Select Project</option>
@@ -50,7 +38,7 @@ $newprojectID = $lastProject->id + 1;
     &nbsp;
 </div>
 
-
+<!--
 <div class="modal fade" id="departmentModal" tabindex="-1" aria-labelledby="departmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -81,7 +69,7 @@ $newprojectID = $lastProject->id + 1;
         </div>
     </div>
 </div>
-
+-->
 <!--
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
          -->
@@ -113,7 +101,7 @@ $newprojectID = $lastProject->id + 1;
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
-                            <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
+                            <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>

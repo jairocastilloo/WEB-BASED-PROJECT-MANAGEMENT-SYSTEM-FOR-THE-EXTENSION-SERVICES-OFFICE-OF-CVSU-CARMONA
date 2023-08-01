@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Artisan;
 
 class ActivityController extends Controller
 {
@@ -60,10 +61,11 @@ class ActivityController extends Controller
         $activity->actsource = $source;
         $activity->project_id = $projectindex;
         $activity->save();
-
-
-
-        return response()->json(['message' => 'Activity created successfully.']);
+        $newActId = $activity->id;
+        Artisan::call('activity:status:update');
+        return response()->json([
+            'actid' => $newActId,
+        ]);
     }
 
     public function storesubtask(Request $request)

@@ -16,6 +16,7 @@ class Project extends Model
         'programleader',
         'projectstartdate',
         'projectenddate',
+        'department',
     ];
     public function users()
     {

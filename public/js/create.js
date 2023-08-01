@@ -180,12 +180,12 @@ $.each(users, function(index, user) {
     $('#createproject').click((event) => {
         event.preventDefault();
        
-        var incrementedid = $('#newprojectID').val();
+       
         var department = $('#department').val();
         var projectname = $('#projecttitle').val();
     
         var projecturl = $('#projecturl').attr('data-url');
-        projecturl = projecturl.replace(':projectid', incrementedid);
+        
         projecturl = projecturl.replace(':department', department);
         projecturl = projecturl.replace(':projectname', projectname);
 
@@ -225,7 +225,8 @@ $.each(users, function(index, user) {
         data: formData,
         success: function(response) {
             console.log(response);
-            $('#newproject').modal('toggle');
+            var projectId = response.projectid;
+            projecturl = projecturl.replace(':projectid', projectId);
             window.location.href = projecturl;
             
         },
