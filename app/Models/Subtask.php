@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Subtask extends Model
 {
     use HasFactory;
-    protected $fillable = ['subtask_name', 'activity_id', 'project_id'];
+    protected $fillable = ['subtask_name', 'activity_id'];
 
     public function activity()
     {
@@ -18,10 +18,5 @@ class Subtask extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'subtask_user');
-    }
-
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
     }
 }
