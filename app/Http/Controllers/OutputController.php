@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\ActivityUser;
 use App\Models\OutputUser;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Artisan;
 
 class OutputController extends Controller
 {
@@ -57,7 +58,7 @@ class OutputController extends Controller
         }
     }
 
-    public function complyoutput($id, $activityid, $outputtype)
+    public function complyoutput($activityid, $outputtype)
     {
 
         // activity details
@@ -139,7 +140,9 @@ class OutputController extends Controller
         OutputUser::where('created_at', $acceptIds)->update(['approval' => 1]);
 
         $outputids = OutputUser::where('created_at', $acceptIds)
+            ->distinct()
             ->pluck('output_id');
+
 
         foreach ($outputids as $outputid) {
 
@@ -149,6 +152,7 @@ class OutputController extends Controller
             $outputsubmitted = $outputuser->output_submitted;
             Output::where('id', $outputid)->increment('totaloutput_submitted', $outputsubmitted);
         }
+        Artisan::call('activity:status:update');
         return 'File uploaded successfully.';
     }
 }

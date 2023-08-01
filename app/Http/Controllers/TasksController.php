@@ -21,6 +21,7 @@ class TasksController extends Controller
         $activities = $user->activities;
         $subtasks = $user->subtasks;
         $contributions = SubtaskContributor::where('user_id', $userid)
+            ->where('approval', 1)
             ->get();
 
 

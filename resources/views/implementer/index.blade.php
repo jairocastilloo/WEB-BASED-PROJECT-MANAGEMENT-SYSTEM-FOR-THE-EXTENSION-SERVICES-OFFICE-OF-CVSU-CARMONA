@@ -6,25 +6,27 @@
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <div class="row">
         <div class="col-6">
-            <div class="basiccont ms-3 rounded">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Tasks</h6>
-                </div>
 
+            <div class="basiccont word-wrap shadow ms-4 mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">My Tasks</h6>
+                </div>
                 @foreach($subtasks as $subtask)
                 @php
                 $totalhoursrendered = 0;
                 @endphp
 
                 @foreach ($contributions as $contribution)
-                @if($contribution['subtask_id'] == $subtask['subtask_id'])
+
+
+                @if($contribution['subtask_id'] === $subtask['id'])
                 @php
                 $totalhoursrendered += $contribution['hours_rendered'];
                 @endphp
                 @endif
                 @endforeach
 
-                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
                     <h6><b>{{ $subtask['subtask_name'] }}</b></h6>
                     <h6>{{ $totalhoursrendered }} hours rendered</h6>
                 </div>
@@ -57,12 +59,13 @@
             });
             @endphp
             @if ($inProgressActivities && count($inProgressActivities) > 0)
-            <div class="basiccont rounded mb-2">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">In Progress Activities</h6>
+
+            <div class="basiccont word-wrap shadow mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
                 </div>
                 @foreach ($inProgressActivities as $activity)
-                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -77,12 +80,13 @@
             </div>
             @endif
             @if ($pendingActivities && count($pendingActivities) > 0)
-            <div class="basiccont rounded mb-2">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Pending Activities</h6>
+
+            <div class="basiccont word-wrap shadow mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
                 </div>
                 @foreach ($pendingActivities as $activity)
-                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
@@ -97,12 +101,12 @@
 
             @endif
             @if ($scheduledActivities && count($scheduledActivities) > 0)
-            <div class="basiccont rounded mb-2">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Scheduled Activities</h6>
+            <div class="basiccont word-wrap shadow mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
                 </div>
                 @foreach ($scheduledActivities as $activity)
-                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -117,12 +121,13 @@
             </div>
             @endif
             @if ($overdueActivities && count($overdueActivities) > 0)
-            <div class="basiccont rounded mb-2">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Overdue Activities</h6>
+
+            <div class="basiccont word-wrap shadow mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
                 </div>
                 @foreach ($overdueActivities as $activity)
-                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -137,12 +142,12 @@
             </div>
             @endif
             @if ($completedActivities && count($completedActivities) > 0)
-            <div class="basiccont rounded mb-3">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Completed Activities</h6>
+            <div class="basiccont word-wrap shadow mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                 </div>
                 @foreach ($completedActivities as $activity)
-                <div class="border-bottom p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -160,16 +165,17 @@
 
         </div>
         <div class="col-3">
-            <div class="basiccont me-3 rounded">
-                <div class="border-bottom ps-3">
-                    <h6 class="fw-bold small text-secondary">Projects</h6>
+
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 @php
                 // Sort the $activities array by actstartdate in ascending order
                 $sortedProjects = $projects->sortBy('projectstartdate');
                 @endphp
                 @foreach($sortedProjects as $project)
-                <div class="border-bottom p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
                     <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
@@ -193,6 +199,13 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+
+        $('#navbarDropdown').click(function(event) {
+            // Add your function here
+            event.preventDefault();
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+
         $(document).on('click', '.subtaskdiv', function(event) {
             event.preventDefault();
 

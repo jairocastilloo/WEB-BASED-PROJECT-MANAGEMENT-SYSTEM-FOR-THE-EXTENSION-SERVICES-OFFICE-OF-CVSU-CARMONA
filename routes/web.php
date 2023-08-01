@@ -32,9 +32,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
+//Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
-Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
+//Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');
@@ -48,20 +48,17 @@ Route::post('/submitoutput', [OutputController::class, 'submitoutput'])->name('o
 Route::post('/upload', [FileController::class, 'upload'])->name('upload.file');
 Route::post('/submithoursrendered', [SubtaskController::class, 'submithoursrendered'])->name('hoursrendered.submit');
 Route::post('/completeactivity', [ActivityController::class, 'completeactivity'])->name('activity.complete');
-Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
+//Route::get('/user/{id}/getactivity/{activityid}', [ProjectController::class, 'getactivity'])->name('get.activity');
 Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.subtask');
 
 
-Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
-Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
-Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
-Route::get('/user/{id}/getactivity/{activityid}/getoutput/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
-Route::get('/user/{id}/getactivity/{activityid}/complyoutput/{outputtype}', [OutputController::class, 'complyoutput'])->name('comply.output');
-Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
-Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
-Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassignee'])->name('add.subtaskassignee');
-Route::get('/user/{id}/getactivity/{activityid}/complysubtask/{subtaskid}', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
-Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
+
+
+
+
+//Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
+
+
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
@@ -69,13 +66,18 @@ Route::prefix('{username}')->group(function () {
 
 Route::prefix('/subtasks')->group(function () {
     Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('subtasks.display');
+    Route::get('/{subtaskid}/{subtaskname}/complysubtask', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
     Route::post('/accepthours', [SubtaskController::class, 'accepthours'])->name('hours.accept');
+    Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassignee'])->name('add.subtaskassignee');
+    Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
 });
 
 Route::prefix('/activities')->group(function () {
     Route::get('/{activityid}/{department}/{activityname}', [ActivityController::class, 'displayactivity'])->name('activities.display');
     Route::post('/acceptoutput', [OutputController::class, 'acceptoutput'])->name('output.accept');
     Route::post('/markcomplete', [ActivityController::class, 'markcomplete'])->name('activity.markcomplete');
+    Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
+    Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
 });
 
 Route::prefix('/projects')->group(function () {
@@ -91,4 +93,10 @@ Route::prefix('/projectinsights')->group(function () {
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
     Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
+});
+Route::prefix('/output')->group(function () {
+    Route::get('/{activityid}/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
+    Route::get('/{activityid}/{outputtype}/complyoutput', [OutputController::class, 'complyoutput'])->name('comply.output');
+    Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
+    Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
 });

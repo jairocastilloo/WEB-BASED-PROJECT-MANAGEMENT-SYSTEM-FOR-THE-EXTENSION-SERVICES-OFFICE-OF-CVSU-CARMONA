@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    protected $table = 'projects';
     use HasFactory;
     protected $fillable = [
         'projecttitle',
@@ -15,6 +16,7 @@ class Project extends Model
         'programleader',
         'projectstartdate',
         'projectenddate',
+        'department',
     ];
     public function users()
     {

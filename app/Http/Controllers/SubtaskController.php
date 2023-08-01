@@ -81,18 +81,17 @@ class SubtaskController extends Controller
         $subtaskuser->save();
     }
 
-    public function complysubtask($id, $activityid, $subtaskid)
+    public function complysubtask($subtaskid, $subtaskname)
     {
-        // activity details
-        $activity = Activity::findOrFail($activityid);
-        $subtask = Subtask::findOrFail($subtaskid);
-        $currentassignees = $subtask->users;
 
+        $subtask = Subtask::findOrFail($subtaskid);
+        $activityid = Subtask::where('id', $subtaskid)
+            ->value('activity_id');
+        $activity = Activity::findOrFail($activityid);
+        $currentassignees = $subtask->users;
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
-
-
 
         return view('activity.submitsubtask', [
             'activity' => $activity,

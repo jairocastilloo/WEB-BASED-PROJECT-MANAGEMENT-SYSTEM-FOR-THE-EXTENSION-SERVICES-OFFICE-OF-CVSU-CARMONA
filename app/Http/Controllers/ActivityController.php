@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Artisan;
 
 class ActivityController extends Controller
 {
     //
     public function storeactivity(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'activityname' => 'required|max:255',
             'objectives' => 'required|max:255',
@@ -51,90 +51,21 @@ class ActivityController extends Controller
         $source = $request->input('source');
         $projectindex = $request->input('projectindex');
 
-
-        $activityData = [
-            'actname' => $activityname,
-            'actobjectives' => $objectives,
-            'actoutput' => $expectedoutput,
-            'actstartdate' => $activitystartdate,
-            'actenddate' => $activityenddate,
-            'actbudget' => $budget,
-            'actsource' => $source,
-            'project_id' => $projectindex,
-        ];
-        DB::table('activities')->insert($activityData);
-        /*
-        $newactivityId = DB::getPdo()->lastInsertId();
-
-        $validatedData = $request->validate([
-            'assignees.*' => 'required|integer', // Validate each select input
-            'assigneesindex' => 'required|integer',
-            'assigneesname.*' => 'required',
-            // Validate select count
+        $activity = new Activity();
+        $activity->actname = $activityname;
+        $activity->actobjectives = $objectives;
+        $activity->actoutput = $expectedoutput;
+        $activity->actstartdate = $activitystartdate;
+        $activity->actenddate = $activityenddate;
+        $activity->actbudget = $budget;
+        $activity->actsource = $source;
+        $activity->project_id = $projectindex;
+        $activity->save();
+        $newActId = $activity->id;
+        Artisan::call('activity:status:update');
+        return response()->json([
+            'actid' => $newActId,
         ]);
-        for ($i = 0; $i < $validatedData['assigneesindex']; $i++) {
-            $assignees = new ActivityUser();
-            $assignees->user_id = $validatedData['assignees'][$i];
-            $assignees->assignees_name = $validatedData['assigneesname'][$i];
-            $assignees->activity_id = $newactivityId;
-            $assignees->project_id = $projectindex;
-            $assignees->save();
-        }
-
-        $validatedOutput = $request->validate([
-            'output.*' => 'required', // Validate each select input
-            'outputindex' => 'required|integer',
-            // Validate select count
-        ]);
-
-        for ($i = 0; $i < $validatedOutput['outputindex']; $i++) {
-            if ($validatedOutput['output'][$i] === 'Capacity building') {
-                $output1 = new Output();
-                $output1->output_type = $validatedOutput['output'][$i];
-                $output1->output_name = 'Number of trainees';
-                $output1->activity_id = $newactivityId;
-                $output1->project_id = $projectindex;
-                $output1->save();
-
-                $output2 = new Output();
-                $output2->output_type = $validatedOutput['output'][$i];
-                $output2->output_name = 'Number of training';
-                $output2->activity_id = $newactivityId;
-                $output2->project_id = $projectindex;
-                $output2->save();
-            } else if ($validatedOutput['output'][$i] === 'IEC Material') {
-                $output1 = new Output();
-                $output1->output_type = $validatedOutput['output'][$i];
-                $output1->output_name = 'Number of recipient';
-                $output1->activity_id = $newactivityId;
-                $output1->project_id = $projectindex;
-                $output1->save();
-
-                $output2 = new Output();
-                $output2->output_type = $validatedOutput['output'][$i];
-                $output2->output_name = 'Number of IEC Material';
-                $output2->activity_id = $newactivityId;
-                $output2->project_id = $projectindex;
-                $output2->save();
-            } else if ($validatedOutput['output'][$i] === 'Advisory Services') {
-                $output1 = new Output();
-                $output1->output_type = $validatedOutput['output'][$i];
-                $output1->output_name = 'Number of recipient';
-                $output1->activity_id = $newactivityId;
-                $output1->project_id = $projectindex;
-                $output1->save();
-            } else if ($validatedOutput['output'][$i] === 'Others') {
-                $output1 = new Output();
-                $output1->output_type = $validatedOutput['output'][$i];
-                $output1->output_name = 'To be Added';
-                $output1->activity_id = $newactivityId;
-                $output1->project_id = $projectindex;
-                $output1->save();
-            }
-        }
-
-*/
-        return response()->json(['success' => true]);
     }
 
     public function storesubtask(Request $request)
@@ -231,7 +162,7 @@ class ActivityController extends Controller
         return response()->json(['success' => true], 200);
     }
 
-    public function getoutput($id, $activityid, $outputtype)
+    public function getoutput($activityid, $outputtype)
     {
         // activity details
         $activity = Activity::findOrFail($activityid);
@@ -369,10 +300,6 @@ class ActivityController extends Controller
 
         $excludeUserIds = $activityUser->pluck('user_id')->toArray();
 
-        $addassignees = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
-            ->whereNotIn('id', $excludeUserIds)
-            ->get(['id', 'name', 'last_name']);
         // activity subtasks
         $subtasks = Subtask::where('activity_id', $activityid)->get();
         // activity outputs
@@ -386,8 +313,25 @@ class ActivityController extends Controller
         $objectives = Objective::where('project_id', $projectId)
             ->where('objectiveset_id', $objectiveset)
             ->get('name');
+
+        //add assignees
+        $projectuser = ProjectUser::where('project_id', $projectId)
+            ->whereNotIn('user_id', $excludeUserIds)
+            ->with('user:id,name,middle_name,last_name')
+            ->get();
+        $addassignees = $projectuser->map(function ($item) {
+            return $item->user;
+        });
+
+        // all activities in a project
+        $activities = Activity::where('project_id', $projectId)
+            ->whereNotIn('id', [$activityid])
+            ->get();
+
+
         return view('activity.index', [
             'activity' => $activity,
+            'activities' => $activities,
             'assignees' => $assignees,
             'subtasks' => $subtasks,
             'outputs' => $outputs,

@@ -3,11 +3,12 @@
 @section('content')
 
 <div class="maincontainer">
-    <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}">
-            <h6><b>Project: {{ $projectName }} </b></h6>
+    <div class="mainnav mb-2 shadow">
+        <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
+            <b class="small">Project: {{ $projectName }} </b>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
+        <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
 
@@ -16,64 +17,46 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-9">
+            <div class="col-6">
 
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Activity</h6>
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                     </div>
-                    <h5><b>{{ $activity['actname'] }}
-                            @if ( $activity['actremark'] === 'Completed')
-                            -<em class="text-success"> Completed</em>
-                            @endif
-                        </b></h5>
-                    Expected Output: {{ $activity['actoutput'] }} <br>
-                    Objectives:
-                    @foreach ($objectives as $objective)
-                    {{ $objective['name'] }} </br>
-                    @endforeach
-                    Start Date: {{ $activity['actstartdate'] }} <br>
-                    End Date: {{ $activity['actenddate'] }} <br>
-                    Budget: {{ $activity['actbudget'] }} <br>
-                    Source: {{ $activity['actsource'] }} <br>
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button" id="completeactivity-btn">Mark as Completed</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button">Edit Activity</button>
-                    </div>
+                    <p class="lh-sm ms-4 mt-2 me-2"><strong class="text-secondary">Activity Name:</strong>
+                        {{ $activity['actname'] }}
+                        <em class="text-success fw-bold">( {{ $activity['actremark'] }} )</em>
+                    </p>
 
-                </div>
-
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Assignees</h6>
-                    </div>
-                    @php $count = 0; @endphp
-                    <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
-                        @csrf
-                        <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
-                        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
-                    </form>
-                    @foreach ($assignees as $key=> $assignee)
-                    @if ($count % 2 == 0)
-                    <div class="row p-0">
-                        @endif
-                        <div class="col border-bottom m-2 p-2 divhover checkassignee" value="{{ $assignee->id }}">
-
-                            {{ $assignee->name . ' ' . $assignee->last_name }}
-                        </div>
-                        @if ($count % 2 == 1 || $loop->last)
-                    </div>
+                    @foreach ($objectives as $index => $objective)
+                    @if ($index === 0)
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Objectives:</strong> {{ $objective['name'] }}</p>
+                    @else
+                    <p class="lh-1 ms-5 me-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $objective['name'] }}</p>
                     @endif
-                    @php $count++; @endphp
                     @endforeach
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Expected Output:</strong> {{ $activity['actoutput'] }} </p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
+                    </p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">End Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
+                    <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
 
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addassignees-btn">Add Assignees</button>
+
+                    <div class="btn-group dropdown ms-3 mb-3 shadow">
+                        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <b class="small">Edit Activity</b>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
+                            <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
+                        </div>
                     </div>
+
                 </div>
-                <div class="basiccont p-2">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Output</h6>
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
                     </div>
                     @php
                     $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
@@ -83,40 +66,91 @@
                         @php
                         $outputarray = array_diff($outputarray, [$outputType]);
                         @endphp
-                        <h5>{{ $outputType }}</h5>
+                        <p class="lh-base fw-bold ps-3">{{ $outputType }}</p>
                         @foreach ($outputs as $output)
                         @if ($output->output_type === $outputType)
-                        {{ $output->output_name . ': ' .  $output->totaloutput_submitted }} <br>
+                        <p class="lh-1 ps-5">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }}</p>
                         @endif
                         @endforeach
                     </div>
                     @endforeach
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addoutput-btn">Add Output</button>
+
+                    <div class="btn-group ms-3 mt-2 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addoutput-btn">
+                            <b class="small">Add Output</b>
+                        </button>
                     </div>
                 </div>
+                <div class="basiccont shadow p-2 mt-4 ms-2 mb-4">
+                    <div class="border-bottom ps-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
+                    </div>
+                    @php $count = 0; @endphp
+                    <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
+                        @csrf
+                        <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
+                        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
+                    </form>
+                    @foreach ($assignees as $key=> $assignee)
+                    @if ($count % 2 == 0)
+                    <div class="row p-1">
+                        @endif
+                        <div class="col border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
+
+                            <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
+                        </div>
+                        @if ($count % 2 == 1 || $loop->last)
+                    </div>
+                    @endif
+                    @php $count++; @endphp
+                    @endforeach
+                    <div class="btn-group ms-2 mt-2 mb-2 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn">
+                            <b class="small">Add Assignees</b>
+                        </button>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-3">
-                <div class="basiccont">
-                    <div class="border-bottom ps-3">
-                        <h6 class="fw-bold small">Subtasks</h6>
+            <div class="col-4">
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
                     </div>
                     @foreach ($subtasks as $index => $subtask)
-                    @if ($index % 2 == 0)
-                    <div class="sidecont1 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $subtask->subtask_name }}</div>
-                    @else
-                    <div class="sidecont2 divhover p-2 subtaskdiv" data-value="{{ $subtask->id }}">{{ $subtask->subtask_name }}</div>
-                    @endif
+
+                    <div class="divhover p-3 pe-2 ps-4 subtaskdiv border-bottom" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
+                        {{ $subtask->subtask_name }}
+                    </div>
+
+                    @endforeach
+
+                    <div class="btn-group ms-3 mt-2 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addsubtask-btn">
+                            <b class="small">Add Subtask</b>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-2">
+                <div class="basiccont shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Activities</h6>
+                    </div>
+                    @foreach ($activities as $act)
+
+                    <div class="divhover p-3 pe-2 ps-4 actdiv border-bottom" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
+                        <b class="small">{{ $act->actname }}</b>
+                    </div>
+
                     @endforeach
 
 
-                    <div class="border-bottom d-flex justify-content-center">
-                        <button type="button" class="btn btn-sm btn-outline-secondary stretch-button addsubtask-btn">Add Subtask</button>
-                    </div>
                 </div>
 
             </div>
-
         </div>
 
     </div>
@@ -295,6 +329,7 @@
 
         });
 
+
         $('#markcomplete-btn').click(function(event) {
             event.preventDefault();
 
@@ -320,9 +355,14 @@
         $('#projectdiv').click(function(event) {
             event.preventDefault();
             var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+            var department = $('#department').val();
 
-            url = '{{ route("get.objectives", ["id" => Auth::user()->id, "projectid" => ":projectid"]) }}';
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
 
@@ -330,20 +370,40 @@
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();
 
-            var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
             url = url.replace(':outputtype', outputtype);
             window.location.href = url;
         });
 
         $(document).on('click', '.subtaskdiv', function() {
-            var subtaskid = $(this).attr('data-value');
-            var actid = $('#actid').val();
 
-            var url = '{{ route("get.subtask", ["id" => Auth::user()->id, "activityid" => ":activityid", "subtaskid" => ":subtaskid"]) }}';
-            url = url.replace(':activityid', actid);
+            event.preventDefault();
+
+            var subtaskname = $(this).attr("data-name");
+            var subtaskid = $(this).attr("data-value");
+
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
             url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
+        });
+
+        $(document).on('click', '.actdiv', function() {
+            event.preventDefault();
+
+            var activityid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+
         });
 
     });
