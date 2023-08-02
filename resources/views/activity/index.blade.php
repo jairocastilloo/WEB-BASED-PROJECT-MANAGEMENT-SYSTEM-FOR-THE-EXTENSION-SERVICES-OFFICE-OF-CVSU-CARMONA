@@ -166,7 +166,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
+                <input type="text" class="d-none" value='{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}' id="subtaskurl">
                 <form id="subtaskform" data-url="{{ route('add.subtask') }}">
                     @csrf
                     <div class="mb-3">
@@ -176,7 +176,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="subtask-startdate" class="form-label">Start Date</label>
-                        <input type="date" class="form-control" id="subtaskstartdate" name="ubtaskstartdate" placeholder="Enter Start Date">
+                        <input type="date" class="form-control" id="subtaskstartdate" name="subtaskstartdate" placeholder="Enter Start Date">
                     </div>
                     <div class="mb-3">
                         <label for="subtask-enddate" class="form-label">Due Date</label>

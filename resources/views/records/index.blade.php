@@ -111,34 +111,86 @@
                             </tr>
 
                         </thead>
-
+                        @php
+                        use App\Models\Project;
+                        use App\Models\SubtaskContributor;
+                        @endphp
                         <tbody>
+                            @foreach ($allactivities as $allactivity)
                             <tr>
                                 <td class="majority p-2">
-                                    asdasdas
+                                    @php
+                                    $projectname = Project::where('id', $allactivity['project_id'])->first(['projecttitle']);
+                                    $projectdept = Project::where('id', $allactivity['project_id'])->first(['department']);
+                                    @endphp
+                                    {{ $projectname->projecttitle }}
                                 </td>
                                 <td class="extension p-2">
-                                    asdasdas
+                                    {{ $allactivity->actname }}
                                 </td>
                                 <td class="num p-2">
-                                    asdasdas
+                                    {{ $allactivity->actstartdate . ' - ' . $allactivity->actenddate}}
                                 </td>
                                 <td class="majority p-2">
-                                    asdasdas
+                                    N/A
                                 </td>
                                 <td class="num p-2">
-                                    asdasdas
+
                                 </td>
                                 <td class="majority p-2">
-                                    asdasdas
+                                    -
                                 </td>
                                 <td class="majority p-2">
-                                    asdasdas
+                                    -
                                 </td>
                                 <td class="majority p-2">
-                                    asdasdas
+                                    {{ $projectdept->department }}
                                 </td>
                             </tr>
+                            @foreach ($allsubtasks as $allsubtask)
+                            @php
+                            $inActivity = false;
+                            if ($allsubtask->activity_id == $allactivity->id) {
+                            $inActivity = true;
+                            }
+                            @endphp
+                            @if ($inActivity)
+                            <tr>
+                                <td class="majority p-2">
+                                    &nbsp;
+                                </td>
+                                <td class="extension p-2">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{{ $allsubtask->subtask_name }}
+                                </td>
+                                <td class="num p-2">
+                                    {{ $allsubtask->substartdate . ' - ' . $allsubtask->subenddate  }}
+                                </td>
+                                <td class="majority p-2">
+                                    N/A
+                                </td>
+                                <td class="num p-2">
+                                    @php
+                                    $hoursrendered = SubtaskContributor::where('subtask_id', $allsubtask['id'])
+                                    ->where('approval', 1)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->pluck('hours_rendered');
+                                    $totalhours = $hoursrendered->sum();
+                                    @endphp
+                                    {{ $totalhours }}
+                                </td>
+                                <td class="majority p-2">
+                                    -
+                                </td>
+                                <td class="majority p-2">
+                                    -
+                                </td>
+                                <td class="majority p-2">
+                                    {{ $projectdept->department }}
+                                </td>
+                            </tr>
+                            @endif
+                            @endforeach
+                            @endforeach
 
                         </tbody>
 

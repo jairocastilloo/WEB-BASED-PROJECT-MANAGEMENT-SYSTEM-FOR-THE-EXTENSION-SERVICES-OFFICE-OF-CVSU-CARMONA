@@ -14,7 +14,8 @@ class AddSubstartdateSubenddateToSubtasks extends Migration
     public function up()
     {
         Schema::table('subtasks', function (Blueprint $table) {
-            //
+            $table->date('substartdate')->nullable();
+            $table->date('subenddate')->nullable();
         });
     }
 
@@ -26,7 +27,8 @@ class AddSubstartdateSubenddateToSubtasks extends Migration
     public function down()
     {
         Schema::table('subtasks', function (Blueprint $table) {
-            //
+            $table->dropColumn('substartdate');
+            $table->dropColumn('subenddate');
         });
     }
 }
