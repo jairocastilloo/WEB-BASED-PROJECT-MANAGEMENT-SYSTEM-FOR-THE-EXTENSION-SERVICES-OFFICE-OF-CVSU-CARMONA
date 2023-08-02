@@ -96,14 +96,14 @@ class OutputController extends Controller
         $validatedData = $request->validate([
             'output-id.*' => 'required|integer',
             'output-quantity.*' => 'required|integer',
-            'output-facilitator.*' => 'required|integer',
+            // return if facilitator need 'output-facilitator.*' => 'required|integer',
             'outputnumber' => 'required|integer',
-            'facilitatornumber' => 'required|integer',
+            // return if facilitator need 'facilitatornumber' => 'required|integer',
         ]);
 
-
+        /*  remove the save if facilitator back
         for ($i = 0; $i < $validatedData['facilitatornumber']; $i++) {
-
+            
             for ($j = 0; $j < $validatedData['outputnumber']; $j++) {
                 $outputuser = new OutputUser();
                 $outputuser->output_id = $validatedData['output-id'][$j];
@@ -111,8 +111,15 @@ class OutputController extends Controller
                 $outputuser->output_submitted = $validatedData['output-quantity'][$j];
                 $outputuser->save();
             }
+            
         }
-
+        */
+        for ($j = 0; $j < $validatedData['outputnumber']; $j++) {
+            $outputuser = new OutputUser();
+            $outputuser->output_id = $validatedData['output-id'][$j];
+            $outputuser->output_submitted = $validatedData['output-quantity'][$j];
+            $outputuser->save();
+        }
         $request->validate([
             'outputdocs' => 'required|mimes:docx|max:2048',
         ]);
