@@ -15,6 +15,7 @@ use App\Models\OutputUser;
 use App\Models\Subtask;
 use App\Models\SubtaskUser;
 use App\Models\SubtaskContributor;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -358,5 +359,23 @@ class ActivityController extends Controller
         $unassignassignee = Activity::where('id', $actid)
             ->update(['actremark' => 'Completed']);
         return response()->json(['success' => true], 200);
+    }
+    public function setnosubtask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'act-id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $actid = $request->input('act-id');
+
+        $activity = Activity::findOrFail($actid);
+        $activity->update(['totalhours_rendered' => 0]);
+
+
+        return response()->json(['success' => true]);
     }
 }

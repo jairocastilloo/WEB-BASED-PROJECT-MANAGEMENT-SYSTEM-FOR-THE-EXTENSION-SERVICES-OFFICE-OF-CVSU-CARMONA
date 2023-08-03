@@ -17,7 +17,7 @@
     <div class="container">
 
         <div class="row">
-            @if ($activity['totalhours_rendered'] == null)
+            @if ($activity['totalhours_rendered'] === null)
             <div class="col-6">
                 @else
                 <div class="col-10">
@@ -125,7 +125,8 @@
                     </div>
 
                 </div>
-                @if ($activity['totalhours_rendered'] == null)
+                @if ($activity['totalhours_rendered'] === null)
+
                 <div class="col-4">
                     <div class="basiccont word-wrap shadow mt-4">
                         <div class="border-bottom ps-3 pt-2 pe-2">
@@ -135,7 +136,7 @@
                                 </div>
                                 @if ($subtasks->count() == 0)
                                 <div class="col-auto mb-1">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="nohoursmodal">x</button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nohoursmodal">x</button>
                                 </div>
                                 @endif
                             </div>
@@ -381,6 +382,29 @@
         </div>
     </div>
 
+    <!-- no subtasks -->
+    <div class="modal fade" id="nohoursmodal" tabindex="-1" aria-labelledby="nohoursmodal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="submitHoursModalLabel">Remove subtasks</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove subtask panel for this activity?</p>
+                    <p><em>Note: Removing this panel will declare the activity as one without any subtask.</em></p>
+                    <form id="nosubtaskform" data-url="{{ route('set.nosubtask') }}">
+                        @csrf
+                        <input class="d-none" type="number" name="act-id" value="{{ $activity['id'] }}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="setnosubtask-btn">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     @endsection
 
     @section('scripts')
@@ -404,6 +428,29 @@
                 var dataurl = $('#markcompleteform').attr('data-url');
                 // Create a data object with the value you want to send
                 var data1 = $('#markcompleteform').serialize();
+
+                $.ajax({
+                    url: dataurl, // Replace with your actual AJAX endpoint URL
+                    type: 'POST',
+                    data: data1,
+                    success: function(response) {
+                        console.log(response);
+                        window.location.href = url;
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle the error here
+                        console.log(xhr.responseText);
+                        console.error(error);
+                    }
+                });
+            });
+
+            $('#setnosubtask-btn').click(function(event) {
+                event.preventDefault();
+
+                var dataurl = $('#nosubtaskform').attr('data-url');
+                // Create a data object with the value you want to send
+                var data1 = $('#nosubtaskform').serialize();
 
                 $.ajax({
                     url: dataurl, // Replace with your actual AJAX endpoint URL

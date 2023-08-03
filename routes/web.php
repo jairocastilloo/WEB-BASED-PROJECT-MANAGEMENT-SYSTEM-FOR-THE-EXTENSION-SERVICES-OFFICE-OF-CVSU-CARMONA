@@ -80,6 +80,7 @@ Route::prefix('/activities')->group(function () {
     Route::post('/markcomplete', [ActivityController::class, 'markcomplete'])->name('activity.markcomplete');
     Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
     Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
+    Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
 });
 
 Route::prefix('/projects')->group(function () {
