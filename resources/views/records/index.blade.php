@@ -117,6 +117,7 @@
                         @endphp
                         <tbody>
                             @foreach ($allactivities as $allactivity)
+                            @if (in_array($allactivity->id, $onlyactivitiesid))
                             <tr>
                                 <td class="majority p-2">
                                     @php
@@ -135,7 +136,46 @@
                                     N/A
                                 </td>
                                 <td class="num p-2">
-
+                                    @php
+                                    $hoursrendered = SubtaskContributor::where('activity_id', $allactivity['id'])
+                                    ->where('approval', 1)
+                                    ->where('subtask_id', null)
+                                    ->where('user_id', Auth::user()->id)
+                                    ->pluck('hours_rendered');
+                                    $totalhours = $hoursrendered->sum();
+                                    @endphp
+                                    {{ $totalhours }}
+                                </td>
+                                <td class="majority p-2">
+                                    -
+                                </td>
+                                <td class="majority p-2">
+                                    -
+                                </td>
+                                <td class="majority p-2">
+                                    {{ $projectdept->department }}
+                                </td>
+                            </tr>
+                            @else
+                            <tr>
+                                <td class="majority p-2">
+                                    @php
+                                    $projectname = Project::where('id', $allactivity['project_id'])->first(['projecttitle']);
+                                    $projectdept = Project::where('id', $allactivity['project_id'])->first(['department']);
+                                    @endphp
+                                    {{ $projectname->projecttitle }}
+                                </td>
+                                <td class="extension p-2">
+                                    {{ $allactivity->actname }}
+                                </td>
+                                <td class="num p-2">
+                                    {{ $allactivity->actstartdate . ' - ' . $allactivity->actenddate}}
+                                </td>
+                                <td class="majority p-2">
+                                    N/A
+                                </td>
+                                <td class="num p-2">
+                                    -
                                 </td>
                                 <td class="majority p-2">
                                     -
@@ -172,6 +212,7 @@
                                     @php
                                     $hoursrendered = SubtaskContributor::where('subtask_id', $allsubtask['id'])
                                     ->where('approval', 1)
+                                    ->where('activity_id', null)
                                     ->where('user_id', Auth::user()->id)
                                     ->pluck('hours_rendered');
                                     $totalhours = $hoursrendered->sum();
@@ -190,6 +231,7 @@
                             </tr>
                             @endif
                             @endforeach
+                            @endif
                             @endforeach
 
                         </tbody>

@@ -22,20 +22,24 @@ class RecordController extends Controller
             ->get();
         $subtasksid = $subtask_hours->pluck('subtask_id')->unique();
         $allsubtasks = Subtask::whereIn('id', $subtasksid)->get();
-        $activitiesid = $allsubtasks->pluck('activity_id')->unique();
-        $allactivities = Activity::whereIn('id', $activitiesid)->get(['id', 'actname', 'project_id']);
+
+
 
         $allonlyactivities = SubtaskContributor::where('user_id', $userid)
             ->where('subtask_id', null)
             ->where('approval', 1)
-            ->get('activity_id');
+            ->get();
+
+        $activitiesid = $allsubtasks->pluck('activity_id')->unique();
+        $onlyactivitiesid = $allonlyactivities->pluck('activity_id')->unique()->toArray();
 
 
-
+        $activitiesid = $allsubtasks->pluck('activity_id')->merge($allonlyactivities->pluck('activity_id'))->unique();
+        $allactivities = Activity::whereIn('id', $activitiesid)->get(['id', 'actname', 'project_id', 'actstartdate', 'actenddate']);
         return view('records.index', [
             'allactivities' => $allactivities,
             'allsubtasks' => $allsubtasks,
-            'allonlyactivities' => $allonlyactivities,
+            'onlyactivitiesid' => $onlyactivitiesid,
         ]);
     }
 }
