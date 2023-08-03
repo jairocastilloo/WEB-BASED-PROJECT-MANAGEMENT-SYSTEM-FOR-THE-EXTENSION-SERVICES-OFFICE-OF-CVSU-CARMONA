@@ -220,7 +220,7 @@
         </div>
         <div class="col-2">
             <div class="basiccont me-4 mt-4 rounded shadow">
-                <div class="border-bottom mt-4 ps-2 pt-2">
+                <div class="border-bottom mt-4 ps-2 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 @php
