@@ -378,4 +378,21 @@ class ActivityController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function complyactivity($activityid, $activityname)
+    {
+
+        $activity = Activity::findOrFail($activityid);
+        $currentassignees = $activity->users;
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        return view('activity.submitactivity', [
+            'activity' => $activity,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'currentassignees' => $currentassignees,
+        ]);
+    }
 }

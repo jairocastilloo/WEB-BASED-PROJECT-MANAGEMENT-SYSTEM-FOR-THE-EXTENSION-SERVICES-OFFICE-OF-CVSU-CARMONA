@@ -59,8 +59,15 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
                                 <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
-                                @if ($subtasks->count() == 0)
-                                <a class="dropdown-item small hrefnav" href="#" id="submithours-btn" data-bs-toggle="modal" data-bs-target="#submitHoursModal"><b class="small">Submit Hours</b></a>
+                                @if ($activity['totalhours_rendered'] !== null)
+                                <a class="dropdown-item small hrefnav submithours-btn" href="#">
+                                    <b class="small">Submit Hours</b>
+                                </a>
+                                @elseif ($subtasks->count() == 0)
+                                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#submitHoursModal">
+                                    <b class="small">Submit Hours</b>
+                                </a>
+
                                 @endif
 
                             </div>
@@ -376,7 +383,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary submithours-btn">Submit</button>
                 </div>
             </div>
         </div>
@@ -405,6 +412,8 @@
             </div>
         </div>
     </div>
+    <input class="d-none" type="number" id="actid-hrs" value="{{ $activity['id'] }}">
+    <input class="d-none" type="text" id="actname-hrs" value="{{ $activity['actname'] }}">
     @endsection
 
     @section('scripts')
@@ -421,7 +430,16 @@
 
             });
 
+            $(document).on('click', '.submithours-btn', function() {
+                var activityid = $('#actid-hrs').val();
+                var activityname = $('#actname-hrs').val();
 
+                var url = '{{ route("comply.activity", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+                url = url.replace(':activityid', activityid);
+                url = url.replace(':activityname', activityname);
+
+                window.location.href = url;
+            });
             $('#markcomplete-btn').click(function(event) {
                 event.preventDefault();
 

@@ -81,6 +81,7 @@ Route::prefix('/activities')->group(function () {
     Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
     Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
     Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
+    Route::get('/{activityid}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
 });
 
 Route::prefix('/projects')->group(function () {
