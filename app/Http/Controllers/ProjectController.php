@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActivityUser;
 use App\Models\Objective;
 use App\Models\Output;
+use App\Models\SubtaskContributor;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -55,7 +56,7 @@ class ProjectController extends Controller
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
         return view('project.select', ['members' => $users, 'projects' => $projects, 'currentproject' => $currentproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities]);
     }
-
+    /*
     public function getactivity($id, $activityid)
     {
         // activity details
@@ -92,6 +93,20 @@ class ProjectController extends Controller
             ->where('objectiveset_id', $objectiveset)
             ->get('name');
 
+        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+            ->where('approval', 0)
+            ->where('activity_id', $activityid)
+            ->groupBy('created_at')
+            ->get();
+        $unapprovedactivity = SubtaskContributor::selectRaw('MAX(id) as id')
+            ->where('approval', 0)
+            ->where('activity_id', $activityid)
+            ->groupByRaw('created_at')
+            ->pluck('id');
+
+
+        $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
+            ->get();
 
         return view('activity.index', [
             'activity' => $activity,
@@ -103,9 +118,11 @@ class ProjectController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
+            'unapprovedactivitydata' => $unapprovedactivitydata,
+            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
-
+*/
 
     public function store(Request $request)
     {

@@ -76,7 +76,7 @@
 
 </div>
 
-</div>
+
 
 <div class="modal fade" id="contributorModal" tabindex="-1" aria-labelledby="contributorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -180,7 +180,7 @@
             url = url.replace(':activityid', activityid);
             url = url.replace(':department', department);
             url = url.replace(':activityname', activityname);
-            window.location.href = url;
+
 
             $("#contributornumber").val($('input[name^="activity-contributor["][name$="]"]').length);
 
@@ -197,6 +197,7 @@
                     console.log(response);
 
                     window.location.href = url;
+
                     // Handle the successful response here
                 },
                 error: function(xhr, status, error) {

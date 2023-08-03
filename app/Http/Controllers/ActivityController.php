@@ -261,6 +261,7 @@ class ActivityController extends Controller
 
         $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
             ->where('approval', 0)
+            ->where('subtask_id', $subtaskid)
             ->groupBy('created_at')
             ->get();
         $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
@@ -330,6 +331,20 @@ class ActivityController extends Controller
             ->whereNotIn('id', [$activityid])
             ->get();
 
+        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+            ->where('approval', 0)
+            ->where('activity_id', $activityid)
+            ->groupBy('created_at')
+            ->get();
+        $unapprovedactivity = SubtaskContributor::selectRaw('MAX(id) as id')
+            ->where('approval', 0)
+            ->where('activity_id', $activityid)
+            ->groupByRaw('created_at')
+            ->pluck('id');
+
+
+        $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
+            ->get();
 
         return view('activity.index', [
             'activity' => $activity,
@@ -342,6 +357,8 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
+            'unapprovedactivitydata' => $unapprovedactivitydata,
+            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
 
@@ -432,6 +449,25 @@ class ActivityController extends Controller
         $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
+
+        return 'File uploaded successfully.';
+    }
+
+    public function acceptacthours(Request $request)
+    {
+
+        $acceptIds = $request->input('acceptids');
+
+        // Update the 'approval' field in SubtaskContributor table
+        SubtaskContributor::where('created_at', $acceptIds)->update(['approval' => 1]);
+
+        // Get the subtask_id and hours_rendered for the first record with the specified created_at value
+        $subtaskContributor = SubtaskContributor::where('created_at', $acceptIds)->first();
+        $activityid = $subtaskContributor->activity_id;
+        $hoursrendered = $subtaskContributor->hours_rendered;
+
+        // Update the 'hours_rendered' field in the Subtask table
+        Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
 
         return 'File uploaded successfully.';
     }
