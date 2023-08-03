@@ -30,7 +30,7 @@
                     <div class="m-2 ms-4 me-4">
                         <label class="form-label">Hours Rendered:</label>
                         <input type="number" class="d-none" id="activity-id" name="activity-id" value="{{ $activity['id'] }}">
-                        <input type="text" class="d-none" id="activity-name" name="activity-name" value="{{ $activity['activityname'] }}">
+                        <input type="text" class="d-none" id="activity-name" name="activity-name" value="{{ $activity['actname'] }}">
                         <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
                     </div>
 
