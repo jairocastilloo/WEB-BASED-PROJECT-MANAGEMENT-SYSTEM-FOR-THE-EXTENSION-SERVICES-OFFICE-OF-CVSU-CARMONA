@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class ActivityController extends Controller
 {
@@ -394,5 +395,44 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'currentassignees' => $currentassignees,
         ]);
+    }
+
+    public function addtoactivity(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'activity-id' => 'required|integer',
+            'activity-contributor.*' => 'required|integer',
+            'contributornumber' => 'required|integer',
+            'hours-rendered' => 'required|integer',
+        ]);
+
+
+        for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
+
+
+            $subtaskcontributor = new SubtaskContributor();
+            $subtaskcontributor->user_id = $validatedData['activity-contributor'][$i];
+            $subtaskcontributor->activity_id = $validatedData['activity-id'];
+            $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+            $subtaskcontributor->save();
+        }
+
+        $request->validate([
+            'activitydocs' => 'required|mimes:docx|max:2048',
+        ]);
+
+
+        $file = $request->file('activitydocs');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+
+        return 'File uploaded successfully.';
     }
 }

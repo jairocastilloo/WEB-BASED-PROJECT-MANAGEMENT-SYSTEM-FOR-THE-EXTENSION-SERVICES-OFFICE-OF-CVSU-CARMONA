@@ -15,8 +15,9 @@
 
 
     <div class="container">
-        <form id="addtoactivityform" data-url="">
+        <form id="addtoactivityform" data-url="{{ route('addto.activity') }}">
             @csrf
+            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <div class="basiccont word-wrap shadow mt-4 me-4 ms-4">
                 <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Submit Hours Rendered</b>
@@ -147,12 +148,12 @@
             var contributorid = parseInt($('#contributorselect').val());
 
             if (contributorindex === 0) {
-                $(`#subtask-contributor-${contributorindex}`).val(contributorid);
+                $(`#activity-contributor-${contributorindex}`).val(contributorid);
 
             } else {
-                var subtaskcontributordiv = `<input type="number" class="d-none" id="subtask-contributor-${contributorindex}" name="subtask-contributor[${contributorindex}]">`;
-                $('#addtosubtaskform').append(subtaskcontributordiv);
-                $(`#subtask-contributor-${contributorindex}`).val(contributorid);
+                var activitycontributordiv = `<input type="number" class="d-none" id="activity-contributor-${contributorindex}" name="activity-contributor[${contributorindex}]">`;
+                $('#addtoactivityform').append(activitycontributordiv);
+                $(`#activity-contributor-${contributorindex}`).val(contributorid);
 
             }
 
@@ -164,22 +165,27 @@
             $('#contributorModal').modal('hide');
         });
 
-        /*
+
         $('#submitreport-btn').click(function(event) {
             event.preventDefault();
 
-            var subtaskid = $('#subtask-id').val();
-            var subtaskname = $('#subtask-name').val();
+            var activityid = $('#activity-id').val();
+            var activityname = $('#activity-name').val();
+
+            var department = $('#department').val();
 
 
-            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
-            url = url.replace(':subtaskid', subtaskid);
-            url = url.replace(':subtaskname', subtaskname);
 
-            $("#contributornumber").val($('input[name^="subtask-contributor["][name$="]"]').length);
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
 
-            var dataurl = $('#addtosubtaskform').attr('data-url');
-            var formData = new FormData($("#addtosubtaskform")[0]);
+            $("#contributornumber").val($('input[name^="activity-contributor["][name$="]"]').length);
+
+            var dataurl = $('#addtoactivityform').attr('data-url');
+            var formData = new FormData($("#addtoactivityform")[0]);
 
             $.ajax({
                 url: dataurl,
@@ -201,7 +207,7 @@
             });
 
         });
-        */
+
 
 
     });
