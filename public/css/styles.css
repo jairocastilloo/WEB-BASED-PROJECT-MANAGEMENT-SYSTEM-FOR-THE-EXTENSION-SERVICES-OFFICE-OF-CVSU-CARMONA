@@ -17,6 +17,10 @@ body {
     border-radius: 5px;
 
 }
+.basiccont .bggreen {
+  background-color: #f2fde8;
+  border-radius: 5px;
+}
 
 
 .stretch-button {

@@ -7,9 +7,9 @@
     <div class="row">
         <div class="col-6">
 
-            <div class="basiccont word-wrap shadow ms-4 mt-2">
+            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
 
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
                 @if($subtasks->isNotEmpty())
@@ -70,7 +70,7 @@
             @endphp
             @if($activities->isEmpty())
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                 </div>
                 <div class="text-center p-4">
@@ -81,7 +81,7 @@
             @if ($inProgressActivities && count($inProgressActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
                 </div>
                 @foreach ($inProgressActivities as $activity)
@@ -102,7 +102,7 @@
             @if ($pendingActivities && count($pendingActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
                 </div>
                 @foreach ($pendingActivities as $activity)
@@ -122,7 +122,7 @@
             @endif
             @if ($scheduledActivities && count($scheduledActivities) > 0)
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
                 </div>
                 @foreach ($scheduledActivities as $activity)
@@ -143,7 +143,7 @@
             @if ($overdueActivities && count($overdueActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
                 </div>
                 @foreach ($overdueActivities as $activity)
@@ -163,7 +163,7 @@
             @endif
             @if ($completedActivities && count($completedActivities) > 0)
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                 </div>
                 @foreach ($completedActivities as $activity)
@@ -187,7 +187,7 @@
         <div class="col-3">
 
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 @php

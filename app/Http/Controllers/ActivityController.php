@@ -394,7 +394,7 @@ class ActivityController extends Controller
         $activity->update(['totalhours_rendered' => 0]);
 
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'actid' => $actid]);
     }
 
     public function complyactivity($activityid, $activityname)

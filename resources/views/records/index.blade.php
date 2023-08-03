@@ -130,7 +130,8 @@
                                     {{ $allactivity->actname }}
                                 </td>
                                 <td class="num p-2">
-                                    {{ $allactivity->actstartdate . ' - ' . $allactivity->actenddate}}
+                                    {{ \Carbon\Carbon::parse($allactivity->actstartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allactivity->actenddate)->format('M d,Y') }}
+
                                 </td>
                                 <td class="majority p-2">
                                     N/A
@@ -169,7 +170,7 @@
                                     {{ $allactivity->actname }}
                                 </td>
                                 <td class="num p-2">
-                                    {{ $allactivity->actstartdate . ' - ' . $allactivity->actenddate}}
+                                    {{ \Carbon\Carbon::parse($allactivity->actstartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allactivity->actenddate)->format('M d,Y') }}
                                 </td>
                                 <td class="majority p-2">
                                     N/A
@@ -203,7 +204,7 @@
                                     &nbsp;&nbsp;&nbsp;&nbsp;{{ $allsubtask->subtask_name }}
                                 </td>
                                 <td class="num p-2">
-                                    {{ $allsubtask->substartdate . ' - ' . $allsubtask->subenddate  }}
+                                    {{ \Carbon\Carbon::parse($allsubtask->substartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allsubtask->subenddate)->format('M d,Y') }}
                                 </td>
                                 <td class="majority p-2">
                                     N/A
