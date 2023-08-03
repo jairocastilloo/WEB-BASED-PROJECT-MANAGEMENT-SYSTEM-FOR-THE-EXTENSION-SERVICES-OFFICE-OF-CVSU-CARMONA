@@ -7,7 +7,7 @@
 
 <div class="maincontainer">
     &nbsp;
-    <div class="basiccont m-4 p-3">
+    <div class="basiccont mt-2 m-4 p-3 rounded shadow">
 
         <div class="form-floating">
             <select id="project-select" class="form-select" aria-label="Select an option" style="border: 1px solid darkgreen;">

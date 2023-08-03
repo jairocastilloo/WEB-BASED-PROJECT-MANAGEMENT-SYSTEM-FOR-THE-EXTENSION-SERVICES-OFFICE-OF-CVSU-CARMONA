@@ -15,12 +15,14 @@ use App\Models\OutputUser;
 use App\Models\Subtask;
 use App\Models\SubtaskUser;
 use App\Models\SubtaskContributor;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class ActivityController extends Controller
 {
@@ -259,6 +261,7 @@ class ActivityController extends Controller
 
         $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
             ->where('approval', 0)
+            ->where('subtask_id', $subtaskid)
             ->groupBy('created_at')
             ->get();
         $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
@@ -328,6 +331,20 @@ class ActivityController extends Controller
             ->whereNotIn('id', [$activityid])
             ->get();
 
+        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
+            ->where('approval', 0)
+            ->where('activity_id', $activityid)
+            ->groupBy('created_at')
+            ->get();
+        $unapprovedactivity = SubtaskContributor::selectRaw('MAX(id) as id')
+            ->where('approval', 0)
+            ->where('activity_id', $activityid)
+            ->groupByRaw('created_at')
+            ->pluck('id');
+
+
+        $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
+            ->get();
 
         return view('activity.index', [
             'activity' => $activity,
@@ -340,6 +357,8 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
+            'unapprovedactivitydata' => $unapprovedactivitydata,
+            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
 
@@ -358,5 +377,98 @@ class ActivityController extends Controller
         $unassignassignee = Activity::where('id', $actid)
             ->update(['actremark' => 'Completed']);
         return response()->json(['success' => true], 200);
+    }
+    public function setnosubtask(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'act-id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $actid = $request->input('act-id');
+
+        $activity = Activity::findOrFail($actid);
+        $activity->update(['totalhours_rendered' => 0]);
+
+
+        return response()->json(['success' => true]);
+    }
+
+    public function complyactivity($activityid, $activityname)
+    {
+
+        $activity = Activity::findOrFail($activityid);
+        $currentassignees = $activity->users;
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        return view('activity.submitactivity', [
+            'activity' => $activity,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'currentassignees' => $currentassignees,
+        ]);
+    }
+
+    public function addtoactivity(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'activity-id' => 'required|integer',
+            'activity-contributor.*' => 'required|integer',
+            'contributornumber' => 'required|integer',
+            'hours-rendered' => 'required|integer',
+        ]);
+
+
+        for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
+
+
+            $subtaskcontributor = new SubtaskContributor();
+            $subtaskcontributor->user_id = $validatedData['activity-contributor'][$i];
+            $subtaskcontributor->activity_id = $validatedData['activity-id'];
+            $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+            $subtaskcontributor->save();
+        }
+
+        $request->validate([
+            'activitydocs' => 'required|mimes:docx|max:2048',
+        ]);
+
+
+        $file = $request->file('activitydocs');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+
+        return 'File uploaded successfully.';
+    }
+
+    public function acceptacthours(Request $request)
+    {
+
+        $acceptIds = $request->input('acceptids');
+
+        // Update the 'approval' field in SubtaskContributor table
+        SubtaskContributor::where('created_at', $acceptIds)->update(['approval' => 1]);
+
+        // Get the subtask_id and hours_rendered for the first record with the specified created_at value
+        $subtaskContributor = SubtaskContributor::where('created_at', $acceptIds)->first();
+        $activityid = $subtaskContributor->activity_id;
+        $hoursrendered = $subtaskContributor->hours_rendered;
+
+        // Update the 'hours_rendered' field in the Subtask table
+        Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
+
+        return 'File uploaded successfully.';
     }
 }

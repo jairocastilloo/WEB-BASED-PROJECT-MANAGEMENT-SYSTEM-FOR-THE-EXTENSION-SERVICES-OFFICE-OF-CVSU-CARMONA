@@ -17,6 +17,7 @@
     <div class="container">
 
         <div class="row">
+
             <div class="col-6">
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
@@ -27,6 +28,7 @@
                         {{ $activity['actname'] }}
                         <em class="text-success fw-bold">( {{ $activity['actremark'] }} )</em>
                     </p>
+
 
                     @foreach ($objectives as $index => $objective)
                     @if ($index === 0)
@@ -42,7 +44,6 @@
                     <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
                     <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
 
-
                     <div class="btn-group dropdown ms-3 mb-3 shadow">
                         <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <b class="small">Edit Activity</b>
@@ -50,6 +51,7 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
                             <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
+
                         </div>
                     </div>
 
@@ -112,18 +114,43 @@
                 </div>
 
             </div>
+            @if ($activity['totalhours_rendered'] === null)
+
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4">
-                    <div class="border-bottom ps-3 pt-2">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
+                    <div class="border-bottom ps-3 pt-2 pe-2">
+                        <div class="row">
+                            <div class="col">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
+                            </div>
+                            @if ($subtasks->count() == 0)
+                            <div class="col-auto mb-1">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nohoursmodal">x</button>
+                            </div>
+                            @endif
+                        </div>
                     </div>
-                    @foreach ($subtasks as $index => $subtask)
+
+                    @if ($subtasks->count() == 0)
+
+
+
+                    <div class="text-center p-4 pb-2">
+                        <h4><em>No Added Subtask Yet.</em></h4>
+                    </div>
+
+                    @else
+
+                    @foreach ($subtasks as $subtask)
 
                     <div class="divhover p-3 pe-2 ps-4 subtaskdiv border-bottom" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
                         {{ $subtask->subtask_name }}
                     </div>
 
                     @endforeach
+
+                    @endif
+
 
                     <div class="btn-group ms-3 mt-2 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addsubtask-btn">
@@ -133,6 +160,77 @@
                 </div>
 
             </div>
+            @else
+            <div class="col-4">
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Total Hours Rendered</h6>
+                    </div>
+
+
+                    <div class="text-center p-2 border-bottom">
+                        <h5><em>{{ $activity->totalhours_rendered }}</em></h5>
+                    </div>
+
+
+                    <div class="btn-group ms-3 mb-3 mt-2 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow submithours-btn">
+                            <b class="small">Submit Hours</b>
+                        </button>
+                    </div>
+                </div>
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours Rendered</h6>
+                    </div>
+                    <ul class="list-unstyled small">
+
+                        @foreach ($unapprovedactivitydata as $unapprovedact)
+                        @php
+                        $hasSameDate = false;
+                        @endphp
+
+                        <li class="ps-4">
+                            @foreach ($usersWithSameCreatedAt as $samedateusers)
+                            @if($unapprovedact['created_at'] == $samedateusers->created_at)
+                            @php
+                            $userIds = explode(',', $samedateusers->user_ids);
+                            @endphp
+
+
+                            <b>Hours rendered:</b> {{ $unapprovedact['hours_rendered'] }} <br>
+                            <b>Date Submitted:</b> {{ \Carbon\Carbon::parse($unapprovedact['created_at'])->format('F d, Y') }} <br>
+                            <b>Contributor:</b>
+                            @foreach ($userIds as $userId)
+                            @php
+                            $user = \App\Models\User::find($userId);
+                            @endphp
+                            @if ($user)
+                            {{ $user->name . ' ' . $user->last_name}}
+                            @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
+                            {{ ' | ' }}
+                            @endif
+                            @endif
+
+                            @endforeach
+                            <form id="acceptacthoursform" data-url="{{ route('acthours.accept') }}">
+                                @csrf
+                                <input type="text" class="d-none" value="{{ $samedateusers->created_at }}" name="acceptids" id="acceptids">
+                                <button type="button" class="btn btn-sm btn-outline-success acceptacthours-btn">Accept</button>
+                            </form>
+                            <hr>
+                            @break
+                            @endif
+
+                            @endforeach
+
+                        </li>
+                        @endforeach
+                    </ul>
+                    <hr>
+                </div>
+            </div>
+            @endif
 
             <div class="col-2">
                 <div class="basiccont shadow mt-4 me-2">
@@ -166,13 +264,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
+                <input type="text" class="d-none" value='{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}' id="subtaskurl">
                 <form id="subtaskform" data-url="{{ route('add.subtask') }}">
                     @csrf
                     <div class="mb-3">
                         <label for="subtask-name" class="form-label">Subtask Name</label>
                         <input type="number" class="d-none" name="activitynumber" id="actid" value="{{ $activity['id'] }}">
                         <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
+                    </div>
+                    <div class="mb-3">
+                        <label for="subtask-startdate" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" id="subtaskstartdate" name="subtaskstartdate" placeholder="Enter Start Date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="subtask-enddate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="subtaskenddate" name="subtaskenddate" placeholder="Enter Due Date">
                     </div>
                 </form>
             </div>
@@ -313,6 +419,33 @@
         </div>
     </div>
 </div>
+
+
+<!-- no subtasks -->
+<div class="modal fade" id="nohoursmodal" tabindex="-1" aria-labelledby="nohoursmodal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="submitHoursModalLabel">Remove subtasks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove subtask panel for this activity?</p>
+                <p><em>Note: Removing this panel will declare the activity as one without any subtask.</em></p>
+                <form id="nosubtaskform" data-url="{{ route('set.nosubtask') }}">
+                    @csrf
+                    <input class="d-none" type="number" name="act-id" value="{{ $activity['id'] }}">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="setnosubtask-btn">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input class="d-none" type="number" id="actid-hrs" value="{{ $activity['id'] }}">
+<input class="d-none" type="text" id="actname-hrs" value="{{ $activity['actname'] }}">
 @endsection
 
 @section('scripts')
@@ -329,13 +462,47 @@
 
         });
 
+        $(document).on('click', '.submithours-btn', function() {
+            var activityid = $('#actid-hrs').val();
+            var activityname = $('#actname-hrs').val();
+            var department = $('#department').val();
 
+            var url = '{{ route("comply.activity", ["activityid" => ":activityid", "activityname" => ":activityname", "department" => ":department"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':activityname', activityname);
+            url = url.replace(':department', department);
+
+            window.location.href = url;
+        });
         $('#markcomplete-btn').click(function(event) {
             event.preventDefault();
 
             var dataurl = $('#markcompleteform').attr('data-url');
             // Create a data object with the value you want to send
             var data1 = $('#markcompleteform').serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
+
+        $('#setnosubtask-btn').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#nosubtaskform').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#nosubtaskform').serialize();
 
             $.ajax({
                 url: dataurl, // Replace with your actual AJAX endpoint URL
@@ -404,6 +571,29 @@
             url = url.replace(':activityname', activityname);
             window.location.href = url;
 
+        });
+
+        $(document).on('click', '.acceptacthours-btn', function() {
+            var acceptIdsValue = $(this).prev().val();
+            var dataurl = $(this).parent().attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $(this).parent().serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
         });
 
     });

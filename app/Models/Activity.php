@@ -16,7 +16,8 @@ class Activity extends Model
         'actstartdate',
         'actenddate',
         'actbudget',
-        'actsource'
+        'actsource',
+        'totalhours_rendered',
     ];
     public function project()
     {

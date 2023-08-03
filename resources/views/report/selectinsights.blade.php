@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="basiccont m-4 p-3 rounded">
+        <div class="basiccont m-4 p-3 rounded shadow">
 
             <div class="form-floating">
                 <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">

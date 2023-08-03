@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="basiccont m-2 mt-4 mb-4 p-3 rounded">
+        <div class="basiccont m-2 mt-4 mb-4 p-3 rounded shadow">
 
             <div class="form-floating">
                 <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
@@ -34,7 +34,7 @@
 
 
             <div class="col">
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2">
+                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">Total Activities</h6>
                     </div>
@@ -48,7 +48,7 @@
                     </h1>
                 </div>
 
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2">
+                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">Scheduled Activities</h6>
                     </div>
@@ -70,7 +70,7 @@
 
             </div>
             <div class="col">
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2">
+                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">In Progress Activities</h6>
                     </div>
@@ -88,7 +88,7 @@
 
                     </h1>
                 </div>
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2">
+                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">Overdue Activities</h6>
                     </div>
@@ -109,7 +109,7 @@
 
             </div>
             <div class="col">
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2">
+                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">Pending Activities</h6>
                     </div>
@@ -128,7 +128,7 @@
                     </h1>
                 </div>
 
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2">
+                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">Completed Activities</h6>
                     </div>

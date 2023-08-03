@@ -122,6 +122,28 @@ body {
     .secondtable {
     flex-shrink: 0;
     }
+
+    .recordtable, .recordtable th, .recordtable td {
+      border: 1px solid #bababa;
+     
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .recordtable .majority{
+      min-width: 133px;
+      max-width: 133px;
+    }
+    .recordtable .num{
+      min-width: 100px;
+      max-width: 100px;
+      text-align: center;
+    }
+
+    .recordtable .extension{
+      min-width: 240px;
+      max-width: 240px;
+    }
+
     .btn-gold {
       color: black;
       background-color: gold;

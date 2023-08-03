@@ -11,6 +11,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\RecordController;
 use App\Models\Activity;
 
 /*
@@ -62,6 +63,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
+    Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
 Route::prefix('/subtasks')->group(function () {
@@ -78,6 +80,10 @@ Route::prefix('/activities')->group(function () {
     Route::post('/markcomplete', [ActivityController::class, 'markcomplete'])->name('activity.markcomplete');
     Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
     Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
+    Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
+    Route::get('/{activityid}/{department}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
+    Route::post('/addtoactivity', [ActivityController::class, 'addtoactivity'])->name('addto.activity');
+    Route::post('/acceptacthours', [ActivityController::class, 'acceptacthours'])->name('acthours.accept');
 });
 
 Route::prefix('/projects')->group(function () {

@@ -44,6 +44,8 @@ class SubtaskController extends Controller
         $validator = Validator::make($request->all(), [
             'subtaskname' => 'required|max:255',
             'activitynumber' => 'required|integer',
+            'subtaskstartdate' => 'required|date|before_or_equal:subtaskenddate',
+            'subtaskenddate' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -52,12 +54,20 @@ class SubtaskController extends Controller
 
         $subtaskname = $request->input('subtaskname');
         $activitynumber = $request->input('activitynumber');
-
+        $subtaskstartdate = $request->input('subtaskstartdate');
+        $subtaskenddate = $request->input('subtaskenddate');
         $subtasks = new Subtask();
 
         $subtasks->subtask_name = $subtaskname;
         $subtasks->activity_id = $activitynumber;
+        $subtasks->substartdate = $subtaskstartdate;
+        $subtasks->subenddate = $subtaskenddate;
         $subtasks->save();
+        $lastsubtaskid = $subtasks->id;
+
+        return response()->json([
+            'lastsubtaskid' => $lastsubtaskid,
+        ]);
     }
     public function addsubtaskassignee(Request $request)
     {
@@ -65,6 +75,7 @@ class SubtaskController extends Controller
 
             'subtaskid' => 'required|integer',
             'userid' => 'required|integer',
+
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +89,7 @@ class SubtaskController extends Controller
 
         $subtaskuser->subtask_id = $subtaskid;
         $subtaskuser->user_id = $userid;
+
         $subtaskuser->save();
     }
 

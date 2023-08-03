@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="maincontainer">
-    <div class="mainnav mb-2">
+    <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
@@ -39,7 +39,7 @@
                     @endforeach
 
                 </div>
-
+                <!--
                 <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;">
                         <b>Facilitator Involved</b>
@@ -54,8 +54,7 @@
                         </button>
                     </div>
 
-                </div>
-
+                </div> -->
                 <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;">
                         <b>Supporting Documents</b>
@@ -75,16 +74,11 @@
                     </div>
                 </div>
             </div>
+        </form>
     </div>
-    </form>
-
-
-</div>
 </div>
 
-
-
-
+<!--
 <div class="modal fade" id="addFacilitatorModal" tabindex="-1" aria-labelledby="addFacilitatorModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -112,6 +106,8 @@
         </div>
     </div>
 </div>
+
+-->
 @endsection
 @section('scripts')
 <script>
@@ -161,6 +157,7 @@
 
 
         });
+        /** 
         $('#addfacilitator-btn').click(function(event) {
             $('#selectfacilitator').children().not(':first').remove();
             $.each(assignees, function(index, assignee) {
@@ -216,18 +213,18 @@
 
             $('#addFacilitatorModal').modal('hide');
         });
-
+*/
         $('#submitreport-btn').click(function(event) {
             event.preventDefault();
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();
 
-            var url = '{{ route("get.output", ["id" => Auth::user()->id, "activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
             url = url.replace(':outputtype', outputtype);
 
             $("#outputnumber").val($('input[name="output-quantity[]"]').length);
-            $("#facilitatornumber").val($('input[name^="output-facilitator["][name$="]"]').length);
+            //$("#facilitatornumber").val($('input[name^="output-facilitator["][name$="]"]').length);
             $('input[name="output-id[]"]').each(function(index) {
                 $(this).attr('name', 'output-id[' + index + ']');
             });

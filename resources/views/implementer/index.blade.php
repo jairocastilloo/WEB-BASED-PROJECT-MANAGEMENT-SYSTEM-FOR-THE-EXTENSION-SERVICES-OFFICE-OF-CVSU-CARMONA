@@ -8,17 +8,17 @@
         <div class="col-6">
 
             <div class="basiccont word-wrap shadow ms-4 mt-2">
+
                 <div class="border-bottom ps-3 pt-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">My Tasks</h6>
+                    <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
-                @foreach($subtasks as $subtask)
+                @if($subtasks->isNotEmpty())
+                @forelse($subtasks as $subtask)
                 @php
                 $totalhoursrendered = 0;
                 @endphp
 
                 @foreach ($contributions as $contribution)
-
-
                 @if($contribution['subtask_id'] === $subtask['id'])
                 @php
                 $totalhoursrendered += $contribution['hours_rendered'];
@@ -30,7 +30,17 @@
                     <h6><b>{{ $subtask['subtask_name'] }}</b></h6>
                     <h6>{{ $totalhoursrendered }} hours rendered</h6>
                 </div>
-                @endforeach
+                @empty
+                <div class="text-center p-4">
+                    <h4><em>No Assigned Tasks.</em></h4>
+                </div>
+                @endforelse
+                @else
+                <div class="text-center p-4">
+                    <h4><em>No Assigned Tasks.
+                        </em></h4>
+                </div>
+                @endif
 
             </div>
         </div>
@@ -58,6 +68,16 @@
             return $activity['actremark'] === 'Completed';
             });
             @endphp
+            @if($activities->isEmpty())
+            <div class="basiccont word-wrap shadow mt-2">
+                <div class="border-bottom ps-3 pt-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
+                </div>
+                <div class="text-center p-4">
+                    <h4><em>No Assigned Activities.</em></h4>
+                </div>
+            </div>
+            @endif
             @if ($inProgressActivities && count($inProgressActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
@@ -174,6 +194,12 @@
                 // Sort the $activities array by actstartdate in ascending order
                 $sortedProjects = $projects->sortBy('projectstartdate');
                 @endphp
+                @if ($sortedProjects->isEmpty())
+                <div class="text-center p-4">
+                    <h4><em>Not involved in any Project.
+                        </em></h4>
+                </div>
+                @else
                 @foreach($sortedProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
                     <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
@@ -187,6 +213,7 @@
 
                 </div>
                 @endforeach
+                @endif
             </div>
         </div>
     </div>

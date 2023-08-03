@@ -13,6 +13,7 @@ class SubtaskContributor extends Model
     protected $fillable = [
         'subtask_id',
         'user_id',
+        'activity_id',
         'hours_rendered',
     ];
 

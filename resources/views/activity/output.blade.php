@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="maincontainer">
-    <div class="mainnav mb-2">
+    <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
@@ -56,6 +56,7 @@
                         <li class="ps-4 pe-2">
                             @foreach($unapprovedoutputdata as $unapprovedoutput)
                             @if ($outputcreated == $unapprovedoutput['created_at'])
+
                             @php
                             $output = \App\Models\Output::find($unapprovedoutput['output_id']);
                             @endphp
@@ -67,7 +68,7 @@
                             @endforeach
 
 
-
+                            <!--
                             <b>Facilitator:</b>
                             @foreach($usersWithSameCreatedAt as $usersame)
                             @if ($usersame['created_at'] == $outputcreated)
@@ -87,11 +88,10 @@
 
                             @endforeach
 
-
-
                             @endif
+                            
                             @endforeach
-                            <br>
+-->
                             <div class="btn-group mt-2 shadow">
                                 <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
                                     @csrf

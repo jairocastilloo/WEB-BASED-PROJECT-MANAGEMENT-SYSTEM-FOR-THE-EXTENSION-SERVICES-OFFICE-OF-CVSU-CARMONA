@@ -91,7 +91,10 @@
                                 </a>
 
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="" onclick="event.preventDefault();
+                                    <a class="dropdown-item" href="{{ route('records.show', ['username' => Auth::user()->username]) }}">
+                                        {{ __('My Records') }}
+                                    </a>
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
