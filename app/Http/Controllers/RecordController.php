@@ -35,6 +35,7 @@ class RecordController extends Controller
         return view('records.index', [
             'allactivities' => $allactivities,
             'allsubtasks' => $allsubtasks,
+            'allonlyactivities' => $allonlyactivities,
         ]);
     }
 }
