@@ -2,7 +2,10 @@
 
 @section('content')
 
+@php
 
+
+@endphp
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
 <div class="maincontainer">
@@ -130,8 +133,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
-                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate" min="{{ date('Y-m-d') }}">
                             </div>
+
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
                                 <input type="date" class="form-control" id="projectenddate" name="projectenddate">
@@ -224,16 +228,16 @@
 
 
         selectElement.change(function() {
-            // Get the currently selected option
             var selectedOption = $(this).find(':selected');
             var projectid = selectedOption.val();
-            var projectname = selectedOption.text().trim(); // Trim leading and trailing whitespaces
+            var projectname = selectedOption.text().trim();
             var department = $('#department').val();
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
-            url = url.replace(':projectid', projectid);
-            url = url.replace(':department', encodeURIComponent(department));
-            url = url.replace(':projectname', encodeURIComponent(projectname));
+            var baseUrl = "{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}";
+            var url = baseUrl.replace(':projectid', projectid)
+                .replace(':department', department)
+                .replace(':projectname', projectname);
+
             window.location.href = url;
         });
 

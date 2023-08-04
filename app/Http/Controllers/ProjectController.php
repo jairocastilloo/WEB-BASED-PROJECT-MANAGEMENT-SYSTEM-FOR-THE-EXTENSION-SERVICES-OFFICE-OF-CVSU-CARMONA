@@ -33,7 +33,7 @@ class ProjectController extends Controller
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }
 
-    public function displayproject($projectid, $department, $projectname)
+    public function displayproject($projectid, $department)
     {
 
         $projects = Project::findOrFail($projectid);

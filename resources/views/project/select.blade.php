@@ -590,16 +590,16 @@
 
         // Add an event listener to the select element
         selectElement.change(function() {
-            // Get the currently selected option
             var selectedOption = $(this).find(':selected');
             var projectid = selectedOption.val();
-            var projectname = selectedOption.text().trim(); // Trim leading and trailing whitespaces
+            var projectname = selectedOption.text().trim();
             var department = $('#department').val();
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
-            url = url.replace(':projectid', projectid);
-            url = url.replace(':department', encodeURIComponent(department));
-            url = url.replace(':projectname', encodeURIComponent(projectname));
+            var baseUrl = "{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}";
+            var url = baseUrl.replace(':projectid', projectid)
+                .replace(':department', department)
+                .replace(':projectname', projectname);
+
             window.location.href = url;
         });
 
