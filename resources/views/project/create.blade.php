@@ -10,6 +10,7 @@
 
 <div class="maincontainer">
     &nbsp;
+    <!--
     <div class="basiccont mt-2 m-4 p-3 rounded shadow">
 
         <div class="form-floating">
@@ -30,6 +31,41 @@
             <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                 <b class="small">Start New Project</b>
             </button>
+        </div>-->
+    <!--
+        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal">
+            <b class="small">Start New Project</b>
+        </button>
+        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
+-->
+    <!--
+    </div>-->
+
+    <div class="basiccont mt-2 m-4 p-3 rounded shadow">
+
+        <div class="form-floating">
+            <select id="year-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an academic year">
+                <option value="" selected disabled>Select Project</option>
+                @foreach($projects as $project1)
+                <option value="{{ $project1->id }}" {{ $project1->id == $projectid ? 'selected' : '' }}>
+                    {{ $project1->projecttitle }}
+                </option>
+                @endforeach
+
+            </select>
+            <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
+        </div>
+        <div class="btn-group mt-3 shadow">
+            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                <b class="small">Start New Project</b>
+            </button>
+        </div>
+
+
+        <div class="btn-group mt-3 shadow">
+            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                <b class="small">Start New Project</b>
+            </button>
         </div>
         <!--
         <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal">
@@ -38,7 +74,7 @@
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
 -->
     </div>
-    &nbsp;
+
 </div>
 
 <!--
@@ -76,6 +112,8 @@
 <!--
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
          -->
+
+
 
 <!-- New Project -->
 

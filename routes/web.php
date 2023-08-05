@@ -12,6 +12,8 @@ use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\AcademicYearController;
+use App\Models\AcademicYear;
 use App\Models\Activity;
 
 /*
@@ -103,3 +105,6 @@ Route::prefix('/output')->group(function () {
     Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
     Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
 });
+
+
+Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
