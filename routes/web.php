@@ -108,3 +108,4 @@ Route::prefix('/output')->group(function () {
 
 
 Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
+Route::get('/saveacademicyear', [AcademicYearController::class, 'saveacadyear'])->name('acadyear.save');
