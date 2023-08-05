@@ -5,14 +5,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card text-white" style="background-color: #297e56;">
+            <div class="card text-white mt-3" style="background-color: #297e56;">
                 <div class="card-header text-white"><b>{{ __('Login') }}</b></div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="row mb-3 ">
+                        <div class="row mb-3">
                             <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
