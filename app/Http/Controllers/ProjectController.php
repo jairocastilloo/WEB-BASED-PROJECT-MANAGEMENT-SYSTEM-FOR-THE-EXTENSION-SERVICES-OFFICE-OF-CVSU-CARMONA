@@ -29,6 +29,7 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
+        $currentacadyear = date('YYYY-MM-DD');
 
         return view('project.create', ['members' => $users, 'projects' => $projects]);
     }

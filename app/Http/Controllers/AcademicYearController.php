@@ -36,7 +36,7 @@ class AcademicYearController extends Controller
         $academicstartdate = $request->input('academic-startdate');
         $academicenddate = $request->input('academic-enddate');
         $firstsemstartdate = $request->input('firstsem-startdate');
-        $firstsemenddate = $request->input('firstsem-enddate ');
+        $firstsemenddate = $request->input('firstsem-enddate');
         $secondsemstartdate = $request->input('secondsem-startdate');
         $secondsemenddate = $request->input('secondsem-enddate');
 

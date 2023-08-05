@@ -23,12 +23,11 @@
                         <label for="email">Academic End Date</label>
                     </div>
 
-
                 </div>
             </div>
 
             <div class="row border-bottom pt-3 px-4">
-                <label for="first semester" class="form-label">Start of First Semester:</label>
+                <label for="first semester" class="form-label">First Semester:</label>
                 <div class="col">
 
                     <div class="form-floating mb-3 mt-3">
@@ -49,7 +48,7 @@
             </div>
 
             <div class="row pt-3 px-4">
-                <label for="second semester" class="form-label">Start of Second Semester:</label>
+                <label for="second semester" class="form-label">Second Semester:</label>
                 <div class="col">
 
                     <div class="form-floating mb-3 mt-3">
