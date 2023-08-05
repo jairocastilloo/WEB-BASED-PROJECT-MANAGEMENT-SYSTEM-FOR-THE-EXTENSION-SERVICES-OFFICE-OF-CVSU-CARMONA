@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
 use App\Models\ActivityUser;
 use App\Models\Objective;
 use App\Models\Output;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Carbon\Carbon;
 
 class ProjectController extends Controller
 {
@@ -29,9 +31,16 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
-        $currentacadyear = date('YYYY-MM-DD');
+        $currentDate = Carbon::now();
+        $acadyear_id = AcademicYear::where('acadstartdate', '<=', $currentDate)
+            ->where('acadenddate', '>=', $currentDate)
+            ->value('id');
+        $currentproject = Project::where('department', $department)
+            ->where('academicyear_id', $acadyear_id)
+            ->get();
+        $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
 
-        return view('project.create', ['members' => $users, 'projects' => $projects]);
+        return view('project.create', ['members' => $users, 'projects' => $projects, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
     }
 
     public function displayproject($projectid, $department)

@@ -17,4 +17,9 @@ class AcademicYear extends Model
         'secondsem_startdate',
         'secondsem_enddate',
     ];
+
+    protected $casts = [
+        'acadstartdate' => 'datetime',
+        'acadenddate' => 'datetime', // Cast acadstartdate attribute as a DateTime object.
+    ];
 }
