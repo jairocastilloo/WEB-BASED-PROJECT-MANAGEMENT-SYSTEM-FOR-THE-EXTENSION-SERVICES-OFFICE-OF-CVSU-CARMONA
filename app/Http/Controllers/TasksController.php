@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\Activity;
 use App\Models\SubtaskContributor;
+use App\Models\AcademicYear;
+use Carbon\Carbon;
 
 class TasksController extends Controller
 {
@@ -17,7 +19,15 @@ class TasksController extends Controller
         $user = User::where('username', $username)->firstOrFail();
 
         $userid = $user->id;
-        $projects = $user->projects;
+
+
+        $currentDate = Carbon::now();
+        $acadyear_id = AcademicYear::where('acadstartdate', '<=', $currentDate)
+            ->where('acadenddate', '>=', $currentDate)
+            ->value('id');
+        $currentproject = $user->projects->where('academicyear_id', $acadyear_id);
+
+
         $activities = $user->activities;
         $subtasks = $user->subtasks;
         $contributions = SubtaskContributor::where('user_id', $userid)
@@ -26,7 +36,7 @@ class TasksController extends Controller
 
 
         return view('implementer.index', [
-            'projects' => $projects,
+            'currentproject' => $currentproject,
             'activities' => $activities,
             'subtasks' => $subtasks,
             'contributions' => $contributions

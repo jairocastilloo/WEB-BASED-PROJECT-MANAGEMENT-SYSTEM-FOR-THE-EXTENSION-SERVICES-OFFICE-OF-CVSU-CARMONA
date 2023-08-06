@@ -186,35 +186,117 @@
         </div>
         <div class="col-3">
 
+            @php
+
+            $sortedProjects= $currentproject->sortBy('projectstartdate');
+
+            $inProgressProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'In Progress';
+            });
+            $scheduledProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Scheduled';
+            });
+            $overdueProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Incomplete';
+            });
+            $completedProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Completed';
+            });
+            @endphp
+            @if($currentproject->isEmpty())
             <div class="basiccont word-wrap shadow mt-2 me-4">
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
+                    <h6 class="fw-bold " style="color:darkgreen;">Projects</h6>
                 </div>
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedProjects = $projects->sortBy('projectstartdate');
-                @endphp
-                @if ($sortedProjects->isEmpty())
                 <div class="text-center p-4">
-                    <h4><em>Not involved in any Project.
-                        </em></h4>
+                    <h4><em>No Project Created Yet.</em></h4>
                 </div>
-                @else
-                @foreach($sortedProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
-                    <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
+            </div>
+            @endif
+            @if ($inProgressProjects && count($inProgressProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">In Progress Projects</h6>
+                </div>
+                @foreach ($inProgressProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
                     $endDate = date('M d, Y', strtotime($project['projectenddate']));
                     @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
-                @endif
             </div>
+            @endif
+
+            @if ($scheduledProjects && count($scheduledProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Scheduled Projects</h6>
+                </div>
+                @foreach ($scheduledProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if ($completedProjects && count($completedProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Completed Projects</h6>
+                </div>
+                @foreach ($completedProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($overdueProjects && count($overdueProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Incomplete Projects</h6>
+                </div>
+                @foreach ($overdueProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
 
