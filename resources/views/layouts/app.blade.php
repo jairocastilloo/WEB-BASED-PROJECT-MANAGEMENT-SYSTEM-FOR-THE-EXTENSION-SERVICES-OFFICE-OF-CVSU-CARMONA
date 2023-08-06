@@ -31,9 +31,14 @@
 
 <body style="font-family: sans-serif;">
     <div id="app">
+    @if (request()->Is('/'))
+    @else
         <nav style="background-color: #1b651b;" class="navbar navbar-expand-md navbar-dark shadow-sm p-1">
 
             <div class="container">
+            
+
+
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Extension Services Office Project Manager') }}
                 </a>
@@ -41,6 +46,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
+              
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
@@ -110,9 +116,10 @@
                     </ul>
 
                 </div>
+
             </div>
         </nav>
-
+        @endif
         <main class="p-0">
 
             @yield('content')
