@@ -56,8 +56,11 @@
             <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
         </div>
 
-
-        {{ $currentproject }}
+        <div class="btn-group mt-3 shadow">
+            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                <b class="small">Start New Project</b>
+            </button>
+        </div>
 
         <!--
         <div class="btn-group mt-3 shadow">
@@ -72,6 +75,130 @@
         </button>
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
 -->
+    </div>
+
+
+    <div class="row">
+        <div class="col-8">
+
+            @php
+
+            $sortedProjects= $currentproject->sortBy('projectstartdate');
+
+            $inProgressProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'In Progress';
+            });
+            $scheduledProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Scheduled';
+            });
+            $overdueProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Incomplete';
+            });
+            $completedProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Completed';
+            });
+            @endphp
+            @if($currentproject->isEmpty())
+            <div class="basiccont word-wrap shadow mt-2 ms-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Projects</h6>
+                </div>
+                <div class="text-center p-4">
+                    <h4><em>No Project Created Yet.</em></h4>
+                </div>
+            </div>
+            @endif
+            @if ($inProgressProjects && count($inProgressProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 ms-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">In Progress Projects</h6>
+                </div>
+                @foreach ($inProgressProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if ($scheduledProjects && count($scheduledProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 ms-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Scheduled Projects</h6>
+                </div>
+                @foreach ($scheduledProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+
+        </div>
+
+        <div class="col-4">
+            @if ($completedProjects && count($completedProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Completed Projects</h6>
+                </div>
+                @foreach ($completedProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($overdueProjects && count($overdueProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold " style="color:darkgreen;">Incomplete Projects</h6>
+                </div>
+                @foreach ($overdueProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+        </div>
+
     </div>
 
 </div>
@@ -142,6 +269,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
+                            <input type="number" class="d-none" name="acadyear-id" value="{{ $acadyear_id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>

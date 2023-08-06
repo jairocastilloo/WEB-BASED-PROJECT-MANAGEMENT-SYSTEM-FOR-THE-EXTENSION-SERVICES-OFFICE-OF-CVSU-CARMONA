@@ -18,7 +18,7 @@ class UpdateProjectStatus extends Command
 
         $this->updateScheduledProjects();
         $this->updateInProgressProjects();
-        $this->updateOverdueProjects();
+        $this->updateIncompleteProjects();
     }
     private function updateInProgressProjects()
     {
@@ -38,7 +38,7 @@ class UpdateProjectStatus extends Command
         Project::where('projectstartdate', '>', $now)
             ->update(['projectstatus' => 'Scheduled']);
     }
-    private function updateOverdueProjects()
+    private function updateIncompleteProjects()
     {
         $now = Carbon::today();
 

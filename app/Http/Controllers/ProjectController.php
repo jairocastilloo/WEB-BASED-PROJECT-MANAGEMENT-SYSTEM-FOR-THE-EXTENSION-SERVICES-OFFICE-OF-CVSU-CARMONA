@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class ProjectController extends Controller
 {
@@ -145,6 +146,7 @@ class ProjectController extends Controller
             'projectstartdate' => 'required|date',
             'projectenddate' => 'required|date|after:project_startdate',
             'department' => 'required|max:255',
+            'acadyear-id' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -159,9 +161,12 @@ class ProjectController extends Controller
             'projectstartdate' => $request->input('projectstartdate'),
             'projectenddate' => $request->input('projectenddate'),
             'department' => $request->input('department'),
+            'academicyear_id' => $request->input('acadyear-id'),
+
         ]);
 
         $project->save();
+        Artisan::call('project:status:update');
         $newProjectId = $project->id;
 
 

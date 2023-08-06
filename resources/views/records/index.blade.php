@@ -18,6 +18,8 @@
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <img src="image.jpg" alt="Image" class="img-fluid">
+
+
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
