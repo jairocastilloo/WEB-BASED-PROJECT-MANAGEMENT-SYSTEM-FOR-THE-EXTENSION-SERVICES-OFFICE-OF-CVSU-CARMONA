@@ -27,7 +27,6 @@ class ProjectController extends Controller
 
     public function showproject($department)
     {
-        $projects = Project::where('department', $department)->get();
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
@@ -41,31 +40,35 @@ class ProjectController extends Controller
             ->get();
         $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
 
-        return view('project.create', ['members' => $users, 'projects' => $projects, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
+        return view('project.create', ['members' => $users, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
     }
 
     public function displayproject($projectid, $department)
     {
 
-        $projects = Project::findOrFail($projectid);
+        $indexproject = Project::findOrFail($projectid);
+        $acadyear_id = $indexproject->academicyear_id;
 
-
-        $projects = Project::where('department', $department)->get();
+        $currentproject = Project::where('department', $department)
+            ->where('academicyear_id', $acadyear_id)
+            ->whereNotIn('id', [$projectid])
+            ->get();
+        $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
-        $currentproject = Project::findOrFail($projectid);
-        $objectives = $currentproject->objectives;
+
+        $objectives = $indexproject->objectives;
         $activities = Project::findOrFail($projectid);
-        $activities = $currentproject->activities;
+        $activities = $indexproject->activities;
 
         $sortedActivities = $activities->sortBy('actobjectives');
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'projects' => $projects, 'currentproject' => $currentproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities]);
+        return view('project.select', ['members' => $users, 'currentproject' => $currentproject, 'indexproject' => $indexproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears]);
     }
     /*
     public function getactivity($id, $activityid)

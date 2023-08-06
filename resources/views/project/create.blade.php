@@ -14,15 +14,7 @@
     <div class="basiccont mt-2 m-4 p-3 rounded shadow">
 
         <div class="form-floating">
-            <select id="project-select" class="form-select" aria-label="Select an option" style="border: 1px solid darkgreen;">
-                <option value="" selected disabled>Select Project</option>
-                @foreach($projects as $project)
-                <option value="{{ $project->id }}">
-                    {{ $project->projecttitle }}
-                </option>
-                @endforeach
-
-            </select>
+            
 
             <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
         </div>
@@ -41,22 +33,32 @@
     <!--
     </div>-->
 
-    <div class="basiccont mt-2 m-4 p-3 rounded shadow">
-
-        <div class="form-floating">
+    <div class="basiccont mt-2 m-4 rounded shadow">
+        <div class="border-bottom ps-3 pt-2 bggreen">
+            <h6 class="fw-bold " style="color:darkgreen;">Academic Year</h6>
+        </div>
+        <div class="form-floating m-3 mb-2">
             <select id="year-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an academic year">
                 <option value="" selected disabled>Select Project</option>
                 @foreach($acadyears as $acadyear)
                 <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
                     {{ 'AY ' . $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
                 </option>
+                @if ($acadyear['id'] == $acadyear_id)
+                @php
+                $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
+                $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
+
+                @endphp
+
+                @endif
                 @endforeach
 
             </select>
             <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
         </div>
 
-        <div class="btn-group mt-3 shadow">
+        <div class="btn-group mt-1 ms-3 mb-3 shadow">
             <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                 <b class="small">Start New Project</b>
             </button>
@@ -79,7 +81,7 @@
 
 
     <div class="row">
-        <div class="col-8">
+        <div class="col-10">
 
             @php
 
@@ -115,7 +117,7 @@
                     <h6 class="fw-bold " style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
 
@@ -136,7 +138,7 @@
                     <h6 class="fw-bold " style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
                 @foreach ($scheduledProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
 
@@ -154,14 +156,14 @@
 
         </div>
 
-        <div class="col-4">
+        <div class="col-2">
             @if ($completedProjects && count($completedProjects) > 0)
             <div class="basiccont word-wrap shadow mt-2 me-4">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold " style="color:darkgreen;">Completed Projects</h6>
                 </div>
                 @foreach ($completedProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
 
@@ -182,7 +184,7 @@
                     <h6 class="fw-bold " style="color:darkgreen;">Incomplete Projects</h6>
                 </div>
                 @foreach ($overdueProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
 
@@ -298,7 +300,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
-                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate" min="{{ date('Y-m-d') }}">
+                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate" min="{{ $mindate }}" max="{{ $maxdate }}">
                             </div>
 
                             <div class="mb-3">
@@ -420,6 +422,20 @@
                 });
 
                 */
+
+        $(document).on('click', '.projectdiv', function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
+            window.location.href = url;
+        });
     });
     // Add an event listener to the select element
 </script>
