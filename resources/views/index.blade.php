@@ -18,7 +18,6 @@
                 <img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" class="img-fluid logo">
             </div>
         </div>
-          
       </div>
 
 
