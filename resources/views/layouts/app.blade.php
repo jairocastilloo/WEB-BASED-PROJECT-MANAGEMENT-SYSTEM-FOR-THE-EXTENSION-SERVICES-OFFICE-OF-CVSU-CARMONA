@@ -20,7 +20,10 @@
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
     <!--<link href="{{ asset('css/bootstrap.css.map') }}" type="text/css" rel="stylesheet">-->
     <link href="{{ asset('css/bootstrap-icons.css') }}" type="text/css" rel="stylesheet">
+    @if (!request()->is('/'))
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
+    @endif
+    <link href="{{ asset('css/homelogin.css') }}" type="text/css" rel="stylesheet">
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
