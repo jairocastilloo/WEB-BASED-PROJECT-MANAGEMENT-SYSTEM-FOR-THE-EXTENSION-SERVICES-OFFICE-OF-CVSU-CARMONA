@@ -2,19 +2,31 @@
 
 @section('content')
 
-<section class="homeloginpage py-5 bg-light">
+<section class="homeloginpage full-page-container py-5">
   <div class="container">
     <div class="row g-0">
 
+
+
+
+
+
       <div class="col-lg-5 text-center">
-        <img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" class="img-fluid logo">
-        <h1 class="title">Extension Service Office</h1>
-        <h1 class="title">of</h1>
-        <h1 class="title">Cavite State University Carmona</h1>
+        <div class="outer-picture">
+          <img src="{{ asset('images/bg-cvsu.png')}}" alt="Extension Service Office" class="img-fluid logo">
+            <div class="column-wrapper">
+                <img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" class="img-fluid logo">
+            </div>
+        </div>
+          
       </div>
 
+
+
+
+
       <div class="col-lg-7 text-center py-5">
-        <h1>Welcome!</h1>
+        <h1>WELCOME!</h1>
         <form>
             <div class="form-row">
                 <div class="offset-1 col-lg-10 py-3 pt-5">
