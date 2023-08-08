@@ -9,7 +9,7 @@
             <b class="small">Project: {{ $projectName }} </b>
         </div>
         <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
-            <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
+            <h5><b>Activity: {{ $activity['actname'] }}</b></h5>
         </div>
 
 

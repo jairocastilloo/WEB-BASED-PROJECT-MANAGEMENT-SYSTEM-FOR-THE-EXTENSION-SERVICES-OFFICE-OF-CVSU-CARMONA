@@ -9,7 +9,7 @@
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
-            <h6><b>Project: {{ $indexproject['projecttitle'] }}</b></h6>
+            <h5><b>Project: {{ $indexproject['projecttitle'] }}</b></h5>
         </div>
 
     </div>
@@ -18,14 +18,15 @@
 
             <div class="basiccont mt-2 m-4 me-0 rounded shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Academic Year</h6>
+                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                 </div>
-                <div class="form-floating m-3 mb-2">
-                    <select id="year-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an academic year">
-                        <option value="" selected disabled>Select Project</option>
+                <div class="form-floating m-3 mb-2 mt-2">
+
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
+
                         @foreach($acadyears as $acadyear)
                         <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
-                            {{ 'AY ' . $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
                         </option>
                         @if ($acadyear['id'] == $acadyear_id)
                         @php
@@ -38,7 +39,10 @@
                         @endforeach
 
                     </select>
-                    <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
+
+                    <label for="project-select" style="color:darkgreen;">
+                        <h5><strong>Academic Year:</strong></h5>
+                    </label>
                 </div>
 
                 <div class="btn-group mt-1 ms-3 mb-3 shadow">

@@ -5,7 +5,7 @@
     &nbsp;
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <div class="row">
-        <div class="col-6">
+        <div class="col-8">
 
             <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
 
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="col-3">
+        <div class="col-2">
 
 
             @php
@@ -184,7 +184,7 @@
 
 
         </div>
-        <div class="col-3">
+        <div class="col-2">
 
             @php
 
