@@ -12,12 +12,14 @@
 
 
       <div class="col-lg-5 text-center">
-        <div class="outer-picture">
-          <img src="{{ asset('images/bg-cvsu.png')}}" alt="Extension Service Office" class="img-fluid logo">
-            <div class="column-wrapper">
+          <div class="outer-picture">
+            <img src="{{ asset('images/bg-cvsu.png')}}" alt="Extension Service Office" class="img-fluid logo">
+            <div class="inner-background"></div>
+              <div class="column-wrapper">
                 <img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" class="img-fluid logo">
-            </div>
-        </div>
+                <h2>EXTENSION SERVICE OFFICE</h2>
+              </div>
+          </div>
       </div>
 
 
@@ -30,6 +32,7 @@
             <div class="form-row">
                 <div class="offset-1 col-lg-10 py-3 pt-5">
                     <input class="inputbox" type="text" placeholder="Username">
+                    
                 </div>
             </div>
             <div class="form-row">
