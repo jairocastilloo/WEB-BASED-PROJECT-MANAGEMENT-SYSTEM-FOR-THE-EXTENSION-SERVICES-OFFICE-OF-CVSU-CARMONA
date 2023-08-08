@@ -17,9 +17,16 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
    
+    <!-- Fonts/jonel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Borel&display=swap" rel="stylesheet">
+
+    <!-- mdbootstrap -->
+    <link href="{{ asset('public/mdbootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/mdbootstrap/css/mdb.min.css') }}" rel="stylesheet">
+
+
 
     <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
@@ -142,6 +149,14 @@
 
     </div>
 
+
+
+    
+    <!--mdbootstrap-->
+    <script type="text/javascript" src="{{ asset('public/mdbootstrap/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('public/mdbootstrap/js/popper.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('public/mdbootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('public/mdbootstrap/js/mdb.min.js') }}"></script>
 </body>
 
 </html>
