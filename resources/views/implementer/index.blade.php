@@ -4,6 +4,7 @@
 <div class="maincontainer">
     &nbsp;
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
+    <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
     <div class="row">
         <div class="col-8">
             <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
@@ -370,7 +371,18 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        $('#year-select').change(function() {
+            var selectedOption = $(this).find(':selected');
+            var acadyearid = selectedOption.val();
 
+            var username = $('#username').val();
+
+            var baseUrl = "{{ route('acadtasks.show', ['username' => ':username', 'acadyear_id' => ':acadyear_id']) }}";
+            var url = baseUrl.replace(':username', username)
+                .replace(':acadyear_id', acadyearid);
+
+            window.location.href = url;
+        });
         $('#navbarDropdown').click(function(event) {
             // Add your function here
             event.preventDefault();
