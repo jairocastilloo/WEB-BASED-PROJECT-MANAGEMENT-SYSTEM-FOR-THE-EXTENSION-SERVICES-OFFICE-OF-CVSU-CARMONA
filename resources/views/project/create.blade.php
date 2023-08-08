@@ -42,10 +42,16 @@
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                 </div>
+                @if (!$acadyear_id)
+                <span class="small ms-2"><em>
+                        Note: Not the current Academic Year
+                    </em></span>
+                @endif
                 <div class="form-floating m-3 mb-2 mt-2">
 
                     <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
-                        <option value="" selected disabled>Select Project</option>
+
+                        @if ($acadyear_id)
                         @foreach($acadyears as $acadyear)
                         <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
                             &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
@@ -60,17 +66,48 @@
                         @endif
                         @endforeach
 
+
+
+                        @elseif ($latestacadyear_id)
+
+                        @foreach($acadyears as $acadyear)
+                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $latestacadyear_id ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                        </option>
+                        @if ($acadyear['id'] == $latestacadyear_id)
+                        @php
+                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
+                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
+
+                        @endphp
+
+                        @endif
+                        @endforeach
+
+                        @else
+
+                        <option selected disabled>
+                            &nbsp;&nbsp;&nbsp;No Academic Year in Place
+                        </option>
+
+
+                        @endif
+
+
                     </select>
-                    <label for="project-select" style="color:darkgreen;">
+                    <label for="year-select" style="color:darkgreen;">
                         <h5><strong>Academic Year:</strong></h5>
                     </label>
                 </div>
-
-                <div class="btn-group mt-1 ms-3 mb-3 shadow">
+                @if ($acadyear_id || $latestacadyear_id)
+                <div class="btn-group mt-1 ms-3 mb-2 shadow">
                     <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                         <b class="small">Start New Project</b>
                     </button>
                 </div>
+                @else
+                &nbsp;
+                @endif
 
                 <!--
         <div class="btn-group mt-3 shadow">
@@ -86,6 +123,7 @@
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
 -->
             </div>
+            @if ($currentproject)
             @php
 
             $sortedProjects= $currentproject->sortBy('projectstartdate');
@@ -201,7 +239,7 @@
                 @endforeach
             </div>
             @endif
-
+            @endif
         </div>
 
     </div>
@@ -245,7 +283,7 @@
          -->
 
 
-
+@if ($currentproject)
 <!-- New Project -->
 
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
@@ -274,7 +312,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
-                            <input type="number" class="d-none" name="acadyear-id" value="{{ $acadyear_id }}">
+                            <input type="number" class="d-none" name="acadyear-id" value="{{ $acadyear['id'] }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -382,7 +420,7 @@
         </div>
     </div>
 </div>
-
+@endif
 
 @endsection
 @section('scripts')
@@ -391,7 +429,7 @@
     var users = <?php echo json_encode($members);
                 ?>;
 
-    var selectElement = $('#project-select');
+    var selectElement = $('#year-select');
     var url = "";
 
     $(document).ready(function() {
@@ -399,14 +437,13 @@
 
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var projectid = selectedOption.val();
-            var projectname = selectedOption.text().trim();
+            var acadyearid = selectedOption.val();
+
             var department = $('#department').val();
 
-            var baseUrl = "{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}";
-            var url = baseUrl.replace(':projectid', projectid)
-                .replace(':department', department)
-                .replace(':projectname', projectname);
+            var baseUrl = "{{ route('acadproject.show', ['department' => ':department', 'acadyear_id' => ':acadyear_id']) }}";
+            var url = baseUrl.replace(':department', department)
+                .replace(':acadyear_id', acadyearid);
 
             window.location.href = url;
         });

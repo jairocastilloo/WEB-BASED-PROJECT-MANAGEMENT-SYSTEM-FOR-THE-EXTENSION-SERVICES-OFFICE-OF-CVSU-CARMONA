@@ -35,12 +35,49 @@ class ProjectController extends Controller
         $acadyear_id = AcademicYear::where('acadstartdate', '<=', $currentDate)
             ->where('acadenddate', '>=', $currentDate)
             ->value('id');
+        $latestacadyear_id = AcademicYear::latest()->value('id');
+        if ($acadyear_id) {
+            $currentproject = Project::where('department', $department)
+                ->where('academicyear_id', $acadyear_id)
+                ->get();
+        } elseif ($latestacadyear_id) {
+            $currentproject = Project::where('department', $department)
+                ->where('academicyear_id', $latestacadyear_id)
+                ->get();
+        } else {
+            $currentproject = false;
+        }
+
+        $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
+
+        return view('project.create', ['members' => $users, 'latestacadyear_id' => $latestacadyear_id, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
+    }
+
+    public function showacadproject($department, $acadyear_id)
+    {
+
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name', 'middle_name', 'last_name']);
+        $currentDate = Carbon::now();
+        $selectedAcadYear = AcademicYear::findorFail($acadyear_id);
         $currentproject = Project::where('department', $department)
             ->where('academicyear_id', $acadyear_id)
             ->get();
+
+
+        if ($selectedAcadYear->acadstartdate <= $currentDate && $selectedAcadYear->acadenddate >= $currentDate) {
+
+            $latestacadyear_id = false;
+        } else {
+
+            $latestacadyear_id = $acadyear_id;
+            $acadyear_id = false;
+        }
+
         $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
 
-        return view('project.create', ['members' => $users, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
+        return view('project.create', ['members' => $users, 'latestacadyear_id' => $latestacadyear_id, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
     }
 
     public function displayproject($projectid, $department)
