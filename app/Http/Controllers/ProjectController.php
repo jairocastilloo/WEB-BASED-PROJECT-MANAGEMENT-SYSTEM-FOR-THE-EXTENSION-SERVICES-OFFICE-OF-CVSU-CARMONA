@@ -92,6 +92,20 @@ class ProjectController extends Controller
             ->get();
         $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
 
+        $currentDate = Carbon::now();
+        $selectedAcadYear = AcademicYear::findorFail($acadyear_id);
+
+
+        if ($selectedAcadYear->acadstartdate <= $currentDate && $selectedAcadYear->acadenddate >= $currentDate) {
+
+            $latestacadyear_id = false;
+        } else {
+
+            $latestacadyear_id = $acadyear_id;
+            $acadyear_id = false;
+        }
+
+
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
@@ -105,7 +119,7 @@ class ProjectController extends Controller
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'currentproject' => $currentproject, 'indexproject' => $indexproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears]);
+        return view('project.select', ['members' => $users, 'currentproject' => $currentproject, 'indexproject' => $indexproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'latestacadyear_id' => $latestacadyear_id]);
     }
     /*
     public function getactivity($id, $activityid)

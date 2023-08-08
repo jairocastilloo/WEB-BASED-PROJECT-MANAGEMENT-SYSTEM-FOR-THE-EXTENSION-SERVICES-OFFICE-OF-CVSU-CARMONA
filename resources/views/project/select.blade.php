@@ -20,10 +20,16 @@
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                 </div>
+                @if (!$acadyear_id)
+                <span class="small ms-2"><em>
+                        Note: Not the current Academic Year
+                    </em></span>
+                @endif
                 <div class="form-floating m-3 mb-2 mt-2">
 
                     <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
 
+                        @if ($acadyear_id)
                         @foreach($acadyears as $acadyear)
                         <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
                             &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
@@ -38,19 +44,48 @@
                         @endif
                         @endforeach
 
-                    </select>
 
-                    <label for="project-select" style="color:darkgreen;">
+
+                        @elseif ($latestacadyear_id)
+
+                        @foreach($acadyears as $acadyear)
+                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $latestacadyear_id ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                        </option>
+                        @if ($acadyear['id'] == $latestacadyear_id)
+                        @php
+                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
+                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
+
+                        @endphp
+
+                        @endif
+                        @endforeach
+
+                        @else
+
+                        <option selected disabled>
+                            &nbsp;&nbsp;&nbsp;No Academic Year in Place
+                        </option>
+
+
+                        @endif
+
+
+                    </select>
+                    <label for="year-select" style="color:darkgreen;">
                         <h5><strong>Academic Year:</strong></h5>
                     </label>
                 </div>
-
-                <div class="btn-group mt-1 ms-3 mb-3 shadow">
+                @if ($acadyear_id || $latestacadyear_id)
+                <div class="btn-group mt-1 ms-3 mb-2 shadow">
                     <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                         <b class="small">Start New Project</b>
                     </button>
                 </div>
-
+                @else
+                &nbsp;
+                @endif
                 <!--
         <div class="btn-group mt-3 shadow">
             <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
@@ -267,24 +302,24 @@
             @endphp
             @if($currentproject->isEmpty())
             <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Projects</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 <div class="text-center p-4">
-                    <h4><em>No Project Created Yet.</em></h4>
+                    <h4><em>No Other Projects Yet.</em></h4>
                 </div>
             </div>
             @endif
             @if ($inProgressProjects && count($inProgressProjects) > 0)
 
             <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">In Progress Projects</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -299,13 +334,13 @@
 
             @if ($scheduledProjects && count($scheduledProjects) > 0)
             <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Scheduled Projects</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
                 @foreach ($scheduledProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -320,8 +355,8 @@
 
             @if ($completedProjects && count($completedProjects) > 0)
             <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Completed Projects</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
                 </div>
                 @foreach ($completedProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
@@ -341,8 +376,8 @@
             @if ($overdueProjects && count($overdueProjects) > 0)
 
             <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Incomplete Projects</h6>
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
                 </div>
                 @foreach ($overdueProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
@@ -574,7 +609,7 @@
     var objectives = <?php echo json_encode($objectives);
                         ?>;
 
-    var selectElement = $('#project-select');
+    var selectElement = $('#year-select');
     var url = "";
     var objoption = 1;
 
@@ -709,14 +744,13 @@
         // Add an event listener to the select element
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var projectid = selectedOption.val();
-            var projectname = selectedOption.text().trim();
+            var acadyearid = selectedOption.val();
+
             var department = $('#department').val();
 
-            var baseUrl = "{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}";
-            var url = baseUrl.replace(':projectid', projectid)
-                .replace(':department', department)
-                .replace(':projectname', projectname);
+            var baseUrl = "{{ route('acadproject.show', ['department' => ':department', 'acadyear_id' => ':acadyear_id']) }}";
+            var url = baseUrl.replace(':department', department)
+                .replace(':acadyear_id', acadyearid);
 
             window.location.href = url;
         });

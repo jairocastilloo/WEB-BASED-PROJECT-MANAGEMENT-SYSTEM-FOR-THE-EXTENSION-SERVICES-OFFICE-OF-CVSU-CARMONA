@@ -144,7 +144,7 @@
             @if($currentproject->isEmpty())
             <div class="basiccont word-wrap shadow mt-2 ms-4">
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold" style="color:darkgreen;">Projects</h6>
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 <div class="text-center p-4">
                     <h4><em>No Project Created Yet.</em></h4>
@@ -155,7 +155,7 @@
 
             <div class="basiccont word-wrap shadow mt-2 ms-4">
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">In Progress Projects</h6>
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
@@ -176,7 +176,7 @@
             @if ($scheduledProjects && count($scheduledProjects) > 0)
             <div class="basiccont word-wrap shadow mt-2 ms-4">
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Scheduled Projects</h6>
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
                 @foreach ($scheduledProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
