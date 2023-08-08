@@ -261,7 +261,7 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                     </div>
                     <div class="text-center p-4">
-                        <h4><em>No Assigned Activities.</em></h4>
+                        <h4><em>No Other Activities Yet.</em></h4>
                     </div>
                 </div>
                 @endif

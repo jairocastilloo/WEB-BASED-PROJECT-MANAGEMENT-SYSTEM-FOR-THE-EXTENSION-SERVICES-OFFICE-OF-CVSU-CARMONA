@@ -6,7 +6,69 @@
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <div class="row">
         <div class="col-8">
+            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
+                </div>
+                @if (!$acadyear_id)
+                <span class="small ms-2"><em>
+                        Note: Not the current Academic Year
+                    </em></span>
+                @endif
+                <div class="form-floating m-3 mb-1 mt-2">
 
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
+
+                        @if ($acadyear_id)
+                        @foreach($acadyears as $acadyear)
+                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                        </option>
+                        @if ($acadyear['id'] == $acadyear_id)
+                        @php
+                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
+                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
+
+                        @endphp
+
+                        @endif
+                        @endforeach
+
+
+
+                        @elseif ($latestacadyear_id)
+
+                        @foreach($acadyears as $acadyear)
+                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $latestacadyear_id ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                        </option>
+                        @if ($acadyear['id'] == $latestacadyear_id)
+                        @php
+                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
+                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
+
+                        @endphp
+
+                        @endif
+                        @endforeach
+
+                        @else
+
+                        <option selected disabled>
+                            &nbsp;&nbsp;&nbsp;No Academic Year in Place
+                        </option>
+
+
+                        @endif
+
+
+                    </select>
+                    <label for="year-select" style="color:darkgreen;">
+                        <h5><strong>Academic Year:</strong></h5>
+                    </label>
+                </div>
+
+            </div>
             <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
 
                 <div class="border-bottom ps-3 pt-2 bggreen">
@@ -205,8 +267,8 @@
             @endphp
             @if($currentproject->isEmpty())
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Projects</h6>
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 <div class="text-center p-4">
                     <h4><em>No Project Created Yet.</em></h4>
@@ -216,20 +278,20 @@
             @if ($inProgressProjects && count($inProgressProjects) > 0)
 
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">In Progress Projects</h6>
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
                     $endDate = date('M d, Y', strtotime($project['projectenddate']));
                     @endphp
 
-                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
             </div>
@@ -237,20 +299,20 @@
 
             @if ($scheduledProjects && count($scheduledProjects) > 0)
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Scheduled Projects</h6>
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
                 @foreach ($scheduledProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
                     $endDate = date('M d, Y', strtotime($project['projectenddate']));
                     @endphp
 
-                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
             </div>
@@ -258,20 +320,20 @@
 
             @if ($completedProjects && count($completedProjects) > 0)
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Completed Projects</h6>
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
                 </div>
                 @foreach ($completedProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
                     $endDate = date('M d, Y', strtotime($project['projectenddate']));
                     @endphp
 
-                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
             </div>
@@ -279,20 +341,20 @@
             @if ($overdueProjects && count($overdueProjects) > 0)
 
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold " style="color:darkgreen;">Incomplete Projects</h6>
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
                 </div>
                 @foreach ($overdueProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
                     $endDate = date('M d, Y', strtotime($project['projectenddate']));
                     @endphp
 
-                    <h6 class=""> {{ $startDate }} - {{ $endDate }}</h6>
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
                 </div>
                 @endforeach
             </div>
