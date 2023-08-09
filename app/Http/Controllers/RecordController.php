@@ -50,8 +50,6 @@ class RecordController extends Controller
             ->unique();
 
         $allsubtasks = Subtask::whereIn('id', $subtasksid)
-            ->where('substartdate', '>=', $minSemDate)
-            ->where('subenddate', '<=', $maxSemDate)
             ->get();
 
 

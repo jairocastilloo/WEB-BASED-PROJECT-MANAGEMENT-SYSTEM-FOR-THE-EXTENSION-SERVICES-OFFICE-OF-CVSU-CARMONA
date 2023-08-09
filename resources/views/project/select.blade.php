@@ -22,14 +22,15 @@
                 </div>
                 @if (!$inCurrentYear)
                 <span class="small ms-2"><em>
-                        Note: Not the current Academic Year
+                        Note: Not the Current Year.
                     </em></span>
                 @endif
                 <div class="form-floating m-3 mb-2 mt-2">
 
-                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an calendar year">
+
                         @foreach ($calendaryears as $calendaryear)
-                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentYear ? 'selected' : '' }}>
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
                             &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
                         </option>
                         @endforeach
@@ -39,6 +40,7 @@
                         <h5><strong>Calendar Year:</strong></h5>
                     </label>
                 </div>
+
 
                 <!--
         <div class="btn-group mt-3 shadow">
@@ -383,7 +385,7 @@
                             @csrf
                             <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
                             <input type="text" class="d-none" id="department" name="department" value="{{ Auth::user()->department }}">
-                            <input type="number" class="d-none" name="currentyear" value="{{ $currentYear }}">
+                            <input type="number" class="d-none" name="currentyear" value="{{ $currentyear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -699,13 +701,13 @@
         // Add an event listener to the select element
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var acadyearid = selectedOption.val();
+            var currentyear = selectedOption.val();
 
             var department = $('#department').val();
 
-            var baseUrl = "{{ route('acadproject.show', ['department' => ':department', 'acadyear_id' => ':acadyear_id']) }}";
+            var baseUrl = "{{ route('yearproject.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
             var url = baseUrl.replace(':department', department)
-                .replace(':acadyear_id', acadyearid);
+                .replace(':currentyear', currentyear);
 
             window.location.href = url;
         });
