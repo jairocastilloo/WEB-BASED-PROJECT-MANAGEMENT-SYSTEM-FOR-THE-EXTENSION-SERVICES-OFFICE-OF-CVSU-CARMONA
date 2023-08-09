@@ -17,7 +17,7 @@ class Project extends Model
         'projectstartdate',
         'projectenddate',
         'department',
-        'academicyear_id',
+        'calendaryear',
         'projectstatus'
     ];
     public function users()

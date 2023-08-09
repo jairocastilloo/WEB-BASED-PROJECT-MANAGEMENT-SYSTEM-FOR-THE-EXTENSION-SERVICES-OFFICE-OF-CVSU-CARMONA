@@ -11,7 +11,7 @@
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
                 </div>
-                @if (!$acadyear_id)
+                @if (!$inCurrentYear)
                 <span class="small ms-2"><em>
                         Note: Not the current Academic Year
                     </em></span>
@@ -20,52 +20,16 @@
 
                     <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
 
-                        @if ($acadyear_id)
-                        @foreach($acadyears as $acadyear)
-                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
-                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                        @foreach ($calendaryears as $calendaryear)
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentYear ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
                         </option>
-                        @if ($acadyear['id'] == $acadyear_id)
-                        @php
-                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
-                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
-
-                        @endphp
-
-                        @endif
                         @endforeach
-
-
-
-                        @elseif ($latestacadyear_id)
-
-                        @foreach($acadyears as $acadyear)
-                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $latestacadyear_id ? 'selected' : '' }}>
-                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
-                        </option>
-                        @if ($acadyear['id'] == $latestacadyear_id)
-                        @php
-                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
-                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
-
-                        @endphp
-
-                        @endif
-                        @endforeach
-
-                        @else
-
-                        <option selected disabled>
-                            &nbsp;&nbsp;&nbsp;No Academic Year in Place
-                        </option>
-
-
-                        @endif
 
 
                     </select>
                     <label for="year-select" style="color:darkgreen;">
-                        <h5><strong>Academic Year:</strong></h5>
+                        <h5><strong>Calendar Year:</strong></h5>
                     </label>
                 </div>
 

@@ -16,11 +16,11 @@
     <div class="row">
         <div class="col-10">
 
-            <div class="basiccont mt-2 m-4 me-0 rounded shadow">
+            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                 </div>
-                @if (!$acadyear_id)
+                @if (!$inCurrentYear)
                 <span class="small ms-2"><em>
                         Note: Not the current Academic Year
                     </em></span>
@@ -28,64 +28,18 @@
                 <div class="form-floating m-3 mb-2 mt-2">
 
                     <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
-
-                        @if ($acadyear_id)
-                        @foreach($acadyears as $acadyear)
-                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $acadyear_id ? 'selected' : '' }}>
-                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
+                        @foreach ($calendaryears as $calendaryear)
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentYear ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
                         </option>
-                        @if ($acadyear['id'] == $acadyear_id)
-                        @php
-                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
-                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
-
-                        @endphp
-
-                        @endif
                         @endforeach
-
-
-
-                        @elseif ($latestacadyear_id)
-
-                        @foreach($acadyears as $acadyear)
-                        <option value="{{ $acadyear->id }}" {{ $acadyear->id == $latestacadyear_id ? 'selected' : '' }}>
-                            &nbsp;&nbsp;&nbsp;{{ $acadyear->acadstartdate->format('Y') . '-' . $acadyear->acadenddate->format('Y') }}
-                        </option>
-                        @if ($acadyear['id'] == $latestacadyear_id)
-                        @php
-                        $mindate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadstartdate'])->format('Y-m-d');
-                        $maxdate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $acadyear['acadenddate'])->format('Y-m-d');
-
-                        @endphp
-
-                        @endif
-                        @endforeach
-
-                        @else
-
-                        <option selected disabled>
-                            &nbsp;&nbsp;&nbsp;No Academic Year in Place
-                        </option>
-
-
-                        @endif
-
 
                     </select>
                     <label for="year-select" style="color:darkgreen;">
-                        <h5><strong>Academic Year:</strong></h5>
+                        <h5><strong>Calendar Year:</strong></h5>
                     </label>
                 </div>
-                @if ($acadyear_id || $latestacadyear_id)
-                <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                        <b class="small">Start New Project</b>
-                    </button>
-                </div>
-                @else
-                &nbsp;
-                @endif
+
                 <!--
         <div class="btn-group mt-3 shadow">
             <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
@@ -429,7 +383,7 @@
                             @csrf
                             <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
                             <input type="text" class="d-none" id="department" name="department" value="{{ Auth::user()->department }}">
-                            <input type="number" class="d-none" name="acadyear-id" value="{{ $acadyear['id'] }}">
+                            <input type="number" class="d-none" name="currentyear" value="{{ $currentYear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
