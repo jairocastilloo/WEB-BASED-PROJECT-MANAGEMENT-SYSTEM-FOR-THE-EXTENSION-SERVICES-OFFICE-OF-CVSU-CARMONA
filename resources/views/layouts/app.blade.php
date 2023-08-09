@@ -75,15 +75,7 @@
                             Reports
                         </a>
                         @endif
-                        @if (Auth::user()->role === 'Admin')
-                        <a class="nav-link" href="{{ route('admin.manage', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Account Management
-                        </a>
 
-                        <a class="nav-link" href="{{ route('admin.approve', ['id' => Auth::user()->id]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Account Approval
-                        </a>
-                        @endif
                         <li class="nav-item dropdown">
                             <div id="account">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button">
@@ -94,6 +86,21 @@
                                     <a class="dropdown-item" href="{{ route('records.show', ['username' => Auth::user()->username]) }}">
                                         {{ __('My Records') }}
                                     </a>
+
+
+                                    @if (Auth::user()->role === 'Admin')
+                                    <a class="dropdown-item" href="{{ route('admin.manage', ['id' => Auth::user()->id]) }}">
+                                        Account Management
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('admin.approve', ['id' => Auth::user()->id]) }}">
+                                        Account Approval
+                                    </a>
+
+                                    <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">
+                                        Set an Academic Year
+                                    </a>
+                                    @endif
                                     <a class="dropdown-item" href="#" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

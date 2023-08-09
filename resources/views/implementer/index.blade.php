@@ -4,12 +4,39 @@
 <div class="maincontainer">
     &nbsp;
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
+    <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
     <div class="row">
-        <div class="col-6">
+        <div class="col-8">
+            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
+                </div>
+                @if (!$inCurrentYear)
+                <span class="small ms-2"><em>
+                        Note: Not the current Academic Year
+                    </em></span>
+                @endif
+                <div class="form-floating m-3 mb-1 mt-2">
 
-            <div class="basiccont word-wrap shadow ms-4 mt-2">
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
 
-                <div class="border-bottom ps-3 pt-2">
+                        @foreach ($calendaryears as $calendaryear)
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentYear ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+                        </option>
+                        @endforeach
+
+
+                    </select>
+                    <label for="year-select" style="color:darkgreen;">
+                        <h5><strong>Calendar Year:</strong></h5>
+                    </label>
+                </div>
+
+            </div>
+            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
+
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
                 @if($subtasks->isNotEmpty())
@@ -45,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col-3">
+        <div class="col-2">
 
 
             @php
@@ -70,7 +97,7 @@
             @endphp
             @if($activities->isEmpty())
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                 </div>
                 <div class="text-center p-4">
@@ -81,7 +108,7 @@
             @if ($inProgressActivities && count($inProgressActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
                 </div>
                 @foreach ($inProgressActivities as $activity)
@@ -102,7 +129,7 @@
             @if ($pendingActivities && count($pendingActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
                 </div>
                 @foreach ($pendingActivities as $activity)
@@ -122,7 +149,7 @@
             @endif
             @if ($scheduledActivities && count($scheduledActivities) > 0)
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
                 </div>
                 @foreach ($scheduledActivities as $activity)
@@ -143,7 +170,7 @@
             @if ($overdueActivities && count($overdueActivities) > 0)
 
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
                 </div>
                 @foreach ($overdueActivities as $activity)
@@ -163,7 +190,7 @@
             @endif
             @if ($completedActivities && count($completedActivities) > 0)
             <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                 </div>
                 @foreach ($completedActivities as $activity)
@@ -184,25 +211,45 @@
 
 
         </div>
-        <div class="col-3">
+        <div class="col-2">
 
+            @php
+
+            $sortedProjects= $currentproject->sortBy('projectstartdate');
+
+            $inProgressProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'In Progress';
+            });
+            $scheduledProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Scheduled';
+            });
+            $overdueProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Incomplete';
+            });
+            $completedProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Completed';
+            });
+            @endphp
+            @if($currentproject->isEmpty())
             <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2">
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedProjects = $projects->sortBy('projectstartdate');
-                @endphp
-                @if ($sortedProjects->isEmpty())
                 <div class="text-center p-4">
-                    <h4><em>Not involved in any Project.
-                        </em></h4>
+                    <h4><em>No Project Created Yet.</em></h4>
                 </div>
-                @else
-                @foreach($sortedProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}">
-                    <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
+            </div>
+            @endif
+            @if ($inProgressProjects && count($inProgressProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
+                </div>
+                @foreach ($inProgressProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -210,11 +257,73 @@
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
                 </div>
                 @endforeach
-                @endif
             </div>
+            @endif
+
+            @if ($scheduledProjects && count($scheduledProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
+                </div>
+                @foreach ($scheduledProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if ($completedProjects && count($completedProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
+                </div>
+                @foreach ($completedProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($overdueProjects && count($overdueProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
+                </div>
+                @foreach ($overdueProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </div>
 
@@ -226,7 +335,18 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        $('#year-select').change(function() {
+            var selectedOption = $(this).find(':selected');
+            var acadyearid = selectedOption.val();
 
+            var username = $('#username').val();
+
+            var baseUrl = "{{ route('acadtasks.show', ['username' => ':username', 'acadyear_id' => ':acadyear_id']) }}";
+            var url = baseUrl.replace(':username', username)
+                .replace(':acadyear_id', acadyearid);
+
+            window.location.href = url;
+        });
         $('#navbarDropdown').click(function(event) {
             // Add your function here
             event.preventDefault();

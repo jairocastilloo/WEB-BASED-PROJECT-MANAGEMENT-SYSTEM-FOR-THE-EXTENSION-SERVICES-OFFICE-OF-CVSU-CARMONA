@@ -9,48 +9,66 @@
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
-            <h6><b>Project: {{ $currentproject['projecttitle'] }}</b></h6>
+            <h5><b>Project: {{ $indexproject['projecttitle'] }}</b></h5>
         </div>
 
     </div>
     <div class="row">
         <div class="col-10">
 
-            <div class="basiccont m-4 me-0 p-3 rounded shadow">
+            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
+                </div>
+                @if (!$inCurrentYear)
+                <span class="small ms-2"><em>
+                        Note: Not the current Academic Year
+                    </em></span>
+                @endif
+                <div class="form-floating m-3 mb-2 mt-2">
 
-                <div class="form-floating shadow">
-                    <select id="project-select" class="form-select" style="border: 1px solid darkgreen;" aria-label="Select an option">
-                        <option value="" selected disabled>Select Project</option>
-                        @foreach($projects as $project1)
-                        <option value="{{ $project1->id }}" {{ $project1->id == $projectid ? 'selected' : '' }}>
-                            {{ $project1->projecttitle }}
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an academic year">
+                        @foreach ($calendaryears as $calendaryear)
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentYear ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
                         </option>
                         @endforeach
 
                     </select>
-                    <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
+                    <label for="year-select" style="color:darkgreen;">
+                        <h5><strong>Calendar Year:</strong></h5>
+                    </label>
                 </div>
-                <div class="btn-group mt-3 shadow">
-                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                        <b class="small">Start New Project</b>
-                    </button>
-                </div>
+
+                <!--
+        <div class="btn-group mt-3 shadow">
+            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                <b class="small">Start New Project</b>
+            </button>
+        </div>
+-->
+                <!--
+        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal">
+            <b class="small">Start New Project</b>
+        </button>
+        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
+-->
             </div>
 
             <div class="basiccont m-4 me-0 p-3 rounded shadow">
                 <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($currentproject['projectenddate'])) }}</u></div>
+                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
                 <div class="flex-container">
                     <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $currentproject['programtitle'] }}</div>
+                    <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
                 </div>
                 <div class="flex-container">
                     <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                     <div class="underline-space inline-div ps-2">
                         @php
                         use App\Models\User;
-                        $programleader = User::where('id', $currentproject['programleader'])->first(['name', 'middle_name', 'last_name']);
-                        $projectleader = User::where('id', $currentproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
+                        $programleader = User::where('id', $indexproject['programleader'])->first(['name', 'middle_name', 'last_name']);
+                        $projectleader = User::where('id', $indexproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
                         @endphp
 
                         @if ($programleader)
@@ -66,7 +84,7 @@
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $currentproject['projecttitle'] }}</div>
+                    <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
@@ -83,7 +101,7 @@
                 </div>
                 <div class="flex-container">
                     <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($currentproject['projectstartdate'])) . '-' . date('F Y', strtotime($currentproject['projectenddate'])) }}</div>
+                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
                 </div>
 
                 <div class="btn-group dropdown mt-3 shadow">
@@ -219,17 +237,43 @@
 
         </div>
         <div class="col-2">
-            <div class="basiccont me-4 mt-4 rounded shadow">
-                <div class="border-bottom mt-4 ps-2 pt-2">
+            @php
+
+            $sortedProjects= $currentproject->sortBy('projectstartdate');
+
+            $inProgressProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'In Progress';
+            });
+            $scheduledProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Scheduled';
+            });
+            $overdueProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Incomplete';
+            });
+            $completedProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Completed';
+            });
+            @endphp
+            @if($currentproject->isEmpty())
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedProjects = $projects->sortBy('projectstartdate');
-                @endphp
-                @foreach($sortedProjects as $project)
-                <div class="border-bottom p-2 divhover projectdiv text-wrap" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-                    <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
+                <div class="text-center p-4">
+                    <h4><em>No Other Projects Yet.</em></h4>
+                </div>
+            </div>
+            @endif
+            @if ($inProgressProjects && count($inProgressProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
+                </div>
+                @foreach ($inProgressProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -237,10 +281,73 @@
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
                 </div>
                 @endforeach
             </div>
+            @endif
+
+            @if ($scheduledProjects && count($scheduledProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
+                </div>
+                @foreach ($scheduledProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if ($completedProjects && count($completedProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
+                </div>
+                @foreach ($completedProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($overdueProjects && count($overdueProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
+                </div>
+                @foreach ($overdueProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
         </div>
 
     </div>
@@ -276,6 +383,7 @@
                             @csrf
                             <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
                             <input type="text" class="d-none" id="department" name="department" value="{{ Auth::user()->department }}">
+                            <input type="number" class="d-none" name="currentyear" value="{{ $currentYear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -396,7 +504,7 @@
                 <form id="act1" data-url="{{ route('activity.store') }}">
                     @csrf
 
-                    <input type="number" id="projectindex" name="projectindex" value="{{ $currentproject['id'] }}" class="d-none">
+                    <input type="number" id="projectindex" name="projectindex" value="{{ $indexproject['id'] }}" class="d-none">
                     <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                     <div class="mb-3">
                         <label for="activityname" class="form-label">Activity Name</label>
@@ -456,7 +564,7 @@
     var objectives = <?php echo json_encode($objectives);
                         ?>;
 
-    var selectElement = $('#project-select');
+    var selectElement = $('#year-select');
     var url = "";
     var objoption = 1;
 
@@ -590,16 +698,15 @@
 
         // Add an event listener to the select element
         selectElement.change(function() {
-            // Get the currently selected option
             var selectedOption = $(this).find(':selected');
-            var projectid = selectedOption.val();
-            var projectname = selectedOption.text().trim(); // Trim leading and trailing whitespaces
+            var acadyearid = selectedOption.val();
+
             var department = $('#department').val();
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
-            url = url.replace(':projectid', projectid);
-            url = url.replace(':department', encodeURIComponent(department));
-            url = url.replace(':projectname', encodeURIComponent(projectname));
+            var baseUrl = "{{ route('acadproject.show', ['department' => ':department', 'acadyear_id' => ':acadyear_id']) }}";
+            var url = baseUrl.replace(':department', department)
+                .replace(':acadyear_id', acadyearid);
+
             window.location.href = url;
         });
 

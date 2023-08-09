@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicYear;
 use App\Models\ActivityUser;
 use App\Models\Objective;
 use App\Models\Output;
 use App\Models\SubtaskContributor;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\CalendarYear;
 use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Subtask;
@@ -17,6 +19,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class ProjectController extends Controller
 {
@@ -24,37 +28,91 @@ class ProjectController extends Controller
 
     public function showproject($department)
     {
-        $projects = Project::where('department', $department)->get();
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
+        $currentDate = Carbon::now();
+        $currentYear = $currentDate->year;
 
-        return view('project.create', ['members' => $users, 'projects' => $projects]);
+        $currentproject = Project::where('department', $department)
+            ->where('calendaryear', $currentYear)
+            ->get();
+
+        $inCurrentYear = true;
+
+
+        $calendaryears = CalendarYear::pluck('year');
+
+        return view('project.create', [
+            'members' => $users,
+            'calendaryears' => $calendaryears,
+            'currentproject' => $currentproject,
+            'inCurrentYear' => $inCurrentYear,
+            'currentYear' => $currentYear
+        ]);
     }
 
-    public function displayproject($projectid, $department, $projectname)
+    public function showacadproject($department, $acadyear_id)
     {
 
-        $projects = Project::findOrFail($projectid);
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name', 'middle_name', 'last_name']);
+        $currentDate = Carbon::now();
+        $selectedAcadYear = AcademicYear::findorFail($acadyear_id);
+        $currentproject = Project::where('department', $department)
+            ->where('academicyear_id', $acadyear_id)
+            ->get();
 
 
-        $projects = Project::where('department', $department)->get();
+        if ($selectedAcadYear->acadstartdate <= $currentDate && $selectedAcadYear->acadenddate >= $currentDate) {
+
+            $latestacadyear_id = false;
+        } else {
+
+            $latestacadyear_id = $acadyear_id;
+            $acadyear_id = false;
+        }
+
+        $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
+
+        return view('project.create', ['members' => $users, 'latestacadyear_id' => $latestacadyear_id, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
+    }
+
+    public function displayproject($projectid, $department)
+    {
+
+        $indexproject = Project::findOrFail($projectid);
+        $currentYear = $indexproject->calendaryear;
+
+        $currentproject = Project::where('department', $department)
+            ->where('calendaryear', $currentYear)
+            ->whereNotIn('id', [$projectid])
+            ->get();
+        $inCurrentYear = true;
+
+        $calendaryears = CalendarYear::pluck('year');
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
-        $currentproject = Project::findOrFail($projectid);
-        $objectives = $currentproject->objectives;
-        $activities = Project::findOrFail($projectid);
-        $activities = $currentproject->activities;
+
+        $objectives = $indexproject->objectives;
+        $activities = $indexproject->activities;
 
         $sortedActivities = $activities->sortBy('actobjectives');
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
-        return view('project.select', ['members' => $users, 'projects' => $projects, 'currentproject' => $currentproject, 'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities]);
+        return view('project.select', [
+            'members' => $users, 'currentproject' => $currentproject, 'indexproject' => $indexproject,
+            'calendaryears' => $calendaryears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentYear' => $currentYear,
+            'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities,
+        ]);
     }
     /*
     public function getactivity($id, $activityid)
@@ -135,6 +193,7 @@ class ProjectController extends Controller
             'projectstartdate' => 'required|date',
             'projectenddate' => 'required|date|after:project_startdate',
             'department' => 'required|max:255',
+            'currentyear' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -149,9 +208,11 @@ class ProjectController extends Controller
             'projectstartdate' => $request->input('projectstartdate'),
             'projectenddate' => $request->input('projectenddate'),
             'department' => $request->input('department'),
+            'calendaryear' => $request->input('currentyear'),
         ]);
 
         $project->save();
+        Artisan::call('project:status:update');
         $newProjectId = $project->id;
 
 

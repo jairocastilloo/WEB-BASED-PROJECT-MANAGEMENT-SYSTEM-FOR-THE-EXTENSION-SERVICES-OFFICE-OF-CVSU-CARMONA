@@ -9,7 +9,7 @@
             <b class="small">Project: {{ $projectName }} </b>
         </div>
         <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
-            <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
+            <h5><b>Activity: {{ $activity['actname'] }}</b></h5>
         </div>
 
 
@@ -21,7 +21,7 @@
             <div class="col-6">
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                     </div>
                     <p class="lh-sm ms-4 mt-2 me-2"><strong class="text-secondary">Activity Name:</strong>
@@ -57,7 +57,7 @@
 
                 </div>
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
                     </div>
                     @php
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 <div class="basiccont shadow p-2 mt-4 ms-2 mb-4">
-                    <div class="border-bottom ps-2">
+                    <div class="border-bottom ps-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
                     </div>
                     @php $count = 0; @endphp
@@ -118,7 +118,7 @@
 
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4">
-                    <div class="border-bottom ps-3 pt-2 pe-2">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <div class="row">
                             <div class="col">
                                 <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
@@ -163,7 +163,7 @@
             @else
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4">
-                    <div class="border-bottom ps-3 pt-2 pe-2">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Total Hours Rendered</h6>
                     </div>
 
@@ -180,7 +180,7 @@
                     </div>
                 </div>
                 <div class="basiccont word-wrap shadow mt-4">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours Rendered</h6>
                     </div>
                     <ul class="list-unstyled small">
@@ -233,20 +233,141 @@
             @endif
 
             <div class="col-2">
-                <div class="basiccont shadow mt-4 me-2">
-                    <div class="border-bottom ps-3 pt-2">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Other Activities</h6>
+
+
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedActivities = $activities->sortBy('actstartdate');
+
+                $inProgressActivities = $sortedActivities->filter(function ($act) {
+                return $act['actremark'] === 'In Progress';
+                });
+                $pendingActivities = $sortedActivities->filter(function ($act) {
+                return $act['actremark'] === 'Pending';
+                });
+                $scheduledActivities = $sortedActivities->filter(function ($act) {
+                return $act['actremark'] === 'Scheduled';
+                });
+                $overdueActivities = $sortedActivities->filter(function ($act) {
+                return $act['actremark'] === 'Overdue';
+                });
+                $completedActivities = $sortedActivities->filter(function ($act) {
+                return $act['actremark'] === 'Completed';
+                });
+                @endphp
+                @if($activities->isEmpty())
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                     </div>
-                    @foreach ($activities as $act)
-
-                    <div class="divhover p-3 pe-2 ps-4 actdiv border-bottom" data-value="{{ $act->id }}" data-name="{{ $act->actname }}">
-                        <b class="small">{{ $act->actname }}</b>
+                    <div class="text-center p-4">
+                        <h4><em>No Other Activities Yet.</em></h4>
                     </div>
-
-                    @endforeach
-
-
                 </div>
+                @endif
+                @if ($inProgressActivities && count($inProgressActivities) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
+                    </div>
+                    @foreach ($inProgressActivities as $act)
+                    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
+
+                        <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($act['actstartdate']));
+                        $endDate = date('M d, Y', strtotime($act['actenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if ($pendingActivities && count($pendingActivities) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
+                    </div>
+                    @foreach ($pendingActivities as $act)
+                    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
+                        <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($act['actstartdate']));
+                        $endDate = date('M d, Y', strtotime($act['actenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+
+                @endif
+                @if ($scheduledActivities && count($scheduledActivities) > 0)
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
+                    </div>
+                    @foreach ($scheduledActivities as $act)
+                    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
+
+                        <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($act['actstartdate']));
+                        $endDate = date('M d, Y', strtotime($act['actenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if ($overdueActivities && count($overdueActivities) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
+                    </div>
+                    @foreach ($overdueActivities as $act)
+                    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
+
+                        <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($act['actstartdate']));
+                        $endDate = date('M d, Y', strtotime($act['actenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if ($completedActivities && count($completedActivities) > 0)
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
+                    </div>
+                    @foreach ($completedActivities as $act)
+                    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
+
+                        <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($act['actstartdate']));
+                        $endDate = date('M d, Y', strtotime($act['actenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
 
             </div>
         </div>
@@ -509,7 +630,7 @@
                 type: 'POST',
                 data: data1,
                 success: function(response) {
-                    console.log(response);
+                    console.log(response.actid);
                     window.location.href = url;
                 },
                 error: function(xhr, status, error) {

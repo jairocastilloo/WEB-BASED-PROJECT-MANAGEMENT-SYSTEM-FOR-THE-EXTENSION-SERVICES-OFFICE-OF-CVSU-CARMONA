@@ -17,6 +17,10 @@ body {
     border-radius: 5px;
 
 }
+.basiccont .bggreen {
+  background-color: #f2fde8;
+  border-radius: 5px;
+}
 
 
 .stretch-button {
@@ -99,6 +103,10 @@ body {
  background-color:#e2ebda;
     
   }
+  .recordth th{
+    background-color:rgb(233, 233, 233);
+       
+     }
   .firsttable, .firsttable th, .firsttable td {
     border: 1px solid #bababa;
     min-width: 130px;

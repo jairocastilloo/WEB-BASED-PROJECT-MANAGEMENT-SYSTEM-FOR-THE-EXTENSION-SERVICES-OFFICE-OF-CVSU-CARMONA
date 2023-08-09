@@ -18,6 +18,8 @@
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <img src="image.jpg" alt="Image" class="img-fluid">
+
+
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -83,30 +85,30 @@
                     <table class="recordtable small">
 
                         <thead>
-                            <tr id="actheader">
-                                <th class="p-2 text-center majority">
-                                    <strong>PROJECT</strong>
+                            <tr class="actheader recordth">
+                                <th class="p-1 text-center majority">
+                                    PROJECT
                                 </th>
-                                <th class="p-2 text-center extension">
-                                    <strong>EXTENSION ACTIVITY</strong>
+                                <th class="p-1 text-center extension">
+                                    EXTENSION ACTIVITY
                                 </th>
-                                <th class="p-2 text-center num">
-                                    <strong>DATE</strong>
+                                <th class="p-1 text-center num">
+                                    DATE
                                 </th>
-                                <th class="p-2 text-center majority">
-                                    <strong>RELATED PROGRAM/S (if any)</strong>
+                                <th class="p-1 text-center majority">
+                                    RELATED PROGRAM/S (if any)
                                 </th>
-                                <th class="p-2 text-center num">
-                                    <strong>TOTAL NUMBERS OF HOURS</strong>
+                                <th class="p-1 text-center num">
+                                    TOTAL NUMBERS OF HOURS
                                 </th>
-                                <th class="p-2 text-center majority">
-                                    <strong>NO. OF CLIENTELE/BENEFICIARIES</strong>
+                                <th class="p-1 text-center majority">
+                                    NO. OF CLIENTELE/BENEFICIARIES
                                 </th>
-                                <th class="p-2 text-center majority">
-                                    <strong>AGENCY</strong>
+                                <th class="p-1 text-center majority">
+                                    AGENCY
                                 </th>
-                                <th class="p-2 text-center majority">
-                                    <strong>DEPARTMENT</strong>
+                                <th class="p-1 text-center majority">
+                                    DEPARTMENT
                                 </th>
                             </tr>
 
@@ -119,23 +121,24 @@
                             @foreach ($allactivities as $allactivity)
                             @if (in_array($allactivity->id, $onlyactivitiesid))
                             <tr>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     @php
                                     $projectname = Project::where('id', $allactivity['project_id'])->first(['projecttitle']);
                                     $projectdept = Project::where('id', $allactivity['project_id'])->first(['department']);
                                     @endphp
                                     {{ $projectname->projecttitle }}
                                 </td>
-                                <td class="extension p-2">
+                                <td class="extension p-1">
                                     {{ $allactivity->actname }}
                                 </td>
-                                <td class="num p-2">
-                                    {{ $allactivity->actstartdate . ' - ' . $allactivity->actenddate}}
+                                <td class="num p-1">
+                                    {{ \Carbon\Carbon::parse($allactivity->actstartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allactivity->actenddate)->format('M d,Y') }}
+
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     N/A
                                 </td>
-                                <td class="num p-2">
+                                <td class="num p-1">
                                     @php
                                     $hoursrendered = SubtaskContributor::where('activity_id', $allactivity['id'])
                                     ->where('approval', 1)
@@ -146,44 +149,44 @@
                                     @endphp
                                     {{ $totalhours }}
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     {{ $projectdept->department }}
                                 </td>
                             </tr>
                             @else
                             <tr>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     @php
                                     $projectname = Project::where('id', $allactivity['project_id'])->first(['projecttitle']);
                                     $projectdept = Project::where('id', $allactivity['project_id'])->first(['department']);
                                     @endphp
                                     {{ $projectname->projecttitle }}
                                 </td>
-                                <td class="extension p-2">
+                                <td class="extension p-1">
                                     {{ $allactivity->actname }}
                                 </td>
-                                <td class="num p-2">
-                                    {{ $allactivity->actstartdate . ' - ' . $allactivity->actenddate}}
+                                <td class="num p-1">
+                                    {{ \Carbon\Carbon::parse($allactivity->actstartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allactivity->actenddate)->format('M d,Y') }}
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     N/A
                                 </td>
-                                <td class="num p-2">
+                                <td class="num p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     {{ $projectdept->department }}
                                 </td>
                             </tr>
@@ -196,19 +199,19 @@
                             @endphp
                             @if ($inActivity)
                             <tr>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     &nbsp;
                                 </td>
-                                <td class="extension p-2">
+                                <td class="extension p-1">
                                     &nbsp;&nbsp;&nbsp;&nbsp;{{ $allsubtask->subtask_name }}
                                 </td>
-                                <td class="num p-2">
-                                    {{ $allsubtask->substartdate . ' - ' . $allsubtask->subenddate  }}
+                                <td class="num p-1">
+                                    {{ \Carbon\Carbon::parse($allsubtask->substartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allsubtask->subenddate)->format('M d,Y') }}
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     N/A
                                 </td>
-                                <td class="num p-2">
+                                <td class="num p-1">
                                     @php
                                     $hoursrendered = SubtaskContributor::where('subtask_id', $allsubtask['id'])
                                     ->where('approval', 1)
@@ -219,13 +222,13 @@
                                     @endphp
                                     {{ $totalhours }}
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     -
                                 </td>
-                                <td class="majority p-2">
+                                <td class="majority p-1">
                                     {{ $projectdept->department }}
                                 </td>
                             </tr>
@@ -244,5 +247,18 @@
     </div>
 
 </div>
+
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+
+        $('#navbarDropdown').click(function(event) {
+            // Add your function here
+            event.preventDefault();
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+    });
+</script>
 
 @endsection

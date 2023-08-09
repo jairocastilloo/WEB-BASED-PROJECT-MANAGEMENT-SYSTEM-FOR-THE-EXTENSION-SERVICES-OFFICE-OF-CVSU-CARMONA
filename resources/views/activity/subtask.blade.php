@@ -21,7 +21,7 @@
             <div class="col-8">
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask Hours</h6>
                     </div>
                     <p class="ps-4 lh-1 pt-2"><b>{{ $subtask['subtask_name'] }}</b></p>
@@ -41,7 +41,7 @@
 
                 </div>
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours Rendered</h6>
                     </div>
 
@@ -95,7 +95,7 @@
             </div>
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4 me-2">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Subtasks</h6>
                     </div>
                     @foreach ($subtasks as $sub)

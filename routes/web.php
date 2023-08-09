@@ -12,6 +12,9 @@ use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\HomeController;
+use App\Models\AcademicYear;
 use App\Models\Activity;
 
 /*
@@ -27,12 +30,9 @@ use App\Models\Activity;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes();
+Route::get('/', [HomeController::class, 'index'])->name('home');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 //Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
@@ -63,6 +63,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
+    Route::get('/duties/{acadyear_id}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
@@ -88,6 +89,7 @@ Route::prefix('/activities')->group(function () {
 
 Route::prefix('/projects')->group(function () {
     Route::get('/{department}', [ProjectController::class, 'showproject'])->name('project.show');
+    Route::get('/{department}/{acadyear_id}', [ProjectController::class, 'showacadproject'])->name('acadproject.show');
     Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('projects.display');
     Route::get('/{department}/newproject', [ProjectController::class, 'newproject'])->name('projects.new');
 });
@@ -106,3 +108,7 @@ Route::prefix('/output')->group(function () {
     Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
     Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
 });
+
+
+Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
+Route::post('/saveacademicyear', [AcademicYearController::class, 'saveacadyear'])->name('acadyear.save');

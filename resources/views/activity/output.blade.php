@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-8">
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $outputtype }}">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Output Submitted</h6>
                     </div>
                     <div class="p-2">
@@ -47,7 +47,7 @@
 
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Output</h6>
                     </div>
                     <ul class="list-unstyled small pt-2">
@@ -118,7 +118,7 @@
             </div>
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4 me-2">
-                    <div class="border-bottom ps-3 pt-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Outputs</h6>
                     </div>
 
