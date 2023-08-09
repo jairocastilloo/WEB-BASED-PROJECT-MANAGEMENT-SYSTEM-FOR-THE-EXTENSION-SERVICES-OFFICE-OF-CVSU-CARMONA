@@ -63,40 +63,38 @@ class TasksController extends Controller
         ]);
     }
 
-    public function showacadtasks($username, $acadyear_id)
+    public function showacadtasks($username, $currentYear)
     {
         $user = User::where('username', $username)->firstOrFail();
 
         $userid = $user->id;
 
+
         $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
 
-        $selectedAcadYear = AcademicYear::findorFail($acadyear_id);
-        $currentproject = $user->projects()
-            ->where('academicyear_id', $acadyear_id)
-            ->get();
-        if ($selectedAcadYear->acadstartdate <= $currentDate && $selectedAcadYear->acadenddate >= $currentDate) {
-            $latestacadyear_id = false;
+        if ($otheryear == $currentYear) {
+            $inCurrentYear = true;
         } else {
-            $latestacadyear_id = $acadyear_id;
-            $acadyear_id = false;
+            $inCurrentYear = false;
         }
 
-        $projectIds = [];
 
-        if (!$currentproject->isEmpty()) {
-            $projectIds = $currentproject->pluck('id')->toArray();
-        }
+        $currentproject = $user->projects()
+            ->where('calendaryear', $currentYear)
+            ->get();
+
+
+
+
+        $projectIds = $currentproject->pluck('id')->toArray();
+
 
         $activities = $user->activities()
             ->whereIn('project_id', $projectIds)
             ->get();
 
-        $activityIds = [];
-
-        if (!$activities->isEmpty()) {
-            $activityIds = $activities->pluck('id')->toArray();
-        }
+        $activityIds = $activities->pluck('id')->toArray();
 
         $subtasks = $user->subtasks()
             ->whereIn('activity_id', $activityIds)
@@ -107,13 +105,16 @@ class TasksController extends Controller
             ->where('approval', 1)
             ->get();
 
-        $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
+        $calendaryears = CalendarYear::pluck('year');
+
         return view('implementer.index', [
             'currentproject' => $currentproject,
             'activities' => $activities,
             'subtasks' => $subtasks,
             'contributions' => $contributions,
-            'latestacadyear_id' => $latestacadyear_id, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears
+            'calendaryears' => $calendaryears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentYear' => $currentYear
         ]);
     }
 

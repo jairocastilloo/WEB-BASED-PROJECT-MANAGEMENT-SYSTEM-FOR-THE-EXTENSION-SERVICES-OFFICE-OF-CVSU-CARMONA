@@ -64,7 +64,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
-    Route::get('/duties/{acadyear_id}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
+    Route::get('/duties/{currentYear}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
@@ -97,18 +97,14 @@ Route::prefix('/projects')->group(function () {
         Route::get('/allprojects/{currentyear}', [ProjectController::class, 'showyearproject'])
             ->name('yearproject.show');
     });
-    Route::get('/{projectid}/{projectname}', [ProjectController::class, 'displayproject'])
-        ->name('projects.display');
+
 
     Route::get('/newproject', [ProjectController::class, 'newproject'])
         ->name('projects.new');
 });
+Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])
+    ->name('projects.display');
 
-
-Route::prefix('/projectinsights')->group(function () {
-    Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
-    Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
-});
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');

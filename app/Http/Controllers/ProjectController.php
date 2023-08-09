@@ -87,12 +87,18 @@ class ProjectController extends Controller
 
         $indexproject = Project::findOrFail($projectid);
         $currentyear = $indexproject->calendaryear;
-
         $currentproject = Project::where('department', $department)
-            ->where('calendaryear', $currentyear)
             ->whereNotIn('id', [$projectid])
+            ->where('calendaryear', $currentyear)
             ->get();
-        $inCurrentYear = true;
+        $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
+
+        if ($otheryear == $currentyear) {
+            $inCurrentYear = true;
+        } else {
+            $inCurrentYear = false;
+        }
 
         $calendaryears = CalendarYear::pluck('year');
 
