@@ -102,7 +102,7 @@ Route::prefix('/projects')->group(function () {
     Route::get('/newproject', [ProjectController::class, 'newproject'])
         ->name('projects.new');
 });
-Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])
+Route::get('/display/{projectid}/{department}', [ProjectController::class, 'displayproject'])
     ->name('projects.display');
 
 

@@ -393,13 +393,10 @@
                         <input type="number" class="d-none" name="activitynumber" id="actid" value="{{ $activity['id'] }}">
                         <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
                     </div>
+
                     <div class="mb-3">
-                        <label for="subtask-startdate" class="form-label">Start Date</label>
-                        <input type="date" class="form-control" id="subtaskstartdate" name="subtaskstartdate" placeholder="Enter Start Date">
-                    </div>
-                    <div class="mb-3">
-                        <label for="subtask-enddate" class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="subtaskenddate" name="subtaskenddate" placeholder="Enter Due Date">
+                        <label for="subtask-duedate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="subtaskduedate" name="subtaskduedate" placeholder="Enter Due Date">
                     </div>
                 </form>
             </div>

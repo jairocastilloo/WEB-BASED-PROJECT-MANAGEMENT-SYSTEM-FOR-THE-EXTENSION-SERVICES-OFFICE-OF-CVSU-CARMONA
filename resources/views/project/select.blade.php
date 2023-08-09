@@ -692,10 +692,10 @@
             var department = $('#department').val();
 
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
             url = url.replace(':projectid', projectid);
             url = url.replace(':department', encodeURIComponent(department));
-            url = url.replace(':projectname', encodeURIComponent(projectname));
+
             window.location.href = url;
         });
 

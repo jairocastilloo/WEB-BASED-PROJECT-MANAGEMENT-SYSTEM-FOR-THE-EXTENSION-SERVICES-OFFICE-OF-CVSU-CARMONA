@@ -44,8 +44,7 @@ class SubtaskController extends Controller
         $validator = Validator::make($request->all(), [
             'subtaskname' => 'required|max:255',
             'activitynumber' => 'required|integer',
-            'subtaskstartdate' => 'required|date|before_or_equal:subtaskenddate',
-            'subtaskenddate' => 'required|date',
+            'subtaskduedate' => 'required|date',
         ]);
 
         if ($validator->fails()) {
