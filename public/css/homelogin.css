@@ -33,6 +33,15 @@ h2{
     height: 100vh;
 }
 
+.reg-page{
+  background: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
 
   .divider-container {
     display: flex;
@@ -54,7 +63,14 @@ h2{
 
 
 .btn-success{
-  
+  padding: 10px;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.btn-secondary{
+  padding: 10px;
   width: 100%;
   max-width: 200px;
   margin: 0 auto;
@@ -62,7 +78,10 @@ h2{
 
 
 
-
 .form-control{
+  height: 50px;
+}
+
+.form-select{
   height: 50px;
 }

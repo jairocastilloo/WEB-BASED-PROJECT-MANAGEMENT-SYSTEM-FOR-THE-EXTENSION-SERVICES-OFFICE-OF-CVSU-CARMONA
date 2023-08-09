@@ -28,22 +28,50 @@
         <div class="container p-3">
             <div class="form-group">
                 <div class="offset-1 col-lg-10">
-                  <label class="bold-label fw-bold py-3" for="Password1">Full Name:</label>
-                  <input type="fullname1" class="form-control " id="password1" aria-describedby="passwordHelp" placeholder="Password">
+                  <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
+                  <input type="user1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="offset-1 col-lg-10">
-                  <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
-                  <input type="user1" class="form-control" id="username1" aria-describedby="usernameHelp" placeholder="Username">
+                  <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
+                  <input type="first1" class="form-control" aria-describedby="usernameHelp" placeholder="Username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="offset-1 col-lg-10">
+                  <label class="bold-label fw-bold py-3" for="Middelname1">Middle Name:</label>
+                  <input type="middle1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="offset-1 col-lg-10">
+                  <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
+                  <input type="last1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="offset-1 col-lg-10">
+                  <label class="bold-label fw-bold py-3" for="Emailaddress1">Email Address:</label>
+                  <input type="email1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="offset-1 col-lg-10">
                   <label class="bold-label fw-bold py-3" for="Password1">Password:</label>
-                  <input type="pass1" class="form-control " id="password1" aria-describedby="passwordHelp" placeholder="Password">
+                  <input type="pass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="offset-1 col-lg-10">
+                  <label class="bold-label fw-bold py-3" for="ConfirmPassword1">Confirm Password:</label>
+                  <input type="confirmpass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
                 </div>
             </div>
         </div>

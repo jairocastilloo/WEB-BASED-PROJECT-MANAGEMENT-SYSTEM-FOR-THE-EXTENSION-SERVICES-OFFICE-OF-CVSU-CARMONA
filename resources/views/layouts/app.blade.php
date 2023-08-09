@@ -50,7 +50,8 @@
 
 <body style="font-family: sans-serif;">
     <div id="app">
-    @if (request()->Is('/'))
+    @if (request()->Is('/') || Route::is('login') || Route::is('register'))
+    
     @else
         <nav style="background-color: #1b651b;" class="navbar navbar-expand-md navbar-dark shadow-sm p-1">
 
@@ -77,15 +78,17 @@
                         <!-- Authentication Links -->
                         @guest
                         @if (Route::has('login'))
+                        <!--
                         <li class="nav-item">
                             <a class="nav-link navtohover" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
+                        </li>-->
                         @endif
 
                         @if (Route::has('register'))
+                        <!--
                         <li class="nav-item">
                             <a class="nav-link navtohover" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
+                        </li>-->
                         @endif
                         @else
                         @if (Auth::user()->approval === 1)

@@ -12,6 +12,7 @@ use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\HomeController;
 use App\Models\Activity;
 
 /*
@@ -27,12 +28,9 @@ use App\Models\Activity;
 
 
 
-Route::get('/', function () {
-    return view('index');
-});
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 //Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
