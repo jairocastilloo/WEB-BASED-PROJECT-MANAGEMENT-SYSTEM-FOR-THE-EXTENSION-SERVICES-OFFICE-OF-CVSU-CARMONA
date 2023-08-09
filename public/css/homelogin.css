@@ -8,81 +8,61 @@
     box-shadow: border-box;
 }
 .row{
-    background: white;
     border-radius: 30px;
-    box-shadow: 12px 12px 50px;
+    box-shadow: 5px 10px 20px rgba(0,0,0,0.15);
 }
+
 
 h1{
     font-family: 'Borel', cursive;
 }
 h2{
-    color: rgba(221,221,0);
-    font-family: 'Borel', cursive;
+    color: rgb(0, 0, 0);
+    font-family: 'Roboto', sans-serif;
 }
 
-
-.inputbox{
-    height: 30px;
-    width: 70%;
-    
-    border-radius: 10px 10px 10px 10px;
-    -webkit-border-radius: 10px 10px 10px 10px;
-    -moz-border-radius: 10px 10px 10px 10px;
-    box-shadow: -2px 10px 44px -7px rgba(0,0,0,0.7);
-    -webkit-box-shadow: -2px 10px 44px -7px rgba(0,0,0,0.7);
-    -moz-box-shadow: -2px 10px 44px -7px rgba(0,0,0,0.7);
-}
-
-.allhomebtn{
-    height: 50px;
-    width: 50%;
-    border: none;
-    outline: none;
-    border-radius: 10px 10px 10px 10px;
-    background: rgb(221, 221, 0);
-    color: white;
+.bold-label {
+  font-weight: bold;
 }
 
 .homeloginpage{
-    background: green;
-    width: 100%;
+    background: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
 }
 
-.column-wrapper {
-    border-radius: 30px 0 0 30px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+  .divider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
   }
   
-  .rounded-30 {
-    border-radius:30px 0 0 30px;
+  .divider {
+    flex: 1;
+    border-top: 1px solid gray;
+    margin: 0 10px;
+  }
+  
+  .or-text {
+    font-weight: bold;
+    margin: 0 10px;
   }
 
-  .outer-picture {
-    position: relative;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-    overflow: hidden;
-  }
 
-  .outer-picture img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
+.btn-success{
+  
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
 
-  .inner-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  
-  
+
+
+
+.form-control{
+  height: 50px;
+}
