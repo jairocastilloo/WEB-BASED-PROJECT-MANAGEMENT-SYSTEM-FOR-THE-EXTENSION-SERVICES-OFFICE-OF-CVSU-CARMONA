@@ -13,7 +13,7 @@
       </div>
 
       <div class="col-lg-6">
-        <h1 class="text-center p-5">Welcome Back!!!!</h1>
+        <h1 class="text-center p-5">Welcome Back!</h1>
 
         <form>
           <div class="container p-3">
