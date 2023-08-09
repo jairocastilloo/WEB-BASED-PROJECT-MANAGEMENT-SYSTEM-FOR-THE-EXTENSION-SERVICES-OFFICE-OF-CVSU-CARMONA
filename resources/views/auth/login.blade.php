@@ -33,7 +33,7 @@
 
                             <div class="form-group">
                                 <div class="offset-1 col-lg-10">
-                                    <label class="bold-label fw-bold py-4" for="Username1">Username:</label>
+                                    <label class="bold-label fw-bold py-4" for="Username1">Password:</label>
                                     <input placeholder="Password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                     @error('password')
                                     <span class="invalid-feedback" role="alert">
