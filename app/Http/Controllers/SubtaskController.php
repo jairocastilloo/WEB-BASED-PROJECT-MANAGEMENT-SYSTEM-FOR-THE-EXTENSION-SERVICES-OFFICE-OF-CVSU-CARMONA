@@ -53,14 +53,12 @@ class SubtaskController extends Controller
 
         $subtaskname = $request->input('subtaskname');
         $activitynumber = $request->input('activitynumber');
-        $subtaskstartdate = $request->input('subtaskstartdate');
-        $subtaskenddate = $request->input('subtaskenddate');
+        $subtaskduedate = $request->input('subtaskduedate');
         $subtasks = new Subtask();
 
         $subtasks->subtask_name = $subtaskname;
         $subtasks->activity_id = $activitynumber;
-        $subtasks->substartdate = $subtaskstartdate;
-        $subtasks->subenddate = $subtaskenddate;
+        $subtasks->subduedate = $subtaskduedate;
         $subtasks->save();
         $lastsubtaskid = $subtasks->id;
 
