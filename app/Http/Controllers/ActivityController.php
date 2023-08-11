@@ -445,23 +445,4 @@ class ActivityController extends Controller
 
         return 'File uploaded successfully.';
     }
-
-    public function acceptacthours(Request $request)
-    {
-
-        $acceptIds = $request->input('acceptids');
-
-        // Update the 'approval' field in SubtaskContributor table
-        SubtaskContributor::where('created_at', $acceptIds)->update(['approval' => 1]);
-
-        // Get the subtask_id and hours_rendered for the first record with the specified created_at value
-        $subtaskContributor = SubtaskContributor::where('created_at', $acceptIds)->first();
-        $activityid = $subtaskContributor->activity_id;
-        $hoursrendered = $subtaskContributor->hours_rendered;
-
-        // Update the 'hours_rendered' field in the Subtask table
-        Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
-
-        return 'File uploaded successfully.';
-    }
 }

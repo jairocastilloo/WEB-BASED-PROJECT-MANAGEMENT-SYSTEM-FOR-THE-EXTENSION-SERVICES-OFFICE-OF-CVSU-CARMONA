@@ -187,7 +187,6 @@
             url = url.replace(':activityname', activityname);
             url = url.replace(':department', department);
 
-            window.location.href = url;
             $("#contributornumber").val($('input[name^="activity-contributor["][name$="]"]').length);
 
             var dataurl = $('#addtoactivityform').attr('data-url');

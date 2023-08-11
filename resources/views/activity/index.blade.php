@@ -629,28 +629,6 @@
 
             });
 
-            $(document).on('click', '.acceptacthours-btn', function() {
-                var acceptIdsValue = $(this).prev().val();
-                var dataurl = $(this).parent().attr('data-url');
-                // Create a data object with the value you want to send
-                var data1 = $(this).parent().serialize();
-
-                $.ajax({
-                    url: dataurl, // Replace with your actual AJAX endpoint URL
-                    type: 'POST',
-                    data: data1,
-                    success: function(response) {
-
-                        console.log(response);
-                        window.location.href = url;
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle the error here
-                        console.log(xhr.responseText);
-                        console.error(error);
-                    }
-                });
-            });
 
         });
     </script>
