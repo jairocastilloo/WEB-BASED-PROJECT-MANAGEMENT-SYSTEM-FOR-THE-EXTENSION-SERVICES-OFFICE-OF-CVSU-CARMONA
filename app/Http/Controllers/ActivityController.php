@@ -391,7 +391,7 @@ class ActivityController extends Controller
         $actid = $request->input('act-id');
 
         $activity = Activity::findOrFail($actid);
-        $activity->update(['totalhours_rendered' => 0]);
+        $activity->update(['subtask' => 0]);
 
 
         return response()->json(['success' => true, 'actid' => $actid]);
