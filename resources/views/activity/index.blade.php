@@ -45,7 +45,7 @@
                         <p class="lh-sm ms-4 me-2"><strong class="text-secondary">End Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
                         <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
                         <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
-
+                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
                         <div class="btn-group dropdown ms-3 mb-3 shadow">
                             <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <b class="small">Edit Activity</b>
@@ -53,29 +53,13 @@
                             <div class="dropdown-menu">
                                 <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
                                 <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
+                                <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Participation Hours</b></a>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="basiccont word-wrap shadow ms-2 mt-4">
-                        <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Participation Hours</h6>
-                        </div>
 
-
-                        <div class="p-2 pb-0 ps-5 border-bottom">
-                            <p class="lh-1">Total Hours Rendered: {{ $activity->totalhours_rendered }}</p>
-                        </div>
-
-
-                        <div class="btn-group ms-3 mb-3 mt-2 shadow">
-                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow submithours-btn">
-                                <b class="small">Submit Hours</b>
-                            </button>
-                        </div>
-
-                    </div>
                     <div class="basiccont word-wrap shadow ms-2 mt-4">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
@@ -524,6 +508,20 @@
         var unassignassigneeid;
         var assignees = <?php echo json_encode($assignees) ?>;
         $(document).ready(function() {
+
+            $('#activityhours-btn').click(function(event) {
+                event.preventDefault();
+                var activityid = $('#actid-hrs').val();
+                var activityname = $('#actname-hrs').val();
+                var department = $('#department').val();
+
+                var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname", "department" => ":department"]) }}';
+                url = url.replace(':activityid', activityid);
+                url = url.replace(':activityname', activityname);
+                url = url.replace(':department', department);
+
+                window.location.href = url;
+            });
 
             $('#completeactivity-btn').click(function(event) {
                 event.preventDefault();

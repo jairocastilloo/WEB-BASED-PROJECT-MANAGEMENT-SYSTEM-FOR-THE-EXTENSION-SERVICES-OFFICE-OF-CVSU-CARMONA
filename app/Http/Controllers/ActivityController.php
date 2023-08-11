@@ -331,21 +331,6 @@ class ActivityController extends Controller
             ->whereNotIn('id', [$activityid])
             ->get();
 
-        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-            ->where('approval', 0)
-            ->where('activity_id', $activityid)
-            ->groupBy('created_at')
-            ->get();
-        $unapprovedactivity = SubtaskContributor::selectRaw('MAX(id) as id')
-            ->where('approval', 0)
-            ->where('activity_id', $activityid)
-            ->groupByRaw('created_at')
-            ->pluck('id');
-
-
-        $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
-            ->get();
-
         return view('activity.index', [
             'activity' => $activity,
             'activities' => $activities,
@@ -357,8 +342,6 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
-            'unapprovedactivitydata' => $unapprovedactivitydata,
-            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
 

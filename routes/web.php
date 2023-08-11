@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HoursController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 
@@ -88,6 +89,10 @@ Route::prefix('/activities')->group(function () {
     Route::post('/acceptacthours', [ActivityController::class, 'acceptacthours'])->name('acthours.accept');
 });
 
+Route::prefix('/subtasks')->group(function () {
+
+    Route::get('/{activityid}/{department}/{activityname}', [HoursController::class, 'displayhours'])->name('hours.display');
+});
 
 Route::prefix('/projects')->group(function () {
     Route::prefix('/{department}')->group(function () {

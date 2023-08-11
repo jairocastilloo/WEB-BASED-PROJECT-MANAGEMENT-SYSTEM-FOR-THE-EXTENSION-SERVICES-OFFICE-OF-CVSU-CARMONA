@@ -9,7 +9,7 @@ class activityContribution extends Model
 {
     use HasFactory;
 
-    protected $table = 'contributions';
+    protected $table = 'activity_contributions';
 
     protected $fillable = [
         'activity_id',
