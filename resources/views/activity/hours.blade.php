@@ -8,8 +8,7 @@
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv" data-name="{{ $activity['actname'] }}">
-            <input type="number" class="d-none" id="actid" value="{{ $activity['id'] }}">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv" data-name="{{ $activity['actname'] }}" data-value="{{ $activity['id'] }}">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
@@ -23,6 +22,9 @@
             </div>
 
             <div class="p-2 pb-0 ps-5 border-bottom">
+                <p class="lh-1">Activity Name: {{ $activity->actname }}</p>
+                <p class="lh-1">Activity Date: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $activity->actstartdate)->format('F d') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $activity->actenddate)->format('F d') }}</p>
+
                 <p class="lh-1">Total Hours Rendered: {{ $activity->totalhours_rendered }}</p>
             </div>
 
@@ -37,4 +39,26 @@
 
     </div>
 </div>
+@endsection
+
+@section('scripts')
+
+<script>
+    $(document).ready(function() {
+
+        $(document).on('click', '.submithours-btn', function() {
+            var activityid = $('#activitydiv').attr("data-value");
+            var activityname = $('#activitydiv').attr("data-name");
+            var department = $('#department').val();
+
+            var url = '{{ route("comply.activity", ["activityid" => ":activityid", "activityname" => ":activityname", "department" => ":department"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':activityname', activityname);
+            url = url.replace(':department', department);
+
+            window.location.href = url;
+        });
+    });
+</script>
+
 @endsection

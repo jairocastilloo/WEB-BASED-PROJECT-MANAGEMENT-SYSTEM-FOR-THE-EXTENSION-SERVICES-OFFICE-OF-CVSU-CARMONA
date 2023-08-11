@@ -529,18 +529,7 @@
 
             });
 
-            $(document).on('click', '.submithours-btn', function() {
-                var activityid = $('#actid-hrs').val();
-                var activityname = $('#actname-hrs').val();
-                var department = $('#department').val();
 
-                var url = '{{ route("comply.activity", ["activityid" => ":activityid", "activityname" => ":activityname", "department" => ":department"]) }}';
-                url = url.replace(':activityid', activityid);
-                url = url.replace(':activityname', activityname);
-                url = url.replace(':department', department);
-
-                window.location.href = url;
-            });
             $('#markcomplete-btn').click(function(event) {
                 event.preventDefault();
 

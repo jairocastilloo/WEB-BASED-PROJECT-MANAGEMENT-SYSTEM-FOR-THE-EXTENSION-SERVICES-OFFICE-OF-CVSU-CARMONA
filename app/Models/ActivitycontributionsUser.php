@@ -9,7 +9,7 @@ class ActivitycontributionsUser extends Model
 {
     use HasFactory;
 
-    protected $table = 'activitycontributions_user';
+    protected $table = 'activitycontributions_users';
 
     protected $fillable = [
         'activitycontribution_id',

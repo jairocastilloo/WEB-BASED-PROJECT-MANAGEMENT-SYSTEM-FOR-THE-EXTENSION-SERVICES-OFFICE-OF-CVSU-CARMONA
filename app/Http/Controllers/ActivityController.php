@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ActivityUser;
 use App\Models\Output;
 use App\Models\Activity;
+use App\Models\activityContribution;
+use App\Models\ActivitycontributionsUser;
 use App\Models\Objective;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -403,18 +405,26 @@ class ActivityController extends Controller
         $validatedData = $request->validate([
             'activity-id' => 'required|integer',
             'activity-contributor.*' => 'required|integer',
+            'start-date' => 'required|date',
+            'end-date' => 'required|date',
             'contributornumber' => 'required|integer',
             'hours-rendered' => 'required|integer',
         ]);
 
+        $activitycontributions = new activityContribution();
+        $activitycontributions->activity_id = $validatedData['activity-id'];
+        $activitycontributions->startdate = $validatedData['start-date'];
+        $activitycontributions->enddate = $validatedData['end-date'];
+        $activitycontributions->hours_rendered = $validatedData['hours-rendered'];
+        $activitycontributions->save();
+        $newActContri = $activitycontributions->id;
 
         for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
 
 
-            $subtaskcontributor = new SubtaskContributor();
+            $subtaskcontributor = new ActivitycontributionsUser();
             $subtaskcontributor->user_id = $validatedData['activity-contributor'][$i];
-            $subtaskcontributor->activity_id = $validatedData['activity-id'];
-            $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+            $subtaskcontributor->activitycontribution_id = $newActContri;
             $subtaskcontributor->save();
         }
 
