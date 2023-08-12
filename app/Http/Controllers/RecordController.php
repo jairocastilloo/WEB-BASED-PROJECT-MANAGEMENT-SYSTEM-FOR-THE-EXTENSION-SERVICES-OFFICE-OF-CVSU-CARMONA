@@ -26,15 +26,15 @@ class RecordController extends Controller
 
         $ayfirstsem = AcademicYear::where('firstsem_startdate', '<=', $currentDate)
             ->where('firstsem_enddate', '>=', $currentDate)
-            ->get();
+            ->first();
 
         $aysecondsem = AcademicYear::where('secondsem_startdate', '<=', $currentDate)
             ->where('secondsem_enddate', '>=', $currentDate)
-            ->get();
+            ->first();
 
-        $allAY = AcademicYear::all(['id', 'firstsem_startdate', 'firstsem_enddate', 'secondsem_startdate', 'secondsem_enddate']);
+        $allAY = AcademicYear::all(['id', 'acadstartdate', 'acadenddate']);
 
-        $latestAy = AcademicYear::latest()->get();
+        $latestAy = AcademicYear::latest()->first();
         $inCurrentYear = false;
         $minSemDate = null;
         $maxSemDate = null;
@@ -53,37 +53,13 @@ class RecordController extends Controller
         }
 
 
-        $subtaskcontributions = Contribution::where('user_id', $userid)
-            ->where('approval', 1)
-            ->whereDate('date', '>=', $minSemDate)
-            ->whereDate('date', '<=', $maxSemDate)
-            ->get();
-        if ($subtaskcontributions) {
-            $subtasksid = $subtaskcontributions->pluck('subtask_id')->toArray();
-
-            $allsubtasks = Subtask::whereIn('id', $subtasksid)
-                ->get();
-
-            $otheractivities = $allsubtasks->pluck('activity_id')->toArray();
-        }
-        $activitycontributions = activityContribution::where('user_id', $userid)
-            ->where('approval', 1)
-            ->whereDate('startdate', '>=', $minSemDate)
-            ->whereDate('enddate', '<=', $maxSemDate)
-            ->get();
-
-        $activitiesid = $activitycontributions->pluck('activity_id')->toArray();
-
-        $allactivities = array_merge($otheractivities, $activitiesid);
-
-        $allactivities = Activity::whereIn('id', $allactivities)
-            ->get();
-
         return view('records.index', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
             'aysecondsem' => $aysecondsem,
             'allAY' => $allAY,
+            'inCurrentYear' => $inCurrentYear,
+            'latestAy' => $latestAy,
         ]);
     }
 }

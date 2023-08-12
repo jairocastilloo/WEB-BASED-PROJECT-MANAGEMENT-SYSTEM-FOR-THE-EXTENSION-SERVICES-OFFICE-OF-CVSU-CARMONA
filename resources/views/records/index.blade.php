@@ -9,13 +9,13 @@
             <div class="border-bottom ps-3 pt-2 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Browse My Records</h6>
             </div>
-
+            @if (!$inCurrentYear)
+            <span class="small ms-2"><em>
+                    Note: Not the current Semester and AY.
+                </em></span>
+            @endif
             <div class="form-floating m-3 mb-2 mt-2">
-                @if (!$inCurrentYear)
-                <span class="small ms-2"><em>
-                        Note: Not the current Semester and AY.
-                    </em></span>
-                @endif
+
                 <select id="ay-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an acadamic year">
                     @if ($ayfirstsem)
                     @foreach ($allAY as $ay)
@@ -32,6 +32,15 @@
                         {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     <option value="{{ $ay['id'] }}" {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
+                        {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    @endforeach
+                    @elseif ($latestAy)
+                    @foreach ($allAY as $ay)
+                    <option value="{{ $ay['id'] }}" {{ $ay->id == $latestAy->id ? 'selected' : '' }}>
+                        {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    <option value="{{ $ay['id'] }}">
                         {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     @endforeach
