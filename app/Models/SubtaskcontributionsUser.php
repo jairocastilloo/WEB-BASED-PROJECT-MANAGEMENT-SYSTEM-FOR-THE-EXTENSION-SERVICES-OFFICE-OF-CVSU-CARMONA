@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubtaskcontributionsUser extends Model
 {
     use HasFactory;
-    protected $table = 'subtaskcontributions_user';
+    protected $table = 'subtaskcontributions_users';
 
     protected $fillable = [
         'contribution_id',

@@ -49,6 +49,11 @@
                         <p class="lh-1"> Date: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $unapprovedhours->startdate)->format('F d') . ' to ' 
                             . \Carbon\Carbon::createFromFormat('Y-m-d', $unapprovedhours->enddate)->format('F d') 
                             . ', ' . \Carbon\Carbon::createFromFormat('Y-m-d', $unapprovedhours->enddate)->format('Y')}}</p>
+                        <p class="lh-1">Participants:
+                            @foreach($contributors as $contributor)
+                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
+                            @endforeach
+                        </p>
 
                     </div>
                     <div class="btn-group ms-3 mb-3 mt-2 shadow">
@@ -59,6 +64,30 @@
                                 <b class="small">Accept</b>
                             </button>
                         </form>
+
+                    </div>
+                    @elseif($approvedhours)
+                    <div class="border-bottom ps-3 pt-2 pe-2" style="background-color:lightgray;">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Approved Hours</h6>
+                    </div>
+                    <div class="p-2 ps-4" style="background-color:lightgray;">
+
+                        <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
+                        <p class="lh-1"> Date: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $approvedhours->startdate)->format('F d') . ' to ' 
+                            . \Carbon\Carbon::createFromFormat('Y-m-d', $approvedhours->enddate)->format('F d') 
+                            . ', ' . \Carbon\Carbon::createFromFormat('Y-m-d', $approvedhours->enddate)->format('Y')}}</p>
+                        <p class="lh-1">Participants:
+                            @foreach($contributors as $contributor)
+                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
+                            @endforeach
+                        </p>
+                    </div>
+                    @elseif($approvedhours == null && $unapprovedhours == null)
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submitted Hours</h6>
+                    </div>
+                    <div class="p-2 ps-4 pb-0 border-bottom">
+                        <h5><em>No Submitted Hours Yet.</em></h5>
 
                     </div>
                     @endif

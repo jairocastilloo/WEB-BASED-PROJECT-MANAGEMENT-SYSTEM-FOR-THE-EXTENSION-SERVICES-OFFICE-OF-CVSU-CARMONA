@@ -41,55 +41,55 @@
 
                 </div>
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours Rendered</h6>
+                    @if($unapprovedhours)
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours</h6>
                     </div>
+                    <div class="p-2 ps-4 pb-0 border-bottom">
 
-                    <ul class="list-unstyled small">
-
-                        @foreach ($unapprovedsubtaskdata as $unapprovedsub)
-                        @php
-                        $hasSameDate = false;
-                        @endphp
-
-                        <li class="ps-4">
-                            @foreach ($usersWithSameCreatedAt as $samedateusers)
-                            @if($unapprovedsub['created_at'] == $samedateusers->created_at)
-                            @php
-                            $userIds = explode(',', $samedateusers->user_ids);
-                            @endphp
-
-
-                            <b>Hours rendered:</b> {{ $unapprovedsub['hours_rendered'] }} <br>
-                            <b>Date Submitted:</b> {{ \Carbon\Carbon::parse($unapprovedsub['created_at'])->format('F d, Y') }} <br>
-                            <b>Contributor:</b>
-                            @foreach ($userIds as $userId)
-                            @php
-                            $user = \App\Models\User::find($userId);
-                            @endphp
-                            @if ($user)
-                            {{ $user->name . ' ' . $user->last_name}}
-                            @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
-                            {{ ' | ' }}
-                            @endif
-                            @endif
-
+                        <p class="lh-1"> Hours Rendered: {{ $unapprovedhours->hours_rendered }}</p>
+                        <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($unapprovedhours->date)->format('F d, Y') }}</p>
+                        <p class="lh-1">Participants:
+                            @foreach($contributors as $contributor)
+                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
                             @endforeach
-                            <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
-                                @csrf
-                                <input type="text" class="d-none" value="{{ $samedateusers->created_at }}" name="acceptids" id="acceptids">
-                                <button type="button" class="btn btn-sm btn-outline-success accepthours-btn">Accept</button>
-                            </form>
-                            <hr>
-                            @break
-                            @endif
+                        </p>
 
+                    </div>
+                    <div class="btn-group ms-3 mb-3 mt-2 shadow">
+                        <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
+                            @csrf
+                            <input type="text" class="d-none" value="{{ $unapprovedhours->id }}" name="acceptids" id="acceptids">
+                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow acceptacthours-btn">
+                                <b class="small">Accept</b>
+                            </button>
+                        </form>
+
+                    </div>
+                    @elseif($approvedhours)
+                    <div class="border-bottom ps-3 pt-2 pe-2" style="background-color:lightgray;">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Approved Hours</h6>
+                    </div>
+                    <div class="p-2 ps-4" style="background-color:lightgray;">
+
+                        <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
+                        <p class="lh-1"> {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
+                        <p class="lh-1">Participants:
+                            @foreach($contributors as $contributor)
+                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
                             @endforeach
+                        </p>
+                    </div>
+                    @elseif($approvedhours == null && $unapprovedhours == null)
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submitted Hours</h6>
+                    </div>
+                    <div class="p-2 ps-4 pb-0 border-bottom">
+                        <h5><em>No Submitted Hours Yet.</em></h5>
 
-                        </li>
-                        @endforeach
-                    </ul>
-                    <hr>
+                    </div>
+                    @endif
+
 
                 </div>
             </div>

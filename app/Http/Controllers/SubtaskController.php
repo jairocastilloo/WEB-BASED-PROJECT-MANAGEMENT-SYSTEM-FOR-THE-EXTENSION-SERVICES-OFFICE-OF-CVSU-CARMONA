@@ -11,7 +11,10 @@ use Illuminate\Http\Request;
 use App\Models\SubtaskUser;
 use App\Models\SubtaskContributor;
 use App\Models\ActivityUser;
+use App\Models\Contribution;
+use App\Models\SubtaskcontributionsUser;
 use Illuminate\Support\Carbon;
+use App\Models\User;
 
 class SubtaskController extends Controller
 {
@@ -119,16 +122,22 @@ class SubtaskController extends Controller
             'subtask-contributor.*' => 'required|integer',
             'contributornumber' => 'required|integer',
             'hours-rendered' => 'required|integer',
+            'subtask-date' => 'required|date',
         ]);
 
+        $subtaskcontributor = new Contribution();
+        $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
+        $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+        $subtaskcontributor->date = $validatedData['subtask-date'];
+        $subtaskcontributor->save();
+        $newsubtaskcontributor = $subtaskcontributor->id;
 
         for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
 
 
-            $subtaskcontributor = new SubtaskContributor();
+            $subtaskcontributor = new SubtaskcontributionsUser();
             $subtaskcontributor->user_id = $validatedData['subtask-contributor'][$i];
-            $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
-            $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+            $subtaskcontributor->contribution_id = $newsubtaskcontributor;
             $subtaskcontributor->save();
         }
 
@@ -177,20 +186,31 @@ class SubtaskController extends Controller
             return $item->user;
         });
 
-        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-            ->where('approval', 0)
-            ->where('subtask_id', $subtaskid)
-            ->groupBy('created_at')
-            ->get();
-        $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
-            ->where('approval', 0)
-            ->where('subtask_id', $subtaskid)
-            ->groupByRaw('created_at')
-            ->pluck('id');
 
 
-        $unapprovedsubtaskdata = SubtaskContributor::whereIn('id', $unapprovedsubtask)
-            ->get();
+        $unapprovedhours = Contribution::where('subtask_id', $subtaskid)
+            ->where('approval', 0)
+            ->first();
+        $hoursContributors = [];
+        $contributors = [];
+        if ($unapprovedhours) {
+            $unapprovedhoursid = $unapprovedhours->id;
+            $hoursContributors = SubtaskcontributionsUser::where('contribution_id', $unapprovedhoursid)
+                ->pluck('user_id');
+            $contributors = User::whereIn('id', $hoursContributors)
+                ->get();
+        }
+
+        $approvedhours = Contribution::where('subtask_id', $subtaskid)
+            ->where('approval', 1)
+            ->first();
+        if ($approvedhours) {
+            $approvedhoursid = $approvedhours->id;
+            $hoursContributors = SubtaskcontributionsUser::where('contribution_id', $approvedhoursid)
+                ->pluck('user_id');
+            $contributors = User::whereIn('id', $hoursContributors)
+                ->get();
+        }
 
 
         return view('activity.subtask', [
@@ -201,8 +221,10 @@ class SubtaskController extends Controller
             'projectId' => $projectId,
             'assignees' => $assignees,
             'currentassignees' => $currentassignees,
-            'unapprovedsubtaskdata' => $unapprovedsubtaskdata,
-            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
+            'unapprovedhours' => $unapprovedhours,
+            'approvedhours' => $approvedhours,
+            'contributors' => $contributors,
+            'hoursContributors' => $hoursContributors,
         ]);
     }
 
@@ -212,14 +234,11 @@ class SubtaskController extends Controller
         $acceptIds = $request->input('acceptids');
 
         // Update the 'approval' field in SubtaskContributor table
-        SubtaskContributor::where('created_at', $acceptIds)->update(['approval' => 1]);
+        $contribution = Contribution::findorFail($acceptIds);
+        $contribution->update(['approval' => 1]);
 
-        // Get the subtask_id and hours_rendered for the first record with the specified created_at value
-        $subtaskContributor = SubtaskContributor::where('created_at', $acceptIds)->first();
-        $subtaskid = $subtaskContributor->subtask_id;
-        $hoursrendered = $subtaskContributor->hours_rendered;
-
-        // Update the 'hours_rendered' field in the Subtask table
+        $subtaskid = $contribution->subtask_id;
+        $hoursrendered = $contribution->hours_rendered;
         Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
 
         return 'File uploaded successfully.';

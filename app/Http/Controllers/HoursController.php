@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\Activity;
 use App\Models\activityContribution;
 use App\Models\ActivitycontributionsUser;
+use App\Models\User;
 
 class HoursController extends Controller
 {
@@ -24,16 +25,26 @@ class HoursController extends Controller
         $unapprovedhours = activityContribution::where('activity_id', $activityid)
             ->where('approval', 0)
             ->first();
-        $unapprovedhoursContributors = [];
+        $hoursContributors = [];
+        $contributors = [];
         if ($unapprovedhours) {
             $unapprovedhoursid = $unapprovedhours->id;
-            $unapprovedhoursContributors = ActivityContributionsUser::where('activitycontribution_id', $unapprovedhoursid)
+            $hoursContributors = ActivityContributionsUser::where('activitycontribution_id', $unapprovedhoursid)
                 ->pluck('user_id');
+            $contributors = User::whereIn('id', $hoursContributors)
+                ->get();
         }
 
         $approvedhours = activityContribution::where('activity_id', $activityid)
             ->where('approval', 1)
             ->first();
+        if ($approvedhours) {
+            $approvedhoursid = $approvedhours->id;
+            $hoursContributors = ActivityContributionsUser::where('activitycontribution_id', $approvedhoursid)
+                ->pluck('user_id');
+            $contributors = User::whereIn('id', $hoursContributors)
+                ->get();
+        }
 
         return view('activity.hours', [
             'activity' => $activity,
@@ -41,7 +52,8 @@ class HoursController extends Controller
             'projectName' => $projectName,
             'unapprovedhours' => $unapprovedhours,
             'approvedhours' => $approvedhours,
-            'unapprovedhoursContributors' => $unapprovedhoursContributors
+            'contributors' => $contributors,
+            'hoursContributors' => $hoursContributors,
         ]);
     }
 

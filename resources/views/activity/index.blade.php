@@ -148,7 +148,8 @@
                         @foreach ($subtasks as $subtask)
 
                         <div class="divhover p-3 pe-2 ps-4 subtaskdiv border-bottom" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
-                            {{ $subtask->subtask_name }}
+                            <p class="lh-1">Name: {{ $subtask->subtask_name }}</p>
+                            <p class="lh-1">Due Date: {{ $subtask->subduedate }}</p>
                         </div>
 
                         @endforeach
