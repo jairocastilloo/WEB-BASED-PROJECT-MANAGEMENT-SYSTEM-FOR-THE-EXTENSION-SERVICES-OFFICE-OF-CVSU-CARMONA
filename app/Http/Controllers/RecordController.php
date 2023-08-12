@@ -10,6 +10,8 @@ use App\Models\Subtask;
 use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\AcademicYear;
+use App\Models\activityContribution;
+use App\Models\Contribution;
 
 class RecordController extends Controller
 {
@@ -21,74 +23,67 @@ class RecordController extends Controller
         $userid = $user->id;
 
         $currentDate = Carbon::now();
-        $ay = AcademicYear::where('acadstartdate', '<=', $currentDate)
-            ->where('acadenddate', '>=', $currentDate)
+
+        $ayfirstsem = AcademicYear::where('firstsem_startdate', '<=', $currentDate)
+            ->where('firstsem_enddate', '>=', $currentDate)
             ->get();
 
+        $aysecondsem = AcademicYear::where('secondsem_startdate', '<=', $currentDate)
+            ->where('secondsem_enddate', '>=', $currentDate)
+            ->get();
 
+        $allAY = AcademicYear::all(['id', 'firstsem_startdate', 'firstsem_enddate', 'secondsem_startdate', 'secondsem_enddate']);
+
+        $latestAy = AcademicYear::latest()->get();
+        $inCurrentYear = false;
         $minSemDate = null;
         $maxSemDate = null;
-        if ($ay) {
+        if ($ayfirstsem) {
+            $inCurrentYear = true;
+            $minSemDate = $ayfirstsem->firstsem_startdate;
+            $maxSemDate = $ayfirstsem->firstsem_enddate;
+        } elseif ($aysecondsem) {
+            $inCurrentYear = true;
+            $minSemDate = $aysecondsem->secondsem_startdate;
+            $maxSemDate = $aysecondsem->secondsem_enddate;
+        } elseif ($latestAy) {
 
-
-            if ($currentDate >= $ay->firstsem_startdate && $currentDate <= $ay->firstsem_enddate) {
-
-                $minSemDate = $ay->firstsem_startdate;
-                $maxSemDate = $ay->firstsem_enddate;
-            } elseif ($currentDate >= $ay->secondsem_startdate && $currentDate <= $ay->secondsem_enddate) {
-
-                $minSemDate = $ay->secondsem_startdate;
-                $maxSemDate = $ay->secondsem_enddate;
-            }
-        } elseif (!$ay) {
-
-            $latestAy = AcademicYear::latest()->get();
-
-            if ($currentDate >= $latestAy->firstsem_startdate && $currentDate <= $latestAy->firstsem_enddate) {
-
-                $minSemDate = $latestAy->firstsem_startdate;
-                $maxSemDate = $latestAy->firstsem_enddate;
-            } elseif ($currentDate >= $latestAy->secondsem_startdate && $currentDate <= $latestAy->secondsem_enddate) {
-
-                $minSemDate = $latestAy->secondsem_startdate;
-                $maxSemDate = $latestAy->secondsem_enddate;
-            }
+            $minSemDate = $latestAy->firstsem_startdate;
+            $maxSemDate = $latestAy->firstsem_enddate;
         }
 
 
-        $subtasksid = SubtaskContributor::where('user_id', $userid)
-            ->where('activity_id', null)
+        $subtaskcontributions = Contribution::where('user_id', $userid)
             ->where('approval', 1)
-            ->whereDate('created_at', '>=', $minSemDate)
-            ->whereDate('created_at', '<=', $maxSemDate)
-            ->pluck('subtask_id')
-            ->unique();
+            ->whereDate('date', '>=', $minSemDate)
+            ->whereDate('date', '<=', $maxSemDate)
+            ->get();
+        if ($subtaskcontributions) {
+            $subtasksid = $subtaskcontributions->pluck('subtask_id')->toArray();
 
+            $allsubtasks = Subtask::whereIn('id', $subtasksid)
+                ->get();
 
-        $allsubtasks = Subtask::whereIn('id', $subtasksid)
+            $otheractivities = $allsubtasks->pluck('activity_id')->toArray();
+        }
+        $activitycontributions = activityContribution::where('user_id', $userid)
+            ->where('approval', 1)
+            ->whereDate('startdate', '>=', $minSemDate)
+            ->whereDate('enddate', '<=', $maxSemDate)
             ->get();
 
-        $allonlyactivities = SubtaskContributor::where('user_id', $userid)
-            ->where('subtask_id', null)
-            ->where('approval', 1)
-            ->whereDate('created_at', '')
-            ->pluck('activity_id')
-            ->unique();
+        $activitiesid = $activitycontributions->pluck('activity_id')->toArray();
 
-        $onlyactivitiesid = Activity::whereIn('id', $allonlyactivities)
-            ->where('actstartdate', '>=', $minSemDate)
-            ->where('actenddate', '<=', $maxSemDate)
-            ->pluck('id')
-            ->unique()
-            ->toArray();
+        $allactivities = array_merge($otheractivities, $activitiesid);
 
+        $allactivities = Activity::whereIn('id', $allactivities)
+            ->get();
 
-        $activitiesid = $allsubtasks->pluck('activity_id')->merge($allonlyactivities->pluck('activity_id'))->unique();
-        $allactivities = Activity::whereIn('id', $activitiesid)->get(['id', 'actname', 'project_id', 'actstartdate', 'actenddate']);
         return view('records.index', [
-            'allactivities' => $allactivities,
-            'allsubtasks' => $allsubtasks,
-            'onlyactivitiesid' => $onlyactivitiesid,
+            'user' => $user,
+            'ayfirstsem' => $ayfirstsem,
+            'aysecondsem' => $aysecondsem,
+            'allAY' => $allAY,
         ]);
     }
 }

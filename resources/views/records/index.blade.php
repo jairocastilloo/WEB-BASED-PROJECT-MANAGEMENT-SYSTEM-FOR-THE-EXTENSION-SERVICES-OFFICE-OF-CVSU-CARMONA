@@ -4,6 +4,45 @@
 <div class="maincontainer">
     &nbsp;
     <div class="container">
+
+        <div class="basiccont mt-2 m-4 me-0 rounded shadow">
+            <div class="border-bottom ps-3 pt-2 bggreen">
+                <h6 class="fw-bold small" style="color:darkgreen;">Browse My Records</h6>
+            </div>
+
+            <div class="form-floating m-3 mb-2 mt-2">
+                @if (!$inCurrentYear)
+                <span class="small ms-2"><em>
+                        Note: Not the current Semester and AY.
+                    </em></span>
+                @endif
+                <select id="ay-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an acadamic year">
+                    @if ($ayfirstsem)
+                    @foreach ($allAY as $ay)
+                    <option value="{{ $ay['id'] }}" {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
+                        {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    <option value="{{ $ay['id'] }}">
+                        {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    @endforeach
+                    @elseif ($aysecondsem)
+                    @foreach ($allAY as $ay)
+                    <option value="{{ $ay['id'] }}">
+                        {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    <option value="{{ $ay['id'] }}" {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
+                        {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    @endforeach
+                    @endif
+                </select>
+                <label for="ay-select" style="color:darkgreen;">
+                    <h5><strong>SEMESTER and AY:</strong></h5>
+                </label>
+            </div>
+
+        </div>
         <div class="basiccont shadow">
             <div class="text-center shadow bg-success text-white p-2 pt-3">
                 <h5 class="fw-bold">
@@ -18,8 +57,6 @@
                         <div class="row g-0">
                             <div class="col-md-4">
                                 <img src="image.jpg" alt="Image" class="img-fluid">
-
-
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -113,41 +150,25 @@
                             </tr>
 
                         </thead>
-                        @php
-                        use App\Models\Project;
-                        use App\Models\SubtaskContributor;
-                        @endphp
+
                         <tbody>
-                            @foreach ($allactivities as $allactivity)
-                            @if (in_array($allactivity->id, $onlyactivitiesid))
+
                             <tr>
                                 <td class="majority p-1">
-                                    @php
-                                    $projectname = Project::where('id', $allactivity['project_id'])->first(['projecttitle']);
-                                    $projectdept = Project::where('id', $allactivity['project_id'])->first(['department']);
-                                    @endphp
-                                    {{ $projectname->projecttitle }}
+
                                 </td>
                                 <td class="extension p-1">
-                                    {{ $allactivity->actname }}
+
                                 </td>
                                 <td class="num p-1">
-                                    {{ \Carbon\Carbon::parse($allactivity->actstartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allactivity->actenddate)->format('M d,Y') }}
+
 
                                 </td>
                                 <td class="majority p-1">
                                     N/A
                                 </td>
                                 <td class="num p-1">
-                                    @php
-                                    $hoursrendered = SubtaskContributor::where('activity_id', $allactivity['id'])
-                                    ->where('approval', 1)
-                                    ->where('subtask_id', null)
-                                    ->where('user_id', Auth::user()->id)
-                                    ->pluck('hours_rendered');
-                                    $totalhours = $hoursrendered->sum();
-                                    @endphp
-                                    {{ $totalhours }}
+
                                 </td>
                                 <td class="majority p-1">
                                     -
@@ -156,23 +177,19 @@
                                     -
                                 </td>
                                 <td class="majority p-1">
-                                    {{ $projectdept->department }}
+
                                 </td>
                             </tr>
-                            @else
+
                             <tr>
                                 <td class="majority p-1">
-                                    @php
-                                    $projectname = Project::where('id', $allactivity['project_id'])->first(['projecttitle']);
-                                    $projectdept = Project::where('id', $allactivity['project_id'])->first(['department']);
-                                    @endphp
-                                    {{ $projectname->projecttitle }}
+
                                 </td>
                                 <td class="extension p-1">
-                                    {{ $allactivity->actname }}
+
                                 </td>
                                 <td class="num p-1">
-                                    {{ \Carbon\Carbon::parse($allactivity->actstartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allactivity->actenddate)->format('M d,Y') }}
+
                                 </td>
                                 <td class="majority p-1">
                                     N/A
@@ -187,40 +204,25 @@
                                     -
                                 </td>
                                 <td class="majority p-1">
-                                    {{ $projectdept->department }}
+
                                 </td>
                             </tr>
-                            @foreach ($allsubtasks as $allsubtask)
-                            @php
-                            $inActivity = false;
-                            if ($allsubtask->activity_id == $allactivity->id) {
-                            $inActivity = true;
-                            }
-                            @endphp
-                            @if ($inActivity)
+
                             <tr>
                                 <td class="majority p-1">
                                     &nbsp;
                                 </td>
                                 <td class="extension p-1">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;{{ $allsubtask->subtask_name }}
+
                                 </td>
                                 <td class="num p-1">
-                                    {{ \Carbon\Carbon::parse($allsubtask->substartdate)->format('M d,Y') . ' - ' . \Carbon\Carbon::parse($allsubtask->subenddate)->format('M d,Y') }}
+
                                 </td>
                                 <td class="majority p-1">
                                     N/A
                                 </td>
                                 <td class="num p-1">
-                                    @php
-                                    $hoursrendered = SubtaskContributor::where('subtask_id', $allsubtask['id'])
-                                    ->where('approval', 1)
-                                    ->where('activity_id', null)
-                                    ->where('user_id', Auth::user()->id)
-                                    ->pluck('hours_rendered');
-                                    $totalhours = $hoursrendered->sum();
-                                    @endphp
-                                    {{ $totalhours }}
+
                                 </td>
                                 <td class="majority p-1">
                                     -
@@ -229,13 +231,10 @@
                                     -
                                 </td>
                                 <td class="majority p-1">
-                                    {{ $projectdept->department }}
+
                                 </td>
                             </tr>
-                            @endif
-                            @endforeach
-                            @endif
-                            @endforeach
+
 
                         </tbody>
 
