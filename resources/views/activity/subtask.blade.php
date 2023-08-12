@@ -60,7 +60,7 @@
                         <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
                             @csrf
                             <input type="text" class="d-none" value="{{ $unapprovedhours->id }}" name="acceptids" id="acceptids">
-                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow acceptacthours-btn">
+                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow accepthours-btn">
                                 <b class="small">Accept</b>
                             </button>
                         </form>
@@ -220,7 +220,8 @@
             window.location.href = url;
         });
 
-        $(document).on('click', '.accepthours-btn', function() {
+        $('.accepthours-btn').click(function(event) {
+            event.preventDefault();
             var acceptIdsValue = $(this).prev().val();
             var dataurl = $(this).parent().attr('data-url');
             // Create a data object with the value you want to send
