@@ -5,7 +5,7 @@
     &nbsp;
     <div class="container">
 
-        <div class="basiccont mt-2 m-4 me-0 rounded shadow">
+        <div class="basiccont mt-2 m-4 pb-3 rounded shadow">
             <div class="border-bottom ps-3 pt-2 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Browse My Records</h6>
             </div>
@@ -16,7 +16,7 @@
             @endif
             <div class="form-floating m-3 mb-2 mt-2">
 
-                <select id="ay-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an acadamic year">
+                <select id="ay-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;" aria-label="Select an acadamic year">
                     @if ($ayfirstsem)
                     @foreach ($allAY as $ay)
                     <option value="{{ $ay['id'] }}" {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
@@ -47,7 +47,7 @@
                     @endif
                 </select>
                 <label for="ay-select" style="color:darkgreen;">
-                    <h5><strong>SEMESTER and AY:</strong></h5>
+                    <h6><strong>SEMESTER and AY:</strong></h6>
                 </label>
             </div>
 
@@ -190,59 +190,6 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td class="majority p-1">
-
-                                </td>
-                                <td class="extension p-1">
-
-                                </td>
-                                <td class="num p-1">
-
-                                </td>
-                                <td class="majority p-1">
-                                    N/A
-                                </td>
-                                <td class="num p-1">
-                                    -
-                                </td>
-                                <td class="majority p-1">
-                                    -
-                                </td>
-                                <td class="majority p-1">
-                                    -
-                                </td>
-                                <td class="majority p-1">
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td class="majority p-1">
-                                    &nbsp;
-                                </td>
-                                <td class="extension p-1">
-
-                                </td>
-                                <td class="num p-1">
-
-                                </td>
-                                <td class="majority p-1">
-                                    N/A
-                                </td>
-                                <td class="num p-1">
-
-                                </td>
-                                <td class="majority p-1">
-                                    -
-                                </td>
-                                <td class="majority p-1">
-                                    -
-                                </td>
-                                <td class="majority p-1">
-
-                                </td>
-                            </tr>
 
 
                         </tbody>

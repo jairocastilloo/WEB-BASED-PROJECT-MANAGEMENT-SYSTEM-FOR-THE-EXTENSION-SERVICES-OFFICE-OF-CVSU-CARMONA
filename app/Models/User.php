@@ -63,4 +63,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Subtask::class, 'subtask_user');
     }
+    public function contributions()
+    {
+        return $this->belongsToMany(Contribution::class, 'subtaskcontributions_users');
+    }
 }

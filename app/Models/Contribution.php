@@ -17,4 +17,9 @@ class Contribution extends Model
         'hours_rendered',
         'approval',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

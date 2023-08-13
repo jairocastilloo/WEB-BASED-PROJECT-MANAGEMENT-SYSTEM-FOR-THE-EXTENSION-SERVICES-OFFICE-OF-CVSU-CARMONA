@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\SubtaskcontributionsUser;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SubtaskContributor;
@@ -11,6 +12,7 @@ use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\AcademicYear;
 use App\Models\activityContribution;
+use App\Models\ActivitycontributionsUser;
 use App\Models\Contribution;
 
 class RecordController extends Controller
@@ -52,6 +54,56 @@ class RecordController extends Controller
             $maxSemDate = $latestAy->firstsem_enddate;
         }
 
+        $subtaskContributionsIDs = SubtaskContributionsUser::where('user_id', $userid)
+            ->pluck('contribution_id')
+            ->toArray();
+
+        $subtaskcontributions = [];
+        if ($subtaskContributionsIDs) {
+            $subtaskcontributions = Contribution::whereIn('id', $subtaskContributionsIDs)
+                ->where('approval', 1)
+                ->whereDate('date', '>=', $minSemDate)
+                ->whereDate('date', '<=', $maxSemDate)
+                ->get();
+        }
+
+        $allsubtasks = [];
+        $otheractivities = [];
+        $subtasksid = [];
+
+        if ($subtaskcontributions) {
+            $subtasksid = $subtaskcontributions->pluck('subtask_id')->toArray();
+
+            $allsubtasks = Subtask::whereIn('id', $subtasksid)
+                ->get();
+
+            $otheractivities = $allsubtasks->pluck('activity_id')->toArray();
+        }
+
+        $activitiesid = [];
+
+        $activityContributionsIDs = ActivitycontributionsUser::where('user_id', $userid)
+            ->pluck('activitycontribution_id')
+            ->toArray();
+
+        $activitycontributions = [];
+
+        if ($activityContributionsIDs) {
+            $activitycontributions = activityContribution::where('approval', 1)
+                ->whereDate('startdate', '>=', $minSemDate)
+                ->whereDate('enddate', '<=', $maxSemDate)
+                ->get();
+        }
+
+        if ($activitycontributions) {
+            $activitiesid = $activitycontributions->pluck('activity_id')->toArray();
+        }
+        $allactivitiesid = array_unique(array_merge($otheractivities, $activitiesid));
+
+        if ($allactivitiesid) {
+            $allactivities = Activity::whereIn('id', $allactivitiesid)
+                ->get();
+        }
 
         return view('records.index', [
             'user' => $user,

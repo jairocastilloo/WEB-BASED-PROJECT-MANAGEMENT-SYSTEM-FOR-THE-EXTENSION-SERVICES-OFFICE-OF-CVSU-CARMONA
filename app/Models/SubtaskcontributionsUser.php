@@ -15,12 +15,12 @@ class SubtaskcontributionsUser extends Model
         'user_id',
     ];
 
-    public function subtaskcontribution()
+    public function subtaskcontributions()
     {
         return $this->belongsTo(Contribution::class);
     }
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class);
     }
