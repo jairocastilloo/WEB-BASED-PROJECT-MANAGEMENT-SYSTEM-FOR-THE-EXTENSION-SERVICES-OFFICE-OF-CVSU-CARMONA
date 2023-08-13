@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Contribution::class, 'subtaskcontributions_users');
     }
+
+    public function activitycontributions()
+    {
+        return $this->belongsToMany(activityContribution::class, 'activitycontributions_users', 'user_id', 'activitycontribution_id');
+    }
 }

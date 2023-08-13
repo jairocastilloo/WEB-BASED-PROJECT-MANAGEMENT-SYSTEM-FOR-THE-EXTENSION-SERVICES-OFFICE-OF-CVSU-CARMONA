@@ -54,50 +54,35 @@ class RecordController extends Controller
             $maxSemDate = $latestAy->firstsem_enddate;
         }
 
-        $subtaskContributionsIDs = SubtaskContributionsUser::where('user_id', $userid)
-            ->pluck('contribution_id')
-            ->toArray();
+        $subtaskcontributions = $user->contributions()
+            ->where('approval', 1)
+            ->whereDate('date', '>=', $minSemDate)
+            ->whereDate('date', '<=', $maxSemDate)
+            ->select('contributions.id', 'contributions.subtask_id')
+            ->get();
 
-        $subtaskcontributions = [];
-        if ($subtaskContributionsIDs) {
-            $subtaskcontributions = Contribution::whereIn('id', $subtaskContributionsIDs)
-                ->where('approval', 1)
-                ->whereDate('date', '>=', $minSemDate)
-                ->whereDate('date', '<=', $maxSemDate)
-                ->get();
-        }
-
-        $allsubtasks = [];
+        $subtasks = [];
         $otheractivities = [];
-        $subtasksid = [];
-
-        if ($subtaskcontributions) {
-            $subtasksid = $subtaskcontributions->pluck('subtask_id')->toArray();
-
-            $allsubtasks = Subtask::whereIn('id', $subtasksid)
-                ->get();
-
-            $otheractivities = $allsubtasks->pluck('activity_id')->toArray();
-        }
-
         $activitiesid = [];
+        $allactivities = [];
 
-        $activityContributionsIDs = ActivitycontributionsUser::where('user_id', $userid)
-            ->pluck('activitycontribution_id')
-            ->toArray();
-
-        $activitycontributions = [];
-
-        if ($activityContributionsIDs) {
-            $activitycontributions = activityContribution::where('approval', 1)
-                ->whereDate('startdate', '>=', $minSemDate)
-                ->whereDate('enddate', '<=', $maxSemDate)
-                ->get();
+        if (!$subtaskcontributions->isEmpty()) {
+            $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->toArray();
+            $subtasks = Subtask::whereIn('id', $subtaskcontributionsIds)->get();
+            $otheractivities = $subtasks->pluck('activity_id')->toArray();
         }
 
-        if ($activitycontributions) {
-            $activitiesid = $activitycontributions->pluck('activity_id')->toArray();
+        $activityContributions = $user->activitycontributions()
+            ->where('approval', 1)
+            ->whereDate('startdate', '>=', $minSemDate)
+            ->whereDate('enddate', '<=', $maxSemDate)
+            ->select('activity_contributions.id', 'activity_contributions.activity_id')
+            ->get();
+
+        if (!$activityContributions->isEmpty()) {
+            $activitiesid = $activityContributions->pluck('activity_id')->toArray();
         }
+
         $allactivitiesid = array_unique(array_merge($otheractivities, $activitiesid));
 
         if ($allactivitiesid) {
@@ -112,6 +97,10 @@ class RecordController extends Controller
             'allAY' => $allAY,
             'inCurrentYear' => $inCurrentYear,
             'latestAy' => $latestAy,
+            'subtasks' => $subtasks,
+            'subtaskcontributions' => $subtaskcontributions,
+            'activityContributions' => $activityContributions,
+            'allactivities' => $allactivities,
         ]);
     }
 }

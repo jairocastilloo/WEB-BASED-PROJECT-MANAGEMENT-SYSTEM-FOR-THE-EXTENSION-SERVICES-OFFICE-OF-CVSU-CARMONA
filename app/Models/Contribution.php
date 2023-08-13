@@ -20,6 +20,11 @@ class Contribution extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'subtaskcontributions_users');
+    }
+
+    public function subtask()
+    {
+        return $this->belongsTo(Subtask::class, 'subtasks');
     }
 }

@@ -18,4 +18,9 @@ class activityContribution extends Model
         'hours_rendered',
         'approval',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'activitycontributions_users', 'user_id', 'activitycontribution_id');
+    }
 }
