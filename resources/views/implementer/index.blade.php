@@ -337,13 +337,13 @@
     $(document).ready(function() {
         $('#year-select').change(function() {
             var selectedOption = $(this).find(':selected');
-            var acadyearid = selectedOption.val();
+            var currentYear = selectedOption.val();
 
             var username = $('#username').val();
 
-            var baseUrl = "{{ route('acadtasks.show', ['username' => ':username', 'acadyear_id' => ':acadyear_id']) }}";
+            var baseUrl = "{{ route('acadtasks.show', ['username' => ':username', 'currentYear' => ':currentYear']) }}";
             var url = baseUrl.replace(':username', username)
-                .replace(':acadyear_id', acadyearid);
+                .replace(':currentYear', currentYear);
 
             window.location.href = url;
         });

@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HoursController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 
@@ -33,6 +34,7 @@ use App\Models\Activity;
 
 Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('homepage');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 //Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
@@ -63,7 +65,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
-    Route::get('/duties/{acadyear_id}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
+    Route::get('/duties/{currentYear}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
@@ -84,19 +86,30 @@ Route::prefix('/activities')->group(function () {
     Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
     Route::get('/{activityid}/{department}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
     Route::post('/addtoactivity', [ActivityController::class, 'addtoactivity'])->name('addto.activity');
-    Route::post('/acceptacthours', [ActivityController::class, 'acceptacthours'])->name('acthours.accept');
+});
+
+Route::prefix('/participationhours')->group(function () {
+
+    Route::get('/{activityid}/{activityname}', [HoursController::class, 'displayhours'])->name('hours.display');
+    Route::post('/acceptacthours', [HoursController::class, 'acceptacthours'])->name('acthours.accept');
 });
 
 Route::prefix('/projects')->group(function () {
-    Route::get('/{department}', [ProjectController::class, 'showproject'])->name('project.show');
-    Route::get('/{department}/{acadyear_id}', [ProjectController::class, 'showacadproject'])->name('acadproject.show');
-    Route::get('/{projectid}/{department}/{projectname}', [ProjectController::class, 'displayproject'])->name('projects.display');
-    Route::get('/{department}/newproject', [ProjectController::class, 'newproject'])->name('projects.new');
+    Route::prefix('/{department}')->group(function () {
+        Route::get('/allprojects', [ProjectController::class, 'showproject'])
+            ->name('project.show');
+
+        Route::get('/allprojects/{currentyear}', [ProjectController::class, 'showyearproject'])
+            ->name('yearproject.show');
+    });
+
+
+    Route::get('/newproject', [ProjectController::class, 'newproject'])
+        ->name('projects.new');
 });
-Route::prefix('/projectinsights')->group(function () {
-    Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
-    Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
-});
+Route::get('/display/{projectid}/{department}', [ProjectController::class, 'displayproject'])
+    ->name('projects.display');
+
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');

@@ -52,13 +52,10 @@
                     <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an calendar year">
 
                         @foreach ($calendaryears as $calendaryear)
-                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentYear ? 'selected' : '' }}>
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
                             &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
                         </option>
                         @endforeach
-
-
-
 
                     </select>
                     <label for="year-select" style="color:darkgreen;">
@@ -277,7 +274,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
-                            <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentYear }}">
+                            <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -402,13 +399,13 @@
 
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var acadyearid = selectedOption.val();
+            var currentyear = selectedOption.val();
 
             var department = $('#department').val();
 
-            var baseUrl = "{{ route('acadproject.show', ['department' => ':department', 'acadyear_id' => ':acadyear_id']) }}";
+            var baseUrl = "{{ route('yearproject.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
             var url = baseUrl.replace(':department', department)
-                .replace(':acadyear_id', acadyearid);
+                .replace(':currentyear', currentyear);
 
             window.location.href = url;
         });

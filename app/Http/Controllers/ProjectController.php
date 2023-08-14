@@ -33,10 +33,10 @@ class ProjectController extends Controller
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
         $currentDate = Carbon::now();
-        $currentYear = $currentDate->year;
+        $currentyear = $currentDate->year;
 
         $currentproject = Project::where('department', $department)
-            ->where('calendaryear', $currentYear)
+            ->where('calendaryear', $currentyear)
             ->get();
 
         $inCurrentYear = true;
@@ -49,48 +49,56 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'currentproject' => $currentproject,
             'inCurrentYear' => $inCurrentYear,
-            'currentYear' => $currentYear
+            'currentyear' => $currentyear
         ]);
     }
 
-    public function showacadproject($department, $acadyear_id)
+    public function showyearproject($department, $currentyear)
     {
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
         $currentDate = Carbon::now();
-        $selectedAcadYear = AcademicYear::findorFail($acadyear_id);
-        $currentproject = Project::where('department', $department)
-            ->where('academicyear_id', $acadyear_id)
-            ->get();
+        $otheryear = $currentDate->year;
 
-
-        if ($selectedAcadYear->acadstartdate <= $currentDate && $selectedAcadYear->acadenddate >= $currentDate) {
-
-            $latestacadyear_id = false;
+        if ($otheryear == $currentyear) {
+            $inCurrentYear = true;
         } else {
-
-            $latestacadyear_id = $acadyear_id;
-            $acadyear_id = false;
+            $inCurrentYear = false;
         }
 
-        $acadyears = AcademicYear::get(['id', 'acadstartdate', 'acadenddate']);
+        $currentproject = Project::where('department', $department)
+            ->where('calendaryear', $currentyear)
+            ->get();
 
-        return view('project.create', ['members' => $users, 'latestacadyear_id' => $latestacadyear_id, 'acadyear_id' => $acadyear_id, 'acadyears' => $acadyears, 'currentproject' => $currentproject]);
+        $calendaryears = CalendarYear::pluck('year');
+        return view('project.create', [
+            'members' => $users,
+            'calendaryears' => $calendaryears,
+            'currentproject' => $currentproject,
+            'inCurrentYear' => $inCurrentYear,
+            'currentyear' => $currentyear
+        ]);
     }
 
     public function displayproject($projectid, $department)
     {
 
         $indexproject = Project::findOrFail($projectid);
-        $currentYear = $indexproject->calendaryear;
-
+        $currentyear = $indexproject->calendaryear;
         $currentproject = Project::where('department', $department)
-            ->where('calendaryear', $currentYear)
             ->whereNotIn('id', [$projectid])
+            ->where('calendaryear', $currentyear)
             ->get();
-        $inCurrentYear = true;
+        $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
+
+        if ($otheryear == $currentyear) {
+            $inCurrentYear = true;
+        } else {
+            $inCurrentYear = false;
+        }
 
         $calendaryears = CalendarYear::pluck('year');
 
@@ -110,7 +118,7 @@ class ProjectController extends Controller
             'members' => $users, 'currentproject' => $currentproject, 'indexproject' => $indexproject,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
-            'currentYear' => $currentYear,
+            'currentyear' => $currentyear,
             'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities,
         ]);
     }

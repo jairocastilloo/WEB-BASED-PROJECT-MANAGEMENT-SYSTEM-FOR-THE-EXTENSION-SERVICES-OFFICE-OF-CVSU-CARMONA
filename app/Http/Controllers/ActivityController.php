@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ActivityUser;
 use App\Models\Output;
 use App\Models\Activity;
+use App\Models\activityContribution;
+use App\Models\ActivitycontributionsUser;
 use App\Models\Objective;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -331,21 +333,6 @@ class ActivityController extends Controller
             ->whereNotIn('id', [$activityid])
             ->get();
 
-        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-            ->where('approval', 0)
-            ->where('activity_id', $activityid)
-            ->groupBy('created_at')
-            ->get();
-        $unapprovedactivity = SubtaskContributor::selectRaw('MAX(id) as id')
-            ->where('approval', 0)
-            ->where('activity_id', $activityid)
-            ->groupByRaw('created_at')
-            ->pluck('id');
-
-
-        $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
-            ->get();
-
         return view('activity.index', [
             'activity' => $activity,
             'activities' => $activities,
@@ -357,8 +344,6 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
-            'unapprovedactivitydata' => $unapprovedactivitydata,
-            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
 
@@ -391,7 +376,7 @@ class ActivityController extends Controller
         $actid = $request->input('act-id');
 
         $activity = Activity::findOrFail($actid);
-        $activity->update(['totalhours_rendered' => 0]);
+        $activity->update(['subtask' => 0]);
 
 
         return response()->json(['success' => true, 'actid' => $actid]);
@@ -420,18 +405,26 @@ class ActivityController extends Controller
         $validatedData = $request->validate([
             'activity-id' => 'required|integer',
             'activity-contributor.*' => 'required|integer',
+            'start-date' => 'required|date',
+            'end-date' => 'required|date',
             'contributornumber' => 'required|integer',
             'hours-rendered' => 'required|integer',
         ]);
 
+        $activitycontributions = new activityContribution();
+        $activitycontributions->activity_id = $validatedData['activity-id'];
+        $activitycontributions->startdate = $validatedData['start-date'];
+        $activitycontributions->enddate = $validatedData['end-date'];
+        $activitycontributions->hours_rendered = $validatedData['hours-rendered'];
+        $activitycontributions->save();
+        $newActContri = $activitycontributions->id;
 
         for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
 
 
-            $subtaskcontributor = new SubtaskContributor();
+            $subtaskcontributor = new ActivitycontributionsUser();
             $subtaskcontributor->user_id = $validatedData['activity-contributor'][$i];
-            $subtaskcontributor->activity_id = $validatedData['activity-id'];
-            $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+            $subtaskcontributor->activitycontribution_id = $newActContri;
             $subtaskcontributor->save();
         }
 
@@ -449,25 +442,6 @@ class ActivityController extends Controller
         $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
-
-        return 'File uploaded successfully.';
-    }
-
-    public function acceptacthours(Request $request)
-    {
-
-        $acceptIds = $request->input('acceptids');
-
-        // Update the 'approval' field in SubtaskContributor table
-        SubtaskContributor::where('created_at', $acceptIds)->update(['approval' => 1]);
-
-        // Get the subtask_id and hours_rendered for the first record with the specified created_at value
-        $subtaskContributor = SubtaskContributor::where('created_at', $acceptIds)->first();
-        $activityid = $subtaskContributor->activity_id;
-        $hoursrendered = $subtaskContributor->hours_rendered;
-
-        // Update the 'hours_rendered' field in the Subtask table
-        Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
 
         return 'File uploaded successfully.';
     }
