@@ -117,6 +117,7 @@
                                     </h6>
                                     <p class="card-text">
                                         <em>1 million</em>
+
                                     </p>
                                 </div>
                             </div>
@@ -159,25 +160,50 @@
                             </tr>
 
                         </thead>
-
+                        @php
+                        use App\Models\Project;
+                        @endphp
                         <tbody>
+                            @foreach ($allactivities as $activity)
+                            @php
+                            $actcontristartdate = null;
+                            $actcontrienddate = null;
+                            $actcontrihours = null;
+                            @endphp
+
+                            @foreach ($activityContributions as $key => $actcontribution)
+                            @if ($activity->id === $actcontribution->activity_id)
+                            @php
+                            $actcontristartdate = $actcontribution->startdate;
+                            $actcontrienddate = $actcontribution->enddate;
+                            $actcontrihours = $actcontribution->hours_rendered;
+                            unset($activityContributions[$key]); // Remove the processed contribution
+                            @endphp
+
+                            @break
+                            @endif
+                            @endforeach
 
                             <tr>
                                 <td class="majority p-1">
-
+                                    @php
+                                    $projectname = Project::where('id', $activity['project_id'])->first(['projecttitle']);
+                                    $projectdept = Project::where('id', $activity['project_id'])->first(['department']);
+                                    @endphp
+                                    {{ $projectname->projecttitle }}
                                 </td>
                                 <td class="extension p-1">
-
+                                    {{ $activity->actname }}
                                 </td>
                                 <td class="num p-1">
-
+                                    {{ $actcontristartdate . ' - ' . $actcontrienddate }}
 
                                 </td>
                                 <td class="majority p-1">
                                     N/A
                                 </td>
                                 <td class="num p-1">
-
+                                    {{ $actcontrihours }}
                                 </td>
                                 <td class="majority p-1">
                                     -
@@ -190,6 +216,70 @@
                                 </td>
                             </tr>
 
+                            @if (in_array($activity->id, $otheractivities))
+
+                            @foreach ($subtasks as $key => $subtask)
+
+
+                            @if ($activity->id === $subtask->activity_id)
+
+
+                            @foreach ($subtaskcontributions as $key => $subcontribution)
+                            @if ($subtask->id === $subcontribution->subtask_id)
+                            @php
+                            $subdate = $subcontribution->date;
+                            $subcontrihours = $subcontribution->hours_rendered;
+                            unset($subtaskcontributions[$key]); // Remove the processed contribution
+                            @endphp
+
+                            @break
+                            @endif
+                            @endforeach
+
+
+                            <tr>
+                                <td class="majority p-1">
+
+                                </td>
+                                <td class="extension p-1">
+                                    {{ $subtask->subtask_name }}
+                                </td>
+                                <td class="num p-1">
+                                    {{ $subdate }}
+
+                                </td>
+                                <td class="majority p-1">
+                                    N/A
+                                </td>
+                                <td class="num p-1">
+                                    {{ $subcontrihours }}
+                                </td>
+                                <td class="majority p-1">
+                                    -
+                                </td>
+                                <td class="majority p-1">
+                                    -
+                                </td>
+                                <td class="majority p-1">
+
+                                </td>
+                            </tr>
+
+
+                            @php
+
+                            unset($subtasks[$key]); // Remove the processed contribution
+                            @endphp
+
+
+                            @endif
+
+                            @endforeach
+
+                            @endif
+
+
+                            @endforeach
 
 
                         </tbody>

@@ -58,7 +58,6 @@ class RecordController extends Controller
             ->where('approval', 1)
             ->whereDate('date', '>=', $minSemDate)
             ->whereDate('date', '<=', $maxSemDate)
-            ->select('contributions.id', 'contributions.subtask_id')
             ->get();
 
         $subtasks = [];
@@ -76,7 +75,6 @@ class RecordController extends Controller
             ->where('approval', 1)
             ->whereDate('startdate', '>=', $minSemDate)
             ->whereDate('enddate', '<=', $maxSemDate)
-            ->select('activity_contributions.id', 'activity_contributions.activity_id')
             ->get();
 
         if (!$activityContributions->isEmpty()) {
@@ -101,6 +99,7 @@ class RecordController extends Controller
             'subtaskcontributions' => $subtaskcontributions,
             'activityContributions' => $activityContributions,
             'allactivities' => $allactivities,
+            'otheractivities' => $otheractivities,
         ]);
     }
 }
