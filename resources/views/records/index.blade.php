@@ -95,7 +95,7 @@
                                         Total Hours Rendered:
                                     </h6>
                                     <p class="card-text">
-                                        <em>37 million</em>
+                                        <em>{{ $totalhoursrendered }}</em>
                                     </p>
                                 </div>
                             </div>
@@ -116,8 +116,7 @@
                                         Total Number of Activities Conducted:
                                     </h6>
                                     <p class="card-text">
-                                        <em>1 million</em>
-
+                                        <em>{{ count($allactivities) }}</em>
                                     </p>
                                 </div>
                             </div>
@@ -187,10 +186,10 @@
                             <tr>
                                 <td class="majority p-1">
                                     @php
-                                    $projectname = Project::where('id', $activity['project_id'])->first(['projecttitle']);
+                                    $proj = Project::where('id', $activity['project_id'])->first(['projecttitle', 'department']);
                                     $projectdept = Project::where('id', $activity['project_id'])->first(['department']);
                                     @endphp
-                                    {{ $projectname->projecttitle }}
+                                    {{ $proj->projecttitle }}
                                 </td>
                                 <td class="extension p-1">
                                     {{ $activity->actname }}
@@ -212,7 +211,7 @@
                                     -
                                 </td>
                                 <td class="majority p-1">
-
+                                    {{ $proj->department }}
                                 </td>
                             </tr>
 
@@ -261,7 +260,7 @@
                                     -
                                 </td>
                                 <td class="majority p-1">
-
+                                    {{ $proj->department }}
                                 </td>
                             </tr>
 

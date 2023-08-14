@@ -88,6 +88,10 @@ class RecordController extends Controller
                 ->get();
         }
 
+        $subhours = $subtaskcontributions->sum('hours_rendered');
+        $acthours = $activityContributions->sum('hours_rendered');
+        $totalhoursrendered = $subhours + $acthours;
+
         return view('records.index', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
@@ -100,6 +104,7 @@ class RecordController extends Controller
             'activityContributions' => $activityContributions,
             'allactivities' => $allactivities,
             'otheractivities' => $otheractivities,
+            'totalhoursrendered' => $totalhoursrendered,
         ]);
     }
 }
