@@ -5,7 +5,7 @@
     &nbsp;
     <div class="container">
 
-        <div class="basiccont mt-2 m-4 pb-3 rounded shadow">
+        <div class="basiccont mt-0 mb-4 m-2 pb-2 rounded shadow">
             <div class="border-bottom ps-3 pt-2 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Browse My Records</h6>
             </div>
@@ -14,7 +14,7 @@
                     Note: Not the current Semester and AY.
                 </em></span>
             @endif
-            <div class="form-floating m-3 mb-2 mt-2">
+            <div class="form-floating m-3 mb-2 mt-3">
 
                 <select id="sem-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;" aria-label="Select an acadamic year and semster">
                     @if ($ayfirstsem)
