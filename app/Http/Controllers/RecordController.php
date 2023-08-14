@@ -112,34 +112,30 @@ class RecordController extends Controller
 
         $user = User::where('username', $username)->firstOrFail();
 
-        $currentDate = Carbon::now();
+        $ayfirstsem = [];
+        $aysecondsem = [];
+        $latestAy = [];
 
-        $ayfirstsem = AcademicYear::where('firstsem_startdate', '<=', $currentDate)
-            ->where('firstsem_enddate', '>=', $currentDate)
-            ->first();
-
-        $aysecondsem = AcademicYear::where('secondsem_startdate', '<=', $currentDate)
-            ->where('secondsem_enddate', '>=', $currentDate)
-            ->first();
+        $inCurrentYear = false;
 
         $allAY = AcademicYear::all(['id', 'acadstartdate', 'acadenddate']);
 
-        $latestAy = AcademicYear::latest()->first();
-        $inCurrentYear = false;
         $minSemDate = null;
         $maxSemDate = null;
-        if ($ayfirstsem) {
-            $inCurrentYear = true;
+
+        if ($semester == "1STSEM") {
+            $ayfirstsem = AcademicYear::findorFail($ayid);
             $minSemDate = $ayfirstsem->firstsem_startdate;
             $maxSemDate = $ayfirstsem->firstsem_enddate;
-        } elseif ($aysecondsem) {
-            $inCurrentYear = true;
+        } else if ($semester == "2NDSEM") {
+            $aysecondsem = AcademicYear::findorFail($ayid);
             $minSemDate = $aysecondsem->secondsem_startdate;
             $maxSemDate = $aysecondsem->secondsem_enddate;
-        } elseif ($latestAy) {
+        }
 
-            $minSemDate = $latestAy->firstsem_startdate;
-            $maxSemDate = $latestAy->firstsem_enddate;
+        $currentDate = Carbon::now();
+        if ($currentDate >= $minSemDate && $currentDate <= $maxSemDate) {
+            $inCurrentYear = true;
         }
 
         $subtaskcontributions = $user->contributions()

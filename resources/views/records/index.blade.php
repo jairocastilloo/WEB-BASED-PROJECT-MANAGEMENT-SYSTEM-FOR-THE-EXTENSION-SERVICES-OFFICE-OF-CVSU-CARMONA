@@ -305,12 +305,12 @@
 
         $('#sem-select').change(function() {
             var selectedOption = $(this).find(':selected');
-            var currentsem = selectedOption.val();
+            var selecteday = selectedOption.val();
+            var selectedsem = selectedOption.attr('data-sem');
 
-
-            var baseUrl = "{{ route('records.select', ['username' => Auth::user()->username]) }}";
-            var url = baseUrl.replace(':department', department)
-                .replace(':currentyear', currentyear);
+            var baseUrl = "{{ route('records.select', ['username' => Auth::user()->username, 'ayid' => ':selecteday', 'semester' => ':selectedsem']) }}";
+            var url = baseUrl.replace(':selecteday', selecteday)
+                .replace(':selectedsem', selectedsem);
 
             window.location.href = url;
         });
