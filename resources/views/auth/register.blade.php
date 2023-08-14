@@ -28,7 +28,7 @@
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('First Name') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
@@ -37,12 +37,10 @@
                                 </span>
                                 @enderror
                             </div>
-                        </div>
 
-                        <div class="row mb-3">
                             <label for="middle_name" class="col-md-4 col-form-label text-md-end">{{ __('Middle Name') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <input id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
 
                                 @error('middle_name')
@@ -51,6 +49,10 @@
                                 </span>
                                 @enderror
                             </div>
+                        </div>
+
+                        <div class="row mb-3">
+
                         </div>
 
                         <div class="row mb-3">

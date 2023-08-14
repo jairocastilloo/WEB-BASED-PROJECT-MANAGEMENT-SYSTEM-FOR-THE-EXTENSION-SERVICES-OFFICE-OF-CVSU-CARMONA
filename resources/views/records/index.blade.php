@@ -16,31 +16,31 @@
             @endif
             <div class="form-floating m-3 mb-2 mt-2">
 
-                <select id="ay-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;" aria-label="Select an acadamic year">
+                <select id="sem-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;" aria-label="Select an acadamic year and semster">
                     @if ($ayfirstsem)
                     @foreach ($allAY as $ay)
-                    <option value="{{ $ay['id'] }}" {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}" {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
                         {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
-                    <option value="{{ $ay['id'] }}">
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}">
                         {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     @endforeach
                     @elseif ($aysecondsem)
                     @foreach ($allAY as $ay)
-                    <option value="{{ $ay['id'] }}">
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}">
                         {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
-                    <option value="{{ $ay['id'] }}" {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}" {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
                         {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     @endforeach
                     @elseif ($latestAy)
                     @foreach ($allAY as $ay)
-                    <option value="{{ $ay['id'] }}" {{ $ay->id == $latestAy->id ? 'selected' : '' }}>
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}" {{ $ay->id == $latestAy->id ? 'selected' : '' }}>
                         {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
-                    <option value="{{ $ay['id'] }}">
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}">
                         {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     @endforeach
@@ -301,6 +301,18 @@
             // Add your function here
             event.preventDefault();
             $('#account .dropdown-menu').toggleClass('shows');
+        });
+
+        $('#sem-select').change(function() {
+            var selectedOption = $(this).find(':selected');
+            var currentsem = selectedOption.val();
+
+
+            var baseUrl = "{{ route('records.select', ['username' => Auth::user()->username]) }}";
+            var url = baseUrl.replace(':department', department)
+                .replace(':currentyear', currentyear);
+
+            window.location.href = url;
         });
     });
 </script>

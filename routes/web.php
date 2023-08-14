@@ -67,6 +67,7 @@ Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
     Route::get('/duties/{currentYear}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
+    Route::get('/selectrecords/{ayid}/{semester}', [RecordController::class, 'selectrecords'])->name('records.select');
 });
 
 Route::prefix('/subtasks')->group(function () {
