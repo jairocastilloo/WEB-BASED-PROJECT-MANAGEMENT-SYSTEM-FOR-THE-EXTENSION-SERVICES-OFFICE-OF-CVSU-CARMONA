@@ -224,10 +224,19 @@ $.each(users, function(index, user) {
         type: 'POST',
         data: formData,
         success: function(response) {
-            console.log(response);
-            var projectId = response.projectid;
-            projecturl = projecturl.replace(':projectid', projectId);
-            window.location.href = projecturl;
+          if (response.errors) {
+            $.each(response.errors, function (field, errors) {
+                var input = $('#' + field);
+                input.addClass('is-invalid');
+                input.closest('.mb-3').find('.invalid-feedback strong').text(errors.join(' '));
+            });
+        } else {
+          console.log(response);
+          var projectId = response.projectid;
+          projecturl = projecturl.replace(':projectid', projectId);
+          window.location.href = projecturl;
+        }
+            
             
         },
         error: function(xhr, status, error) {

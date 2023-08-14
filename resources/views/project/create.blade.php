@@ -281,18 +281,30 @@
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
                                 <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="projectleader" id="projectleader">
                                     <option selected disabled>Select Project Leader</option>
-
                                 </select>
                                 <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
                                 <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Project Leader</label>
@@ -300,15 +312,27 @@
                                     <option selected disabled>Select Program Leader</option>
 
                                 </select>
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
                                 <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
 
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
                                 <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                         </form>
 
