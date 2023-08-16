@@ -258,13 +258,13 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Project Details</button>
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Project Members</button>
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Members</button>
                     </li>.
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Project Objectives</button>
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false" disabled>Project Objectives</button>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -290,7 +290,7 @@
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="projectleader" id="projectleader">
-                                    <option selected disabled>Select Project Leader</option>
+                                    <option value="0" selected disabled>Select Project Leader</option>
                                 </select>
                                 <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
 
@@ -309,7 +309,7 @@
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="programleader" id="programleader">
-                                    <option selected disabled>Select Program Leader</option>
+                                    <option value="0" selected disabled>Select Program Leader</option>
 
                                 </select>
 
@@ -349,9 +349,14 @@
                                     <select class="col-7 m-1 member-select p-2 rounded" id="member-select" name="projectmember[]">
                                         <option value="" selected disabled>Select a Member</option>
                                     </select>
+
                                     <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
                                         <b class="small">Remove</b>
                                     </button>
+
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>asdasdsa</strong>
+                                    </span>
                                 </div>
 
                             </form>
@@ -376,6 +381,10 @@
                                             <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
+
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
                                         </div>
                                     </div>
                                     <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">

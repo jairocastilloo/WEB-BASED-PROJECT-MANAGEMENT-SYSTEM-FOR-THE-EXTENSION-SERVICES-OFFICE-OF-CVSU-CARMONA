@@ -93,17 +93,26 @@ $.each(users, function(index, user) {
     $('#nextproject').click((event) => {
 
       event.preventDefault();
-      currentstep++;
+      
    
-      updateButtons();
+      var hasError = handleError();
+      if (!hasError) {
+        currentstep++;
+        updateButtons();
+          } 
+      
 
     });
     $('#prevproject').click((event) => {
 
       event.preventDefault();
-      currentstep--;
-    
-      updateButtons();
+
+      var hasError = handleError();
+      if (!hasError) {
+        currentstep--;
+        updateButtons();
+          } 
+      
     });
 
     $('#addproj').click((event) => {
@@ -130,11 +139,92 @@ $.each(users, function(index, user) {
     $('#tab3-tab').click((event) => {
 
       event.preventDefault();
+      
       currentstep = 2;
-   
       updateButtons();
+        
     });
 
+    function handleError(){
+
+        if(currentstep === 0){
+
+          var hasErrors = false;
+
+          $('.invalid-feedback strong').text('');
+          $('.is-invalid').removeClass('is-invalid');
+  
+          var projectTitle = $('#projecttitle').val();
+
+          var selectprojlead = $('#projectleader').find(':selected');
+          var projectLeader = selectprojlead.val();
+          var programTitle = $('#programtitle').val();
+
+          var selectproglead = $('#programleader').find(':selected');
+          var programLeader = selectproglead.val();
+
+          var projectStartDate = new Date($('#projectstartdate').val());
+          var projectEndDate = new Date($('#projectenddate').val());
+  
+          var targetYear = parseInt($('#currentyear').val(), 10);
+
+          // Validation for Project Title
+          if (projectTitle.trim() === '') {
+              $('#projecttitle').addClass('is-invalid');
+              $('#projecttitle').next('.invalid-feedback').find('strong').text('Project Title is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Project Leader
+          if (projectLeader == 0) {
+              $('#projectleader').addClass('is-invalid');
+              $('#projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Program Title
+          if (programTitle.trim() === '') {
+              $('#programtitle').addClass('is-invalid');
+              $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Program Leader
+          if (programLeader == 0) {
+              $('#programleader').addClass('is-invalid');
+              $('#programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Project Start Date
+          if (projectStartDate.getFullYear() !== targetYear) {
+              $('#projectstartdate').addClass('is-invalid');
+              $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+              hasErrors = true;
+            }
+  
+          // Validation for Project End Date
+          if (projectEndDate.getFullYear() !== targetYear || projectEndDate <= projectStartDate) {
+              $('#projectenddate').addClass('is-invalid');
+              $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+              hasErrors = true;
+            }
+
+            return hasErrors;
+    
+        } else if(currentstep === 1){
+
+
+        }
+
+        else if(currentstep === 2){
+
+
+        }
+        
+    }
+
+      
     $('#objectiveset').on('click', '.add-objective', function() {
       var setid = $(this).prev().find('div:first .objectivesetid').val();
        

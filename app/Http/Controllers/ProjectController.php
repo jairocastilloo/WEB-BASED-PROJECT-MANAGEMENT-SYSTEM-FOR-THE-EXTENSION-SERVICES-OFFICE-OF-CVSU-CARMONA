@@ -225,6 +225,7 @@ class ProjectController extends Controller
         $newProjectId = $project->id;
 
 
+
         $validatedData = $request->validate([
             'projectmember.*' => 'required|integer', // Validate each select input
             'memberindex' => 'required|integer',
@@ -233,6 +234,7 @@ class ProjectController extends Controller
             'objectivesetid.*' => 'required|integer',
             // Validate select count
         ]);
+
         for ($i = 0; $i < $validatedData['memberindex']; $i++) {
             $projectmembers = new ProjectUser;
             $projectmembers->user_id = $validatedData['projectmember'][$i];
