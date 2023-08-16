@@ -9,12 +9,20 @@ $(document).ready(function() {
 
     $('#addmember').hide();
 
+    $('.noselectmember-error strong').hide();
+    $('.nomember-error strong').hide();
+
     $('#navbarDropdown').click(function() {
       // Add your function here
       $('#account .dropdown-menu').toggleClass('shows');
   });
 
-  
+  $(document).on('input', '.autocapital', function() {
+    var inputValue = $(this).val();
+    if (inputValue.length > 0) {
+        $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+    }
+});
 
 
   users.sort(function(a, b) {
@@ -96,6 +104,7 @@ $.each(users, function(index, user) {
       
    
       var hasError = handleError();
+
       if (!hasError) {
         currentstep++;
         updateButtons();
@@ -107,11 +116,10 @@ $.each(users, function(index, user) {
 
       event.preventDefault();
 
-      var hasError = handleError();
-      if (!hasError) {
+      
         currentstep--;
         updateButtons();
-          } 
+          
       
     });
 
@@ -122,6 +130,7 @@ $.each(users, function(index, user) {
       updateButtons();
       $('#newproject').modal('show');
     });
+    /*
     $('#tab1-tab').click((event) => {
 
       event.preventDefault();
@@ -144,7 +153,7 @@ $.each(users, function(index, user) {
       updateButtons();
         
     });
-
+*/
     function handleError(){
 
         if(currentstep === 0){
@@ -214,7 +223,29 @@ $.each(users, function(index, user) {
     
         } else if(currentstep === 1){
 
+          var hasErrors = false;
 
+          $('.noselectmember-error strong').hide();
+          $('.nomember-error strong').hide();
+
+          var memberindex = $('select[name="projectmember[]"]').length;
+          
+          if (memberindex == 0) {
+           $('.nomember-error strong').show();
+            hasErrors = true;
+          }
+
+          $('select[name="projectmember[]"]').each(function(index, element) {
+            var selectedValue = $(element).find(':selected');
+            if (selectedValue.val() == 0) {
+                $('.noselectmember-error strong').show();
+                hasErrors = true;
+            }
+  
+            
+          });
+          
+          return hasErrors;
         }
 
         else if(currentstep === 2){
@@ -280,7 +311,7 @@ $.each(users, function(index, user) {
         projecturl = projecturl.replace(':projectname', projectname);
 
 
-         var memberindex = $('select[name="projectmember[]"]').length;
+        var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
 // Iterate over each select element and set its name attribute
@@ -292,14 +323,14 @@ $.each(users, function(index, user) {
           $(this).attr('name', 'objectivesetid[' + index + ']');
      
           });
-         $('select[name="projectmember[]"]').each(function(index) {
-          $(this).prop('disabled', false);
+          $('select[name="projectmember[]"]').each(function(index) {
+            
             $(this).attr('name', 'projectmember[' + index + ']');
-           
-            });
+          });
         
-        $('#memberindex').val(memberindex);
+        
         $('#objectiveindex').val(objectiveindex);
+        $('#memberindex').val(memberindex);
         var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
         var data2 = $('#form2').serialize();
@@ -345,7 +376,7 @@ $.each(users, function(index, user) {
 
     $('#addmember').click((event) => {
         event.preventDefault();
-        var $newSelect = $(`<select class="member-select col-7 m-1 p-2 rounded" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
+        var $newSelect = $(`<select class="member-select col-7 m-1 p-2 rounded" id="member-select" name="projectmember[]"><option value="0" selected disabled>Select a Member</option></select>`);
         var $newButton = $('<button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember"><b class="small">Remove</b></button>');
         var $newDiv = $('<div class="mb-2 row bg-info rounded" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);

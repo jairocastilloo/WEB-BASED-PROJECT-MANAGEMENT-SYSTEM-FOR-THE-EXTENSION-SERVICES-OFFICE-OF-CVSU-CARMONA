@@ -1,11 +1,6 @@
 $(document).ready(function() {
     
-    $(document).on('input', '.autocapital', function() {
-        var inputValue = $(this).val();
-        if (inputValue.length > 0) {
-            $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
-        }
-    });
+    
 
     
 $('#confirmactivity').click((event) => {

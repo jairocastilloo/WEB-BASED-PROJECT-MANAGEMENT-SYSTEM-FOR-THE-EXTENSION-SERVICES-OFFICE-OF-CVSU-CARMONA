@@ -346,23 +346,31 @@
                                 @csrf
                                 <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row rounded" id="selectmember">
-                                    <select class="col-7 m-1 member-select p-2 rounded" id="member-select" name="projectmember[]">
-                                        <option value="" selected disabled>Select a Member</option>
+                                    <select class="col-7 m-1 member-select p-2 rounded is-invalid" id="member-select" name="projectmember[]">
+                                        <option value="0" selected disabled>Select a Member</option>
                                     </select>
 
                                     <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
                                         <b class="small">Remove</b>
                                     </button>
 
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>asdasdsa</strong>
-                                    </span>
+
                                 </div>
 
                             </form>
+
+
                             <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
                                 <b class="small">Add Member</b>
                             </button>
+                            <br>
+                            <span class="small text-danger nomember-error">
+                                <strong>Assign atleast one member.</strong>
+                            </span>
+
+                            <span class="small text-danger noselectmember-error">
+                                <strong>Please ensure that a member is selected in every dropdown.</strong>
+                            </span>
 
                         </div>
 
