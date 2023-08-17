@@ -11,6 +11,7 @@ $(document).ready(function() {
 
     $('.noselectmember-error strong').hide();
     $('.nomember-error strong').hide();
+    $('.projectobjective-error strong').hide();
 
     $('#navbarDropdown').click(function() {
       // Add your function here
@@ -102,7 +103,7 @@ $.each(users, function(index, user) {
 
       event.preventDefault();
       
-   
+
       var hasError = handleError();
 
       if (!hasError) {
@@ -225,8 +226,7 @@ $.each(users, function(index, user) {
 
           var hasErrors = false;
 
-          $('.noselectmember-error strong').hide();
-          $('.nomember-error strong').hide();
+          
 
           var memberindex = $('select[name="projectmember[]"]').length;
           
@@ -249,8 +249,20 @@ $.each(users, function(index, user) {
         }
 
         else if(currentstep === 2){
+          var hasErrors = false;
+        
 
+          $('input[name="projectobjective[]"]').each(function(index, element) {
 
+            
+            if ($(element).val() === "") {
+              $('.projectobjective-error strong').show();
+              hasErrors = true;
+            }
+              
+           
+            });
+            return hasErrors;
         }
         
     }
@@ -301,7 +313,9 @@ $.each(users, function(index, user) {
     $('#createproject').click((event) => {
         event.preventDefault();
        
-       
+        var hasError = handleError();
+    
+        if (!hasError) {
         var department = $('#department').val();
         var projectname = $('#projecttitle').val();
     
@@ -314,7 +328,7 @@ $.each(users, function(index, user) {
         var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
-// Iterate over each select element and set its name attribute
+
         $('input[name="projectobjective[]"]').each(function(index) {
         $(this).attr('name', 'projectobjective[' + index + ']');
        
@@ -324,13 +338,14 @@ $.each(users, function(index, user) {
      
           });
           $('select[name="projectmember[]"]').each(function(index) {
-            
+            $(this).prop('disabled', false);
             $(this).attr('name', 'projectmember[' + index + ']');
+            
           });
-        
         
         $('#objectiveindex').val(objectiveindex);
         $('#memberindex').val(memberindex);
+
         var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
         var data2 = $('#form2').serialize();
@@ -345,28 +360,24 @@ $.each(users, function(index, user) {
         type: 'POST',
         data: formData,
         success: function(response) {
-          if (response.errors) {
-            $.each(response.errors, function (field, errors) {
-                var input = $('#' + field);
-                input.addClass('is-invalid');
-                input.closest('.mb-3').find('.invalid-feedback strong').text(errors.join(' '));
-            });
-        } else {
-          console.log(response);
-          var projectId = response.projectid;
-          projecturl = projecturl.replace(':projectid', projectId);
-          window.location.href = projecturl;
-        }
-            
-            
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-            console.log(status);
-            console.log(error);
-        }
-        });
+          
+                
+       
+           
+            var projectId = response.projectid;
+            projecturl = projecturl.replace(':projectid', projectId);
+            window.location.href = projecturl;
         
+              
+              
+          },
+          error: function(xhr, status, error) {
+              console.log(xhr.responseText);
+              console.log(status);
+              console.log(error);
+          }
+          });
+        }
     });
     
 

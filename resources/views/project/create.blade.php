@@ -391,13 +391,17 @@
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
 
                                             <span class="invalid-feedback" role="alert">
-                                                <strong></strong>
+                                                <strong>Make</strong>
                                             </span>
                                         </div>
                                     </div>
                                     <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
                                         <b class="small">Add Objective</b>
                                     </button>
+                                    <br>
+                                    <span class="small text-danger projectobjective-error">
+                                        <strong>Please ensure that there is objective in every input.</strong>
+                                    </span>
 
                                     <hr>
                                 </div>

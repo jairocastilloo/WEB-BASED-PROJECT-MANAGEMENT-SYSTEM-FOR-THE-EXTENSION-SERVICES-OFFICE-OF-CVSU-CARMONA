@@ -192,15 +192,15 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        $cy = $request->input('currentyear');
+
 
         $validator = Validator::make($request->all(), [
             'projecttitle' => 'required|max:255',
             'projectleader' => 'required|max:255',
             'programtitle' => 'required|max:255',
             'programleader' => 'required|max:255',
-            'projectstartdate' => "required|before_or_equal:$cy-12-31",
-            'projectenddate' => "required|before_or_equal:$cy-12-31|after:projectstartdate",
+            'projectstartdate' => "required|date",
+            'projectenddate' => "required|date|after:projectstartdate",
             'department' => 'required|max:255',
             'currentyear' => 'required|integer',
         ]);
