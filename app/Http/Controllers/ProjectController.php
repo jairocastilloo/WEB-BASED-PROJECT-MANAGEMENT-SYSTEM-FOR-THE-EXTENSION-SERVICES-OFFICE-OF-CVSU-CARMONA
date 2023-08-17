@@ -193,7 +193,6 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
 
-
         $validator = Validator::make($request->all(), [
             'projecttitle' => 'required|max:255',
             'projectleader' => 'required|max:255',

@@ -6,6 +6,8 @@
 
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
+<input class="d-none" type="date" id="projsavestartdate" value="{{ $indexproject['projectstartdate'] }}">
+<input class="d-none" type="date" id="projsaveenddate" value="{{ $indexproject['projectenddate'] }}">
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
@@ -512,6 +514,9 @@
                     <div class="mb-3">
                         <label for="activityname" class="form-label">Activity Name</label>
                         <input type="text" class="form-control" id="activityname" name="activityname">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="objectives" class="form-label">Objectives</label>
@@ -519,26 +524,44 @@
                             <option value="" selected disabled>Choose Objectives</option>
                             <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
                         </select>
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="expectedoutput" class="form-label">Expected Output</label>
                         <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="startdate" class="form-label">Activity Start Date</label>
                         <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="enddate" class="form-label">Activity End Date</label>
                         <input type="date" class="form-control" id="activityenddate" name="activityenddate">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>
                         <input type="number" class="form-control" id="budget" name="budget">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="Source" class="form-label">Source</label>
-                        <input type="text" class="form-control" id="Source" name="source">
+                        <input type="text" class="form-control" id="source" name="source">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                 </form>
 
