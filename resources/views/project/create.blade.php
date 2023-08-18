@@ -85,7 +85,7 @@
         <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
 -->
             </div>
-            @if ($currentproject)
+
             @php
 
             $sortedProjects= $currentproject->sortBy('projectstartdate');
@@ -201,7 +201,17 @@
                 @endforeach
             </div>
             @endif
+            @if($currentproject && count($overdueProjects) == 0 && count($overdueProjects) == 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
+                </div>
+                <div class="text-center p-4">
+                    <h4><em>No Projects Ended Yet.</em></h4>
+                </div>
+            </div>
             @endif
+
         </div>
 
     </div>
