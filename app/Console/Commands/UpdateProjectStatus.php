@@ -24,9 +24,9 @@ class UpdateProjectStatus extends Command
     {
         $now = Carbon::today();
 
-        Project::where('projectstartdate', '<=', $now)
+        $projects = Project::where('projectstartdate', '<=', $now)
             ->where('projectenddate', '>=', $now)
-            ->whereNotIn('projectstatus', ['Completed'])
+            ->where('projectstatus', '<>', 'Completed')
             ->update(['projectstatus' => 'In Progress']);
     }
 
