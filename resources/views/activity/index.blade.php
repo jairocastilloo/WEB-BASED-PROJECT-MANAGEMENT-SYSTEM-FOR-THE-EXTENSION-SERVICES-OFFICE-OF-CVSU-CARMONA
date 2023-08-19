@@ -2,6 +2,8 @@
 
 @section('content')
 
+<input class="d-none" type="date" value="{{ $activity['actstartdate'] }}" id="actsavestartdate">
+<input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
@@ -328,11 +330,17 @@
                             <label for="subtask-name" class="form-label">Subtask Name</label>
                             <input type="number" class="d-none" name="activitynumber" id="actid" value="{{ $activity['id'] }}">
                             <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
                         </div>
 
                         <div class="mb-3">
                             <label for="subtask-duedate" class="form-label">Due Date</label>
                             <input type="date" class="form-control" id="subtaskduedate" name="subtaskduedate" placeholder="Enter Due Date">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
                         </div>
                     </form>
                 </div>

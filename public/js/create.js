@@ -214,7 +214,7 @@ $.each(users, function(index, user) {
             }
   
           // Validation for Project End Date
-          if (projectEndDate.getFullYear() !== targetYear || projectEndDate <= projectStartDate) {
+          if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
               $('#projectenddate').addClass('is-invalid');
               $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
               hasErrors = true;

@@ -53,7 +53,7 @@ function acthasError(){
         hasErrors = true;
     }
     // Validation for Project Start Date
-    else if (new Date(projstartdate) >= new Date(actstartdate)) {
+    else if (new Date(projstartdate) > new Date(actstartdate)) {
         $('#activitystartdate').addClass('is-invalid');
         $('#activitystartdate').next('.invalid-feedback').find('strong').text('Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) + '.');
         hasErrors = true;
@@ -64,13 +64,13 @@ function acthasError(){
         hasErrors = true;
       }
 
-      else if (new Date(actenddate) <= new Date(actstartdate)) {
+      else if (new Date(actenddate) < new Date(actstartdate)) {
         $('#activityenddate').addClass('is-invalid');
         $('#activityenddate').next('.invalid-feedback').find('strong').text('Activity End Date must be after ' + new Date(actstartdate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) + '.');
         hasErrors = true;
       }
 
-      else if (new Date(projenddate) <= new Date(actenddate)) {
+      else if (new Date(projenddate) < new Date(actenddate)) {
         $('#activityenddate').addClass('is-invalid');
         $('#activityenddate').next('.invalid-feedback').find('strong').text('Activity End Date must be before ' + new Date(projenddate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) + '.');
         hasErrors = true;
