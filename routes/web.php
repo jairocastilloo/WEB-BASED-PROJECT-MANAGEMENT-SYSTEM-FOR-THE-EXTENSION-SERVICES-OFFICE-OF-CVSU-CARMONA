@@ -112,7 +112,8 @@ Route::prefix('/projects')->group(function () {
 });
 Route::get('/display/{projectid}/{department}', [ProjectController::class, 'displayproject'])
     ->name('projects.display');
-
+Route::get('/calendar/{projectid}/{department}', [ProjectController::class, 'displayActivityCalendar'])
+    ->name('projects.calendar');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');

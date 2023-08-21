@@ -122,6 +122,42 @@ class ProjectController extends Controller
             'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities,
         ]);
     }
+
+    public function displayActivityCalendar($projectid, $department)
+    {
+
+        $indexproject = Project::findOrFail($projectid);
+        $currentyear = $indexproject->calendaryear;
+        $currentproject = Project::where('department', $department)
+            ->whereNotIn('id', [$projectid])
+            ->where('calendaryear', $currentyear)
+            ->get();
+        $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
+
+        if ($otheryear == $currentyear) {
+            $inCurrentYear = true;
+        } else {
+            $inCurrentYear = false;
+        }
+
+        $calendaryears = CalendarYear::pluck('year');
+
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name', 'middle_name', 'last_name']);
+
+
+        return view('project.calendar', [
+            'members' => $users, 'currentproject' => $currentproject,
+            'indexproject' => $indexproject,
+            'calendaryears' => $calendaryears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentyear' => $currentyear, 'projectid' => $projectid,
+
+        ]);
+    }
+
     /*
     public function getactivity($id, $activityid)
     {

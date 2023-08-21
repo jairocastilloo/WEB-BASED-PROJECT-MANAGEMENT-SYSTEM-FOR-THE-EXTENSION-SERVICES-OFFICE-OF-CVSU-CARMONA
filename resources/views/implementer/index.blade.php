@@ -13,7 +13,7 @@
                 </div>
                 @if (!$inCurrentYear)
                 <span class="small ms-2"><em>
-                        Note: Not the current Academic Year
+                        Note: Not the current Calendar Year
                     </em></span>
                 @endif
                 <div class="form-floating m-3 mb-1 mt-2">

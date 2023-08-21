@@ -65,25 +65,10 @@
 
                 <div class="btn-group mt-1 ms-3 mb-2 shadow">
                     <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                        <b class="small">Start New Project</b>
+                        <b class="small">Create Project</b>
                     </button>
                 </div>
 
-
-
-                <!--
-        <div class="btn-group mt-3 shadow">
-            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                <b class="small">Start New Project</b>
-            </button>
-        </div>
--->
-                <!--
-        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal">
-            <b class="small">Start New Project</b>
-        </button>
-        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
--->
             </div>
 
             @php
