@@ -116,6 +116,10 @@
                 </div>
             </div>
 
+            <div class="basiccont m-4 me-0 p-3 rounded shadow">
+                <div id="calendar"></div>
+            </div>
+
         </div>
 
         <div class="col-2">
@@ -502,5 +506,28 @@
         </div>
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+<script src="{{ asset('js/index.global.min.js') }}"></script>
+<script>
+    var activities = <?php echo json_encode($activityArray); ?>;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            events: activities.map(function(activity) {
+                return {
+                    title: activity.actname,
+                    start: activity.actstartdate,
+                    end: activity.actenddate
+                };
+            }),
+            // Other FullCalendar options...
+        });
+        calendar.render();
+    });
+</script>
 
 @endsection

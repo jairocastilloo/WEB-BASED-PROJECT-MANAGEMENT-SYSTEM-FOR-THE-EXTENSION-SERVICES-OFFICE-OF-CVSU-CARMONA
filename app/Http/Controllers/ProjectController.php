@@ -147,6 +147,14 @@ class ProjectController extends Controller
             ->where('role', '!=', 'Admin')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
+        $activities = $indexproject->activities;
+        $activityArray = $activities->map(function ($activity) {
+            return (object) [
+                'actname' => $activity->actname,
+                'actstartdate' => $activity->actstartdate,
+                'actenddate' => $activity->actenddate,
+            ];
+        })->toArray();
 
         return view('project.calendar', [
             'members' => $users, 'currentproject' => $currentproject,
@@ -154,7 +162,7 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear, 'projectid' => $projectid,
-
+            'activityArray' => $activityArray
         ]);
     }
 
