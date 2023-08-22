@@ -510,24 +510,53 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/index.global.min.js') }}"></script>
+<script src="{{ asset('js/fullcalendar.global.min.js') }}"></script>
+<script src="{{ asset('js/fullcalendarbootstrap5.global.min.js') }}" defer></script>
 <script>
-    var activities = <?php echo json_encode($activityArray); ?>;
-
     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            events: activities.map(function(activity) {
+        try {
+            var activities = <?php echo json_encode($activityArray); ?>;
+            if (!Array.isArray(activities)) {
+                throw new Error('Invalid activities data');
+            }
+
+            var eventsArray = activities.map(function(activity) {
                 return {
                     title: activity.actname,
                     start: activity.actstartdate,
                     end: activity.actenddate
                 };
-            }),
-            // Other FullCalendar options...
-        });
-        calendar.render();
+            });
+
+            var calendarEl = document.getElementById('calendar');
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+
+                dateClick: function(info) {
+                    alert('Clicked on: ' + info.dateStr);
+
+                    eventsArray.push({
+                        title: "test event added from click",
+                        start: info.dateStr,
+                        allDay: true
+                    });
+
+                    calendar.refetchEvents();
+                },
+
+                eventClick: function(info) {
+                    alert(info.event.title);
+                },
+
+                events: eventsArray
+            });
+
+            calendar.render();
+
+        } catch (error) {
+            console.error(error);
+        }
     });
 </script>
-
 @endsection
