@@ -340,3 +340,7 @@ body {
   display: flex;
   justify-content: center;
 }
+.fc-event {
+  background-color: darkgreen; /* Change to your desired color */
+  padding-left: 7px;
+}

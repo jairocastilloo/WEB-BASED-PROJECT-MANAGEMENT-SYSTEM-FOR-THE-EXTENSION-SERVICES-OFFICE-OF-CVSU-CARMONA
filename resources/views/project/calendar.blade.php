@@ -536,13 +536,7 @@
                 dateClick: function(info) {
                     alert('Clicked on: ' + info.dateStr);
 
-                    eventsArray.push({
-                        title: "test event added from click",
-                        start: info.dateStr,
-                        allDay: true
-                    });
 
-                    calendar.refetchEvents();
                 },
 
                 eventClick: function(info) {
