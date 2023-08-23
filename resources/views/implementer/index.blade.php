@@ -70,7 +70,7 @@
 
                 @if($taskDueLater->isNotEmpty())
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color: darkgreen;">Due next 30 Days</h6>
+                    <h6 class="fw-bold small" style="color: darkgreen;">Due Later</h6>
                 </div>
                 @foreach($taskDueLater as $taskLater)
                 <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskLater['id'] }}">
