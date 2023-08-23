@@ -13,7 +13,7 @@
                 </div>
                 @if (!$inCurrentYear)
                 <span class="small ms-2"><em>
-                        Note: Not the current Academic Year
+                        Note: Not the current Calendar Year
                     </em></span>
                 @endif
                 <div class="form-floating m-3 mb-1 mt-2">
@@ -36,39 +36,48 @@
             </div>
             <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
 
+                @if($taskDueThisSevenDays->isEmpty() && $taskDueWithinNextThirtyDays->isEmpty() && $taskDueLater->isEmpty())
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
-                @if($subtasks->isNotEmpty())
-                @forelse($subtasks as $subtask)
-                @php
-                $totalhoursrendered = 0;
-                @endphp
-
-                @foreach ($contributions as $contribution)
-                @if($contribution['subtask_id'] === $subtask['id'])
-                @php
-                $totalhoursrendered += $contribution['hours_rendered'];
-                @endphp
-                @endif
-                @endforeach
-
-                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
-                    <h6><b>{{ $subtask['subtask_name'] }}</b></h6>
-                    <h6>{{ $totalhoursrendered }} hours rendered</h6>
-                </div>
-                @empty
-                <div class="text-center p-4">
-                    <h4><em>No Assigned Tasks.</em></h4>
-                </div>
-                @endforelse
-                @else
                 <div class="text-center p-4">
                     <h4><em>No Assigned Tasks.
                         </em></h4>
                 </div>
                 @endif
 
+                @if($taskDueThisSevenDays->isNotEmpty())
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color: darkgreen;">Due this 7 Days</h6>
+                </div>
+                @foreach($taskDueThisSevenDays as $taskwithinWeek)
+                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskwithinWeek['id'] }}">
+                    <h6><b>{{ $taskwithinWeek['subtask_name'] }}</b></h6>
+                </div>
+                @endforeach
+                @endif
+
+                @if($taskDueWithinNextThirtyDays->isNotEmpty())
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color: darkgreen;">Due next 30 Days</h6>
+                </div>
+                @foreach($taskDueWithinNextThirtyDays as $taskwithinMonth)
+                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskwithinMonth['id'] }}">
+                    <h6><b>{{ $taskwithinMonth['subtask_name'] }}</b></h6>
+                </div>
+                @endforeach
+                @endif
+
+                @if($taskDueLater->isNotEmpty())
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color: darkgreen;">Due next 30 Days</h6>
+                </div>
+                @foreach($taskDueLater as $taskLater)
+                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskLater['id'] }}">
+                    <h6><b>{{ $taskLater['subtask_name'] }}</b></h6>
+                </div>
+                @endforeach
+                @endif
             </div>
         </div>
 

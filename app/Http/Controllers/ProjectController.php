@@ -122,6 +122,50 @@ class ProjectController extends Controller
             'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities,
         ]);
     }
+
+    public function displayActivityCalendar($projectid, $department)
+    {
+
+        $indexproject = Project::findOrFail($projectid);
+        $currentyear = $indexproject->calendaryear;
+        $currentproject = Project::where('department', $department)
+            ->whereNotIn('id', [$projectid])
+            ->where('calendaryear', $currentyear)
+            ->get();
+        $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
+
+        if ($otheryear == $currentyear) {
+            $inCurrentYear = true;
+        } else {
+            $inCurrentYear = false;
+        }
+
+        $calendaryears = CalendarYear::pluck('year');
+
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->get(['id', 'name', 'middle_name', 'last_name']);
+
+        $activities = $indexproject->activities;
+        $activityArray = $activities->map(function ($activity) {
+            return (object) [
+                'actname' => $activity->actname,
+                'actstartdate' => $activity->actstartdate,
+                'actenddate' => $activity->actenddate,
+            ];
+        })->toArray();
+
+        return view('project.calendar', [
+            'members' => $users, 'currentproject' => $currentproject,
+            'indexproject' => $indexproject,
+            'calendaryears' => $calendaryears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentyear' => $currentyear, 'projectid' => $projectid,
+            'activityArray' => $activityArray
+        ]);
+    }
+
     /*
     public function getactivity($id, $activityid)
     {
@@ -194,12 +238,12 @@ class ProjectController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'projecttitle' => 'required|unique:projects|max:255',
+            'projecttitle' => 'required|max:255',
             'projectleader' => 'required|max:255',
             'programtitle' => 'required|max:255',
             'programleader' => 'required|max:255',
-            'projectstartdate' => 'required|date',
-            'projectenddate' => 'required|date|after:project_startdate',
+            'projectstartdate' => "required|date",
+            'projectenddate' => "required|date|after:projectstartdate",
             'department' => 'required|max:255',
             'currentyear' => 'required|integer',
         ]);
@@ -224,6 +268,7 @@ class ProjectController extends Controller
         $newProjectId = $project->id;
 
 
+
         $validatedData = $request->validate([
             'projectmember.*' => 'required|integer', // Validate each select input
             'memberindex' => 'required|integer',
@@ -232,6 +277,7 @@ class ProjectController extends Controller
             'objectivesetid.*' => 'required|integer',
             // Validate select count
         ]);
+
         for ($i = 0; $i < $validatedData['memberindex']; $i++) {
             $projectmembers = new ProjectUser;
             $projectmembers->user_id = $validatedData['projectmember'][$i];

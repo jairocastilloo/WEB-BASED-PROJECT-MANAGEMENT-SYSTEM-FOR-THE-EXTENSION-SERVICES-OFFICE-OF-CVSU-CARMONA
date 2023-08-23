@@ -22,7 +22,6 @@ class RecordController extends Controller
     {
 
         $user = User::where('username', $username)->firstOrFail();
-        $userid = $user->id;
 
         $currentDate = Carbon::now();
 
@@ -52,6 +51,91 @@ class RecordController extends Controller
 
             $minSemDate = $latestAy->firstsem_startdate;
             $maxSemDate = $latestAy->firstsem_enddate;
+        }
+
+        $subtaskcontributions = $user->contributions()
+            ->where('approval', 1)
+            ->whereDate('date', '>=', $minSemDate)
+            ->whereDate('date', '<=', $maxSemDate)
+            ->get();
+
+        $subtasks = [];
+        $otheractivities = [];
+        $activitiesid = [];
+        $allactivities = [];
+
+        if (!$subtaskcontributions->isEmpty()) {
+            $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->toArray();
+            $subtasks = Subtask::whereIn('id', $subtaskcontributionsIds)->get();
+            $otheractivities = $subtasks->pluck('activity_id')->toArray();
+        }
+
+        $activityContributions = $user->activitycontributions()
+            ->where('approval', 1)
+            ->whereDate('startdate', '>=', $minSemDate)
+            ->whereDate('enddate', '<=', $maxSemDate)
+            ->get();
+
+        if (!$activityContributions->isEmpty()) {
+            $activitiesid = $activityContributions->pluck('activity_id')->toArray();
+        }
+
+        $allactivitiesid = array_unique(array_merge($otheractivities, $activitiesid));
+
+        if ($allactivitiesid) {
+            $allactivities = Activity::whereIn('id', $allactivitiesid)
+                ->get();
+        }
+
+        $subhours = $subtaskcontributions->sum('hours_rendered');
+        $acthours = $activityContributions->sum('hours_rendered');
+        $totalhoursrendered = $subhours + $acthours;
+
+        return view('records.index', [
+            'user' => $user,
+            'ayfirstsem' => $ayfirstsem,
+            'aysecondsem' => $aysecondsem,
+            'allAY' => $allAY,
+            'inCurrentYear' => $inCurrentYear,
+            'latestAy' => $latestAy,
+            'subtasks' => $subtasks,
+            'subtaskcontributions' => $subtaskcontributions,
+            'activityContributions' => $activityContributions,
+            'allactivities' => $allactivities,
+            'otheractivities' => $otheractivities,
+            'totalhoursrendered' => $totalhoursrendered,
+        ]);
+    }
+
+    public function selectrecords($username, $ayid, $semester)
+    {
+
+        $user = User::where('username', $username)->firstOrFail();
+
+        $ayfirstsem = [];
+        $aysecondsem = [];
+        $latestAy = [];
+
+        $inCurrentYear = false;
+
+        $allAY = AcademicYear::all(['id', 'acadstartdate', 'acadenddate']);
+
+        $minSemDate = null;
+        $maxSemDate = null;
+
+        if ($semester == "1STSEM") {
+            $ayfirstsem = AcademicYear::findorFail($ayid);
+            $minSemDate = $ayfirstsem->firstsem_startdate;
+            $maxSemDate = $ayfirstsem->firstsem_enddate;
+        } else if ($semester == "2NDSEM") {
+            $aysecondsem = AcademicYear::findorFail($ayid);
+            $minSemDate = $aysecondsem->secondsem_startdate;
+            $maxSemDate = $aysecondsem->secondsem_enddate;
+        }
+
+        $currentDate = Carbon::now();
+        if ($currentDate >= $minSemDate && $currentDate <= $maxSemDate) {
+            $inCurrentYear = true;
         }
 
         $subtaskcontributions = $user->contributions()

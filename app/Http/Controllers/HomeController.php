@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +24,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user();
+        $approval = $user->approval;
+        $username = $user->username;
+        if ($approval == 1) {
+            return redirect()->route('tasks.show', ["username" => $username]);
+        } else {
+            return view('home');
+        }
     }
 }

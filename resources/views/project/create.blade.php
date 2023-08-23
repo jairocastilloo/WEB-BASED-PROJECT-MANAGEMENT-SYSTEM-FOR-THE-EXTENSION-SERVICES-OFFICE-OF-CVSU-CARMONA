@@ -65,27 +65,12 @@
 
                 <div class="btn-group mt-1 ms-3 mb-2 shadow">
                     <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                        <b class="small">Start New Project</b>
+                        <b class="small">Create Project</b>
                     </button>
                 </div>
 
-
-
-                <!--
-        <div class="btn-group mt-3 shadow">
-            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                <b class="small">Start New Project</b>
-            </button>
-        </div>
--->
-                <!--
-        <button type="button" class="btn btn-sm mt-3 shadow rounded border border-2 border-warning text-body" style="background-color: gold;" data-bs-toggle="modal" data-bs-target="#departmentModal">
-            <b class="small">Start New Project</b>
-        </button>
-        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newproject" id="addproj">Add Project</button>
--->
             </div>
-            @if ($currentproject)
+
             @php
 
             $sortedProjects= $currentproject->sortBy('projectstartdate');
@@ -201,7 +186,17 @@
                 @endforeach
             </div>
             @endif
+            @if($currentproject && count($overdueProjects) == 0 && count($overdueProjects) == 0)
+            <div class="basiccont word-wrap shadow mt-2 me-4">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
+                </div>
+                <div class="text-center p-4">
+                    <h4><em>No Projects Ended Yet.</em></h4>
+                </div>
+            </div>
             @endif
+
         </div>
 
     </div>
@@ -258,13 +253,13 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Project Details</button>
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Project Members</button>
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Members</button>
                     </li>.
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Project Objectives</button>
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false" disabled>Project Objectives</button>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -281,34 +276,58 @@
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
                                 <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="projectleader" id="projectleader">
-                                    <option selected disabled>Select Project Leader</option>
-
+                                    <option value="0" selected disabled>Select Project Leader</option>
                                 </select>
                                 <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
                                 <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="programleader" id="programleader">
-                                    <option selected disabled>Select Program Leader</option>
+                                    <option value="0" selected disabled>Select Program Leader</option>
 
                                 </select>
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
                                 <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
 
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
                                 <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
                         </form>
 
@@ -322,18 +341,31 @@
                                 @csrf
                                 <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row rounded" id="selectmember">
-                                    <select class="col-7 m-1 member-select p-2 rounded" id="member-select" name="projectmember[]">
-                                        <option value="" selected disabled>Select a Member</option>
+                                    <select class="col-7 m-1 member-select p-2 rounded is-invalid" id="member-select" name="projectmember[]">
+                                        <option value="0" selected disabled>Select a Member</option>
                                     </select>
+
                                     <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
                                         <b class="small">Remove</b>
                                     </button>
+
+
                                 </div>
 
                             </form>
+
+
                             <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
                                 <b class="small">Add Member</b>
                             </button>
+                            <br>
+                            <span class="small text-danger nomember-error">
+                                <strong>Assign atleast one member.</strong>
+                            </span>
+
+                            <span class="small text-danger noselectmember-error">
+                                <strong>Please ensure that a member is selected in every dropdown.</strong>
+                            </span>
 
                         </div>
 
@@ -352,11 +384,19 @@
                                             <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
+
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>Make</strong>
+                                            </span>
                                         </div>
                                     </div>
                                     <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
                                         <b class="small">Add Objective</b>
                                     </button>
+                                    <br>
+                                    <span class="small text-danger projectobjective-error">
+                                        <strong>Please ensure that there is objective in every input.</strong>
+                                    </span>
 
                                     <hr>
                                 </div>

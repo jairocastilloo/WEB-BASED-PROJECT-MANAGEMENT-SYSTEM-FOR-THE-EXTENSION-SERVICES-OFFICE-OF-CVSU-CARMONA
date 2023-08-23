@@ -18,13 +18,16 @@
 
     <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
+
     <!--<link href="{{ asset('css/bootstrap.css.map') }}" type="text/css" rel="stylesheet">-->
-    <link href="{{ asset('css/bootstrap-icons.css') }}" type="text/css" rel="stylesheet">
+
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
     <!--<script src="{{ mix('js/app.js') }}"></script>-->
+
 
 
 </head>
@@ -126,6 +129,7 @@
             <script src="{{ asset('js/jquery.min.js') }}"></script>
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
             <!--<script src="{{ asset('js/bootstrap.bundle.min.js.map') }}"></script>
 -->
             @yield('scripts')

@@ -10,6 +10,7 @@ use App\Models\SubtaskContributor;
 use App\Models\AcademicYear;
 use App\Models\CalendarYear;
 use Carbon\Carbon;
+use App\Http\Controllers\DateTime;
 
 class TasksController extends Controller
 {
@@ -22,6 +23,8 @@ class TasksController extends Controller
         $userid = $user->id;
 
         $currentDate = Carbon::now();
+
+
         $currentYear = $currentDate->year;
 
 
@@ -41,10 +44,28 @@ class TasksController extends Controller
 
         $activityIds = $activities->pluck('id')->toArray();
 
-        $subtasks = $user->subtasks()
+        $dueInOneWeek = clone $currentDate;
+        $dueInOneWeek->modify('+7 days');
+
+        $dueInThirtyDays = clone $dueInOneWeek;
+        $dueInThirtyDays->modify('+30 days');
+
+        $taskDueThisSevenDays = $user->subtasks()
+            ->where('subduedate', '>=', $currentDate)
+            ->where('subduedate', '<=', $dueInOneWeek)
             ->whereIn('activity_id', $activityIds)
             ->get();
 
+        $taskDueWithinNextThirtyDays = $user->subtasks()
+            ->where('subduedate', '>', $dueInOneWeek)
+            ->where('subduedate', '<=', $dueInThirtyDays)
+            ->whereIn('activity_id', $activityIds)
+            ->get();
+
+        $taskDueLater = $user->subtasks()
+            ->where('subduedate', '>', $dueInThirtyDays)
+            ->whereIn('activity_id', $activityIds)
+            ->get();
 
         $contributions = SubtaskContributor::where('user_id', $userid)
             ->where('approval', 1)
@@ -55,11 +76,13 @@ class TasksController extends Controller
         return view('implementer.index', [
             'currentproject' => $currentproject,
             'activities' => $activities,
-            'subtasks' => $subtasks,
             'contributions' => $contributions,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
-            'currentYear' => $currentYear
+            'currentYear' => $currentYear,
+            'taskDueThisSevenDays' => $taskDueThisSevenDays,
+            'taskDueWithinNextThirtyDays' => $taskDueWithinNextThirtyDays,
+            'taskDueLater' => $taskDueLater,
         ]);
     }
 

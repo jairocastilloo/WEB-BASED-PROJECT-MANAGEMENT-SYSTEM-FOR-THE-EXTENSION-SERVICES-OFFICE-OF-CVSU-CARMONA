@@ -69,6 +69,9 @@ Route::prefix('{username}')->group(function () {
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
+Route::get('/selectrecords/{username}/{ayid}/{semester}', [RecordController::class, 'selectrecords'])->name('records.select');
+
+
 Route::prefix('/subtasks')->group(function () {
     Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('subtasks.display');
     Route::get('/{subtaskid}/{subtaskname}/complysubtask', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
@@ -109,7 +112,8 @@ Route::prefix('/projects')->group(function () {
 });
 Route::get('/display/{projectid}/{department}', [ProjectController::class, 'displayproject'])
     ->name('projects.display');
-
+Route::get('/calendar/{projectid}/{department}', [ProjectController::class, 'displayActivityCalendar'])
+    ->name('projects.calendar');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');

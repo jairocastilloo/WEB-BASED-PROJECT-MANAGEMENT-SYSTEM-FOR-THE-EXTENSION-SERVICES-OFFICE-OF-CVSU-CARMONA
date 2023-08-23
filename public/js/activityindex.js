@@ -164,10 +164,58 @@ $(document).ready(function(){
         $('#addoutputmodal').modal('show');
     });
 
-    
+    function subtaskhasError() {
+
+        var hasErrors = false;
+
+        $('.invalid-feedback strong').text('');
+        $('.is-invalid').removeClass('is-invalid');
+
+        var subtaskname = $('#subtaskname').val();
+        var subtaskduedate = $('#subtaskduedate').val();
+        var actsavestartdate = $('#actsavestartdate').val();
+        var actsaveenddate = $('#actsaveenddate').val();
+
+
+        // Validation for Project Title
+        if (subtaskname.trim() === '') {
+            $('#subtaskname').addClass('is-invalid');
+            $('#subtaskname').next('.invalid-feedback').find('strong').text('Activity Name is required.');
+            hasErrors = true;
+        }
+
+        if (subtaskduedate === '') {
+            $('#subtaskduedate').addClass('is-invalid');
+            $('#subtaskduedate').next('.invalid-feedback').find('strong').text('Subtask Due Date is required.');
+            hasErrors = true;
+        }
+        // Validation for Project Start Date
+        else if (new Date(actsavestartdate) > new Date(subtaskduedate) || new Date(actsaveenddate) < new Date(subtaskduedate)) {
+            $('#subtaskduedate').addClass('is-invalid');
+            $('#subtaskduedate').next('.invalid-feedback').find('strong').text('Please ensure that the Subtask Due Date falls within the range of ' + new Date(actsavestartdate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }) + ' to '
+            + new Date(actsaveenddate).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }));
+            hasErrors = true;
+        }
+        
+        return hasErrors;
+    }
+
+
     $('#createsubtask-btn').click(function(event) {
         event.preventDefault();
 
+
+        var suberror = subtaskhasError();
+
+        if (!suberror){
         var url = $('#subtaskurl').val();
        
         url = url.replace(':subtaskname', $('#subtaskname').val());
@@ -197,6 +245,7 @@ $(document).ready(function(){
 
             }
         });
+        }
     });
     $('#addassignee-btn').click(function(event) {
 
