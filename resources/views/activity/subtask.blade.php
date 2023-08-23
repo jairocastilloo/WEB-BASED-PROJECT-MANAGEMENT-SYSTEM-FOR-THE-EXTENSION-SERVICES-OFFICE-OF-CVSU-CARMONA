@@ -22,7 +22,7 @@
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Subtask Hours</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
                     </div>
                     <p class="ps-4 lh-1 pt-2"><b>{{ $subtask['subtask_name'] }}</b></p>
                     <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
@@ -41,17 +41,32 @@
 
                 </div>
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    @if($approvedhours)
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Approved Submission</h6>
+                    </div>
+                    <div class="p-2 ps-4">
+
+                        <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
+                        <p class="lh-1"> {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
+                        <p class="lh-1">Participants:
+                            @foreach($approvedcontributors as $approvedcontributor)
+                            {{ $approvedcontributor->name . ' ' . $approvedcontributor->last_name . ' | ' }}
+                            @endforeach
+                        </p>
+                    </div>
+                    @else
                     @if($unapprovedhours)
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Hours</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
                     <div class="p-2 ps-4 pb-0 border-bottom">
 
                         <p class="lh-1"> Hours Rendered: {{ $unapprovedhours->hours_rendered }}</p>
                         <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($unapprovedhours->date)->format('F d, Y') }}</p>
                         <p class="lh-1">Participants:
-                            @foreach($contributors as $contributor)
-                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
+                            @foreach($unapprovedcontributors as $unapprovedcontributor)
+                            {{ $unapprovedcontributor->name . ' ' . $unapprovedcontributor->last_name . ' | ' }}
                             @endforeach
                         </p>
 
@@ -66,30 +81,33 @@
                         </form>
 
                     </div>
-                    @elseif($approvedhours)
-                    <div class="border-bottom ps-3 pt-2 pe-2" style="background-color:lightgray;">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Approved Hours</h6>
-                    </div>
-                    <div class="p-2 ps-4" style="background-color:lightgray;">
+                    @endif
 
-                        <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
-                        <p class="lh-1"> {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
+                    @if($rejectedhours)
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                    </div>
+                    <div class="p-2 ps-4">
+
+                        <p class="lh-1"> Hours Rendered: {{ $rejectedhours->hours_rendered }}</p>
+                        <p class="lh-1"> {{ \Carbon\Carbon::parse($rejectedhours->date)->format('F d, Y') }} </p>
                         <p class="lh-1">Participants:
-                            @foreach($contributors as $contributor)
-                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
+                            @foreach($rejectedcontributors as $rejectedcontributor)
+                            {{ $rejectedcontributor->name . ' ' . $rejectedcontributor->last_name . ' | ' }}
                             @endforeach
                         </p>
                     </div>
-                    @elseif($approvedhours == null && $unapprovedhours == null)
+                    @endif
+                    @endif
+                    @if($approvedhours == null && $unapprovedhours == null && $rejectedhours == null)
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Submitted Hours</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
                     </div>
                     <div class="p-2 ps-4 pb-0 border-bottom">
-                        <h5><em>No Submitted Hours Yet.</em></h5>
+                        <h5><em>No Submission Yet.</em></h5>
 
                     </div>
                     @endif
-
 
                 </div>
             </div>
