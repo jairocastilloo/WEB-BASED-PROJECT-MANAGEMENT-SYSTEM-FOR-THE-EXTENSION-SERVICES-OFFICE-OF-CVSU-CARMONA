@@ -40,12 +40,13 @@
                     </div>
 
                 </div>
+
+                @if($approvedhours)
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
-                    @if($approvedhours)
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Approved Submission</h6>
                     </div>
-                    <div class="p-2 ps-4">
+                    <div class="p-2 pb-1 ps-4 small">
 
                         <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
                         <p class="lh-1"> {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
@@ -55,12 +56,14 @@
                             @endforeach
                         </p>
                     </div>
-                    @else
-                    @if($unapprovedhours)
+                </div>
+                @else
+                @if($unapprovedhours)
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
-                    <div class="p-2 ps-4 pb-0 border-bottom">
+                    <div class="p-2 ps-4 pb-0 border-bottom small">
 
                         <p class="lh-1"> Hours Rendered: {{ $unapprovedhours->hours_rendered }}</p>
                         <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($unapprovedhours->date)->format('F d, Y') }}</p>
@@ -71,23 +74,31 @@
                         </p>
 
                     </div>
-                    <div class="btn-group ms-3 mb-3 mt-2 shadow">
-                        <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
-                            @csrf
-                            <input type="text" class="d-none" value="{{ $unapprovedhours->id }}" name="acceptids" id="acceptids">
-                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow accepthours-btn">
-                                <b class="small">Accept</b>
-                            </button>
-                        </form>
 
+                    <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
+                        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <b class="small">Evaluate Submission</b>
+                        </button>
+                        <div class="dropdown-menu">
+                            <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
+                                @csrf
+                                <input type="text" class="d-none" value="{{ $unapprovedhours->id }}" name="acceptids" id="acceptids">
+                                <input type="hidden" name="isApprove" id="isApprove">
+                                <a class="dropdown-item small hrefnav accept-link" href="#"><b class="small">Accept</b></a>
+                                <a class="dropdown-item small hrefnav reject-link" href="#"><b class="small">Reject</b></a>
+                            </form>
+
+                        </div>
                     </div>
-                    @endif
+                </div>
+                @endif
 
-                    @if($rejectedhours)
+                @if($rejectedhours)
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>
-                    <div class="p-2 ps-4">
+                    <div class="p-2 pb-1 ps-4 small">
 
                         <p class="lh-1"> Hours Rendered: {{ $rejectedhours->hours_rendered }}</p>
                         <p class="lh-1"> {{ \Carbon\Carbon::parse($rejectedhours->date)->format('F d, Y') }} </p>
@@ -97,20 +108,25 @@
                             @endforeach
                         </p>
                     </div>
-                    @endif
-                    @endif
-                    @if($approvedhours == null && $unapprovedhours == null && $rejectedhours == null)
+                </div>
+                @endif
+
+                @endif
+
+                @if($approvedhours == null && $unapprovedhours == null && $rejectedhours == null)
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
                     </div>
-                    <div class="p-2 ps-4 pb-0 border-bottom">
+                    <div class="p-2 ps-4 pb-0 border-bottom small">
                         <h5><em>No Submission Yet.</em></h5>
 
                     </div>
-                    @endif
-
                 </div>
+                @endif
+
             </div>
+
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 bggreen">
@@ -128,11 +144,11 @@
 
                 </div>
             </div>
-
         </div>
-
     </div>
+
 </div>
+
 <!--add activity assignees-->
 <div class="modal fade" id="addSubtaskAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -238,29 +254,7 @@
             window.location.href = url;
         });
 
-        $('.accepthours-btn').click(function(event) {
-            event.preventDefault();
-            var acceptIdsValue = $(this).prev().val();
-            var dataurl = $(this).parent().attr('data-url');
-            // Create a data object with the value you want to send
-            var data1 = $(this).parent().serialize();
 
-            $.ajax({
-                url: dataurl, // Replace with your actual AJAX endpoint URL
-                type: 'POST',
-                data: data1,
-                success: function(response) {
-
-                    console.log(response);
-                    window.location.href = url;
-                },
-                error: function(xhr, status, error) {
-                    // Handle the error here
-                    console.log(xhr.responseText);
-                    console.error(error);
-                }
-            });
-        });
 
         $('#confirmsubtaskassignee-btn').click(function(event) {
             event.preventDefault();
@@ -286,6 +280,37 @@
                 }
             });
         });
+
+        $('.accept-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('true'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        // Event listener for the "Reject" link
+        $('.reject-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('false'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        function submitForm() {
+            var formData = $('#accepthoursform').serialize(); // Serialize form data
+            var dataurl = $('#accepthoursform').data('url'); // Get the form data-url attribute
+
+            $.ajax({
+                type: 'POST',
+                url: dataurl,
+                data: formData,
+                success: function(response) {
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                }
+            });
+        }
     });
 </script>
 @endsection

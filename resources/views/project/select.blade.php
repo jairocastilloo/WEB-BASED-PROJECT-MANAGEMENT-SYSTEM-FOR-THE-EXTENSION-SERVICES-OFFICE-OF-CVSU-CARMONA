@@ -101,7 +101,7 @@
 
                 <div class="btn-group dropdown mt-3 shadow">
                     <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <b class="small">Edit Project</b>
+                        <b class="small">Menu</b>
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
@@ -110,6 +110,7 @@
                         <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
                             <b class="small">View Activity Calendar</b>
                         </a>
+                        <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
                     </div>
                 </div>
                 <!--

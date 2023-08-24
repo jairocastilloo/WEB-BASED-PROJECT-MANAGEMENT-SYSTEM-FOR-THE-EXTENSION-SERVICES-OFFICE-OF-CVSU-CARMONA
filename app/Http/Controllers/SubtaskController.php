@@ -252,15 +252,21 @@ class SubtaskController extends Controller
     {
 
         $acceptIds = $request->input('acceptids');
-
+        $isApprove = $request->input('isApprove');
+        if ($isApprove === 'true') {
+            $isApprove = 1;
+        } elseif ($isApprove === 'false') {
+            $isApprove = 0;
+        }
         // Update the 'approval' field in SubtaskContributor table
         $contribution = Contribution::findorFail($acceptIds);
-        $contribution->update(['approval' => 1]);
+        $contribution->update(['approval' => $isApprove]);
 
-        $subtaskid = $contribution->subtask_id;
-        $hoursrendered = $contribution->hours_rendered;
-        Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
-
+        if ($isApprove == 1) {
+            $subtaskid = $contribution->subtask_id;
+            $hoursrendered = $contribution->hours_rendered;
+            Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
+        }
         return 'File uploaded successfully.';
     }
 }
