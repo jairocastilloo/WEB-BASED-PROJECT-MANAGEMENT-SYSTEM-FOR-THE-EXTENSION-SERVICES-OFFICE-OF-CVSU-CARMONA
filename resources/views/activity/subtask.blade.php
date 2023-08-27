@@ -20,12 +20,13 @@
         <div class="row">
             <div class="col-8">
 
-                <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                <div class="basiccont word-wrap shadow ms-2 mt-4 pb-1" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
                     </div>
-                    <p class="ps-4 lh-1 pt-2"><b>{{ $subtask['subtask_name'] }}</b></p>
+                    <p class="ps-4 lh-1 pt-2"><b>Name: {{ $subtask['subtask_name'] }}</b></p>
                     <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
+                    <p class="ps-5 lh-1">Due Date: {{ $subtask['subduedate'] }}</p>
                     <p class="ps-5 lh-1">Assignees:
                         @foreach($currentassignees as $currentassignee)
                         {{ $currentassignee->name . ' ' . $currentassignee->last_name . ' |'}}
@@ -33,45 +34,39 @@
                         @endforeach
                         <button type="button" class="btn btn-sm btn-outline-secondary ms-1" id="add-subtaskassignees">+</button>
                     </p>
-                    <div class="btn-group ms-3 mb-3 shadow">
+                    @if (!$approvedhours)
+                    <div class="btn-group ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
                             <b class="small">Submit Hours</b>
                         </button>
                     </div>
-
+                    @endif
                 </div>
 
                 @if($approvedhours)
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow ms-2 mt-4 submission-div" data-id="{{ $approvedhours->id }}" data-approval="{{ $approvedhours->approval }}">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Approved Submission</h6>
                     </div>
-                    <div class="p-2 pb-1 ps-4 small">
+                    <div class="p-2 pb-1 ps-4 small divhover">
 
                         <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
-                        <p class="lh-1"> {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
-                        <p class="lh-1">Participants:
-                            @foreach($approvedcontributors as $approvedcontributor)
-                            {{ $approvedcontributor->name . ' ' . $approvedcontributor->last_name . ' | ' }}
-                            @endforeach
-                        </p>
+                        <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($approvedhours->created_at)->format('F d, Y') }} </p>
+
                     </div>
                 </div>
                 @else
                 @if($unapprovedhours)
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow ms-2 mt-4 submission-div" data-id="{{ $unapprovedhours->id }}" data-approval="{{ $unapprovedhours->approval }}">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
-                    <div class="p-2 ps-4 pb-0 border-bottom small">
+                    <div class="p-2 ps-4 pb-0 border-bottom small divhover">
 
                         <p class="lh-1"> Hours Rendered: {{ $unapprovedhours->hours_rendered }}</p>
                         <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($unapprovedhours->date)->format('F d, Y') }}</p>
-                        <p class="lh-1">Participants:
-                            @foreach($unapprovedcontributors as $unapprovedcontributor)
-                            {{ $unapprovedcontributor->name . ' ' . $unapprovedcontributor->last_name . ' | ' }}
-                            @endforeach
-                        </p>
+                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($unapprovedhours->created_at)->format('F d, Y') }}</p>
 
                     </div>
 
@@ -94,19 +89,15 @@
                 @endif
 
                 @if($rejectedhours)
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow ms-2 mt-4 submission-div" data-id="{{ $rejectedhours->id }}" data-approval="{{ $rejectedhours->approval }}">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>
-                    <div class="p-2 pb-1 ps-4 small">
+                    <div class="p-2 pb-1 ps-4 small divhover">
 
                         <p class="lh-1"> Hours Rendered: {{ $rejectedhours->hours_rendered }}</p>
-                        <p class="lh-1"> {{ \Carbon\Carbon::parse($rejectedhours->date)->format('F d, Y') }} </p>
-                        <p class="lh-1">Participants:
-                            @foreach($rejectedcontributors as $rejectedcontributor)
-                            {{ $rejectedcontributor->name . ' ' . $rejectedcontributor->last_name . ' | ' }}
-                            @endforeach
-                        </p>
+                        <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($rejectedhours->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($rejectedhours->created_at)->format('F d, Y') }} </p>
                     </div>
                 </div>
                 @endif
@@ -311,6 +302,30 @@
                 }
             });
         }
+
+        $(document).on('click', '.submission-div', function() {
+            event.preventDefault();
+
+            var submissionid = $(this).attr("data-id");
+            var approval = $(this).attr("data-approval");
+            var submission;
+
+            if (approval == null) {
+                submission = "Unevaluated-Submission";
+            } else if (approval == 0) {
+                submission = "Rejected-Submission";
+            } else if (approval == 1) {
+                submission = "Accepted-Submission";
+            }
+
+
+
+            var url = '{{ route("submission.display", ["id" => ":submissionid", "submissionname" => ":submissionname"]) }}';
+            url = url.replace(':submissionid', submissionid);
+            url = url.replace(':submissionname', submission);
+            window.location.href = url;
+        });
+
     });
 </script>
 @endsection
