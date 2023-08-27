@@ -15,6 +15,7 @@ use App\Http\Controllers\RecordController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HoursController;
+use App\Http\Controllers\SubmissionController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 
@@ -132,3 +133,7 @@ Route::prefix('/output')->group(function () {
 
 Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
 Route::post('/saveacademicyear', [AcademicYearController::class, 'saveacadyear'])->name('acadyear.save');
+
+Route::prefix('/submission')->group(function () {
+    Route::get('/{submissionid}/{submissionname}', [SubmissionController::class, 'displaysubmission'])->name('submission.display');
+});

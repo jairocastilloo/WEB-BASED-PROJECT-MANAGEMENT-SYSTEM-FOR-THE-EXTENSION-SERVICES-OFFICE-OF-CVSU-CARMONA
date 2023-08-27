@@ -318,9 +318,7 @@
                 submission = "Accepted-Submission";
             }
 
-
-
-            var url = '{{ route("submission.display", ["id" => ":submissionid", "submissionname" => ":submissionname"]) }}';
+            var url = '{{ route("submission.display", ["submissionid" => ":submissionid", "submissionname" => ":submissionname"]) }}';
             url = url.replace(':submissionid', submissionid);
             url = url.replace(':submissionname', submission);
             window.location.href = url;
