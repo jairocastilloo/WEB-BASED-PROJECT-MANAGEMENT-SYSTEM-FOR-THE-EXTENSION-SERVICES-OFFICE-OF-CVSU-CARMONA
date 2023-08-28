@@ -189,29 +189,43 @@ class SubtaskController extends Controller
 
 
         $unapprovedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', 0)
+            ->where('approval', null)
             ->first();
-        $hoursContributors = [];
-        $contributors = [];
+        $unapprovedhoursContributors = [];
+        $unapprovedcontributors = [];
         if ($unapprovedhours) {
             $unapprovedhoursid = $unapprovedhours->id;
-            $hoursContributors = SubtaskcontributionsUser::where('contribution_id', $unapprovedhoursid)
+            $unapprovedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $unapprovedhoursid)
                 ->pluck('user_id');
-            $contributors = User::whereIn('id', $hoursContributors)
+            $unapprovedcontributors = User::whereIn('id', $unapprovedhoursContributors)
                 ->get();
         }
 
         $approvedhours = Contribution::where('subtask_id', $subtaskid)
             ->where('approval', 1)
             ->first();
+        $approvedhoursContributors = [];
+        $approvedcontributors = [];
         if ($approvedhours) {
             $approvedhoursid = $approvedhours->id;
-            $hoursContributors = SubtaskcontributionsUser::where('contribution_id', $approvedhoursid)
+            $approvedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $approvedhoursid)
                 ->pluck('user_id');
-            $contributors = User::whereIn('id', $hoursContributors)
+            $approvedcontributors = User::whereIn('id', $approvedhoursContributors)
                 ->get();
         }
 
+        $rejectedhours = Contribution::where('subtask_id', $subtaskid)
+            ->where('approval', 0)
+            ->first();
+        $rejectedhoursContributors = [];
+        $rejectedcontributors = [];
+        if ($rejectedhours) {
+            $rejectedhoursid = $rejectedhours->id;
+            $rejectedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $rejectedhoursid)
+                ->pluck('user_id');
+            $rejectedcontributors = User::whereIn('id', $rejectedhoursContributors)
+                ->get();
+        }
 
         return view('activity.subtask', [
             'activity' => $activity,
@@ -223,8 +237,14 @@ class SubtaskController extends Controller
             'currentassignees' => $currentassignees,
             'unapprovedhours' => $unapprovedhours,
             'approvedhours' => $approvedhours,
-            'contributors' => $contributors,
-            'hoursContributors' => $hoursContributors,
+            'approvedcontributors' => $approvedcontributors,
+            'approvedhoursContributors' => $approvedhoursContributors,
+            'unapprovedcontributors' => $unapprovedcontributors,
+            'unapprovedhoursContributors' => $unapprovedhoursContributors,
+            'rejectedhours' => $rejectedhours,
+            'rejectedcontributors' => $rejectedcontributors,
+            'rejectedhoursContributors' => $rejectedhoursContributors,
+
         ]);
     }
 
@@ -232,15 +252,21 @@ class SubtaskController extends Controller
     {
 
         $acceptIds = $request->input('acceptids');
-
+        $isApprove = $request->input('isApprove');
+        if ($isApprove === 'true') {
+            $isApprove = 1;
+        } elseif ($isApprove === 'false') {
+            $isApprove = 0;
+        }
         // Update the 'approval' field in SubtaskContributor table
         $contribution = Contribution::findorFail($acceptIds);
-        $contribution->update(['approval' => 1]);
+        $contribution->update(['approval' => $isApprove]);
 
-        $subtaskid = $contribution->subtask_id;
-        $hoursrendered = $contribution->hours_rendered;
-        Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
-
+        if ($isApprove == 1) {
+            $subtaskid = $contribution->subtask_id;
+            $hoursrendered = $contribution->hours_rendered;
+            Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
+        }
         return 'File uploaded successfully.';
     }
 }

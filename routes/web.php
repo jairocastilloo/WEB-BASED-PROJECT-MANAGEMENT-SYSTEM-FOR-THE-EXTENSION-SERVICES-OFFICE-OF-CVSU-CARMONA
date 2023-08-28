@@ -15,6 +15,7 @@ use App\Http\Controllers\RecordController;
 use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HoursController;
+use App\Http\Controllers\SubmissionController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 
@@ -33,8 +34,11 @@ use App\Models\Activity;
 
 
 Auth::routes();
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index'])->name('homepage');
+Route::get('/', function () {
+    return view('auth.login');
+});
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 //Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
@@ -61,7 +65,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 //Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
 
-
+Route::get('download/{contributionid}/{filename}', [FileController::class, 'download'])->name('download.file');
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
@@ -129,3 +133,7 @@ Route::prefix('/output')->group(function () {
 
 Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
 Route::post('/saveacademicyear', [AcademicYearController::class, 'saveacadyear'])->name('acadyear.save');
+
+Route::prefix('/submission')->group(function () {
+    Route::get('/{submissionid}/{submissionname}', [SubmissionController::class, 'displaysubmission'])->name('submission.display');
+});
