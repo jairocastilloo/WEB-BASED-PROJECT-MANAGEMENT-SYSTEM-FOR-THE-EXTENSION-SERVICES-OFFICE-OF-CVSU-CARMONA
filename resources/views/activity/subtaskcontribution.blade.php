@@ -11,12 +11,33 @@
             <input type="number" class="d-none" id="actid" value="{{ $activity['id'] }}">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
+        <div class="col-4 p-2 pt-3 border-end text-center">
             <h6><b>Subtask: {{ $subtask['subtask_name'] }}</b></h6>
         </div>
     </div>
     <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="basiccont word-wrap shadow ms-2 mt-4" data-id="{{ $contribution->id }}" data-approval="{{ $contribution->approval }}">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Approved Submission</h6>
+                    </div>
+                    <div class="p-2 pb-1">
+                        <p class="ps-4 lh-1 pt-2"><b>Subtask Name: {{ $subtask['subtask_name'] }}</b></p>
+                        <p class="lh-1 ps-5"> Submitted Hours Rendered: {{ $contribution->hours_rendered }}</p>
+                        <p class="lh-1 ps-5"> Rendered Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-5"> Submitted in: {{ \Carbon\Carbon::parse($contribution->created_at)->format('F d, Y') }} </p>
 
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-4">
+
+
+            </div>
+
+        </div>
     </div>
 </div>
 

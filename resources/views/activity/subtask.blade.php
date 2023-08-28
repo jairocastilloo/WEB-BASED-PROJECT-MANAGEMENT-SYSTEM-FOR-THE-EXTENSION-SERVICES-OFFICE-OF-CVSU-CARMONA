@@ -26,7 +26,8 @@
                     </div>
                     <p class="ps-4 lh-1 pt-2"><b>Name: {{ $subtask['subtask_name'] }}</b></p>
                     <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
-                    <p class="ps-5 lh-1">Due Date: {{ $subtask['subduedate'] }}</p>
+                    <p class="ps-5 lh-1">Due Date: {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
+                    </p>
                     <p class="ps-5 lh-1">Assignees:
                         @foreach($currentassignees as $currentassignee)
                         {{ $currentassignee->name . ' ' . $currentassignee->last_name . ' |'}}
@@ -50,8 +51,8 @@
                     </div>
                     <div class="p-2 pb-1 ps-4 small divhover">
 
-                        <p class="lh-1"> Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
-                        <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted Hours Rendered: {{ $approvedhours->hours_rendered }}</p>
+                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($approvedhours->date)->format('F d, Y') }} </p>
                         <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($approvedhours->created_at)->format('F d, Y') }} </p>
 
                     </div>
@@ -64,8 +65,8 @@
                     </div>
                     <div class="p-2 ps-4 pb-0 border-bottom small divhover">
 
-                        <p class="lh-1"> Hours Rendered: {{ $unapprovedhours->hours_rendered }}</p>
-                        <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($unapprovedhours->date)->format('F d, Y') }}</p>
+                        <p class="lh-1"> Submitted Hours Rendered: {{ $unapprovedhours->hours_rendered }}</p>
+                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($unapprovedhours->date)->format('F d, Y') }}</p>
                         <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($unapprovedhours->created_at)->format('F d, Y') }}</p>
 
                     </div>
@@ -95,8 +96,8 @@
                     </div>
                     <div class="p-2 pb-1 ps-4 small divhover">
 
-                        <p class="lh-1"> Hours Rendered: {{ $rejectedhours->hours_rendered }}</p>
-                        <p class="lh-1"> Date: {{ \Carbon\Carbon::parse($rejectedhours->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted Hours Rendered: {{ $rejectedhours->hours_rendered }}</p>
+                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($rejectedhours->date)->format('F d, Y') }} </p>
                         <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($rejectedhours->created_at)->format('F d, Y') }} </p>
                     </div>
                 </div>
