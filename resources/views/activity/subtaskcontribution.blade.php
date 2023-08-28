@@ -28,19 +28,36 @@
                         <p class="lh-1 ps-5"> Submitted Hours Rendered: {{ $contribution->hours_rendered }}</p>
                         <p class="lh-1 ps-5"> Rendered Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-5"> Submitted in: {{ \Carbon\Carbon::parse($contribution->created_at)->format('F d, Y') }} </p>
-                        <div class="card ms-5">
+                        <div class="card ms-5 m-3">
                             <div class="card-body">
-                                <p class="card-title">File Display</p>
-                                <p class="card-text">Click the link below to view the file.</p>
-                                <ul>
-                                    @foreach ($uploadedFiles as $file)
-                                    {{ basename($file) }}
-                                    <li><a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($file)]) }}">{{ basename($file) }}</a></li>
-                                    @endforeach
+                                <p class="card-title">Submission Attachment</p>
+
+                                <ul class="list-unstyled ms-3">
+                                    <button type="button" class="btn btn-sm btn-outline-primary shadow rounded" href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}">
+                                        <b>{{ basename($uploadedFiles[0]) }} </b><strong class="bi bi-download"></strong>
+                                    </button>
+
                                 </ul>
 
                             </div>
                         </div>
+                        @if( $contribution['approval'] != 1)
+                        <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
+                            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <b class="small">Evaluate Submission</b>
+                            </button>
+                            <div class="dropdown-menu">
+                                <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
+                                    @csrf
+                                    <input type="text" class="d-none" value="{{ $contribution->id }}" name="acceptids" id="acceptids">
+                                    <input type="hidden" name="isApprove" id="isApprove">
+                                    <a class="dropdown-item small hrefnav accept-link" href="#"><b class="small">Accept</b></a>
+                                    <a class="dropdown-item small hrefnav reject-link" href="#"><b class="small">Reject</b></a>
+                                </form>
+
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -54,4 +71,44 @@
     </div>
 </div>
 
+@endsection
+
+@section('scripts')
+
+<script>
+    $(document).ready(function() {
+
+        $('.accept-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('true'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        // Event listener for the "Reject" link
+        $('.reject-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('false'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        function submitForm() {
+            var formData = $('#accepthoursform').serialize(); // Serialize form data
+            var dataurl = $('#accepthoursform').data('url'); // Get the form data-url attribute
+
+            $.ajax({
+                type: 'POST',
+                url: dataurl,
+                data: formData,
+                success: function(response) {
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+    });
+</script>
 @endsection
