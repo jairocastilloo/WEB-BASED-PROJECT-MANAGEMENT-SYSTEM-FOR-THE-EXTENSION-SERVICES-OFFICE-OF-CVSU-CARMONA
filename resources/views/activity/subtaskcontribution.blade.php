@@ -22,6 +22,7 @@
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofsubmission }}</h6>
                     </div>
+
                     <div class="p-2 pb-1">
                         <p class="ps-4 lh-1 pt-2"><b>Subtask Name: {{ $subtask['subtask_name'] }}</b></p>
                         <p class="lh-1 ps-5"> Submitted Hours Rendered: {{ $contribution->hours_rendered }}</p>
@@ -33,7 +34,8 @@
                                 <p class="card-text">Click the link below to view the file.</p>
                                 <ul>
                                     @foreach ($uploadedFiles as $file)
-                                    <li><a href="{{ asset($file) }}">{{ basename($file) }}</a></li>
+                                    {{ basename($file) }}
+                                    <li><a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($file)]) }}">{{ basename($file) }}</a></li>
                                     @endforeach
                                 </ul>
 
