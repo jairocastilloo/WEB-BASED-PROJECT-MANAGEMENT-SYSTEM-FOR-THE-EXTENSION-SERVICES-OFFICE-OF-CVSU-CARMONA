@@ -32,12 +32,11 @@
                             <div class="card-body">
                                 <p class="card-title">Submission Attachment</p>
 
-                                <ul class="list-unstyled ms-3">
-                                    <button type="button" class="btn btn-sm btn-outline-primary shadow rounded" href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}">
-                                        <b>{{ basename($uploadedFiles[0]) }} </b><strong class="bi bi-download"></strong>
-                                    </button>
 
-                                </ul>
+                                <a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded ms-3">
+                                    <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-4"></i><b>{{ basename($uploadedFiles[0]) }}</b>
+
+                                </a>
 
                             </div>
                         </div>
@@ -63,8 +62,84 @@
 
             </div>
             <div class="col-4">
+                @php
+                // Sort the $activities array by actstartdate in ascending order
 
 
+                $unevaluatedSubmission = $othercontribution->filter(function ($contri) {
+                return $contri['approval'] == '';
+                });
+                $acceptedSubmission = $othercontribution->filter(function ($contri) {
+                return $contri['approval'] == 1;
+                });
+                $rejectedSubmission = $othercontribution->filter(function ($contri) {
+                return $contri['approval'] == 0;
+                });
+
+                @endphp
+                @if($othercontribution->isEmpty())
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Contribution</h6>
+                    </div>
+                    <div class="text-center p-4">
+                        <h4><em>No Other Submission Yet.</em></h4>
+                    </div>
+                </div>
+                @endif
+
+                @if ($unevaluatedSubmission && count($unevaluatedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4 me-2 submission-div">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                    </div>
+                    @foreach ($unevaluatedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+                        <p class="lh-1"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+
+                    @endforeach
+                </div>
+                @endif
+                @if ($acceptedSubmission && count($acceptedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4 me-2 submission-div">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
+                    </div>
+                    @foreach ($acceptedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+                        <p class="lh-1"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if ($rejectedSubmission && count($rejectedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4 me-2 submission-div">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                    </div>
+                    @foreach ($rejectedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+                        <p class="lh-1"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+                    @endforeach
+                </div>
+                @endif
             </div>
 
         </div>

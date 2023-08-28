@@ -32,6 +32,10 @@ class SubmissionController extends Controller
         $currentDateTime = str_replace(':', '-', $currentDateTime);
         $uploadedFiles = Storage::files('uploads/' . $currentDateTime);
 
+        $othercontribution = Contribution::where('subtask_id', $subtaskid)
+            ->whereNotIn('id', [$submissionid])
+            ->get();
+
         return view('activity.subtaskcontribution', [
             'contribution' => $contribution,
             'subtask' => $subtask,
@@ -41,8 +45,8 @@ class SubmissionController extends Controller
             'projectId' => $projectId,
             'nameofsubmission' => $nameofsubmission,
             'uploadedFiles' => $uploadedFiles,
-            'currentDateTime' => $currentDateTime
-
+            'currentDateTime' => $currentDateTime,
+            'othercontribution' => $othercontribution
         ]);
     }
 }
