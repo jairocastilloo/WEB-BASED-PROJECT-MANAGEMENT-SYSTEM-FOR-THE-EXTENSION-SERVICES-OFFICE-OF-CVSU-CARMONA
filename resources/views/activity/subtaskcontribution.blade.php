@@ -20,14 +20,25 @@
             <div class="col-8">
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-id="{{ $contribution->id }}" data-approval="{{ $contribution->approval }}">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Approved Submission</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofsubmission }}</h6>
                     </div>
                     <div class="p-2 pb-1">
                         <p class="ps-4 lh-1 pt-2"><b>Subtask Name: {{ $subtask['subtask_name'] }}</b></p>
                         <p class="lh-1 ps-5"> Submitted Hours Rendered: {{ $contribution->hours_rendered }}</p>
                         <p class="lh-1 ps-5"> Rendered Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-5"> Submitted in: {{ \Carbon\Carbon::parse($contribution->created_at)->format('F d, Y') }} </p>
+                        <div class="card ms-5">
+                            <div class="card-body">
+                                <p class="card-title">File Display</p>
+                                <p class="card-text">Click the link below to view the file.</p>
+                                <ul>
+                                    @foreach ($uploadedFiles as $file)
+                                    <li><a href="{{ asset($file) }}">{{ basename($file) }}</a></li>
+                                    @endforeach
+                                </ul>
 
+                            </div>
+                        </div>
                     </div>
                 </div>
 
