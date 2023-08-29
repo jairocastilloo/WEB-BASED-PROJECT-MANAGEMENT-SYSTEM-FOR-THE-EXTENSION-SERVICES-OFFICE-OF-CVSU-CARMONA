@@ -24,16 +24,17 @@
 
 
                 $unevaluatedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] == '';
+                return $contri['approval'] === null;
                 });
                 $acceptedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] == 1;
+                return $contri['approval'] === 1;
                 });
                 $rejectedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] == 0;
+                return $contri['approval'] === 0;
                 });
 
                 @endphp
+
                 <div class="basiccont word-wrap shadow ms-2 mt-4 pb-1" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
@@ -69,7 +70,7 @@
                 </div>
                 @endif
 
-                @if ($unevaluatedSubmission && count($unevaluatedSubmission) > 0 && (count($acceptedSubmission) == 0))
+                @if (count($unevaluatedSubmission) > 0)
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
@@ -87,7 +88,7 @@
                     @endforeach
                 </div>
                 @endif
-                @if ($acceptedSubmission && count($acceptedSubmission) > 0)
+                @if (count($acceptedSubmission) > 0)
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
@@ -104,7 +105,7 @@
                     @endforeach
                 </div>
                 @endif
-                @if ($rejectedSubmission && count($rejectedSubmission) > 0)
+                @if (count($rejectedSubmission) > 0)
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
@@ -315,7 +316,7 @@
             var submissionid = $(this).attr("data-id");
             var approval = $(this).attr("data-approval");
             var submission;
-
+            console.log(approval);
             if (approval === "") {
                 submission = "Unevaluated-Submission";
             } else if (approval == 0) {

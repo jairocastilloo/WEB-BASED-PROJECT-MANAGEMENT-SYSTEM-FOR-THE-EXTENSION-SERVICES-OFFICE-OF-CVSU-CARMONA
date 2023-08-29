@@ -73,13 +73,13 @@
 
 
                 $unevaluatedSubmission = $othercontribution->filter(function ($contri) {
-                return $contri['approval'] == '';
+                return $contri['approval'] === null;
                 });
                 $acceptedSubmission = $othercontribution->filter(function ($contri) {
-                return $contri['approval'] == 1;
+                return $contri['approval'] === 1;
                 });
                 $rejectedSubmission = $othercontribution->filter(function ($contri) {
-                return $contri['approval'] == 0;
+                return $contri['approval'] === 0;
                 });
 
                 @endphp
@@ -94,7 +94,7 @@
                 </div>
                 @endif
 
-                @if ($unevaluatedSubmission && count($unevaluatedSubmission) > 0)
+                @if (count($unevaluatedSubmission) > 0)
 
                 <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
@@ -104,15 +104,15 @@
                     <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
                     </div>
 
                     @endforeach
                 </div>
                 @endif
-                @if ($acceptedSubmission && count($acceptedSubmission) > 0)
+                @if (count($acceptedSubmission) > 0)
 
                 <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
@@ -122,14 +122,14 @@
                     <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
                     </div>
                     @endforeach
                 </div>
                 @endif
-                @if ($rejectedSubmission && count($rejectedSubmission) > 0)
+                @if (count($rejectedSubmission) > 0)
 
                 <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
@@ -139,8 +139,8 @@
                     <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
                     </div>
                     @endforeach

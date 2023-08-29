@@ -222,6 +222,9 @@ class SubtaskController extends Controller
             $subtaskid = $contribution->subtask_id;
             $hoursrendered = $contribution->hours_rendered;
             Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
+            Contribution::where('subtask_id', $subtaskid)
+                ->where('approval', null)
+                ->delete();
         }
         return 'File uploaded successfully.';
     }
