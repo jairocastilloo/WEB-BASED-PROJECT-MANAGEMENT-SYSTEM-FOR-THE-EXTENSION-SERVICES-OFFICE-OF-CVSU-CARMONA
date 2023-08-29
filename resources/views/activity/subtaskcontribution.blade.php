@@ -23,7 +23,7 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofsubmission }}</h6>
                     </div>
 
-                    <div class="p-2 pb-1">
+                    <div class="p-2">
                         <p class="ps-4 lh-1 pt-2"><b>Subtask Name: {{ $subtask['subtask_name'] }}</b></p>
                         <p class="lh-1 ps-4"> <b>Submitted Hours Rendered: {{ $contribution->hours_rendered }}</b></p>
                         <p class="lh-1 ps-5"> Rendered Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>

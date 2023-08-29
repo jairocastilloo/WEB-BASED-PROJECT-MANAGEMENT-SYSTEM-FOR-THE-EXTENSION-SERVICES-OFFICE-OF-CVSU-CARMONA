@@ -188,46 +188,9 @@ class SubtaskController extends Controller
             return $item->user;
         });
 
+        $contributions = Contribution::where('subtask_id', $subtaskid)
+            ->get();
 
-
-        $unapprovedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', null)
-            ->first();
-        $unapprovedhoursContributors = [];
-        $unapprovedcontributors = [];
-        if ($unapprovedhours) {
-            $unapprovedhoursid = $unapprovedhours->id;
-            $unapprovedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $unapprovedhoursid)
-                ->pluck('user_id');
-            $unapprovedcontributors = User::whereIn('id', $unapprovedhoursContributors)
-                ->get();
-        }
-
-        $approvedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', 1)
-            ->first();
-        $approvedhoursContributors = [];
-        $approvedcontributors = [];
-        if ($approvedhours) {
-            $approvedhoursid = $approvedhours->id;
-            $approvedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $approvedhoursid)
-                ->pluck('user_id');
-            $approvedcontributors = User::whereIn('id', $approvedhoursContributors)
-                ->get();
-        }
-
-        $rejectedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', 0)
-            ->first();
-        $rejectedhoursContributors = [];
-        $rejectedcontributors = [];
-        if ($rejectedhours) {
-            $rejectedhoursid = $rejectedhours->id;
-            $rejectedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $rejectedhoursid)
-                ->pluck('user_id');
-            $rejectedcontributors = User::whereIn('id', $rejectedhoursContributors)
-                ->get();
-        }
 
         return view('activity.subtask', [
             'activity' => $activity,
@@ -237,16 +200,7 @@ class SubtaskController extends Controller
             'projectId' => $projectId,
             'assignees' => $assignees,
             'currentassignees' => $currentassignees,
-            'unapprovedhours' => $unapprovedhours,
-            'approvedhours' => $approvedhours,
-            'approvedcontributors' => $approvedcontributors,
-            'approvedhoursContributors' => $approvedhoursContributors,
-            'unapprovedcontributors' => $unapprovedcontributors,
-            'unapprovedhoursContributors' => $unapprovedhoursContributors,
-            'rejectedhours' => $rejectedhours,
-            'rejectedcontributors' => $rejectedcontributors,
-            'rejectedhoursContributors' => $rejectedhoursContributors,
-
+            'contributions' => $contributions
         ]);
     }
 
