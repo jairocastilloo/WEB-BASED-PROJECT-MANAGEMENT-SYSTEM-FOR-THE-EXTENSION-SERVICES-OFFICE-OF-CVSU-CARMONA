@@ -11,7 +11,9 @@
             <input type="number" class="d-none" id="actid" value="{{ $activity['id'] }}">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive">
+            <input type="hidden" id="subid" value="{{ $subtask['id'] }}">
+            <input type="hidden" id="subname" value="{{ $subtask['subtask_name'] }}">
             <h6><b>Subtask: {{ $subtask['subtask_name'] }}</b></h6>
         </div>
     </div>
@@ -175,6 +177,13 @@
         function submitForm() {
             var formData = $('#accepthoursform').serialize(); // Serialize form data
             var dataurl = $('#accepthoursform').data('url'); // Get the form data-url attribute
+            var subtaskname = $('#subname').val();
+            var subtaskid = $('#subid').val();
+
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
+            url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
+
 
             $.ajax({
                 type: 'POST',
