@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subtask;
 use App\Models\Activity;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -129,6 +130,7 @@ class SubtaskController extends Controller
         $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
         $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
         $subtaskcontributor->date = $validatedData['subtask-date'];
+        $subtaskcontributor->submitter_id = Auth::user()->id;
         $subtaskcontributor->save();
         $newsubtaskcontributor = $subtaskcontributor->id;
 
@@ -149,7 +151,7 @@ class SubtaskController extends Controller
         $file = $request->file('subtaskdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
         $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
         $path = $request->file('subtaskdocs')->storeAs('uploads/' . $currentDateTime, $fileName);

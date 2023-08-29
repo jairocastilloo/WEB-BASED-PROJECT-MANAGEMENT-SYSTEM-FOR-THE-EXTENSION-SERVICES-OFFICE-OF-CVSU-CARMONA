@@ -25,21 +25,27 @@
 
                     <div class="p-2 pb-1">
                         <p class="ps-4 lh-1 pt-2"><b>Subtask Name: {{ $subtask['subtask_name'] }}</b></p>
-                        <p class="lh-1 ps-5"> Submitted Hours Rendered: {{ $contribution->hours_rendered }}</p>
+                        <p class="lh-1 ps-4"> <b>Submitted Hours Rendered: {{ $contribution->hours_rendered }}</b></p>
                         <p class="lh-1 ps-5"> Rendered Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>
+
+                        <p class="lh-1 ps-5"> Contributors:
+                            @foreach($contributors as $contributor)
+                            {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
+                            @endforeach
+                        </p>
                         <p class="lh-1 ps-5"> Submitted in: {{ \Carbon\Carbon::parse($contribution->created_at)->format('F d, Y') }} </p>
-                        <div class="card ms-5 m-3">
-                            <div class="card-body">
-                                <p class="card-title">Submission Attachment</p>
+                        @if($submitter)
+                        <p class="lh-1 ps-5"> Submitted by: {{ $submitter[0]->name . ' ' . $submitter[0]->last_name }} </p>
+                        @endif
+                        <p class="lh-1 ps-5">Submission Attachment:</p>
+                        <div class="ps-5 mb-2">
+                            <a href=" {{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded ms-3">
+                                <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
 
+                            </a>
 
-                                <a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded ms-3">
-                                    <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-4"></i><b>{{ basename($uploadedFiles[0]) }}</b>
-
-                                </a>
-
-                            </div>
                         </div>
+
                         @if( $contribution['approval'] != 1)
                         <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
                             <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -90,14 +96,14 @@
 
                 @if ($unevaluatedSubmission && count($unevaluatedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-4 me-2 submission-div">
+                <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
                     @foreach ($unevaluatedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
-                        <p class="lh-1"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
                         <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
                         <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
@@ -108,14 +114,14 @@
                 @endif
                 @if ($acceptedSubmission && count($acceptedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-4 me-2 submission-div">
+                <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
                     </div>
                     @foreach ($acceptedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
-                        <p class="lh-1"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
                         <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
                         <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
@@ -125,14 +131,14 @@
                 @endif
                 @if ($rejectedSubmission && count($rejectedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-4 me-2 submission-div">
+                <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>
                     @foreach ($rejectedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
-                        <p class="lh-1"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
                         <p class="lh-1"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
                         <p class="lh-1"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
@@ -183,6 +189,29 @@
                 }
             });
         }
+
+
+        $(document).on('click', '.submission-div', function() {
+            event.preventDefault();
+
+            var submissionid = $(this).attr("data-id");
+            var approval = $(this).attr("data-approval");
+            var submission;
+
+            if (approval === "") {
+                submission = "Unevaluated-Submission";
+            } else if (approval == 0) {
+                submission = "Rejected-Submission";
+            } else if (approval == 1) {
+                submission = "Accepted-Submission";
+            }
+
+
+            var url = '{{ route("submission.display", ["submissionid" => ":submissionid", "submissionname" => ":submissionname"]) }}';
+            url = url.replace(':submissionid', submissionid);
+            url = url.replace(':submissionname', submission);
+            window.location.href = url;
+        });
 
     });
 </script>

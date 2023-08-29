@@ -16,6 +16,8 @@ class Contribution extends Model
         'date',
         'hours_rendered',
         'approval',
+        'contributor_id',
+        'submitter_id'
     ];
 
     public function users()

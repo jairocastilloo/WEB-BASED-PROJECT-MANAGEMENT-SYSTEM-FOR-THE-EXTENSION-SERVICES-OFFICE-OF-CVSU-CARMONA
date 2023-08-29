@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Contribution;
 use App\Models\Subtask;
 use App\Models\Activity;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\SubtaskcontributionsUser;
 
 class SubmissionController extends Controller
 {
@@ -16,6 +17,13 @@ class SubmissionController extends Controller
     {
         $nameofsubmission = str_replace('-', ' ', $submissionname);
         $contribution = Contribution::findorFail($submissionid);
+
+        $submitterid = $contribution->submitter_id;
+        $submitter = User::where('id', $submitterid)->get(['name', 'last_name']);
+
+        $contributorids = SubtaskcontributionsUser::where('contribution_id', $submissionid)
+            ->pluck('user_id');
+        $contributors = User::whereIn('id', $contributorids)->get(['name', 'last_name']);
 
         $subtaskid = $contribution->subtask_id;
         $subtask = Subtask::findorFail($subtaskid);
@@ -46,7 +54,9 @@ class SubmissionController extends Controller
             'nameofsubmission' => $nameofsubmission,
             'uploadedFiles' => $uploadedFiles,
             'currentDateTime' => $currentDateTime,
-            'othercontribution' => $othercontribution
+            'othercontribution' => $othercontribution,
+            'contributors' => $contributors,
+            'submitter' => $submitter
         ]);
     }
 }
