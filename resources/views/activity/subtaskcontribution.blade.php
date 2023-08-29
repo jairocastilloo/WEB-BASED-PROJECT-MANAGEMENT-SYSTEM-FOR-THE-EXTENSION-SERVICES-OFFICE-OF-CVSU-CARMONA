@@ -19,7 +19,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-sm-8">
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-id="{{ $contribution->id }}" data-approval="{{ $contribution->approval }}">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofsubmission }}</h6>
@@ -40,8 +40,8 @@
                         <p class="lh-1 ps-5"> Submitted by: {{ $submitter[0]->name . ' ' . $submitter[0]->last_name }} </p>
                         @endif
                         <p class="lh-1 ps-5">Submission Attachment:</p>
-                        <div class="ps-5 mb-2">
-                            <a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded ms-5 w-50 me-2">
+                        <div class="mb-2 text-center">
+                            <a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded w-50">
                                 <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
 
                             </a>
@@ -69,7 +69,7 @@
                 </div>
 
             </div>
-            <div class="col-4">
+            <div class="col-sm-4">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
 

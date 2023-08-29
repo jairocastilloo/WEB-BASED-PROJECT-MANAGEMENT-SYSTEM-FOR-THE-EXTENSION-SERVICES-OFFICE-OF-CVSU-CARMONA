@@ -50,68 +50,6 @@
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Output</h6>
                     </div>
-                    <ul class="list-unstyled small pt-2">
-                        @foreach ($unique_outputcreated as $outputcreated)
-
-                        <li class="ps-4 pe-2">
-                            @foreach($unapprovedoutputdata as $unapprovedoutput)
-                            @if ($outputcreated == $unapprovedoutput['created_at'])
-
-                            @php
-                            $output = \App\Models\Output::find($unapprovedoutput['output_id']);
-                            @endphp
-                            @if ($output)
-                            <b>{{ $output->output_name  }}:</b>
-                            @endif
-                            {{ $unapprovedoutput['output_submitted']  }}<br>
-                            @endif
-                            @endforeach
-
-
-                            <!--
-                            <b>Facilitator:</b>
-                            @foreach($usersWithSameCreatedAt as $usersame)
-                            @if ($usersame['created_at'] == $outputcreated)
-                            @php
-                            $userIds = explode(',', $usersame->user_ids);
-                            @endphp
-                            @foreach ($userIds as $userId)
-                            @php
-                            $user = \App\Models\User::find($userId);
-                            @endphp
-                            @if ($user)
-                            {{ $user->name . ' ' . $user->last_name}}
-                            @if (!$loop->last) {{-- Check if it's not the last user in the loop --}}
-                            {{ ' | ' }}
-                            @endif
-                            @endif
-
-                            @endforeach
-
-                            @endif
-                            
-                            @endforeach
--->
-                            <div class="btn-group mt-2 shadow">
-                                <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
-                                    @csrf
-
-                                    <input type="text" class="d-none" value="{{ $outputcreated }}" name="acceptids" id="acceptids">
-
-                                    <button type="button" class="btn btn-sm rounded border border-1 border-success btn-light shadow acceptoutput-btn">
-                                        <b class="small">Approve Output</b>
-                                    </button>
-
-                                </form>
-                            </div>
-                        </li>
-                        <hr>
-                        @endforeach
-
-
-
-
-                    </ul>
 
                 </div>
 
