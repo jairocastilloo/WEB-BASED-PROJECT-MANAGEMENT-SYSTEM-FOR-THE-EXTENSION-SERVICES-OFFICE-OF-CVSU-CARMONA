@@ -236,7 +236,7 @@ class ActivityController extends Controller
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt
         ]);
     }
-
+    /*
     public function getsubtask($id, $activityid, $subtaskid)
     {
         // activity details
@@ -289,7 +289,7 @@ class ActivityController extends Controller
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
-
+*/
     public function displayactivity($activityid, $department, $activityname)
     {
         // activity details
@@ -436,7 +436,7 @@ class ActivityController extends Controller
         $file = $request->file('activitydocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
         $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
         $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);

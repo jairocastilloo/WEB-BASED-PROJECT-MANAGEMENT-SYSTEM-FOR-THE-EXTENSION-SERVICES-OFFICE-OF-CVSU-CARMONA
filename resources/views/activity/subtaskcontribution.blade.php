@@ -41,7 +41,7 @@
                         @endif
                         <p class="lh-1 ps-5">Submission Attachment:</p>
                         <div class="ps-5 mb-2">
-                            <a href=" {{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded ms-3">
+                            <a href="{{ route('download.file', ['contributionid' => $contribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded ms-5 w-50 me-2">
                                 <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
 
                             </a>
