@@ -20,8 +20,6 @@
         <div class="row">
             <div class="col-8">
                 @php
-                // Sort the $activities array by actstartdate in ascending order
-
 
                 $unevaluatedSubmission = $contributions->filter(function ($contri) {
                 return $contri['approval'] === null;
@@ -62,10 +60,10 @@
                 @if($contributions->isEmpty())
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Other Contribution</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
                     </div>
                     <div class="text-center p-4">
-                        <h4><em>No Other Submission Yet.</em></h4>
+                        <h4><em>No Submission Yet.</em></h4>
                     </div>
                 </div>
                 @endif
