@@ -20,7 +20,7 @@ class OutputUser extends Model
 
     public function output()
     {
-        return $this->belongsTo(Output::class);
+        return $this->belongsTo(Output::class, 'output_id');
     }
 
     public function user()

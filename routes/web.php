@@ -135,3 +135,4 @@ Route::post('/saveacademicyear', [AcademicYearController::class, 'saveacadyear']
 Route::prefix('/submission')->group(function () {
     Route::get('/{submissionid}/{submissionname}', [SubmissionController::class, 'displaysubmission'])->name('submission.display');
 });
+Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');

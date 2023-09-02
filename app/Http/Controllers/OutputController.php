@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Output;
@@ -92,7 +93,6 @@ class OutputController extends Controller
 
     public function addtooutput(Request $request)
     {
-
         $validatedData = $request->validate([
             'output-id.*' => 'required|integer',
             'output-quantity.*' => 'required|integer',
@@ -118,6 +118,7 @@ class OutputController extends Controller
             $outputuser = new OutputUser();
             $outputuser->output_id = $validatedData['output-id'][$j];
             $outputuser->output_submitted = $validatedData['output-quantity'][$j];
+            $outputuser->user_id = Auth::user()->id;
             $outputuser->save();
         }
         $request->validate([

@@ -42,7 +42,7 @@
                 });
 
                 @endphp
-                <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $outputtype }}">
+                <div class="basiccont word-wrap shadow ms-2 mt-4" id="typeofOutput" data-value="{{ $outputtype }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Output Submitted</h6>
                     </div>
@@ -87,8 +87,8 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
                     @foreach ($groupedUnevaluatedSubmittedOutput as $date => $group)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom">
-                        <p class="lh-1 fw-bold">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Unevaluated-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
 
                         @foreach ($group as $index => $item)
                         <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
@@ -108,8 +108,8 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
                     </div>
                     @foreach ($groupedAcceptedSubmittedOutput as $date => $group)
-                    <div class="p-2 pb-1 ps-4 divhover small border-bottom">
-                        <p class="lh-1 fw-bold">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+                    <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Accepted-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
 
                         @foreach ($group as $index => $item)
                         <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
@@ -129,8 +129,8 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>
                     @foreach ($groupedRejectedSubmittedOutput as $date => $group)
-                    <div class="p-2 pb-1 ps-4 divhover small border-bottom">
-                        <p class="lh-1 fw-bold">{{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+                    <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Rejected-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
 
                         @foreach ($group as $index => $item)
                         <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
@@ -191,7 +191,17 @@
             url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
-
+        $(document).on('click', '.outputsubmitteddiv', function() {
+            var submittedoutputid = $(this).attr('data-value');
+            var approval = $(this).attr('data-approval');
+            var outputtype = $('#typeofOutput').attr('data-value');
+            outputtype = outputtype.replace(' ', '-');
+            var url = '{{ route("submittedoutput.display", ["submittedoutputid" => ":submittedoutputid", "outputtype" => ":outputtype", "submissionname" => ":approval"]) }}';
+            url = url.replace(':submittedoutputid', submittedoutputid);
+            url = url.replace(':outputtype', outputtype);
+            url = url.replace(':approval', approval);
+            window.location.href = url;
+        });
         $(document).on('click', '.selectoutputdiv', function() {
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();

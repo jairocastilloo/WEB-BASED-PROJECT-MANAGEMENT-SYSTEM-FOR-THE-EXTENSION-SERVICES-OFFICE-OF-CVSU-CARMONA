@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Output;
+use App\Models\OutputUser;
 use Illuminate\Http\Request;
 use App\Models\Contribution;
 use App\Models\Subtask;
@@ -33,7 +35,6 @@ class SubmissionController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
-        $subtasks = Subtask::where('activity_id', $activityid)->get();
 
         $dateTime = $contribution->created_at;
         $currentDateTime = str_replace(' ', '_', $dateTime);
@@ -47,7 +48,6 @@ class SubmissionController extends Controller
         return view('activity.subtaskcontribution', [
             'contribution' => $contribution,
             'subtask' => $subtask,
-            'subtasks' => $subtasks,
             'activity' => $activity,
             'projectName' => $projectName,
             'projectId' => $projectId,
@@ -56,6 +56,58 @@ class SubmissionController extends Controller
             'currentDateTime' => $currentDateTime,
             'othercontribution' => $othercontribution,
             'contributors' => $contributors,
+            'submitter' => $submitter
+        ]);
+    }
+
+    public function displaysubmittedoutput($submittedoutputid, $outputtype, $submissionname)
+    {
+        $nameofsubmission = str_replace('-', ' ', $submissionname);
+        $outputtype = str_replace('-', ' ', $outputtype);
+        $submittedoutput = OutputUser::findorFail($submittedoutputid);
+        $created = $submittedoutput->created_at;
+
+        $submittedoutputs = OutputUser::where('created_at', $created)
+            ->get();
+        $submittedoutputids = $submittedoutputs->pluck('id')->toArray();
+
+
+        $submitterid = $submittedoutput->user_id;
+        $submitter = User::where('id', $submitterid)->get(['name', 'last_name']);
+
+
+        $outputids = OutputUser::where('created_at', $created)
+            ->pluck('output_id')
+            ->toArray();;
+
+        $outputs = Output::whereIn('id', $outputids)->get();
+
+        $activityid = $outputs[0]->activity_id;
+        $activity = Activity::findOrFail($activityid);
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+        $dateTime = $submittedoutput->created_at;
+        $currentDateTime = str_replace(' ', '_', $dateTime);
+        $currentDateTime = str_replace(':', '-', $currentDateTime);
+        $uploadedFiles = Storage::files('uploads/' . $currentDateTime);
+
+        $othersubmittedoutput = OutputUser::where('output_id', $outputids)
+            ->whereNotIn('id', $submittedoutputids)
+            ->get();
+        /*$sql = $submittedoutputids = $submittedoutputs->pluck('id')->toArray();
+        dd($sql);*/
+        return view('activity.outputsubmitted', [
+            'submittedoutputs' => $submittedoutputs,
+            'outputs' => $outputs,
+            'activity' => $activity,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'nameofsubmission' => $nameofsubmission,
+            'uploadedFiles' => $uploadedFiles,
+            'currentDateTime' => $currentDateTime,
+            'othersubmittedoutput' => $othersubmittedoutput,
             'submitter' => $submitter
         ]);
     }
