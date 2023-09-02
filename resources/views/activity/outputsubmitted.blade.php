@@ -32,9 +32,17 @@
                         @endforeach
 
                         <p class="lh-1 ps-5"> Submitted in: {{ \Carbon\Carbon::parse($submittedoutputs[0]->created_at)->format('F d, Y') }} </p>
-
+                        @if($submitter)
+                        <p class="lh-1 ps-5"> Submitted by: {{ $submitter[0]->name . ' ' . $submitter[0]->last_name }} </p>
+                        @endif
                         <p class="lh-1 ps-5">Submission Attachment:</p>
+                        <div class="mb-2 text-center">
+                            <a href="" class="btn btn-outline-success shadow rounded w-50">
+                                <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
 
+                            </a>
+
+                        </div>
 
                         @if( $submittedoutputs[0]->approval != 1)
                         <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">

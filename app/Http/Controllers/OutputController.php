@@ -129,12 +129,10 @@ class OutputController extends Controller
         $file = $request->file('outputdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
-
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
-        $path = $request->file('outputdocs')->storeAs('uploads', $fileName);
-        // Save the file path to the database or perform any other necessary actions
-        // ...
+        $path = $request->file('outputdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
 
         return 'File uploaded successfully.';
     }
