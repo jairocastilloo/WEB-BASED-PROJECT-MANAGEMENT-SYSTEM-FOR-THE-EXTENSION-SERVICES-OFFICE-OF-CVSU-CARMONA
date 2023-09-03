@@ -64,6 +64,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 //Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
 
 Route::get('download/{contributionid}/{filename}', [FileController::class, 'download'])->name('download.file');
+Route::get('downloadoutput/{submittedoutputid}/{filename}', [FileController::class, 'downloadoutput'])->name('downloadoutput.file');
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
