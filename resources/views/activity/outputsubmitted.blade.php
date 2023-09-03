@@ -27,7 +27,7 @@
                     <div class="p-2">
                         <p class="ps-4 lh-1 pt-2"><b>{{ $outputs[0]->output_type }}</b></p>
                         @foreach ($outputs as $index => $output)
-                        <p class="lh-1 ps-4"> <b>{{ $output->output_name . ': ' .  $submittedoutputs[$index]->output_submitted }}</b></p>
+                        <p class="lh-1 ps-5">{{ 'Submitted ' . $output->output_name . ': ' .  $submittedoutputs[$index]->output_submitted }}</p>
 
                         @endforeach
 
@@ -66,11 +66,110 @@
 
             </div>
             <div class="col-sm-4">
+                @php
 
+                $unevaluatedSubmittedOutput = $othersubmittedoutput->filter(function ($suboutput) {
+                return $suboutput['approval'] === null;
+                });
+                $acceptedSubmittedOutput = $othersubmittedoutput->filter(function ($suboutput) {
+                return $suboutput['approval'] === 1;
+                });
+                $rejectedSubmittedOutput = $othersubmittedoutput->filter(function ($suboutput) {
+                return $suboutput['approval'] === 0;
+                });
+
+                $groupedUnevaluatedSubmittedOutput = $unevaluatedSubmittedOutput->groupBy(function ($item) {
+                return $item['created_at']->format('Y-m-d H:i:s');
+                });
+                $groupedAcceptedSubmittedOutput = $acceptedSubmittedOutput->groupBy(function ($item) {
+                return $item['created_at']->format('Y-m-d H:i:s');
+                });
+                $groupedRejectedSubmittedOutput = $rejectedSubmittedOutput->groupBy(function ($item) {
+                return $item['created_at']->format('Y-m-d H:i:s');
+                });
+
+                @endphp
+
+
+                @if($othersubmittedoutput->isEmpty())
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submitted Output</h6>
+                    </div>
+                    <div class="text-center p-4">
+                        <h4><em>No Submitted Output Yet.</em></h4>
+                    </div>
+                </div>
+                @endif
+
+                @if (count($unevaluatedSubmittedOutput) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                    </div>
+                    @foreach ($groupedUnevaluatedSubmittedOutput as $date => $group)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Unevaluated-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+
+                        @foreach ($group as $index => $item)
+                        <p class="lh-1 ps-4"> {{ 'Submitted ' . $outputs[$index]->output_name . ': ' . $item['output_submitted'] }}</p>
+                        <!-- Display other attributes as needed -->
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
+
+                @if (count($acceptedSubmittedOutput) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
+                    </div>
+                    @foreach ($groupedAcceptedSubmittedOutput as $date => $group)
+                    <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Accepted-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+
+                        @foreach ($group as $index => $item)
+                        <p class="lh-1 ps-4"> {{ 'Submitted ' . $outputs[$index]->output_name . ': ' . $item['output_submitted'] }}</p>
+                        <!-- Display other attributes as needed -->
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
+
+                @if (count($rejectedSubmittedOutput) > 0)
+
+                <div class="basiccont word-wrap shadow mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                    </div>
+                    @foreach ($groupedRejectedSubmittedOutput as $date => $group)
+                    <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Rejected-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+
+                        @foreach ($group as $index => $item)
+                        <p class="lh-1 ps-4"> {{ 'Submitted ' . $outputs[$index]->output_name . ': ' . $item['output_submitted'] }}</p>
+                        <!-- Display other attributes as needed -->
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
             </div>
 
         </div>
+
     </div>
+</div>
 </div>
 
 @endsection

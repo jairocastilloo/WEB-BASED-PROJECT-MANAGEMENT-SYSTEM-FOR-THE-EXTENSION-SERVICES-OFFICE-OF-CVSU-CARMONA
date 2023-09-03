@@ -78,7 +78,7 @@ class SubmissionController extends Controller
 
         $outputids = OutputUser::where('created_at', $created)
             ->pluck('output_id')
-            ->toArray();;
+            ->toArray();
 
         $outputs = Output::whereIn('id', $outputids)->get();
 
@@ -93,11 +93,11 @@ class SubmissionController extends Controller
         $currentDateTime = str_replace(':', '-', $currentDateTime);
         $uploadedFiles = Storage::files('uploads/' . $currentDateTime);
 
-        $othersubmittedoutput = OutputUser::where('output_id', $outputids)
+        $othersubmittedoutput = OutputUser::whereIn('output_id', $outputids)
             ->whereNotIn('id', $submittedoutputids)
             ->get();
-        /*$sql = $submittedoutputids = $submittedoutputs->pluck('id')->toArray();
-        dd($sql);*/
+
+
         return view('activity.outputsubmitted', [
             'submittedoutputs' => $submittedoutputs,
             'outputs' => $outputs,

@@ -44,7 +44,7 @@
                 @endphp
                 <div class="basiccont word-wrap shadow ms-2 mt-4" id="typeofOutput" data-value="{{ $outputtype }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Output Submitted</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
                     </div>
 
                     <div class="p-2">
