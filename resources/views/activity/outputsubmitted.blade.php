@@ -12,7 +12,7 @@
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive">
-
+            <input type="hidden" class="d-none" id="outputtype" value="{{ $outputs[0]->output_type }}">
             <h6><b>Output: {{ $outputs[0]->output_type }}</b></h6>
         </div>
     </div>
@@ -50,9 +50,9 @@
                                 <b class="small">Evaluate Submission</b>
                             </button>
                             <div class="dropdown-menu">
-                                <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
+                                <form id="acceptoutputform" data-url="{{ route('output.accept') }}">
                                     @csrf
-                                    <input type="text" class="d-none" value="" name="acceptids" id="acceptids">
+                                    <input type="text" class="d-none" value="{{ $submittedoutputs[0]->created_at }}" name="acceptids" id="acceptids">
                                     <input type="hidden" name="isApprove" id="isApprove">
                                     <a class="dropdown-item small hrefnav accept-link" href="#"><b class="small">Accept</b></a>
                                     <a class="dropdown-item small hrefnav reject-link" href="#"><b class="small">Reject</b></a>
@@ -178,7 +178,44 @@
 
 <script>
     $(document).ready(function() {
+        $('.accept-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('true'); // Set the value for "isApprove" input
+            submitForm();
+        });
 
+        // Event listener for the "Reject" link
+        $('.reject-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('false'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        function submitForm() {
+            var formData = $('#acceptoutputform').serialize(); // Serialize form data
+            var dataurl = $('#acceptoutputform').data('url'); // Get the form data-url attribute
+            var actid = $('#actid').val();
+            var outputtype = $('#outputtype').val();
+
+            var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':outputtype', outputtype);
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: dataurl,
+                data: formData,
+                success: function(response) {
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                }
+            });
+        }
 
 
     });
