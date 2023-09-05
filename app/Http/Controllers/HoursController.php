@@ -22,38 +22,15 @@ class HoursController extends Controller
         $projectName = $project->projecttitle;
 
 
-        $unapprovedhours = activityContribution::where('activity_id', $activityid)
-            ->where('approval', 0)
-            ->first();
-        $hoursContributors = [];
-        $contributors = [];
-        if ($unapprovedhours) {
-            $unapprovedhoursid = $unapprovedhours->id;
-            $hoursContributors = ActivityContributionsUser::where('activitycontribution_id', $unapprovedhoursid)
-                ->pluck('user_id');
-            $contributors = User::whereIn('id', $hoursContributors)
-                ->get();
-        }
+        $activitycontributions = activityContribution::where('activity_id', $activityid)
+            ->get();
 
-        $approvedhours = activityContribution::where('activity_id', $activityid)
-            ->where('approval', 1)
-            ->first();
-        if ($approvedhours) {
-            $approvedhoursid = $approvedhours->id;
-            $hoursContributors = ActivityContributionsUser::where('activitycontribution_id', $approvedhoursid)
-                ->pluck('user_id');
-            $contributors = User::whereIn('id', $hoursContributors)
-                ->get();
-        }
 
         return view('activity.hours', [
             'activity' => $activity,
             'projectId' => $projectId,
             'projectName' => $projectName,
-            'unapprovedhours' => $unapprovedhours,
-            'approvedhours' => $approvedhours,
-            'contributors' => $contributors,
-            'hoursContributors' => $hoursContributors,
+            'activitycontributions' => $activitycontributions,
         ]);
     }
 
