@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivitycontributionsUser;
 use App\Models\Output;
 use App\Models\OutputUser;
 use Illuminate\Http\Request;
 use App\Models\Contribution;
 use App\Models\Subtask;
 use App\Models\Activity;
+use App\Models\activityContribution;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use App\Models\SubtaskcontributionsUser;
@@ -108,6 +110,48 @@ class SubmissionController extends Controller
             'uploadedFiles' => $uploadedFiles,
             'currentDateTime' => $currentDateTime,
             'othersubmittedoutput' => $othersubmittedoutput,
+            'submitter' => $submitter
+        ]);
+    }
+
+    public function displayactsubmission($actsubmissionid, $actsubmissionname)
+    {
+        $nameofactsubmission = str_replace('-', ' ', $actsubmissionname);
+        $actcontribution = activityContribution::findorFail($actsubmissionid);
+
+        $submitterid = $actcontribution->submitter_id;
+        $submitter = User::where('id', $submitterid)->get(['name', 'last_name']);
+
+        $actcontributorids = ActivitycontributionsUser::where('contribution_id', $actsubmissionid)
+            ->pluck('user_id');
+        $actcontributors = User::whereIn('id', $actcontributorids)->get(['name', 'last_name']);
+
+        $activityid = $actcontribution->activity_id;
+        $activity = Activity::findOrFail($activityid);
+
+        $projectId = $activity->project_id;
+        $projectName = $activity->project->projecttitle;
+
+
+        $dateTime = $actcontribution->created_at;
+        $currentDateTime = str_replace(' ', '_', $dateTime);
+        $currentDateTime = str_replace(':', '-', $currentDateTime);
+        $uploadedFiles = Storage::files('uploads/' . $currentDateTime);
+
+        $otheractcontribution = activityContribution::where('activity_id', $activityid)
+            ->whereNotIn('id', [$actsubmissionid])
+            ->get();
+
+        return view('activity.subtaskcontribution', [
+            'actcontribution' => $actcontribution,
+            'activity' => $activity,
+            'projectName' => $projectName,
+            'projectId' => $projectId,
+            'nameofactsubmission' => $nameofactsubmission,
+            'uploadedFiles' => $uploadedFiles,
+            'currentDateTime' => $currentDateTime,
+            'otheractcontribution' => $otheractcontribution,
+            'actcontributors' => $actcontributors,
             'submitter' => $submitter
         ]);
     }

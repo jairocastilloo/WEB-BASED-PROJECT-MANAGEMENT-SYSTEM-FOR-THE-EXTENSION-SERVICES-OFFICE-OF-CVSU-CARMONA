@@ -333,6 +333,7 @@ class ActivityController extends Controller
         $activitycontributions->startdate = $validatedData['start-date'];
         $activitycontributions->enddate = $validatedData['end-date'];
         $activitycontributions->hours_rendered = $validatedData['hours-rendered'];
+        $activitycontributions->submitter_id = Auth::user()->id;
         $activitycontributions->save();
         $newActContri = $activitycontributions->id;
 
