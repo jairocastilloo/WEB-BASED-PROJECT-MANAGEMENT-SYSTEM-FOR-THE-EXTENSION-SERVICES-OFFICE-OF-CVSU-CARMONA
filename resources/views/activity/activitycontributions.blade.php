@@ -8,7 +8,7 @@
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv" data-name="{{ $activity['actname'] }}" data-value="{{ $activity['id'] }}">
+        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive activitydata" id="activitydiv" data-name="{{ $activity['actname'] }}" data-value="{{ $activity['id'] }}">
             <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
         </div>
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
@@ -43,6 +43,24 @@
                             </a>
 
                         </div>
+
+                        @if( $actcontribution['approval'] != 1)
+                        <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
+                            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <b class="small">Evaluate Submission</b>
+                            </button>
+                            <div class="dropdown-menu">
+                                <form id="accepthoursform" data-url="{{ route('acthours.accept') }}">
+                                    @csrf
+                                    <input type="text" class="d-none" value="{{ $actcontribution->id }}" name="acceptids" id="acceptids">
+                                    <input type="hidden" name="isApprove" id="isApprove">
+                                    <a class="dropdown-item small hrefnav accept-link" href="#"><b class="small">Accept</b></a>
+                                    <a class="dropdown-item small hrefnav reject-link" href="#"><b class="small">Reject</b></a>
+                                </form>
+
+                            </div>
+                        </div>
+                        @endif
                     </div>
 
                 </div>
@@ -156,6 +174,47 @@
             url = url.replace(':actsubmissionname', actsubmission);
             window.location.href = url;
         });
+
+        $('.accept-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('true'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        // Event listener for the "Reject" link
+        $('.reject-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('false'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        function submitForm() {
+            var formData = $('#accepthoursform').serialize(); // Serialize form data
+            var dataurl = $('#accepthoursform').data('url'); // Get the form data-url attribute
+
+            var activityid = $('.activitydata').attr("data-value");
+            var activityname = $('.activitydata').attr("data-name");
+
+
+            var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':activityname', activityname);
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: dataurl,
+                data: formData,
+                success: function(response) {
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                }
+            });
+        }
 
     });
 </script>

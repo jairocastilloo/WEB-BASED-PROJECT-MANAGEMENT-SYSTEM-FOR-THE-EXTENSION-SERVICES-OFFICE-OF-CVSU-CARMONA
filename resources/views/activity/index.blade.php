@@ -522,12 +522,12 @@
                 event.preventDefault();
                 var activityid = $('#actid-hrs').val();
                 var activityname = $('#actname-hrs').val();
-                var department = $('#department').val();
 
-                var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname", "department" => ":department"]) }}';
+
+                var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
                 url = url.replace(':activityid', activityid);
                 url = url.replace(':activityname', activityname);
-                url = url.replace(':department', department);
+
 
                 window.location.href = url;
             });

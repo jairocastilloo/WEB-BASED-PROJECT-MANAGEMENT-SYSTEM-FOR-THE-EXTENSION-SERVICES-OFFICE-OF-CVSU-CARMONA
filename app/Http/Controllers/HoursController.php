@@ -36,18 +36,25 @@ class HoursController extends Controller
 
     public function acceptacthours(Request $request)
     {
-
         $acceptIds = $request->input('acceptids');
+        $isApprove = $request->input('isApprove');
+        if ($isApprove === 'true') {
+            $isApprove = 1;
+        } elseif ($isApprove === 'false') {
+            $isApprove = 0;
+        }
+        // Update the 'approval' field in SubtaskContributor table
+        $actcontribution = activityContribution::findorFail($acceptIds);
+        $actcontribution->update(['approval' => $isApprove]);
 
-        $activitycontribution = activityContribution::findorFail($acceptIds);
-
-        $activitycontribution->update(['approval' => 1]);
-
-        $activityid = $activitycontribution->activity_id;
-        $hoursrendered = $activitycontribution->hours_rendered;
-
-        Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
-
+        if ($isApprove == 1) {
+            $activityid = $actcontribution->activity_id;
+            $hoursrendered = $actcontribution->hours_rendered;
+            Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
+            activityContribution::where('activity_id', $activityid)
+                ->where('approval', null)
+                ->delete();
+        }
         return 'File uploaded successfully.';
     }
 }
