@@ -122,7 +122,7 @@ class SubmissionController extends Controller
         $submitterid = $actcontribution->submitter_id;
         $submitter = User::where('id', $submitterid)->get(['name', 'last_name']);
 
-        $actcontributorids = ActivitycontributionsUser::where('contribution_id', $actsubmissionid)
+        $actcontributorids = ActivitycontributionsUser::where('activitycontribution_id', $actsubmissionid)
             ->pluck('user_id');
         $actcontributors = User::whereIn('id', $actcontributorids)->get(['name', 'last_name']);
 
@@ -142,7 +142,7 @@ class SubmissionController extends Controller
             ->whereNotIn('id', [$actsubmissionid])
             ->get();
 
-        return view('activity.subtaskcontribution', [
+        return view('activity.activitycontributions', [
             'actcontribution' => $actcontribution,
             'activity' => $activity,
             'projectName' => $projectName,

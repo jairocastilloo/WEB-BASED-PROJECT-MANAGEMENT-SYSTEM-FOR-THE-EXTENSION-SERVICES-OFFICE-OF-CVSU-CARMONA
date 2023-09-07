@@ -64,6 +64,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 //Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
 
 Route::get('download/{contributionid}/{filename}', [FileController::class, 'download'])->name('download.file');
+Route::get('downloadactivity/{actcontributionid}/{filename}', [FileController::class, 'downloadactivity'])->name('downloadactivity.file');
 Route::get('downloadoutput/{submittedoutputid}/{filename}', [FileController::class, 'downloadoutput'])->name('downloadoutput.file');
 
 Route::prefix('{username}')->group(function () {
@@ -137,6 +138,6 @@ Route::prefix('/submission')->group(function () {
     Route::get('/{submissionid}/{submissionname}', [SubmissionController::class, 'displaysubmission'])->name('submission.display');
 });
 Route::prefix('/actsubmission')->group(function () {
-    Route::get('/{atsubmissionid}/{actsubmissionname}', [SubmissionController::class, 'displayactsubmission'])->name('actsubmission.display');
+    Route::get('/{actsubmissionid}/{actsubmissionname}', [SubmissionController::class, 'displayactsubmission'])->name('actsubmission.display');
 });
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');

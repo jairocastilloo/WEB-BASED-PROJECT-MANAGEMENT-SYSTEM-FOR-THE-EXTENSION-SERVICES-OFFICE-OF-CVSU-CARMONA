@@ -17,48 +17,57 @@
     </div>
     <div class="container">
         <div class="row">
-            @php
 
-            $unevaluatedSubmission = $activitycontributions->filter(function ($contri) {
-            return $contri['approval'] === null;
-            });
-            $acceptedSubmission = $activitycontributions->filter(function ($contri) {
-            return $contri['approval'] === 1;
-            });
-            $rejectedSubmission = $activitycontributions->filter(function ($contri) {
-            return $contri['approval'] === 0;
-            });
-
-            @endphp
             <div class="col-8">
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;"></h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofactsubmission }}</h6>
                     </div>
 
-                    <div class="p-2 pb-0 ps-5 border-bottom">
-                        <p class="lh-1">Activity Name: {{ $activity->actname }}</p>
-                        <p class="lh-1">Submitted Date: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $activity->actstartdate)->format('F d') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $activity->actenddate)->format('F d') }}</p>
-                        <p class="lh-1">Submitted Hours Rendered: {{ $activity->totalhours_rendered }}</p>
+                    <div class="p-2 pb-0 border-bottom">
+                        <p class="lh-1 ps-4">{{ $activity->actname }}</p>
+                        <p class="lh-1 ps-5">Hours Rendered: {{ $actcontribution->hours_rendered }}</p>
+                        <p class="lh-1 ps-5">Rendered Date: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $actcontribution->startdate)->format('F d') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $actcontribution->enddate)->format('F d') }}</p>
+                        <p class="lh-1 ps-5">Submitted In: {{ \Carbon\Carbon::parse($actcontribution->created_at)->format('F d, Y') }}</p>
+                        <p class="lh-1 ps-5">Submitted By: {{ $submitter[0]->name . ' ' . $submitter[0]->last_name }}</p>
+                        <p class="lh-1 ps-5"> Contributors:
+                            @foreach($actcontributors as $actcontributor)
+                            {{ $actcontributor->name . ' ' . $actcontributor->last_name . ' | ' }}
+                            @endforeach
+                        </p>
+                        <p class="lh-1 ps-5">Submission Attachment:</p>
+                        <div class="mb-2 text-center">
+                            <a href="{{ route('downloadactivity.file', ['actcontributionid' => $actcontribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded w-50">
+                                <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
+
+                            </a>
+
+                        </div>
                     </div>
-                    @if (count($acceptedSubmission) == 0)
-                    <div class="btn-group ms-3 mb-3 mt-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow submithours-btn">
-                            <b class="small">Submit Hours</b>
-                        </button>
-                    </div>
-                    @endif
+
                 </div>
             </div>
             <div class="col-4">
+                @php
 
-                @if($activitycontributions->isEmpty())
+                $unevaluatedSubmission = $otheractcontribution->filter(function ($contri) {
+                return $contri['approval'] === null;
+                });
+                $acceptedSubmission = $otheractcontribution->filter(function ($contri) {
+                return $contri['approval'] === 1;
+                });
+                $rejectedSubmission = $otheractcontribution->filter(function ($contri) {
+                return $contri['approval'] === 0;
+                });
+
+                @endphp
+                @if($otheractcontribution->isEmpty())
                 <div class="basiccont word-wrap shadow mt-4">
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Submission</h6>
                     </div>
                     <div class="text-center p-4">
-                        <h4><em>No Submission Yet.</em></h4>
+                        <h4><em>No Other Submission Yet.</em></h4>
                     </div>
                 </div>
                 @endif

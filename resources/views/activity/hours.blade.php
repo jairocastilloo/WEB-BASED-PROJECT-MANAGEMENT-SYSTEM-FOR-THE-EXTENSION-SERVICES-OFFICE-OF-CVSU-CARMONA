@@ -165,6 +165,28 @@
                 }
             });
         });
+
+        $(document).on('click', '.actsubmission-div', function() {
+            event.preventDefault();
+
+            var actsubmissionid = $(this).attr("data-id");
+            var actapproval = $(this).attr("data-approval");
+            var actsubmission;
+
+            if (actapproval === "") {
+                actsubmission = "Unevaluated-Submission";
+            } else if (actapproval == 0) {
+                actsubmission = "Rejected-Submission";
+            } else if (actapproval == 1) {
+                actsubmission = "Accepted-Submission";
+            }
+
+
+            var url = '{{ route("actsubmission.display", ["actsubmissionid" => ":actsubmissionid", "actsubmissionname" => ":actsubmissionname"]) }}';
+            url = url.replace(':actsubmissionid', actsubmissionid);
+            url = url.replace(':actsubmissionname', actsubmission);
+            window.location.href = url;
+        });
     });
 </script>
 
