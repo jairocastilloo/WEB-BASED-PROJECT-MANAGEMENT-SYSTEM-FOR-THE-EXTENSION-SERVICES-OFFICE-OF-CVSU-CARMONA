@@ -1,6 +1,18 @@
-body {
-  background-color: #c5c7c7;
+@font-face {
+  font-family: 'Inter';
+  src: url('../fonts/Inter-Regular.ttf') format('truetype');
+  /* Add additional font weights and styles if needed */
+}
 
+body {
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  font-family: 'Inter', sans-serif; /* Set a default font-family */
+  background-color: #eaeaea; /* Set a default background color */
+  color: #333333; /* Set a default text color */
+}
+p, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
 }
 .basicrow{
   background-color: #dadadc;

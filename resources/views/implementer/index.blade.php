@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="maincontainer">
+<div class="container">
     &nbsp;
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
     <div class="row">
-        <div class="col-8">
-            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+        <div class="col-lg-8 p-2 pt-0">
+            <div class="basiccont rounded shadow pb-2">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
                 </div>
                 @if (!$inCurrentYear)
@@ -40,12 +40,12 @@
             $formattedCurrentDate = date('Y-m-d', $currentDate);
             @endphp
             @if($subtasks->isEmpty())
-            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow rounded">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
                 <div class="text-center p-4">
-                    <h4><em>No Assigned Tasks.
+                    <h4><em>No Tasks.
                         </em></h4>
                 </div>
             </div>
@@ -58,8 +58,8 @@
             $subtasks = $subtasks->sortBy('subduedate');
             $overduesubtasks = $overduesubtasks->sortBy('subduedate');
             @endphp
-            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow rounded">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
 
@@ -108,8 +108,8 @@
             $overduesubtasks = $overduesubtasks->sortBy('subduedate');
 
             @endphp
-            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow rounded">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color: darkgreen;">Overdue Tasks</h6>
                 </div>
                 <!-- overdue -->
@@ -124,16 +124,9 @@
                     $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
                     @endphp
 
-                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
+                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $overduesubtask['subtask_name'] }}</b></h6>
 
-                    @if ($formattedSubcreatedat === $formattedCurrentDate)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
-                    @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
-                    @else
                     <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
-                    @endif
-
                     <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
 
                 </div>
@@ -143,7 +136,7 @@
 
         </div>
 
-        <div class="col-2">
+        <div class="col-lg-2 p-2 pt-0">
 
 
             @php
@@ -167,8 +160,8 @@
             });
             @endphp
             @if($activities->isEmpty())
-            <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                 </div>
                 <div class="text-center p-4">
@@ -178,8 +171,8 @@
             @endif
             @if ($inProgressActivities && count($inProgressActivities) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
                 </div>
                 @foreach ($inProgressActivities as $activity)
@@ -199,8 +192,8 @@
             @endif
             @if ($pendingActivities && count($pendingActivities) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
                 </div>
                 @foreach ($pendingActivities as $activity)
@@ -219,8 +212,8 @@
 
             @endif
             @if ($scheduledActivities && count($scheduledActivities) > 0)
-            <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
                 </div>
                 @foreach ($scheduledActivities as $activity)
@@ -240,8 +233,8 @@
             @endif
             @if ($overdueActivities && count($overdueActivities) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
                 </div>
                 @foreach ($overdueActivities as $activity)
@@ -260,8 +253,8 @@
             </div>
             @endif
             @if ($completedActivities && count($completedActivities) > 0)
-            <div class="basiccont word-wrap shadow mt-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                 </div>
                 @foreach ($completedActivities as $activity)
@@ -282,7 +275,7 @@
 
 
         </div>
-        <div class="col-2">
+        <div class="col-lg-2 p-2 pt-0">
 
             @php
 
@@ -302,8 +295,8 @@
             });
             @endphp
             @if($currentproject->isEmpty())
-            <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
                 <div class="text-center p-4">
@@ -313,8 +306,8 @@
             @endif
             @if ($inProgressProjects && count($inProgressProjects) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
@@ -334,8 +327,8 @@
             @endif
 
             @if ($scheduledProjects && count($scheduledProjects) > 0)
-            <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pe-2 pt-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
                 @foreach ($scheduledProjects as $project)
@@ -355,8 +348,8 @@
             @endif
 
             @if ($completedProjects && count($completedProjects) > 0)
-            <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
                 </div>
                 @foreach ($completedProjects as $project)
@@ -376,8 +369,8 @@
             @endif
             @if ($overdueProjects && count($overdueProjects) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2 me-4">
-                <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+            <div class="basiccont word-wrap shadow">
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
                 </div>
                 @foreach ($overdueProjects as $project)
