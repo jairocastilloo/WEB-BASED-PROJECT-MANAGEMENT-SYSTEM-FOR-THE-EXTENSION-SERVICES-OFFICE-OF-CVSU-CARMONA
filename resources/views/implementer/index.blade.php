@@ -47,23 +47,39 @@
                 @endif
 
                 @if($taskDueThisSevenDays->isNotEmpty())
+                @php
+                $currentDate = strtotime('today');
+                @endphp
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color: darkgreen;">Due this 7 Days</h6>
                 </div>
+
                 @foreach($taskDueThisSevenDays as $taskwithinWeek)
-                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskwithinWeek['id'] }}">
-                    <h6><b>{{ $taskwithinWeek['subtask_name'] }}</b></h6>
+                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskwithinWeek['id'] }}">
+                    <h6 class="ps-4"><b>{{ $taskwithinWeek['subtask_name'] }}</b></h6>
+                    @php
+                    $subduedate = strtotime($taskwithinWeek['subduedate']);
+                    $formattedCurrentDate = date('Y-m-d', $currentDate);
+                    $formattedSubduedate = date('Y-m-d', $subduedate);
+                    @endphp
+                    @if ($formattedSubduedate === $formattedCurrentDate)
+                    <h6 class="ps-5 text-success fw-bold">{{ 'Today, ' . date('M d', $subduedate) }}</h6>
+                    @else
+                    <h6 class="ps-5">{{ date('D, M d', $subduedate) }}</h6>
+                    @endif
                 </div>
                 @endforeach
                 @endif
+
 
                 @if($taskDueWithinNextThirtyDays->isNotEmpty())
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color: darkgreen;">Due next 30 Days</h6>
                 </div>
                 @foreach($taskDueWithinNextThirtyDays as $taskwithinMonth)
-                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskwithinMonth['id'] }}">
-                    <h6><b>{{ $taskwithinMonth['subtask_name'] }}</b></h6>
+                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskwithinMonth['id'] }}">
+                    <h6 class="ps-4"><b>{{ $taskwithinMonth['subtask_name'] }}</b></h6>
+                    <h6 class="ps-5">{{ date('D', strtotime($taskwithinMonth['subduedate'])) . ', ' . date('M d', strtotime($taskwithinMonth['subduedate'])) }}</h6>
                 </div>
                 @endforeach
                 @endif
@@ -73,8 +89,9 @@
                     <h6 class="fw-bold small" style="color: darkgreen;">Due Later</h6>
                 </div>
                 @foreach($taskDueLater as $taskLater)
-                <div class="border-bottom ps-4 p-2 divhover subtaskdiv" data-value="{{ $taskLater['id'] }}">
-                    <h6><b>{{ $taskLater['subtask_name'] }}</b></h6>
+                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskLater['id'] }}">
+                    <h6 class="ps-4"><b>{{ $taskLater['subtask_name'] }}</b></h6>
+                    <h6 class="ps-5">{{ date('D', strtotime($taskLater['subduedate'])) . ', ' . date('M d', strtotime($taskLater['subduedate'])) }}</h6>
                 </div>
                 @endforeach
                 @endif
@@ -126,8 +143,8 @@
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
-                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    $startDate = date('M d', strtotime($activity['actstartdate']));
+                    $endDate = date('M d', strtotime($activity['actenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -146,8 +163,8 @@
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
-                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    $startDate = date('M d', strtotime($activity['actstartdate']));
+                    $endDate = date('M d', strtotime($activity['actenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -167,8 +184,8 @@
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
-                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    $startDate = date('M d', strtotime($activity['actstartdate']));
+                    $endDate = date('M d', strtotime($activity['actenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -188,8 +205,8 @@
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
-                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    $startDate = date('M d', strtotime($activity['actstartdate']));
+                    $endDate = date('M d', strtotime($activity['actenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -208,8 +225,8 @@
                     <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($activity['actstartdate']));
-                    $endDate = date('M d, Y', strtotime($activity['actenddate']));
+                    $startDate = date('M d', strtotime($activity['actstartdate']));
+                    $endDate = date('M d', strtotime($activity['actenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -261,8 +278,8 @@
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                    $endDate = date('M d', strtotime($project['projectenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -282,8 +299,8 @@
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                    $endDate = date('M d', strtotime($project['projectenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -303,8 +320,8 @@
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                    $endDate = date('M d', strtotime($project['projectenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
@@ -324,8 +341,8 @@
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
                     @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                    $endDate = date('M d', strtotime($project['projectenddate']));
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>

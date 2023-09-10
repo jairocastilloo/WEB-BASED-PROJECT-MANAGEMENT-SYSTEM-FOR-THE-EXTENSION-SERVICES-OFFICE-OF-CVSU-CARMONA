@@ -22,7 +22,7 @@ class TasksController extends Controller
 
         $userid = $user->id;
 
-        $currentDate = Carbon::now();
+        $currentDate = Carbon::today();
 
 
         $currentYear = $currentDate->year;
@@ -51,8 +51,7 @@ class TasksController extends Controller
         $dueInThirtyDays->modify('+30 days');
 
         $taskDueThisSevenDays = $user->subtasks()
-            ->where('subduedate', '>=', $currentDate)
-            ->where('subduedate', '<=', $dueInOneWeek)
+            ->whereBetween('subduedate', [$currentDate, $dueInOneWeek])
             ->whereIn('activity_id', $activityIds)
             ->get();
 
