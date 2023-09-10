@@ -44,44 +44,27 @@ class TasksController extends Controller
 
         $activityIds = $activities->pluck('id')->toArray();
 
-        $dueInOneWeek = clone $currentDate;
-        $dueInOneWeek->modify('+7 days');
-
-        $dueInThirtyDays = clone $dueInOneWeek;
-        $dueInThirtyDays->modify('+30 days');
-
-        $taskDueThisSevenDays = $user->subtasks()
-            ->whereBetween('subduedate', [$currentDate, $dueInOneWeek])
+        $subtasks = $user->subtasks()
             ->whereIn('activity_id', $activityIds)
+            ->where('subduedate', '>=', $currentDate)
             ->get();
-
-        $taskDueWithinNextThirtyDays = $user->subtasks()
-            ->where('subduedate', '>', $dueInOneWeek)
-            ->where('subduedate', '<=', $dueInThirtyDays)
+        $overduesubtasks = $user->subtasks()
             ->whereIn('activity_id', $activityIds)
+            ->where('subduedate', '<', $currentDate)
             ->get();
 
-        $taskDueLater = $user->subtasks()
-            ->where('subduedate', '>', $dueInThirtyDays)
-            ->whereIn('activity_id', $activityIds)
-            ->get();
-
-        $contributions = SubtaskContributor::where('user_id', $userid)
-            ->where('approval', 1)
-            ->get();
 
         $calendaryears = CalendarYear::pluck('year');
 
         return view('implementer.index', [
             'currentproject' => $currentproject,
             'activities' => $activities,
-            'contributions' => $contributions,
+            'subtasks' => $subtasks,
+            'overduesubtasks' => $overduesubtasks,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentYear' => $currentYear,
-            'taskDueThisSevenDays' => $taskDueThisSevenDays,
-            'taskDueWithinNextThirtyDays' => $taskDueWithinNextThirtyDays,
-            'taskDueLater' => $taskDueLater,
+
         ]);
     }
 

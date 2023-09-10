@@ -34,12 +34,13 @@
                 </div>
 
             </div>
+
+            @php
+            $currentDate = strtotime('today');
+            $formattedCurrentDate = date('Y-m-d', $currentDate);
+            @endphp
+            @if($subtasks->isEmpty())
             <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
-                @php
-                $currentDate = strtotime('today');
-                $formattedCurrentDate = date('Y-m-d', $currentDate);
-                @endphp
-                @if($taskDueThisSevenDays->isEmpty() && $taskDueWithinNextThirtyDays->isEmpty() && $taskDueLater->isEmpty())
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
@@ -47,31 +48,33 @@
                     <h4><em>No Assigned Tasks.
                         </em></h4>
                 </div>
-                @endif
+            </div>
+            @endif
 
-                @if($taskDueThisSevenDays->isNotEmpty())
+            @if($subtasks->isNotEmpty())
 
-                @php
+            @php
 
-                $taskDueThisSevenDays = $taskDueThisSevenDays->sortBy('subduedate');
-
-                @endphp
+            $subtasks = $subtasks->sortBy('subduedate');
+            $overduesubtasks = $overduesubtasks->sortBy('subduedate');
+            @endphp
+            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color: darkgreen;">Due within 7 Days</h6>
+                    <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
                 </div>
 
-                @foreach($taskDueThisSevenDays as $taskwithinWeek)
+                @foreach($subtasks as $subtask)
 
-                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskwithinWeek['id'] }}">
+                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
                     @php
-                    $subduedate = strtotime($taskwithinWeek['subduedate']);
-                    $subcreatedat = strtotime($taskwithinWeek['created_at']);
+                    $subduedate = strtotime($subtask['subduedate']);
+                    $subcreatedat = strtotime($subtask['created_at']);
 
                     $formattedSubduedate = date('Y-m-d', $subduedate);
                     $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
                     @endphp
 
-                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $taskwithinWeek['subtask_name'] }}</b></h6>
+                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
 
                     @if ($formattedSubcreatedat === $formattedCurrentDate)
                     <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
@@ -93,58 +96,51 @@
                     @endif
 
                 </div>
+
                 @endforeach
-                @endif
-
-
-                @if($taskDueWithinNextThirtyDays->isNotEmpty())
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color: darkgreen;">Due next 30 Days</h6>
-                </div>
-                @foreach($taskDueWithinNextThirtyDays as $taskwithinMonth)
-                @php
-                $subcreatedat = strtotime($taskwithinMonth['created_at']);
-
-                $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
-                @endphp
-                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskwithinMonth['id'] }}">
-                    <h6 class="ps-4" style="color: #4A4A4A;"><b>{{ $taskwithinMonth['subtask_name'] }}</b></h6>
-                    @if ($formattedSubcreatedat === $formattedCurrentDate)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
-                    @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
-                    @else
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
-                    @endif
-                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D', strtotime($taskwithinMonth['subduedate'])) . ', ' . date('M d', strtotime($taskwithinMonth['subduedate'])) }}</h6>
-                </div>
-                @endforeach
-                @endif
-
-                @if($taskDueLater->isNotEmpty())
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color: darkgreen;">Due Later</h6>
-                </div>
-                @foreach($taskDueLater as $taskLater)
-                @php
-                $subcreatedat = strtotime($taskLater['created_at']);
-
-                $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
-                @endphp
-                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskLater['id'] }}">
-                    <h6 class="ps-4" style="color: #4A4A4A;"><b>{{ $taskLater['subtask_name'] }}</b></h6>
-                    @if ($formattedSubcreatedat === $formattedCurrentDate)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
-                    @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
-                    @else
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
-                    @endif
-                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D', strtotime($taskLater['subduedate'])) . ', ' . date('M d', strtotime($taskLater['subduedate'])) }}</h6>
-                </div>
-                @endforeach
-                @endif
             </div>
+            @endif
+
+            @if($overduesubtasks->isNotEmpty())
+
+            @php
+
+            $overduesubtasks = $overduesubtasks->sortBy('subduedate');
+
+            @endphp
+            <div class="basiccont word-wrap shadow rounded ms-4 mt-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color: darkgreen;">Overdue Tasks</h6>
+                </div>
+                <!-- overdue -->
+                @foreach($overduesubtasks as $overduesubtask)
+
+                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $overduesubtask['id'] }}">
+                    @php
+                    $subduedate = strtotime($overduesubtask['subduedate']);
+                    $subcreatedat = strtotime($overduesubtask['created_at']);
+
+                    $formattedSubduedate = date('Y-m-d', $subduedate);
+                    $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
+                    @endphp
+
+                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
+
+                    @if ($formattedSubcreatedat === $formattedCurrentDate)
+                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
+                    @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
+                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
+                    @else
+                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                    @endif
+
+                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
+
+                </div>
+                @endforeach
+            </div>
+            @endif
+
         </div>
 
         <div class="col-2">
