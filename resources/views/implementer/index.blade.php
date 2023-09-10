@@ -47,26 +47,47 @@
                 @endif
 
                 @if($taskDueThisSevenDays->isNotEmpty())
+
                 @php
                 $currentDate = strtotime('today');
+                $taskDueThisSevenDays = $taskDueThisSevenDays->sortBy('subduedate');
+
                 @endphp
                 <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color: darkgreen;">Due this 7 Days</h6>
+                    <h6 class="fw-bold small" style="color: darkgreen;">Due within 7 Days</h6>
                 </div>
 
                 @foreach($taskDueThisSevenDays as $taskwithinWeek)
+
                 <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskwithinWeek['id'] }}">
-                    <h6 class="ps-4"><b>{{ $taskwithinWeek['subtask_name'] }}</b></h6>
                     @php
                     $subduedate = strtotime($taskwithinWeek['subduedate']);
+                    $subcreatedat = strtotime($taskwithinWeek['created_at']);
                     $formattedCurrentDate = date('Y-m-d', $currentDate);
                     $formattedSubduedate = date('Y-m-d', $subduedate);
+                    $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
                     @endphp
-                    @if ($formattedSubduedate === $formattedCurrentDate)
-                    <h6 class="ps-5 text-success fw-bold">{{ 'Today, ' . date('M d', $subduedate) }}</h6>
+
+                    <h6 class="ps-4 lh-1" style="color: #5A5A5A;"><b>{{ $taskwithinWeek['subtask_name'] }}</b></h6>
+                    @if ($formattedSubcreatedat === $formattedCurrentDate)
+                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
+                    @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
+                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
                     @else
-                    <h6 class="ps-5">{{ date('D, M d', $subduedate) }}</h6>
+                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
                     @endif
+
+
+
+
+                    @if ($formattedSubduedate === $formattedCurrentDate)
+                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Today, ' . date('M d', $subduedate) }}</h6>
+                    @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
+                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Tomorrow, ' . date('M d', $subduedate) }}</h6>
+                    @else
+                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
+                    @endif
+
                 </div>
                 @endforeach
                 @endif
@@ -79,7 +100,7 @@
                 @foreach($taskDueWithinNextThirtyDays as $taskwithinMonth)
                 <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskwithinMonth['id'] }}">
                     <h6 class="ps-4"><b>{{ $taskwithinMonth['subtask_name'] }}</b></h6>
-                    <h6 class="ps-5">{{ date('D', strtotime($taskwithinMonth['subduedate'])) . ', ' . date('M d', strtotime($taskwithinMonth['subduedate'])) }}</h6>
+                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ date('D', strtotime($taskwithinMonth['subduedate'])) . ', ' . date('M d', strtotime($taskwithinMonth['subduedate'])) }}</h6>
                 </div>
                 @endforeach
                 @endif
@@ -91,7 +112,7 @@
                 @foreach($taskDueLater as $taskLater)
                 <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $taskLater['id'] }}">
                     <h6 class="ps-4"><b>{{ $taskLater['subtask_name'] }}</b></h6>
-                    <h6 class="ps-5">{{ date('D', strtotime($taskLater['subduedate'])) . ', ' . date('M d', strtotime($taskLater['subduedate'])) }}</h6>
+                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ date('D', strtotime($taskLater['subduedate'])) . ', ' . date('M d', strtotime($taskLater['subduedate'])) }}</h6>
                 </div>
                 @endforeach
                 @endif
