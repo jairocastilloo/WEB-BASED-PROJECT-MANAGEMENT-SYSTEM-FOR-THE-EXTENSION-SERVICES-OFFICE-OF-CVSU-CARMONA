@@ -63,12 +63,12 @@
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
 
                     <h6 class="fw-bold small" style="color: darkgreen;">
-
+                        <i class="bi bi-list-task"></i>
                         Tasks
                         <span class="badge bggold text-dark">
                             {{ count($subtasks) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
                 <div class="toggle-container subtoggle" style="display: none;">
@@ -121,12 +121,12 @@
             <div class="basiccont word-wrap shadow rounded">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color: darkgreen;">
-
+                        <i class="bi bi-list-task"></i>
                         Missing Tasks
                         <span class="badge bggold text-dark">
                             {{ count($overduesubtasks) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
 
                     </h6>
                 </div>
@@ -195,12 +195,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-activity"></i>
                         In Progress Activities
                         <span class="badge bggold text-dark">
                             {{ count($inProgressActivities) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
 
                     </h6>
                 </div>
@@ -226,12 +226,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-activity"></i>
                         Pending Activities
                         <span class="badge bggold text-dark">
                             {{ count($pendingActivities) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
 
                     </h6>
                 </div>
@@ -256,12 +256,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-activity"></i>
                         Scheduled Activities
                         <span class="bggold text-dark badge">
                             {{ count($scheduledActivities) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
 
                     </h6>
                 </div>
@@ -287,12 +287,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-activity"></i>
                         Overdue Activities
                         <span class="badge bggold text-dark">
                             {{ count($overdueActivities) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
 
                     </h6>
                 </div>
@@ -317,12 +317,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-activity"></i>
                         Completed Activities
                         <span class="badge bggold text-dark">
                             {{ count($completedActivities) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
                 <div class="toggle-container subtoggle" style="display: none;">
@@ -379,12 +379,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-kanban"></i>
                         In Progress Projects
                         <span class="bggold text-dark badge">
                             {{ count($inProgressProjects) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
 
                     </h6>
                 </div>
@@ -410,12 +410,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-kanban"></i>
                         Scheduled Projects
                         <span class="badge bggold text-dark">
                             {{ count($inProgressProjects) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
                 <div class="toggle-container subtoggle" style="display: none;">
@@ -440,12 +440,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-kanban"></i>
                         Completed Projects
                         <span class="badge bggold text-dark">
                             {{ count($completedProjects) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
                 <div class="toggle-container subtoggle" style="display: none;">
@@ -470,12 +470,12 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-
+                        <i class="bi bi-kanban"></i>
                         Incomplete Projects
                         <span class="badge bggold text-dark">
                             {{ count($overdueProjects) }}
                         </span>
-                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                        <i class="bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
                 <div class="toggle-container subtoggle" style="display: none;">
