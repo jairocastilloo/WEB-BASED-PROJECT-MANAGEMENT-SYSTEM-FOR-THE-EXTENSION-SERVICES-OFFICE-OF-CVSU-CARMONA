@@ -128,7 +128,7 @@
                     </h6>
                 </div>
                 <!-- overdue -->
-                <div class="toggle-container" style="display: none;">
+                <div class="toggle-container subtoggle" style="display: none;">
                     @foreach($overduesubtasks as $overduesubtask)
 
                     <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $overduesubtask['id'] }}">
@@ -289,7 +289,7 @@
 
                     </h6>
                 </div>
-                <div class="toggle-container" style="display: none;">
+                <div class="toggle-container subtoggle" style="display: none;">
                     @foreach ($overdueActivities as $activity)
                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
@@ -317,7 +317,7 @@
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
-                <div class="toggle-container" style="display: none;">
+                <div class="toggle-container subtoggle" style="display: none;">
                     @foreach ($completedActivities as $activity)
                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
