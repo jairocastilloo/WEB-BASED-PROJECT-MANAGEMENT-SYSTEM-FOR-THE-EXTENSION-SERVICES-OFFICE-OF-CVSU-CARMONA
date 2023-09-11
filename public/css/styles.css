@@ -27,7 +27,9 @@ p, h1, h2, h3, h4, h5, h6, span {
   background-color: #f2fde8;
   border-radius: 5px;
 }
-
+.bggold{
+  background-color: gold;
+}
 
 .stretch-button {
   width: 60%; /* Adjust the width as needed */

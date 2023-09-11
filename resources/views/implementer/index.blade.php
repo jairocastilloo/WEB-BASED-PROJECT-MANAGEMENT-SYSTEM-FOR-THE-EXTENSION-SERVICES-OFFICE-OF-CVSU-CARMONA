@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     &nbsp;
+
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
     <div class="row">
@@ -62,10 +63,11 @@
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
 
                     <h6 class="fw-bold small" style="color: darkgreen;">
-                        <span class="success-circle">
+
+                        Tasks
+                        <span class="badge bggold text-dark">
                             {{ count($subtasks) }}
                         </span>
-                        Tasks
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
@@ -119,10 +121,11 @@
             <div class="basiccont word-wrap shadow rounded">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color: darkgreen;">
-                        <span class="success-circle">
+
+                        Missing Tasks
+                        <span class="badge bggold text-dark">
                             {{ count($overduesubtasks) }}
                         </span>
-                        Missing Tasks
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
                     </h6>
@@ -192,10 +195,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        In Progress Activities
+                        <span class="badge bggold text-dark">
                             {{ count($inProgressActivities) }}
                         </span>
-                        In Progress Activities
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
                     </h6>
@@ -222,10 +226,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        Pending Activities
+                        <span class="badge bggold text-dark">
                             {{ count($pendingActivities) }}
                         </span>
-                        Pending Activities
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
                     </h6>
@@ -251,10 +256,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        Scheduled Activities
+                        <span class="bggold text-dark badge">
                             {{ count($scheduledActivities) }}
                         </span>
-                        Scheduled Activities
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
                     </h6>
@@ -281,10 +287,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        Overdue Activities
+                        <span class="badge bggold text-dark">
                             {{ count($overdueActivities) }}
                         </span>
-                        Overdue Activities
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
                     </h6>
@@ -310,10 +317,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        Completed Activities
+                        <span class="badge bggold text-dark">
                             {{ count($completedActivities) }}
                         </span>
-                        Completed Activities
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
@@ -371,10 +379,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        In Progress Projects
+                        <span class="bggold text-dark badge">
                             {{ count($inProgressProjects) }}
                         </span>
-                        In Progress Projects
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
                     </h6>
@@ -401,10 +410,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
-                            {{ count($scheduledProjects) }}
-                        </span>
+
                         Scheduled Projects
+                        <span class="badge bggold text-dark">
+                            {{ count($inProgressProjects) }}
+                        </span>
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
@@ -430,10 +440,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        Completed Projects
+                        <span class="badge bggold text-dark">
                             {{ count($completedProjects) }}
                         </span>
-                        Completed Projects
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
@@ -459,10 +470,11 @@
             <div class="basiccont word-wrap shadow">
                 <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color:darkgreen;">
-                        <span class="success-circle">
+
+                        Incomplete Projects
+                        <span class="badge bggold text-dark">
                             {{ count($overdueProjects) }}
                         </span>
-                        Incomplete Projects
                         <i class="ms-1 bi bi-caret-down-fill text-end"></i>
                     </h6>
                 </div>
