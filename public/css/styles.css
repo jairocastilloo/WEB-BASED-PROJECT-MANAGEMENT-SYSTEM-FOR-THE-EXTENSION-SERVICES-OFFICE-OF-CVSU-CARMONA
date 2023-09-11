@@ -1,9 +1,3 @@
-@font-face {
-  font-family: 'Inter';
-  src: url('../fonts/Inter-Regular.ttf') format('truetype');
-  /* Add additional font weights and styles if needed */
-}
-
 body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
@@ -11,7 +5,7 @@ body {
   background-color: #eaeaea; /* Set a default background color */
   color: #333333; /* Set a default text color */
 }
-p, h1, h2, h3, h4, h5, h6 {
+p, h1, h2, h3, h4, h5, h6, span {
   font-family: 'Inter', sans-serif;
 }
 .basicrow{
@@ -217,7 +211,9 @@ p, h1, h2, h3, h4, h5, h6 {
   background-color: #f2f2f2;
   cursor: pointer;
 }
-
+.containerhover:hover{
+  cursor: pointer;
+}
 .hrefnav:hover{
   color: darkgreen;
  
@@ -225,6 +221,18 @@ p, h1, h2, h3, h4, h5, h6 {
 .navtohover {
   position: relative;
   
+}
+.success-circle {
+  display: inline-flex; /* Center horizontally and vertically */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  width: 25px;
+  height: 25px;
+  background-color: gold;
+  color: rgb(0, 0, 0);
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 85%;
 }
 
 .navtohover::after {

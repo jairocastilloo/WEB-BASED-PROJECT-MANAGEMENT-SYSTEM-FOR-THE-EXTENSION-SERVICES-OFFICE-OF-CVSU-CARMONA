@@ -6,7 +6,7 @@
     <input type="text" class="d-none" id="userdept" value="{{ Auth::user()->department }}">
     <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
     <div class="row">
-        <div class="col-lg-8 p-2 pt-0">
+        <div class="col-lg-6 p-2 pt-0">
             <div class="basiccont rounded shadow pb-2">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
@@ -42,7 +42,7 @@
             @if($subtasks->isEmpty())
             <div class="basiccont word-wrap shadow rounded">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
+                    <h6 class="fw-bold small" style="color: darkgreen;">Tasks</h6>
                 </div>
                 <div class="text-center p-4">
                     <h4><em>No Tasks.
@@ -59,45 +59,53 @@
             $overduesubtasks = $overduesubtasks->sortBy('subduedate');
             @endphp
             <div class="basiccont word-wrap shadow rounded">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color: darkgreen;">My Tasks</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+
+                    <h6 class="fw-bold small" style="color: darkgreen;">
+                        <span class="success-circle">
+                            {{ count($subtasks) }}
+                        </span>
+                        Tasks
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                    </h6>
                 </div>
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach($subtasks as $subtask)
 
-                @foreach($subtasks as $subtask)
+                    <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
+                        @php
+                        $subduedate = strtotime($subtask['subduedate']);
+                        $subcreatedat = strtotime($subtask['created_at']);
 
-                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
-                    @php
-                    $subduedate = strtotime($subtask['subduedate']);
-                    $subcreatedat = strtotime($subtask['created_at']);
+                        $formattedSubduedate = date('Y-m-d', $subduedate);
+                        $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
+                        @endphp
 
-                    $formattedSubduedate = date('Y-m-d', $subduedate);
-                    $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
-                    @endphp
+                        <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
 
-                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
-
-                    @if ($formattedSubcreatedat === $formattedCurrentDate)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
-                    @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
-                    @else
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
-                    @endif
-
-
+                        @if ($formattedSubcreatedat === $formattedCurrentDate)
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
+                        @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
+                        @else
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                        @endif
 
 
-                    @if ($formattedSubduedate === $formattedCurrentDate)
-                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Today, ' . date('M d', $subduedate) }}</h6>
-                    @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
-                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Tomorrow, ' . date('M d', $subduedate) }}</h6>
-                    @else
-                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
-                    @endif
 
+
+                        @if ($formattedSubduedate === $formattedCurrentDate)
+                        <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Today, ' . date('M d', $subduedate) }}</h6>
+                        @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
+                        <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Tomorrow, ' . date('M d', $subduedate) }}</h6>
+                        @else
+                        <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
+                        @endif
+
+                    </div>
+
+                    @endforeach
                 </div>
-
-                @endforeach
             </div>
             @endif
 
@@ -109,34 +117,44 @@
 
             @endphp
             <div class="basiccont word-wrap shadow rounded">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color: darkgreen;">Overdue Tasks</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color: darkgreen;">
+                        <span class="success-circle">
+                            {{ count($overduesubtasks) }}
+                        </span>
+                        Missing Tasks
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+
+                    </h6>
                 </div>
                 <!-- overdue -->
-                @foreach($overduesubtasks as $overduesubtask)
+                <div class="toggle-container" style="display: none;">
+                    @foreach($overduesubtasks as $overduesubtask)
 
-                <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $overduesubtask['id'] }}">
-                    @php
-                    $subduedate = strtotime($overduesubtask['subduedate']);
-                    $subcreatedat = strtotime($overduesubtask['created_at']);
+                    <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $overduesubtask['id'] }}">
+                        @php
+                        $subduedate = strtotime($overduesubtask['subduedate']);
+                        $subcreatedat = strtotime($overduesubtask['created_at']);
 
-                    $formattedSubduedate = date('Y-m-d', $subduedate);
-                    $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
-                    @endphp
+                        $formattedSubduedate = date('Y-m-d', $subduedate);
+                        $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
+                        @endphp
 
-                    <h6 class="ps-4 lh-1" style="color: #4A4A4A;"><b>{{ $overduesubtask['subtask_name'] }}</b></h6>
+                        <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $overduesubtask['subtask_name'] }}</b></h6>
 
-                    <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
-                    <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
 
+                    </div>
+
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
 
         </div>
 
-        <div class="col-lg-2 p-2 pt-0">
+        <div class="col-lg-3 p-2 pt-0">
 
 
             @php
@@ -172,110 +190,154 @@
             @if ($inProgressActivities && count($inProgressActivities) > 0)
 
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($inProgressActivities) }}
+                        </span>
+                        In Progress Activities
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+
+                    </h6>
                 </div>
-                @foreach ($inProgressActivities as $activity)
-                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($inProgressActivities as $activity)
+                    <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
-                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                        <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($activity['actstartdate']));
-                    $endDate = date('M d', strtotime($activity['actenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($activity['actstartdate']));
+                        $endDate = date('M d', strtotime($activity['actenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
             @if ($pendingActivities && count($pendingActivities) > 0)
 
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
-                </div>
-                @foreach ($pendingActivities as $activity)
-                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
-                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($pendingActivities) }}
+                        </span>
+                        Pending Activities
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
 
-                    @php
-                    $startDate = date('M d', strtotime($activity['actstartdate']));
-                    $endDate = date('M d', strtotime($activity['actenddate']));
-                    @endphp
-
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </h6>
                 </div>
-                @endforeach
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($pendingActivities as $activity)
+                    <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                        <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+
+                        @php
+                        $startDate = date('M d', strtotime($activity['actstartdate']));
+                        $endDate = date('M d', strtotime($activity['actenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
             </div>
 
             @endif
             @if ($scheduledActivities && count($scheduledActivities) > 0)
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($scheduledActivities) }}
+                        </span>
+                        Scheduled Activities
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+
+                    </h6>
                 </div>
-                @foreach ($scheduledActivities as $activity)
-                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($scheduledActivities as $activity)
+                    <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
-                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                        <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($activity['actstartdate']));
-                    $endDate = date('M d', strtotime($activity['actenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($activity['actstartdate']));
+                        $endDate = date('M d', strtotime($activity['actenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
             @if ($overdueActivities && count($overdueActivities) > 0)
 
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($overdueActivities) }}
+                        </span>
+                        Overdue Activities
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+
+                    </h6>
                 </div>
-                @foreach ($overdueActivities as $activity)
-                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="toggle-container" style="display: none;">
+                    @foreach ($overdueActivities as $activity)
+                    <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
-                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                        <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($activity['actstartdate']));
-                    $endDate = date('M d', strtotime($activity['actenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($activity['actstartdate']));
+                        $endDate = date('M d', strtotime($activity['actenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
             @if ($completedActivities && count($completedActivities) > 0)
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($completedActivities) }}
+                        </span>
+                        Completed Activities
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                    </h6>
                 </div>
-                @foreach ($completedActivities as $activity)
-                <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                <div class="toggle-container" style="display: none;">
+                    @foreach ($completedActivities as $activity)
+                    <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
-                    <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                        <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($activity['actstartdate']));
-                    $endDate = date('M d', strtotime($activity['actenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($activity['actstartdate']));
+                        $endDate = date('M d', strtotime($activity['actenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
 
 
         </div>
-        <div class="col-lg-2 p-2 pt-0">
+        <div class="col-lg-3 p-2 pt-0">
 
             @php
 
@@ -307,85 +369,118 @@
             @if ($inProgressProjects && count($inProgressProjects) > 0)
 
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($inProgressProjects) }}
+                        </span>
+                        In Progress Projects
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+
+                    </h6>
                 </div>
-                @foreach ($inProgressProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($inProgressProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                    $endDate = date('M d', strtotime($project['projectenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($project['projectstartdate']));
+                        $endDate = date('M d', strtotime($project['projectenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
 
             @if ($scheduledProjects && count($scheduledProjects) > 0)
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
+                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($scheduledProjects) }}
+                        </span>
+                        Scheduled Projects
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                    </h6>
                 </div>
-                @foreach ($scheduledProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($scheduledProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                    $endDate = date('M d', strtotime($project['projectenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($project['projectstartdate']));
+                        $endDate = date('M d', strtotime($project['projectenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
 
             @if ($completedProjects && count($completedProjects) > 0)
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($completedProjects) }}
+                        </span>
+                        Completed Projects
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                    </h6>
                 </div>
-                @foreach ($completedProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($completedProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                    $endDate = date('M d', strtotime($project['projectenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($project['projectstartdate']));
+                        $endDate = date('M d', strtotime($project['projectenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
             @if ($overdueProjects && count($overdueProjects) > 0)
 
             <div class="basiccont word-wrap shadow">
-                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color:darkgreen;">
+                        <span class="success-circle">
+                            {{ count($overdueProjects) }}
+                        </span>
+                        Incomplete Projects
+                        <i class="ms-1 bi bi-caret-down-fill text-end"></i>
+                    </h6>
                 </div>
-                @foreach ($overdueProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach ($overdueProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
-                    @php
-                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                    $endDate = date('M d', strtotime($project['projectenddate']));
-                    @endphp
+                        @php
+                        $startDate = date('M d', strtotime($project['projectstartdate']));
+                        $endDate = date('M d', strtotime($project['projectenddate']));
+                        @endphp
 
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
             @endif
         </div>
@@ -399,6 +494,11 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+        $(".subtoggle").toggle();
+        $(document).on('click', '#toggleButton', function(event) {
+            $(this).next().slideToggle("fast");
+        });
+
         $('#year-select').change(function() {
             var selectedOption = $(this).find(':selected');
             var currentYear = selectedOption.val();
