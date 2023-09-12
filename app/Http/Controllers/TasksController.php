@@ -46,13 +46,18 @@ class TasksController extends Controller
 
         $subtasks = $user->subtasks()
             ->whereIn('activity_id', $activityIds)
+            ->where('status', 'Incomplete')
             ->where('subduedate', '>=', $currentDate)
             ->get();
         $overduesubtasks = $user->subtasks()
             ->whereIn('activity_id', $activityIds)
+            ->where('status', 'Incomplete')
             ->where('subduedate', '<', $currentDate)
             ->get();
-
+        $completedsubtasks = $user->subtasks()
+            ->whereIn('activity_id', $activityIds)
+            ->where('status', 'Completed')
+            ->get();
 
         $calendaryears = CalendarYear::pluck('year');
 
@@ -61,6 +66,7 @@ class TasksController extends Controller
             'activities' => $activities,
             'subtasks' => $subtasks,
             'overduesubtasks' => $overduesubtasks,
+            'completedsubtasks' => $completedsubtasks,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentYear' => $currentYear,

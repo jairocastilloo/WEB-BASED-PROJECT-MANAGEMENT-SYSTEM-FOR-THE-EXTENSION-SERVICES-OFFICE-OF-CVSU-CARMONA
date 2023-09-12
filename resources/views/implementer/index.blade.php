@@ -152,9 +152,56 @@
 
                     @endforeach
                 </div>
+
+
             </div>
             @endif
 
+            @if($completedsubtasks->isNotEmpty())
+
+            @php
+
+            $completedsubtasks = $completedsubtasks->sortBy('subduedate');
+
+            @endphp
+            <div class="basiccont word-wrap shadow rounded">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                    <h6 class="fw-bold small" style="color: darkgreen;">
+                        <i class="bi bi-list-task"></i>
+                        Completed Tasks
+                        <span class="badge bggold text-dark">
+                            {{ count($completedsubtasks) }}
+                        </span>
+                        <i class="bi bi-caret-down-fill text-end"></i>
+
+                    </h6>
+                </div>
+                <!-- overdue -->
+                <div class="toggle-container subtoggle" style="display: none;">
+                    @foreach($completedsubtasks as $completedsubtask)
+
+                    <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $completedsubtask['id'] }}">
+                        @php
+                        $subduedate = strtotime($completedsubtask['subduedate']);
+                        $subcreatedat = strtotime($completedsubtask['created_at']);
+
+                        $formattedSubduedate = date('Y-m-d', $subduedate);
+                        $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
+                        @endphp
+
+                        <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $completedsubtask['subtask_name'] }}</b></h6>
+
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
+
+                    </div>
+
+                    @endforeach
+                </div>
+
+
+            </div>
+            @endif
         </div>
 
         <div class="col-lg-3 p-2 pt-0">
