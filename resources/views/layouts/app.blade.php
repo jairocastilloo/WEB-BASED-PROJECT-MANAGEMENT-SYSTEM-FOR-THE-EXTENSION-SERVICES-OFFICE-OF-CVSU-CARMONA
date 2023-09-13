@@ -38,10 +38,9 @@
             <div class="container">
 
                 <a class="navbar-brand" href="{{ url('/') }}">
-
                     <img src="{{ asset('images/logo.png') }}" alt="CvSU-Carmona Extension Services Office Logo">
-
                 </a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -79,7 +78,7 @@
                         <a class="nav-link navtohover text-dark" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
-                        <a class="nav-link navtohover text-dark position-relative" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link navtohover text-dark position-relative me-2" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Notifications
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 99+
@@ -91,37 +90,44 @@
                         <li class="nav-item dropdown">
                             <div id="account">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-dark" href="#" role="button">
-                                    {{ Auth::user()->name }}
+                                    {{ Auth::user()->name . ' ' . Auth::user()->last_name }}
                                 </a>
 
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('records.show', ['username' => Auth::user()->username]) }}">
-                                        {{ __('My Records') }}
-                                    </a>
-
+                                <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('records.show', ['username' => Auth::user()->username]) }}">
+                                            {{ __('My Records') }}
+                                        </a>
+                                    </li>
 
                                     @if (Auth::user()->role === 'Admin')
-                                    <a class="dropdown-item" href="{{ route('admin.manage', ['id' => Auth::user()->id]) }}">
-                                        Account Management
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route('admin.approve', ['id' => Auth::user()->id]) }}">
-                                        Account Approval
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">
-                                        Set an Academic Year
-                                    </a>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.manage', ['id' => Auth::user()->id]) }}">
+                                            Account Management
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('admin.approve', ['id' => Auth::user()->id]) }}">
+                                            Account Approval
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">
+                                            Set an Academic Year
+                                        </a>
+                                    </li>
                                     @endif
-                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                            {{ __('Logout') }}
+                                        </a>
+                                    </li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
 
-                                </div>
+                                </ul>
                             </div>
                         </li>
                         @endif
