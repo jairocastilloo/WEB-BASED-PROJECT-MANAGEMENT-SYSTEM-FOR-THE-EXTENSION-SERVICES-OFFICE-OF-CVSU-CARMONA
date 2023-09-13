@@ -79,6 +79,13 @@
                         <a class="nav-link navtohover text-dark" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
+                        <a class="nav-link navtohover text-dark position-relative" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Notifications
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                99+
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </a>
                         @endif
 
                         <li class="nav-item dropdown">
