@@ -86,11 +86,11 @@
                         <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
 
                         @if ($formattedSubcreatedat === $formattedCurrentDate)
-                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Today, ' . date('M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Today, ' . date('M d', $subcreatedat) }}</h6>
                         @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted Yesterday, ' . date('M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Yesterday, ' . date('M d', $subcreatedat) }}</h6>
                         @else
-                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created ' . date('D, M d', $subcreatedat) }}</h6>
                         @endif
 
 
@@ -122,7 +122,7 @@
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color: darkgreen;">
                         <i class="bi bi-list-task"></i>
-                        Missing Tasks
+                        Missing
                         <span class="badge bggold text-dark">
                             {{ count($overduesubtasks) }}
                         </span>
@@ -145,7 +145,7 @@
 
                         <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $overduesubtask['subtask_name'] }}</b></h6>
 
-                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created ' . date('D, M d', $subcreatedat) }}</h6>
                         <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
 
                     </div>
@@ -168,7 +168,7 @@
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                     <h6 class="fw-bold small" style="color: darkgreen;">
                         <i class="bi bi-list-task"></i>
-                        Completed Tasks
+                        Done
                         <span class="badge bggold text-dark">
                             {{ count($completedsubtasks) }}
                         </span>
@@ -191,7 +191,7 @@
 
                         <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $completedsubtask['subtask_name'] }}</b></h6>
 
-                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Posted ' . date('D, M d', $subcreatedat) }}</h6>
+                        <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created ' . date('D, M d', $subcreatedat) }}</h6>
                         <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
 
                     </div>

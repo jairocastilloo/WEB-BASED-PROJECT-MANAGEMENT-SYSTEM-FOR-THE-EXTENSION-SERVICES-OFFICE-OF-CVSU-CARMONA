@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -31,13 +31,16 @@
 
 </head>
 
-<body style="font-family: sans-serif;">
+<body>
     <div id="app">
-        <nav style="background-color: #1b651b;" class="navbar navbar-expand-md navbar-dark shadow-sm p-1">
+        <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm p-1">
 
             <div class="container">
+
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Extension Services Office Project Manager') }}
+
+                    <img src="{{ asset('images/logo.png') }}" alt="CvSU-Carmona Extension Services Office Logo">
+
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -67,20 +70,20 @@
                         @else
                         @if (Auth::user()->approval === 1)
                         @if (Auth::user()->role === 'Coordinator' || Auth::user()->role === 'Admin')
-                        <a class="nav-link navtohover" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link navtohover text-dark" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Home
                         </a>
-                        <a class="nav-link navtohover" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link navtohover text-dark" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Projects
                         </a>
-                        <a class="nav-link navtohover" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link navtohover text-dark" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
                         @endif
 
                         <li class="nav-item dropdown">
                             <div id="account">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-dark" href="#" role="button">
                                     {{ Auth::user()->name }}
                                 </a>
 

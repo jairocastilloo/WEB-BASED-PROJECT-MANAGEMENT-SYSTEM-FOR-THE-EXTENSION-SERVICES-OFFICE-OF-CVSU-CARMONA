@@ -5,7 +5,7 @@ body {
   background-color: #eaeaea; /* Set a default background color */
   color: #333333; /* Set a default text color */
 }
-p, h1, h2, h3, h4, h5, h6, span {
+p, h1, h2, h3, h4, h5, h6, span, a{
   font-family: 'Inter', sans-serif;
 }
 .basicrow{
@@ -221,7 +221,6 @@ p, h1, h2, h3, h4, h5, h6, span {
 }
 .navtohover {
   position: relative;
-  
 }
 .success-circle {
   display: inline-flex; /* Center horizontally and vertically */
