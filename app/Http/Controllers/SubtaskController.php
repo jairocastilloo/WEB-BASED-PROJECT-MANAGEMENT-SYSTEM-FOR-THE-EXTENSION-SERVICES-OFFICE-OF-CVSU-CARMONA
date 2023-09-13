@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subtask;
 use App\Models\Activity;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -129,6 +130,7 @@ class SubtaskController extends Controller
         $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
         $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
         $subtaskcontributor->date = $validatedData['subtask-date'];
+        $subtaskcontributor->submitter_id = Auth::user()->id;
         $subtaskcontributor->save();
         $newsubtaskcontributor = $subtaskcontributor->id;
 
@@ -149,7 +151,7 @@ class SubtaskController extends Controller
         $file = $request->file('subtaskdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
         $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
         $path = $request->file('subtaskdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
@@ -186,46 +188,9 @@ class SubtaskController extends Controller
             return $item->user;
         });
 
+        $contributions = Contribution::where('subtask_id', $subtaskid)
+            ->get();
 
-
-        $unapprovedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', null)
-            ->first();
-        $unapprovedhoursContributors = [];
-        $unapprovedcontributors = [];
-        if ($unapprovedhours) {
-            $unapprovedhoursid = $unapprovedhours->id;
-            $unapprovedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $unapprovedhoursid)
-                ->pluck('user_id');
-            $unapprovedcontributors = User::whereIn('id', $unapprovedhoursContributors)
-                ->get();
-        }
-
-        $approvedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', 1)
-            ->first();
-        $approvedhoursContributors = [];
-        $approvedcontributors = [];
-        if ($approvedhours) {
-            $approvedhoursid = $approvedhours->id;
-            $approvedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $approvedhoursid)
-                ->pluck('user_id');
-            $approvedcontributors = User::whereIn('id', $approvedhoursContributors)
-                ->get();
-        }
-
-        $rejectedhours = Contribution::where('subtask_id', $subtaskid)
-            ->where('approval', 0)
-            ->first();
-        $rejectedhoursContributors = [];
-        $rejectedcontributors = [];
-        if ($rejectedhours) {
-            $rejectedhoursid = $rejectedhours->id;
-            $rejectedhoursContributors = SubtaskcontributionsUser::where('contribution_id', $rejectedhoursid)
-                ->pluck('user_id');
-            $rejectedcontributors = User::whereIn('id', $rejectedhoursContributors)
-                ->get();
-        }
 
         return view('activity.subtask', [
             'activity' => $activity,
@@ -235,16 +200,7 @@ class SubtaskController extends Controller
             'projectId' => $projectId,
             'assignees' => $assignees,
             'currentassignees' => $currentassignees,
-            'unapprovedhours' => $unapprovedhours,
-            'approvedhours' => $approvedhours,
-            'approvedcontributors' => $approvedcontributors,
-            'approvedhoursContributors' => $approvedhoursContributors,
-            'unapprovedcontributors' => $unapprovedcontributors,
-            'unapprovedhoursContributors' => $unapprovedhoursContributors,
-            'rejectedhours' => $rejectedhours,
-            'rejectedcontributors' => $rejectedcontributors,
-            'rejectedhoursContributors' => $rejectedhoursContributors,
-
+            'contributions' => $contributions
         ]);
     }
 
@@ -266,6 +222,9 @@ class SubtaskController extends Controller
             $subtaskid = $contribution->subtask_id;
             $hoursrendered = $contribution->hours_rendered;
             Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
+            Contribution::where('subtask_id', $subtaskid)
+                ->where('approval', null)
+                ->delete();
         }
         return 'File uploaded successfully.';
     }

@@ -22,55 +22,39 @@ class HoursController extends Controller
         $projectName = $project->projecttitle;
 
 
-        $unapprovedhours = activityContribution::where('activity_id', $activityid)
-            ->where('approval', 0)
-            ->first();
-        $hoursContributors = [];
-        $contributors = [];
-        if ($unapprovedhours) {
-            $unapprovedhoursid = $unapprovedhours->id;
-            $hoursContributors = ActivityContributionsUser::where('activitycontribution_id', $unapprovedhoursid)
-                ->pluck('user_id');
-            $contributors = User::whereIn('id', $hoursContributors)
-                ->get();
-        }
+        $activitycontributions = activityContribution::where('activity_id', $activityid)
+            ->get();
 
-        $approvedhours = activityContribution::where('activity_id', $activityid)
-            ->where('approval', 1)
-            ->first();
-        if ($approvedhours) {
-            $approvedhoursid = $approvedhours->id;
-            $hoursContributors = ActivityContributionsUser::where('activitycontribution_id', $approvedhoursid)
-                ->pluck('user_id');
-            $contributors = User::whereIn('id', $hoursContributors)
-                ->get();
-        }
 
         return view('activity.hours', [
             'activity' => $activity,
             'projectId' => $projectId,
             'projectName' => $projectName,
-            'unapprovedhours' => $unapprovedhours,
-            'approvedhours' => $approvedhours,
-            'contributors' => $contributors,
-            'hoursContributors' => $hoursContributors,
+            'activitycontributions' => $activitycontributions,
         ]);
     }
 
     public function acceptacthours(Request $request)
     {
-
         $acceptIds = $request->input('acceptids');
+        $isApprove = $request->input('isApprove');
+        if ($isApprove === 'true') {
+            $isApprove = 1;
+        } elseif ($isApprove === 'false') {
+            $isApprove = 0;
+        }
+        // Update the 'approval' field in SubtaskContributor table
+        $actcontribution = activityContribution::findorFail($acceptIds);
+        $actcontribution->update(['approval' => $isApprove]);
 
-        $activitycontribution = activityContribution::findorFail($acceptIds);
-
-        $activitycontribution->update(['approval' => 1]);
-
-        $activityid = $activitycontribution->activity_id;
-        $hoursrendered = $activitycontribution->hours_rendered;
-
-        Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
-
+        if ($isApprove == 1) {
+            $activityid = $actcontribution->activity_id;
+            $hoursrendered = $actcontribution->hours_rendered;
+            Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
+            activityContribution::where('activity_id', $activityid)
+                ->where('approval', null)
+                ->delete();
+        }
         return 'File uploaded successfully.';
     }
 }

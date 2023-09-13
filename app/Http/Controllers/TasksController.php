@@ -22,7 +22,7 @@ class TasksController extends Controller
 
         $userid = $user->id;
 
-        $currentDate = Carbon::now();
+        $currentDate = Carbon::today();
 
 
         $currentYear = $currentDate->year;
@@ -34,6 +34,65 @@ class TasksController extends Controller
 
 
         $inCurrentYear = true;
+
+        $projectIds = $currentproject->pluck('id')->toArray();
+
+
+        $activities = $user->activities()
+            ->whereIn('project_id', $projectIds)
+            ->get();
+
+        $activityIds = $activities->pluck('id')->toArray();
+
+        $subtasks = $user->subtasks()
+            ->whereIn('activity_id', $activityIds)
+            ->where('status', 'Incomplete')
+            ->where('subduedate', '>=', $currentDate)
+            ->get();
+        $overduesubtasks = $user->subtasks()
+            ->whereIn('activity_id', $activityIds)
+            ->where('status', 'Incomplete')
+            ->where('subduedate', '<', $currentDate)
+            ->get();
+        $completedsubtasks = $user->subtasks()
+            ->whereIn('activity_id', $activityIds)
+            ->where('status', 'Completed')
+            ->get();
+
+        $calendaryears = CalendarYear::pluck('year');
+
+        return view('implementer.index', [
+            'currentproject' => $currentproject,
+            'activities' => $activities,
+            'subtasks' => $subtasks,
+            'overduesubtasks' => $overduesubtasks,
+            'completedsubtasks' => $completedsubtasks,
+            'calendaryears' => $calendaryears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentYear' => $currentYear,
+
+        ]);
+    }
+
+    public function showacadtasks($username, $currentYear)
+    {
+        $user = User::where('username', $username)->firstOrFail();
+
+        $userid = $user->id;
+
+
+        $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
+
+        if ($otheryear == $currentYear) {
+            $inCurrentYear = true;
+        } else {
+            $inCurrentYear = false;
+        }
+
+        $currentproject = $user->projects()
+            ->where('calendaryear', $currentYear)
+            ->get();
 
         $projectIds = $currentproject->pluck('id')->toArray();
 
@@ -83,61 +142,6 @@ class TasksController extends Controller
             'taskDueThisSevenDays' => $taskDueThisSevenDays,
             'taskDueWithinNextThirtyDays' => $taskDueWithinNextThirtyDays,
             'taskDueLater' => $taskDueLater,
-        ]);
-    }
-
-    public function showacadtasks($username, $currentYear)
-    {
-        $user = User::where('username', $username)->firstOrFail();
-
-        $userid = $user->id;
-
-
-        $currentDate = Carbon::now();
-        $otheryear = $currentDate->year;
-
-        if ($otheryear == $currentYear) {
-            $inCurrentYear = true;
-        } else {
-            $inCurrentYear = false;
-        }
-
-
-        $currentproject = $user->projects()
-            ->where('calendaryear', $currentYear)
-            ->get();
-
-
-
-
-        $projectIds = $currentproject->pluck('id')->toArray();
-
-
-        $activities = $user->activities()
-            ->whereIn('project_id', $projectIds)
-            ->get();
-
-        $activityIds = $activities->pluck('id')->toArray();
-
-        $subtasks = $user->subtasks()
-            ->whereIn('activity_id', $activityIds)
-            ->get();
-
-
-        $contributions = SubtaskContributor::where('user_id', $userid)
-            ->where('approval', 1)
-            ->get();
-
-        $calendaryears = CalendarYear::pluck('year');
-
-        return view('implementer.index', [
-            'currentproject' => $currentproject,
-            'activities' => $activities,
-            'subtasks' => $subtasks,
-            'contributions' => $contributions,
-            'calendaryears' => $calendaryears,
-            'inCurrentYear' => $inCurrentYear,
-            'currentYear' => $currentYear
         ]);
     }
 

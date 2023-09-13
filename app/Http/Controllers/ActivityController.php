@@ -187,42 +187,12 @@ class ActivityController extends Controller
         $outputids = Output::where('activity_id', $activityid)
             ->where('output_type', $outputtype)
             ->pluck('id');
-
-        $outputcreated_at_list = []; // Initialize an empty array to store the $outputcreated_at values
-        $unapprovedoutputs = [];
-        $first = true;
-        foreach ($outputids as $outputid) {
-            if ($first) {
-                $usersWithSameCreatedAt = OutputUser::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-                    ->where('approval', 0)
-                    ->where('output_id', $outputid)
-                    ->groupBy('created_at')
-                    ->get();
-                $first = false;
-            }
-            $unapprovedoutput = OutputUser::selectRaw('MAX(id) as id')
-                ->where('approval', 0)
-                ->where('output_id', $outputid)
-                ->groupByRaw('created_at')
-                ->pluck('id')
-                ->toArray(); // Convert the plucked collection to an array
-
-            $unapprovedoutputs = array_merge($unapprovedoutputs, $unapprovedoutput);
-
-            $outputcreated_at = OutputUser::where('output_id', $outputid)
-                ->where('approval', 0)
-                ->pluck('created_at')
-                ->toArray(); // Convert the plucked collection to an array
-
-            $outputcreated_at_list = array_merge($outputcreated_at_list, $outputcreated_at);
-        }
-
-        $unique_outputcreated = array_unique($outputcreated_at_list);
-
-        $unapprovedoutputdata = OutputUser::whereIn('id', $unapprovedoutputs)
+        $outputNames = Output::where('activity_id', $activityid)
+            ->where('output_type', $outputtype)
+            ->pluck('output_name')
+            ->toArray();
+        $submittedoutput = OutputUser::whereIn('output_id', $outputids)
             ->get();
-
-
 
         return view('activity.output', [
             'activity' => $activity,
@@ -231,64 +201,11 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
-            'unique_outputcreated' => $unique_outputcreated,
-            'unapprovedoutputdata' => $unapprovedoutputdata,
-            'usersWithSameCreatedAt' => $usersWithSameCreatedAt
+            'submittedoutput' => $submittedoutput,
+            'outputNames' => $outputNames
         ]);
     }
 
-    public function getsubtask($id, $activityid, $subtaskid)
-    {
-        // activity details
-        $activity = Activity::findOrFail($activityid);
-        $subtask = Subtask::findOrFail($subtaskid);
-        $subtasks = Subtask::where('activity_id', $activityid)->get();
-        $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
-
-        $currentassignees = $subtask->users;
-
-        $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
-
-
-        $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
-        $activityUser = ActivityUser::where('activity_id', $activityid)
-            ->whereNotIn('user_id', $excludeUserIds)
-            ->with('user:id,name,middle_name,last_name,email,role')
-            ->get();
-
-        $assignees = $activityUser->map(function ($item) {
-            return $item->user;
-        });
-
-        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-            ->where('approval', 0)
-            ->where('subtask_id', $subtaskid)
-            ->groupBy('created_at')
-            ->get();
-        $unapprovedsubtask = SubtaskContributor::selectRaw('MAX(id) as id')
-            ->where('approval', 0)
-            ->where('subtask_id', $subtaskid)
-            ->groupByRaw('created_at')
-            ->pluck('id');
-
-
-        $unapprovedsubtaskdata = SubtaskContributor::whereIn('id', $unapprovedsubtask)
-            ->get();
-
-
-        return view('activity.subtask', [
-            'activity' => $activity,
-            'subtask' => $subtask,
-            'subtasks' => $subtasks,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
-            'assignees' => $assignees,
-            'currentassignees' => $currentassignees,
-            'unapprovedsubtaskdata' => $unapprovedsubtaskdata,
-            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
-        ]);
-    }
 
     public function displayactivity($activityid, $department, $activityname)
     {
@@ -416,6 +333,7 @@ class ActivityController extends Controller
         $activitycontributions->startdate = $validatedData['start-date'];
         $activitycontributions->enddate = $validatedData['end-date'];
         $activitycontributions->hours_rendered = $validatedData['hours-rendered'];
+        $activitycontributions->submitter_id = Auth::user()->id;
         $activitycontributions->save();
         $newActContri = $activitycontributions->id;
 
@@ -436,7 +354,7 @@ class ActivityController extends Controller
         $file = $request->file('activitydocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
-        $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
         $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
         $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);

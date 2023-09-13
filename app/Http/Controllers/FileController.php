@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Contribution;
+use App\Models\OutputUser;
+use App\Models\activityContribution;
 
 class FileController extends Controller
 {
@@ -33,6 +35,24 @@ class FileController extends Controller
     {
         $contribution = Contribution::findorFail($contributionid);
         $dateTime = $contribution->created_at;
+        $currentDateTime = str_replace(' ', '_', $dateTime);
+        $currentDateTime = str_replace(':', '-', $currentDateTime);
+        $file = 'uploads/' . $currentDateTime . '/' . str_replace('/', DIRECTORY_SEPARATOR, $filename);
+        return Storage::download($file);
+    }
+    public function downloadoutput($submittedoutputid, $filename)
+    {
+        $output = OutputUser::findorFail($submittedoutputid);
+        $dateTime = $output->created_at;
+        $currentDateTime = str_replace(' ', '_', $dateTime);
+        $currentDateTime = str_replace(':', '-', $currentDateTime);
+        $file = 'uploads/' . $currentDateTime . '/' . str_replace('/', DIRECTORY_SEPARATOR, $filename);
+        return Storage::download($file);
+    }
+    public function downloadactivity($actcontributionid, $filename)
+    {
+        $output = activityContribution::findorFail($actcontributionid);
+        $dateTime = $output->created_at;
         $currentDateTime = str_replace(' ', '_', $dateTime);
         $currentDateTime = str_replace(':', '-', $currentDateTime);
         $file = 'uploads/' . $currentDateTime . '/' . str_replace('/', DIRECTORY_SEPARATOR, $filename);

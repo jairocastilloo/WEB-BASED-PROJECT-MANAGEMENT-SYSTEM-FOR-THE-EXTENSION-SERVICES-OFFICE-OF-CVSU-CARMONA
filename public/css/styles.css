@@ -1,12 +1,17 @@
 body {
-  background-color: #c5c7c7;
-
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  font-family: 'Inter', sans-serif; /* Set a default font-family */
+  background-color: #eaeaea; /* Set a default background color */
+  color: #333333; /* Set a default text color */
+}
+p, h1, h2, h3, h4, h5, h6, span, a{
+  font-family: 'Inter', sans-serif;
 }
 .basicrow{
   background-color: #dadadc;
   padding: 10px;
 }
-
 
 .basiccont{
   background-color: white;
@@ -21,7 +26,9 @@ body {
   background-color: #f2fde8;
   border-radius: 5px;
 }
-
+.bggold{
+  background-color: gold;
+}
 
 .stretch-button {
   width: 60%; /* Adjust the width as needed */
@@ -205,14 +212,27 @@ body {
   background-color: #f2f2f2;
   cursor: pointer;
 }
-
+.containerhover:hover{
+  cursor: pointer;
+}
 .hrefnav:hover{
   color: darkgreen;
  
 }
 .navtohover {
   position: relative;
-  
+}
+.success-circle {
+  display: inline-flex; /* Center horizontally and vertically */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  width: 25px;
+  height: 25px;
+  background-color: gold;
+  color: rgb(0, 0, 0);
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 85%;
 }
 
 .navtohover::after {

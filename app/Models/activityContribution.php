@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class activityContribution extends Model
 {
     use HasFactory;
-
+    use SoftDeletes;
     protected $table = 'activity_contributions';
 
     protected $fillable = [
@@ -17,6 +18,7 @@ class activityContribution extends Model
         'enddate',
         'hours_rendered',
         'approval',
+        'submitter_id'
     ];
 
     public function users()
