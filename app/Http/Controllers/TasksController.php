@@ -9,6 +9,7 @@ use App\Models\Activity;
 use App\Models\SubtaskContributor;
 use App\Models\AcademicYear;
 use App\Models\CalendarYear;
+use App\Models\Notification;
 use Carbon\Carbon;
 use App\Http\Controllers\DateTime;
 
@@ -32,6 +33,9 @@ class TasksController extends Controller
             ->where('calendaryear', $currentYear)
             ->get();
 
+
+        $notifications = Notification::where('user_id', $userid)
+            ->get();
 
         $inCurrentYear = true;
 
@@ -70,7 +74,7 @@ class TasksController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentYear' => $currentYear,
-
+            'notifications' => $notifications,
         ]);
     }
 
@@ -142,6 +146,7 @@ class TasksController extends Controller
             'taskDueThisSevenDays' => $taskDueThisSevenDays,
             'taskDueWithinNextThirtyDays' => $taskDueWithinNextThirtyDays,
             'taskDueLater' => $taskDueLater,
+
         ]);
     }
 

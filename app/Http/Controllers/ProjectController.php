@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
 use App\Models\ActivityUser;
+use App\Models\Notification;
 use App\Models\Objective;
 use App\Models\Output;
 use App\Models\SubtaskContributor;
@@ -21,6 +22,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
+use App\Events\NewNotification;
 
 class ProjectController extends Controller
 {
@@ -282,7 +284,18 @@ class ProjectController extends Controller
             $projectmembers = new ProjectUser;
             $projectmembers->user_id = $validatedData['projectmember'][$i];
             $projectmembers->project_id = $newProjectId;
+
             $projectmembers->save();
+            $notification = new Notification([
+                'user_id' => $validatedData['projectmember'][$i],
+                'message' => 'You have been added to a new project.',
+            ]);
+            $notification->save();
+
+            $unreadCount = auth()->user()->unreadNotifications->count();
+
+            // Broadcast the notification and unread count
+            broadcast(new NewNotification($notification, $unreadCount))->toOthers();
         }
         for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
             $projectobjective = new Objective;
