@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityUser;
+use App\Models\Notification;
 use App\Models\Output;
 use App\Models\Activity;
 use App\Models\activityContribution;
@@ -193,6 +194,8 @@ class ActivityController extends Controller
             ->toArray();
         $submittedoutput = OutputUser::whereIn('output_id', $outputids)
             ->get();
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
 
         return view('activity.output', [
             'activity' => $activity,
@@ -202,7 +205,8 @@ class ActivityController extends Controller
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
             'submittedoutput' => $submittedoutput,
-            'outputNames' => $outputNames
+            'outputNames' => $outputNames,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -249,6 +253,8 @@ class ActivityController extends Controller
         $activities = Activity::where('project_id', $projectId)
             ->whereNotIn('id', [$activityid])
             ->get();
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
 
         return view('activity.index', [
             'activity' => $activity,
@@ -261,6 +267,7 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -307,12 +314,14 @@ class ActivityController extends Controller
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('activity.submitactivity', [
             'activity' => $activity,
             'projectName' => $projectName,
             'projectId' => $projectId,
             'currentassignees' => $currentassignees,
+            'notifications' => $notifications,
         ]);
     }
 

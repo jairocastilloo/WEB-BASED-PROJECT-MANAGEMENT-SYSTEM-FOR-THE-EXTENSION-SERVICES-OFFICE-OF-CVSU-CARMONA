@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -80,7 +81,8 @@ class OutputController extends Controller
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('activity.submitoutput', [
             'activity' => $activity,
             'currentoutputtype' => $currentoutputtype,
@@ -88,6 +90,7 @@ class OutputController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'assignees' => $assignees,
+            'notifications' => $notifications,
         ]);
     }
 

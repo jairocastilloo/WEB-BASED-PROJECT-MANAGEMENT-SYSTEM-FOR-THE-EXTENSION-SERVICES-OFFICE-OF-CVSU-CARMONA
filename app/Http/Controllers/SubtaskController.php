@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Subtask;
 use App\Models\Activity;
 use Illuminate\Support\Facades\Auth;
@@ -105,13 +106,15 @@ class SubtaskController extends Controller
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('activity.submitsubtask', [
             'activity' => $activity,
             'subtask' => $subtask,
             'projectName' => $projectName,
             'projectId' => $projectId,
             'currentassignees' => $currentassignees,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -190,7 +193,8 @@ class SubtaskController extends Controller
 
         $contributions = Contribution::where('subtask_id', $subtaskid)
             ->get();
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
 
         return view('activity.subtask', [
             'activity' => $activity,
@@ -200,7 +204,8 @@ class SubtaskController extends Controller
             'projectId' => $projectId,
             'assignees' => $assignees,
             'currentassignees' => $currentassignees,
-            'contributions' => $contributions
+            'contributions' => $contributions,
+            'notifications' => $notifications,
         ]);
     }
 
