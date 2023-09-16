@@ -45,13 +45,16 @@ class ProjectController extends Controller
 
 
         $calendaryears = CalendarYear::pluck('year');
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
 
         return view('project.create', [
             'members' => $users,
             'calendaryears' => $calendaryears,
             'currentproject' => $currentproject,
             'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear
+            'currentyear' => $currentyear,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -75,12 +78,17 @@ class ProjectController extends Controller
             ->get();
 
         $calendaryears = CalendarYear::pluck('year');
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
+
+
         return view('project.create', [
             'members' => $users,
             'calendaryears' => $calendaryears,
             'currentproject' => $currentproject,
             'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear
+            'currentyear' => $currentyear,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -113,6 +121,9 @@ class ProjectController extends Controller
         $activities = $indexproject->activities;
 
         $sortedActivities = $activities->sortBy('actobjectives');
+
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
 
         //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
@@ -122,6 +133,7 @@ class ProjectController extends Controller
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
             'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -157,6 +169,8 @@ class ProjectController extends Controller
                 'actenddate' => $activity->actenddate,
             ];
         })->toArray();
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
 
         return view('project.calendar', [
             'members' => $users, 'currentproject' => $currentproject,
@@ -164,7 +178,8 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear, 'projectid' => $projectid,
-            'activityArray' => $activityArray
+            'activityArray' => $activityArray,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -291,11 +306,6 @@ class ProjectController extends Controller
                 'message' => 'You have been added to a new project.',
             ]);
             $notification->save();
-
-            $unreadCount = auth()->user()->unreadNotifications->count();
-
-            // Broadcast the notification and unread count
-            broadcast(new NewNotification($notification, $unreadCount))->toOthers();
         }
         for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
             $projectobjective = new Objective;

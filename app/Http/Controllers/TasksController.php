@@ -12,6 +12,7 @@ use App\Models\CalendarYear;
 use App\Models\Notification;
 use Carbon\Carbon;
 use App\Http\Controllers\DateTime;
+use Illuminate\Support\Facades\Auth;
 
 class TasksController extends Controller
 {
@@ -135,7 +136,8 @@ class TasksController extends Controller
             ->get();
 
         $calendaryears = CalendarYear::pluck('year');
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('implementer.index', [
             'currentproject' => $currentproject,
             'activities' => $activities,
@@ -146,6 +148,7 @@ class TasksController extends Controller
             'taskDueThisSevenDays' => $taskDueThisSevenDays,
             'taskDueWithinNextThirtyDays' => $taskDueWithinNextThirtyDays,
             'taskDueLater' => $taskDueLater,
+            'notifications' => $notifications,
 
         ]);
     }

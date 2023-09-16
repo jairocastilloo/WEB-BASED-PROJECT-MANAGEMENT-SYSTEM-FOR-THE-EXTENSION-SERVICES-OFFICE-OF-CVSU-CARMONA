@@ -78,6 +78,7 @@
                         <a class="nav-link navtohover text-dark" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
+                        @if ($notifications)
                         <a class="nav-link navtohover text-dark position-relative me-2" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Notifications
 
@@ -87,7 +88,7 @@
                             </span>
 
                         </a>
-
+                        @endif
                         @endif
 
                         <li class="nav-item dropdown">
