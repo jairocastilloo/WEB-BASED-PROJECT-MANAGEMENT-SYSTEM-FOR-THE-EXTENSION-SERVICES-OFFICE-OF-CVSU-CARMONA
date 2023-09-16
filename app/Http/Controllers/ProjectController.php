@@ -303,7 +303,7 @@ class ProjectController extends Controller
             $projectmembers->save();
             $notification = new Notification([
                 'user_id' => $validatedData['projectmember'][$i],
-                'message' => 'You have been added to a new project.',
+                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project.',
             ]);
             $notification->save();
         }

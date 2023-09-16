@@ -16,6 +16,7 @@ use App\Http\Controllers\AcademicYearController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\HoursController;
 use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\NotificationController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 use App\Http\Livewire\Notifications;
@@ -141,3 +142,4 @@ Route::prefix('/actsubmission')->group(function () {
     Route::get('/{actsubmissionid}/{actsubmissionname}', [SubmissionController::class, 'displayactsubmission'])->name('actsubmission.display');
 });
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
+Route::get('/mark-notification-as-read/{id}', [NotificationController::class, 'markasread'])->name('notification.markasread');
