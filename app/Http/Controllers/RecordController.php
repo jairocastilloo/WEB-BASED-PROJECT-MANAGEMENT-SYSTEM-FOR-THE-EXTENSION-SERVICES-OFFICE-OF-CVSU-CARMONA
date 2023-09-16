@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Notification;
 use App\Models\SubtaskcontributionsUser;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -14,6 +15,7 @@ use App\Models\AcademicYear;
 use App\Models\activityContribution;
 use App\Models\ActivitycontributionsUser;
 use App\Models\Contribution;
+use Illuminate\Support\Facades\Auth;
 
 class RecordController extends Controller
 {
@@ -90,7 +92,8 @@ class RecordController extends Controller
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');
         $totalhoursrendered = $subhours + $acthours;
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('records.index', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
@@ -104,6 +107,7 @@ class RecordController extends Controller
             'allactivities' => $allactivities,
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -175,7 +179,8 @@ class RecordController extends Controller
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');
         $totalhoursrendered = $subhours + $acthours;
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('records.index', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
@@ -189,6 +194,7 @@ class RecordController extends Controller
             'allactivities' => $allactivities,
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
+            'notifications' => $notifications,
         ]);
     }
 }

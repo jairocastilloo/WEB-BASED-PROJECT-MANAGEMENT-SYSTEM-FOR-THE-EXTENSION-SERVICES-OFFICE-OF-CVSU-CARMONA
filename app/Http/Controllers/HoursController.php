@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Activity;
 use App\Models\activityContribution;
 use App\Models\ActivitycontributionsUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HoursController extends Controller
 {
@@ -24,6 +26,8 @@ class HoursController extends Controller
 
         $activitycontributions = activityContribution::where('activity_id', $activityid)
             ->get();
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
 
 
         return view('activity.hours', [
@@ -31,6 +35,7 @@ class HoursController extends Controller
             'projectId' => $projectId,
             'projectName' => $projectName,
             'activitycontributions' => $activitycontributions,
+            'notifications' => $notifications,
         ]);
     }
 

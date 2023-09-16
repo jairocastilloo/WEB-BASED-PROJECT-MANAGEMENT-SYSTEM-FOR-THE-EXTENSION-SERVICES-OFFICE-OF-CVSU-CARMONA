@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'null'),
+    'default' => env('BROADCAST_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,8 +55,9 @@ return [
             'driver' => 'log',
         ],
 
-        'null' => [
-            'driver' => 'null',
+        'database' => [
+            'driver' => 'database',
+            'table' => 'notifications', // The table where broadcasted events are stored
         ],
 
     ],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivitycontributionsUser;
+use App\Models\Notification;
 use App\Models\Output;
 use App\Models\OutputUser;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use App\Models\Subtask;
 use App\Models\Activity;
 use App\Models\activityContribution;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\SubtaskcontributionsUser;
 
@@ -46,7 +48,8 @@ class SubmissionController extends Controller
         $othercontribution = Contribution::where('subtask_id', $subtaskid)
             ->whereNotIn('id', [$submissionid])
             ->get();
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('activity.subtaskcontribution', [
             'contribution' => $contribution,
             'subtask' => $subtask,
@@ -58,7 +61,8 @@ class SubmissionController extends Controller
             'currentDateTime' => $currentDateTime,
             'othercontribution' => $othercontribution,
             'contributors' => $contributors,
-            'submitter' => $submitter
+            'submitter' => $submitter,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -99,7 +103,8 @@ class SubmissionController extends Controller
             ->whereNotIn('id', $submittedoutputids)
             ->get();
 
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('activity.outputsubmitted', [
             'submittedoutputs' => $submittedoutputs,
             'outputs' => $outputs,
@@ -110,7 +115,8 @@ class SubmissionController extends Controller
             'uploadedFiles' => $uploadedFiles,
             'currentDateTime' => $currentDateTime,
             'othersubmittedoutput' => $othersubmittedoutput,
-            'submitter' => $submitter
+            'submitter' => $submitter,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -141,7 +147,8 @@ class SubmissionController extends Controller
         $otheractcontribution = activityContribution::where('activity_id', $activityid)
             ->whereNotIn('id', [$actsubmissionid])
             ->get();
-
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
         return view('activity.activitycontributions', [
             'actcontribution' => $actcontribution,
             'activity' => $activity,
@@ -152,7 +159,8 @@ class SubmissionController extends Controller
             'currentDateTime' => $currentDateTime,
             'otheractcontribution' => $otheractcontribution,
             'actcontributors' => $actcontributors,
-            'submitter' => $submitter
+            'submitter' => $submitter,
+            'notifications' => $notifications,
         ]);
     }
 }

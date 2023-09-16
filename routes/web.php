@@ -18,7 +18,7 @@ use App\Http\Controllers\HoursController;
 use App\Http\Controllers\SubmissionController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
-
+use App\Http\Livewire\Notifications;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
