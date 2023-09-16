@@ -402,7 +402,7 @@
                                 </div>
                             </form>
                             <button type="button" class="addset btn btn-outline-secondary w-100" id="addset">
-                                <b class="small">Add Objective Set</b>
+                                <b class="small">Add Set of Objectives</b>
                             </button>
                         </div>
                     </div>
