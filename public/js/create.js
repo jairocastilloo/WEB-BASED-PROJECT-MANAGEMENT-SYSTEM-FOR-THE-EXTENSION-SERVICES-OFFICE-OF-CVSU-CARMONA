@@ -9,12 +9,28 @@ $(document).ready(function() {
 
     $('#addmember').hide();
 
+<<<<<<< HEAD
+=======
+    $('.noselectmember-error strong').hide();
+    $('.nomember-error strong').hide();
+    $('.projectobjective-error strong').hide();
+
+>>>>>>> origin/main
     $('#navbarDropdown').click(function() {
       // Add your function here
       $('#account .dropdown-menu').toggleClass('shows');
   });
 
+<<<<<<< HEAD
   
+=======
+  $(document).on('input', '.autocapital', function() {
+    var inputValue = $(this).val();
+    if (inputValue.length > 0) {
+        $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+    }
+});
+>>>>>>> origin/main
 
 
   users.sort(function(a, b) {
@@ -93,17 +109,38 @@ $.each(users, function(index, user) {
     $('#nextproject').click((event) => {
 
       event.preventDefault();
+<<<<<<< HEAD
       currentstep++;
    
       updateButtons();
+=======
+      
+
+      var hasError = handleError();
+
+      if (!hasError) {
+        currentstep++;
+        updateButtons();
+          } 
+      
+>>>>>>> origin/main
 
     });
     $('#prevproject').click((event) => {
 
       event.preventDefault();
+<<<<<<< HEAD
       currentstep--;
     
       updateButtons();
+=======
+
+      
+        currentstep--;
+        updateButtons();
+          
+      
+>>>>>>> origin/main
     });
 
     $('#addproj').click((event) => {
@@ -113,6 +150,10 @@ $.each(users, function(index, user) {
       updateButtons();
       $('#newproject').modal('show');
     });
+<<<<<<< HEAD
+=======
+    /*
+>>>>>>> origin/main
     $('#tab1-tab').click((event) => {
 
       event.preventDefault();
@@ -130,11 +171,133 @@ $.each(users, function(index, user) {
     $('#tab3-tab').click((event) => {
 
       event.preventDefault();
+<<<<<<< HEAD
       currentstep = 2;
    
       updateButtons();
     });
 
+=======
+      
+      currentstep = 2;
+      updateButtons();
+        
+    });
+*/
+    function handleError(){
+
+        if(currentstep === 0){
+
+          var hasErrors = false;
+
+          $('.invalid-feedback strong').text('');
+          $('.is-invalid').removeClass('is-invalid');
+  
+          var projectTitle = $('#projecttitle').val();
+
+          var selectprojlead = $('#projectleader').find(':selected');
+          var projectLeader = selectprojlead.val();
+          var programTitle = $('#programtitle').val();
+
+          var selectproglead = $('#programleader').find(':selected');
+          var programLeader = selectproglead.val();
+
+          var projectStartDate = new Date($('#projectstartdate').val());
+          var projectEndDate = new Date($('#projectenddate').val());
+  
+          var targetYear = parseInt($('#currentyear').val(), 10);
+
+          // Validation for Project Title
+          if (projectTitle.trim() === '') {
+              $('#projecttitle').addClass('is-invalid');
+              $('#projecttitle').next('.invalid-feedback').find('strong').text('Project Title is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Project Leader
+          if (projectLeader == 0) {
+              $('#projectleader').addClass('is-invalid');
+              $('#projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Program Title
+          if (programTitle.trim() === '') {
+              $('#programtitle').addClass('is-invalid');
+              $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Program Leader
+          if (programLeader == 0) {
+              $('#programleader').addClass('is-invalid');
+              $('#programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
+              hasErrors = true;
+            }
+  
+          // Validation for Project Start Date
+          if (projectStartDate.getFullYear() !== targetYear) {
+              $('#projectstartdate').addClass('is-invalid');
+              $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+              hasErrors = true;
+            }
+  
+          // Validation for Project End Date
+          if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
+              $('#projectenddate').addClass('is-invalid');
+              $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+              hasErrors = true;
+            }
+
+            return hasErrors;
+    
+        } else if(currentstep === 1){
+
+          var hasErrors = false;
+
+          
+
+          var memberindex = $('select[name="projectmember[]"]').length;
+          
+          if (memberindex == 0) {
+           $('.nomember-error strong').show();
+            hasErrors = true;
+          }
+
+          $('select[name="projectmember[]"]').each(function(index, element) {
+            var selectedValue = $(element).find(':selected');
+            if (selectedValue.val() == 0) {
+                $('.noselectmember-error strong').show();
+                hasErrors = true;
+            }
+  
+            
+          });
+          
+          return hasErrors;
+        }
+
+        else if(currentstep === 2){
+          var hasErrors = false;
+        
+
+          $('input[name="projectobjective[]"]').each(function(index, element) {
+
+            
+            if ($(element).val() === "") {
+              $('.projectobjective-error strong').show();
+              hasErrors = true;
+            }
+              
+           
+            });
+            return hasErrors;
+        }
+        
+    }
+
+      
+>>>>>>> origin/main
     $('#objectiveset').on('click', '.add-objective', function() {
       var setid = $(this).prev().find('div:first .objectivesetid').val();
        
@@ -180,7 +343,13 @@ $.each(users, function(index, user) {
     $('#createproject').click((event) => {
         event.preventDefault();
        
+<<<<<<< HEAD
        
+=======
+        var hasError = handleError();
+    
+        if (!hasError) {
+>>>>>>> origin/main
         var department = $('#department').val();
         var projectname = $('#projecttitle').val();
     
@@ -190,10 +359,17 @@ $.each(users, function(index, user) {
         projecturl = projecturl.replace(':projectname', projectname);
 
 
+<<<<<<< HEAD
          var memberindex = $('select[name="projectmember[]"]').length;
         var objectiveindex = $('input[name="projectobjective[]"]').length;
 
 // Iterate over each select element and set its name attribute
+=======
+        var memberindex = $('select[name="projectmember[]"]').length;
+        var objectiveindex = $('input[name="projectobjective[]"]').length;
+
+
+>>>>>>> origin/main
         $('input[name="projectobjective[]"]').each(function(index) {
         $(this).attr('name', 'projectobjective[' + index + ']');
        
@@ -202,6 +378,7 @@ $.each(users, function(index, user) {
           $(this).attr('name', 'objectivesetid[' + index + ']');
      
           });
+<<<<<<< HEAD
          $('select[name="projectmember[]"]').each(function(index) {
           $(this).prop('disabled', false);
             $(this).attr('name', 'projectmember[' + index + ']');
@@ -210,6 +387,17 @@ $.each(users, function(index, user) {
         
         $('#memberindex').val(memberindex);
         $('#objectiveindex').val(objectiveindex);
+=======
+          $('select[name="projectmember[]"]').each(function(index) {
+            $(this).prop('disabled', false);
+            $(this).attr('name', 'projectmember[' + index + ']');
+            
+          });
+        
+        $('#objectiveindex').val(objectiveindex);
+        $('#memberindex').val(memberindex);
+
+>>>>>>> origin/main
         var dataurl = $('#form1').attr('data-url');
         var data1 = $('#form1').serialize();
         var data2 = $('#form2').serialize();
@@ -224,6 +412,7 @@ $.each(users, function(index, user) {
         type: 'POST',
         data: formData,
         success: function(response) {
+<<<<<<< HEAD
             console.log(response);
             var projectId = response.projectid;
             projecturl = projecturl.replace(':projectid', projectId);
@@ -237,6 +426,26 @@ $.each(users, function(index, user) {
         }
         });
         
+=======
+          
+                
+       
+           
+            var projectId = response.projectid;
+            projecturl = projecturl.replace(':projectid', projectId);
+            window.location.href = projecturl;
+        
+              
+              
+          },
+          error: function(xhr, status, error) {
+              console.log(xhr.responseText);
+              console.log(status);
+              console.log(error);
+          }
+          });
+        }
+>>>>>>> origin/main
     });
     
 
@@ -246,7 +455,11 @@ $.each(users, function(index, user) {
 
     $('#addmember').click((event) => {
         event.preventDefault();
+<<<<<<< HEAD
         var $newSelect = $(`<select class="member-select col-7 m-1 p-2 rounded" id="member-select" name="projectmember[]"><option value="" selected disabled>Select a Member</option></select>`);
+=======
+        var $newSelect = $(`<select class="member-select col-7 m-1 p-2 rounded" id="member-select" name="projectmember[]"><option value="0" selected disabled>Select a Member</option></select>`);
+>>>>>>> origin/main
         var $newButton = $('<button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember"><b class="small">Remove</b></button>');
         var $newDiv = $('<div class="mb-2 row bg-info rounded" id="selectmember">').append($newSelect, $newButton);
         $('#memberform form').append($newDiv);

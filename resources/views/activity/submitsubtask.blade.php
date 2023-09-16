@@ -36,7 +36,14 @@
                         <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" min="0" step="1">
                     </div>
 
+<<<<<<< HEAD
 
+=======
+                    <div class="m-2 ms-4 me-4">
+                        <label class="form-label">Date:</label>
+                        <input type="date" class="form-control" id="subtask-date" name="subtask-date">
+                    </div>
+>>>>>>> origin/main
                 </div>
                 <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Contributor</b>

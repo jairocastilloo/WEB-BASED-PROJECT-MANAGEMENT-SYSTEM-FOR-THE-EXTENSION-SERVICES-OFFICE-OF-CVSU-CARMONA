@@ -7,6 +7,10 @@ use App\Models\Output;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 class UpdateActivityStatus extends Command
 {
     protected $signature = 'activity:status:update';

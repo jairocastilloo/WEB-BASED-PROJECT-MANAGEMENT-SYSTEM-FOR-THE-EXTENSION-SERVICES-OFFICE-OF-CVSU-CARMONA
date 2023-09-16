@@ -9,10 +9,18 @@
         "doctrine/dbal": "^3.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+<<<<<<< HEAD
+=======
+        "inertiajs/inertia-laravel": "^0.6.9",
+>>>>>>> origin/main
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+<<<<<<< HEAD
+=======
+        "livewire/livewire": "^2.12",
+>>>>>>> origin/main
         "nesbot/carbon": "^2.68",
         "twbs/bootstrap": "5.1.*"
     },
@@ -61,7 +69,11 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
+<<<<<<< HEAD
  
     "minimum-stability": "stable",
+=======
+    "minimum-stability": "dev",
+>>>>>>> origin/main
     "prefer-stable": true
 }

@@ -1,13 +1,27 @@
 body {
+<<<<<<< HEAD
   background-color: #c5c7c7;
 
+=======
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  font-family: 'Inter', sans-serif; /* Set a default font-family */
+  background-color: #eaeaea; /* Set a default background color */
+  color: #333333; /* Set a default text color */
+}
+p, h1, h2, h3, h4, h5, h6, span, a{
+  font-family: 'Inter', sans-serif;
+>>>>>>> origin/main
 }
 .basicrow{
   background-color: #dadadc;
   padding: 10px;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 .basiccont{
   background-color: white;
   position: relative;
@@ -17,7 +31,17 @@ body {
     border-radius: 5px;
 
 }
+<<<<<<< HEAD
 
+=======
+.basiccont .bggreen {
+  background-color: #f2fde8;
+  border-radius: 5px;
+}
+.bggold{
+  background-color: gold;
+}
+>>>>>>> origin/main
 
 .stretch-button {
   width: 60%; /* Adjust the width as needed */
@@ -99,6 +123,13 @@ body {
  background-color:#e2ebda;
     
   }
+<<<<<<< HEAD
+=======
+  .recordth th{
+    background-color:rgb(233, 233, 233);
+       
+     }
+>>>>>>> origin/main
   .firsttable, .firsttable th, .firsttable td {
     border: 1px solid #bababa;
     min-width: 130px;
@@ -197,14 +228,35 @@ body {
   background-color: #f2f2f2;
   cursor: pointer;
 }
+<<<<<<< HEAD
 
+=======
+.containerhover:hover{
+  cursor: pointer;
+}
+>>>>>>> origin/main
 .hrefnav:hover{
   color: darkgreen;
  
 }
 .navtohover {
   position: relative;
+<<<<<<< HEAD
   
+=======
+}
+.success-circle {
+  display: inline-flex; /* Center horizontally and vertically */
+  align-items: center; /* Center vertically */
+  justify-content: center; /* Center horizontally */
+  width: 25px;
+  height: 25px;
+  background-color: gold;
+  color: rgb(0, 0, 0);
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 85%;
+>>>>>>> origin/main
 }
 
 .navtohover::after {
@@ -332,4 +384,11 @@ body {
   display: flex;
   justify-content: center;
 }
+<<<<<<< HEAD
 
+=======
+.fc-event {
+  background-color: darkgreen; /* Change to your desired color */
+  padding-left: 7px;
+}
+>>>>>>> origin/main

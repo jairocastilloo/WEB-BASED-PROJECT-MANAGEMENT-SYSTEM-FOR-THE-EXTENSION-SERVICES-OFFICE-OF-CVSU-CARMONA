@@ -19,6 +19,7 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
+<<<<<<< HEAD
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2">
@@ -26,6 +27,30 @@
                     </div>
                     <p class="ps-4 lh-1 pt-2"><b>{{ $subtask['subtask_name'] }}</b></p>
                     <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
+=======
+                @php
+
+                $unevaluatedSubmission = $contributions->filter(function ($contri) {
+                return $contri['approval'] === null;
+                });
+                $acceptedSubmission = $contributions->filter(function ($contri) {
+                return $contri['approval'] === 1;
+                });
+                $rejectedSubmission = $contributions->filter(function ($contri) {
+                return $contri['approval'] === 0;
+                });
+
+                @endphp
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4 pb-1" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
+                    </div>
+                    <p class="ps-4 lh-1 pt-2"><b>Name: {{ $subtask['subtask_name'] }}</b></p>
+                    <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
+                    <p class="ps-5 lh-1">Due Date: {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
+                    </p>
+>>>>>>> origin/main
                     <p class="ps-5 lh-1">Assignees:
                         @foreach($currentassignees as $currentassignee)
                         {{ $currentassignee->name . ' ' . $currentassignee->last_name . ' |'}}
@@ -33,11 +58,17 @@
                         @endforeach
                         <button type="button" class="btn btn-sm btn-outline-secondary ms-1" id="add-subtaskassignees">+</button>
                     </p>
+<<<<<<< HEAD
                     <div class="btn-group ms-3 mb-3 shadow">
+=======
+                    @if (count($acceptedSubmission) == 0)
+                    <div class="btn-group ms-3 mb-2 shadow">
+>>>>>>> origin/main
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
                             <b class="small">Submit Hours</b>
                         </button>
                     </div>
+<<<<<<< HEAD
 
                 </div>
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
@@ -96,6 +127,80 @@
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2">
+=======
+                    @endif
+                </div>
+
+                @if($contributions->isEmpty())
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
+                    </div>
+                    <div class="text-center p-4">
+                        <h4><em>No Submission Yet.</em></h4>
+                    </div>
+                </div>
+                @endif
+
+                @if (count($unevaluatedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                    </div>
+                    @foreach ($unevaluatedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+
+                    @endforeach
+                </div>
+                @endif
+                @if (count($acceptedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
+                    </div>
+                    @foreach ($acceptedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if (count($rejectedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                    </div>
+                    @foreach ($rejectedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
+            </div>
+
+            <div class="col-4">
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+>>>>>>> origin/main
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Subtasks</h6>
                     </div>
                     @foreach ($subtasks as $sub)
@@ -110,11 +215,19 @@
 
                 </div>
             </div>
+<<<<<<< HEAD
 
         </div>
 
     </div>
 </div>
+=======
+        </div>
+    </div>
+
+</div>
+
+>>>>>>> origin/main
 <!--add activity assignees-->
 <div class="modal fade" id="addSubtaskAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -220,6 +333,7 @@
             window.location.href = url;
         });
 
+<<<<<<< HEAD
         $(document).on('click', '.accepthours-btn', function() {
             var acceptIdsValue = $(this).prev().val();
             var dataurl = $(this).parent().attr('data-url');
@@ -242,6 +356,9 @@
                 }
             });
         });
+=======
+
+>>>>>>> origin/main
 
         $('#confirmsubtaskassignee-btn').click(function(event) {
             event.preventDefault();
@@ -267,6 +384,63 @@
                 }
             });
         });
+<<<<<<< HEAD
+=======
+
+        $('.accept-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('true'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        // Event listener for the "Reject" link
+        $('.reject-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('false'); // Set the value for "isApprove" input
+            submitForm();
+        });
+
+        function submitForm() {
+            var formData = $('#accepthoursform').serialize(); // Serialize form data
+            var dataurl = $('#accepthoursform').data('url'); // Get the form data-url attribute
+
+            $.ajax({
+                type: 'POST',
+                url: dataurl,
+                data: formData,
+                success: function(response) {
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        $(document).on('click', '.submission-div', function() {
+            event.preventDefault();
+
+            var submissionid = $(this).attr("data-id");
+            var approval = $(this).attr("data-approval");
+            var submission;
+            console.log(approval);
+            if (approval === "") {
+                submission = "Unevaluated-Submission";
+            } else if (approval == 0) {
+                submission = "Rejected-Submission";
+            } else if (approval == 1) {
+                submission = "Accepted-Submission";
+            }
+
+
+            var url = '{{ route("submission.display", ["submissionid" => ":submissionid", "submissionname" => ":submissionname"]) }}';
+            url = url.replace(':submissionid', submissionid);
+            url = url.replace(':submissionname', submission);
+            window.location.href = url;
+        });
+
+>>>>>>> origin/main
     });
 </script>
 @endsection

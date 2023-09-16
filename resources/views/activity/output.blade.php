@@ -19,10 +19,41 @@
     <div class="container">
         <div class="row">
             <div class="col-8">
+<<<<<<< HEAD
                 <div class="basiccont word-wrap shadow ms-2 mt-4" data-value="{{ $outputtype }}">
                     <div class="border-bottom ps-3 pt-2">
                         <h6 class="fw-bold small" style="color:darkgreen;">Output Submitted</h6>
                     </div>
+=======
+                @php
+
+                $unevaluatedSubmittedOutput = $submittedoutput->filter(function ($suboutput) {
+                return $suboutput['approval'] === null;
+                });
+                $acceptedSubmittedOutput = $submittedoutput->filter(function ($suboutput) {
+                return $suboutput['approval'] === 1;
+                });
+                $rejectedSubmittedOutput = $submittedoutput->filter(function ($suboutput) {
+                return $suboutput['approval'] === 0;
+                });
+
+                $groupedUnevaluatedSubmittedOutput = $unevaluatedSubmittedOutput->groupBy(function ($item) {
+                return $item['created_at']->format('Y-m-d H:i:s');
+                });
+                $groupedAcceptedSubmittedOutput = $acceptedSubmittedOutput->groupBy(function ($item) {
+                return $item['created_at']->format('Y-m-d H:i:s');
+                });
+                $groupedRejectedSubmittedOutput = $rejectedSubmittedOutput->groupBy(function ($item) {
+                return $item['created_at']->format('Y-m-d H:i:s');
+                });
+
+                @endphp
+                <div class="basiccont word-wrap shadow ms-2 mt-4" id="typeofOutput" data-value="{{ $outputtype }}">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
+                    </div>
+
+>>>>>>> origin/main
                     <div class="p-2">
 
                         <p class="lh-base fw-bold ps-3">{{ $outputtype }}</p>
@@ -45,6 +76,7 @@
 
                 </div>
 
+<<<<<<< HEAD
 
                 <div class="basiccont word-wrap shadow ms-2 mt-4">
                     <div class="border-bottom ps-3 pt-2">
@@ -119,6 +151,85 @@
             <div class="col-4">
                 <div class="basiccont word-wrap shadow mt-4 me-2">
                     <div class="border-bottom ps-3 pt-2">
+=======
+                @if($submittedoutput->isEmpty())
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Submitted Output</h6>
+                    </div>
+                    <div class="text-center p-4">
+                        <h4><em>No Submitted Output Yet.</em></h4>
+                    </div>
+                </div>
+                @endif
+
+                @if (count($unevaluatedSubmittedOutput) > 0)
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                    </div>
+                    @foreach ($groupedUnevaluatedSubmittedOutput as $date => $group)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Unevaluated-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+
+                        @foreach ($group as $index => $item)
+                        <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
+                        <!-- Display other attributes as needed -->
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
+
+                @if (count($acceptedSubmittedOutput) > 0)
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
+                    </div>
+                    @foreach ($groupedAcceptedSubmittedOutput as $date => $group)
+                    <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Accepted-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+
+                        @foreach ($group as $index => $item)
+                        <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
+                        <!-- Display other attributes as needed -->
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
+
+                @if (count($rejectedSubmittedOutput) > 0)
+
+                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                    </div>
+                    @foreach ($groupedRejectedSubmittedOutput as $date => $group)
+                    <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Rejected-Submission">
+                        <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
+
+                        @foreach ($group as $index => $item)
+                        <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
+                        <!-- Display other attributes as needed -->
+                        @endforeach
+
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
+            </div>
+            <div class="col-4">
+                <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+>>>>>>> origin/main
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Outputs</h6>
                     </div>
 
@@ -164,7 +275,21 @@
             url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
+<<<<<<< HEAD
 
+=======
+        $(document).on('click', '.outputsubmitteddiv', function() {
+            var submittedoutputid = $(this).attr('data-value');
+            var approval = $(this).attr('data-approval');
+            var outputtype = $('#typeofOutput').attr('data-value');
+            outputtype = outputtype.replace(' ', '-');
+            var url = '{{ route("submittedoutput.display", ["submittedoutputid" => ":submittedoutputid", "outputtype" => ":outputtype", "submissionname" => ":approval"]) }}';
+            url = url.replace(':submittedoutputid', submittedoutputid);
+            url = url.replace(':outputtype', outputtype);
+            url = url.replace(':approval', approval);
+            window.location.href = url;
+        });
+>>>>>>> origin/main
         $(document).on('click', '.selectoutputdiv', function() {
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();
@@ -199,6 +324,7 @@
             url = url.replace(':activityname', activityname);
             window.location.href = url;
         });
+<<<<<<< HEAD
         $(document).on('click', '.acceptoutput-btn', function() {
             var acceptIdsValue = $(this).prev().val();
             var dataurl = $(this).parent().attr('data-url');
@@ -220,6 +346,9 @@
                 }
             });
         });
+=======
+
+>>>>>>> origin/main
     });
 </script>
 @endsection

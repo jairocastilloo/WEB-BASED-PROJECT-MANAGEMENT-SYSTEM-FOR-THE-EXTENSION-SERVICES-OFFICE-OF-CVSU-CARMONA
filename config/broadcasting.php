@@ -15,7 +15,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'default' => env('BROADCAST_DRIVER', 'null'),
+=======
+    'default' => env('BROADCAST_DRIVER', 'database'),
+>>>>>>> origin/main
 
     /*
     |--------------------------------------------------------------------------
@@ -55,8 +59,14 @@ return [
             'driver' => 'log',
         ],
 
+<<<<<<< HEAD
         'null' => [
             'driver' => 'null',
+=======
+        'database' => [
+            'driver' => 'database',
+            'table' => 'notifications', // The table where broadcasted events are stored
+>>>>>>> origin/main
         ],
 
     ],

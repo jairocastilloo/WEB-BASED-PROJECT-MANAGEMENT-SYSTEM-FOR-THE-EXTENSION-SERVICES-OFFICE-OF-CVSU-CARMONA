@@ -12,9 +12,19 @@ use App\Http\Controllers\SubtaskController;
 use App\Http\Controllers\TasksController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RecordController;
+<<<<<<< HEAD
 use App\Http\Controllers\HomeController;
 use App\Models\Activity;
 
+=======
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\HoursController;
+use App\Http\Controllers\SubmissionController;
+use App\Models\AcademicYear;
+use App\Models\Activity;
+use App\Http\Livewire\Notifications;
+>>>>>>> origin/main
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,8 +38,15 @@ use App\Models\Activity;
 
 
 
+<<<<<<< HEAD
 Auth::routes();
 
+=======
+
+Auth::routes();
+
+
+>>>>>>> origin/main
 Route::get('/', [HomeController::class, 'index'])->name('home');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
@@ -57,6 +74,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 
 //Route::get('/user/{id}/getactivity/{activityid}/getsubtask/{subtaskid}', [ActivityController::class, 'getsubtask'])->name('get.subtask');
 
+<<<<<<< HEAD
 
 
 Route::prefix('{username}')->group(function () {
@@ -64,6 +82,21 @@ Route::prefix('{username}')->group(function () {
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
 
+=======
+Route::get('download/{contributionid}/{filename}', [FileController::class, 'download'])->name('download.file');
+Route::get('downloadactivity/{actcontributionid}/{filename}', [FileController::class, 'downloadactivity'])->name('downloadactivity.file');
+Route::get('downloadoutput/{submittedoutputid}/{filename}', [FileController::class, 'downloadoutput'])->name('downloadoutput.file');
+
+Route::prefix('{username}')->group(function () {
+    Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
+    Route::get('/duties/{currentYear}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
+    Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
+});
+
+Route::get('/selectrecords/{username}/{ayid}/{semester}', [RecordController::class, 'selectrecords'])->name('records.select');
+
+
+>>>>>>> origin/main
 Route::prefix('/subtasks')->group(function () {
     Route::get('/{subtaskid}/{subtaskname}', [SubtaskController::class, 'displaysubtask'])->name('subtasks.display');
     Route::get('/{subtaskid}/{subtaskname}/complysubtask', [SubtaskController::class, 'complysubtask'])->name('comply.subtask');
@@ -81,6 +114,7 @@ Route::prefix('/activities')->group(function () {
     Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
     Route::get('/{activityid}/{department}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
     Route::post('/addtoactivity', [ActivityController::class, 'addtoactivity'])->name('addto.activity');
+<<<<<<< HEAD
     Route::post('/acceptacthours', [ActivityController::class, 'acceptacthours'])->name('acthours.accept');
 });
 
@@ -93,6 +127,33 @@ Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
     Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
 });
+=======
+});
+
+Route::prefix('/participationhours')->group(function () {
+
+    Route::get('/{activityid}/{activityname}', [HoursController::class, 'displayhours'])->name('hours.display');
+    Route::post('/acceptacthours', [HoursController::class, 'acceptacthours'])->name('acthours.accept');
+});
+
+Route::prefix('/projects')->group(function () {
+    Route::prefix('/{department}')->group(function () {
+        Route::get('/allprojects', [ProjectController::class, 'showproject'])
+            ->name('project.show');
+
+        Route::get('/allprojects/{currentyear}', [ProjectController::class, 'showyearproject'])
+            ->name('yearproject.show');
+    });
+
+
+    Route::get('/newproject', [ProjectController::class, 'newproject'])
+        ->name('projects.new');
+});
+Route::get('/display/{projectid}/{department}', [ProjectController::class, 'displayproject'])
+    ->name('projects.display');
+Route::get('/calendar/{projectid}/{department}', [ProjectController::class, 'displayActivityCalendar'])
+    ->name('projects.calendar');
+>>>>>>> origin/main
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
@@ -104,3 +165,18 @@ Route::prefix('/output')->group(function () {
     Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
     Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');
 });
+<<<<<<< HEAD
+=======
+
+
+Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
+Route::post('/saveacademicyear', [AcademicYearController::class, 'saveacadyear'])->name('acadyear.save');
+
+Route::prefix('/submission')->group(function () {
+    Route::get('/{submissionid}/{submissionname}', [SubmissionController::class, 'displaysubmission'])->name('submission.display');
+});
+Route::prefix('/actsubmission')->group(function () {
+    Route::get('/{actsubmissionid}/{actsubmissionname}', [SubmissionController::class, 'displayactsubmission'])->name('actsubmission.display');
+});
+Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
+>>>>>>> origin/main

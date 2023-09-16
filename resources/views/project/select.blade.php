@@ -6,16 +6,26 @@
 
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
+<<<<<<< HEAD
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
             <h6><b>Project: {{ $currentproject['projecttitle'] }}</b></h6>
+=======
+<input class="d-none" type="date" id="projsavestartdate" value="{{ $indexproject['projectstartdate'] }}">
+<input class="d-none" type="date" id="projsaveenddate" value="{{ $indexproject['projectenddate'] }}">
+<div class="maincontainer">
+    <div class="mainnav mb-2 shadow">
+        <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
+            <h5><b>Project: {{ $indexproject['projecttitle'] }}</b></h5>
+>>>>>>> origin/main
         </div>
 
     </div>
     <div class="row">
         <div class="col-10">
 
+<<<<<<< HEAD
             <div class="basiccont m-4 me-0 p-3 rounded shadow">
 
                 <div class="form-floating shadow">
@@ -24,10 +34,29 @@
                         @foreach($projects as $project1)
                         <option value="{{ $project1->id }}" {{ $project1->id == $projectid ? 'selected' : '' }}>
                             {{ $project1->projecttitle }}
+=======
+            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
+                </div>
+                @if (!$inCurrentYear)
+                <span class="small ms-2"><em>
+                        Note: Not the Current Year.
+                    </em></span>
+                @endif
+                <div class="form-floating m-3 mb-2 mt-2">
+
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an calendar year">
+
+                        @foreach ($calendaryears as $calendaryear)
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+>>>>>>> origin/main
                         </option>
                         @endforeach
 
                     </select>
+<<<<<<< HEAD
                     <label for="project-select" style="color:darkgreen;"><strong>Display the Project for:</strong></label>
                 </div>
                 <div class="btn-group mt-3 shadow">
@@ -35,22 +64,46 @@
                         <b class="small">Start New Project</b>
                     </button>
                 </div>
+=======
+                    <label for="year-select" style="color:darkgreen;">
+                        <h5><strong>Calendar Year:</strong></h5>
+                    </label>
+                </div>
+                <div class="btn-group mt-1 ms-3 mb-2 shadow">
+                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                        <b class="small">Create Project</b>
+                    </button>
+                </div>
+
+>>>>>>> origin/main
             </div>
 
             <div class="basiccont m-4 me-0 p-3 rounded shadow">
                 <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
+<<<<<<< HEAD
                 <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($currentproject['projectenddate'])) }}</u></div>
                 <div class="flex-container">
                     <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                     <div class="underline-space inline-div ps-2">{{ $currentproject['programtitle'] }}</div>
+=======
+                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
+                <div class="flex-container">
+                    <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
+>>>>>>> origin/main
                 </div>
                 <div class="flex-container">
                     <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                     <div class="underline-space inline-div ps-2">
                         @php
                         use App\Models\User;
+<<<<<<< HEAD
                         $programleader = User::where('id', $currentproject['programleader'])->first(['name', 'middle_name', 'last_name']);
                         $projectleader = User::where('id', $currentproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
+=======
+                        $programleader = User::where('id', $indexproject['programleader'])->first(['name', 'middle_name', 'last_name']);
+                        $projectleader = User::where('id', $indexproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
+>>>>>>> origin/main
                         @endphp
 
                         @if ($programleader)
@@ -66,7 +119,11 @@
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+<<<<<<< HEAD
                     <div class="underline-space inline-div ps-2">{{ $currentproject['projecttitle'] }}</div>
+=======
+                    <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
+>>>>>>> origin/main
                 </div>
                 <div class="flex-container">
                     <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
@@ -83,18 +140,33 @@
                 </div>
                 <div class="flex-container">
                     <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+<<<<<<< HEAD
                     <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($currentproject['projectstartdate'])) . '-' . date('F Y', strtotime($currentproject['projectenddate'])) }}</div>
+=======
+                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
+>>>>>>> origin/main
                 </div>
 
                 <div class="btn-group dropdown mt-3 shadow">
                     <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<<<<<<< HEAD
                         <b class="small">Edit Project</b>
+=======
+                        <b class="small">Menu</b>
+>>>>>>> origin/main
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Objectives</b></a>
                         <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
+<<<<<<< HEAD
 
+=======
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                            <b class="small">View Activity Calendar</b>
+                        </a>
+                        <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
+>>>>>>> origin/main
                     </div>
                 </div>
                 <!--
@@ -218,6 +290,7 @@
 
 
         </div>
+<<<<<<< HEAD
         <div class="col-2">
             <div class="basiccont me-4 mt-4 rounded shadow">
                 <div class="border-bottom mt-4 ps-2 pt-2">
@@ -230,6 +303,47 @@
                 @foreach($sortedProjects as $project)
                 <div class="border-bottom p-2 divhover projectdiv text-wrap" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
                     <h6 class="small fw-bold">{{ $project['projecttitle'] }}</h6>
+=======
+
+        <div class="col-2">
+            @php
+
+            $sortedProjects= $currentproject->sortBy('projectstartdate');
+
+            $inProgressProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'In Progress';
+            });
+            $scheduledProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Scheduled';
+            });
+            $overdueProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Incomplete';
+            });
+            $completedProjects = $sortedProjects->filter(function ($project) {
+            return $project['projectstatus'] === 'Completed';
+            });
+            @endphp
+            @if($currentproject->isEmpty())
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
+                </div>
+                <div class="text-center p-4">
+                    <h4><em>No Other Projects Yet.</em></h4>
+                </div>
+            </div>
+            @endif
+            @if ($inProgressProjects && count($inProgressProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
+                </div>
+                @foreach ($inProgressProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+>>>>>>> origin/main
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -237,16 +351,91 @@
                     @endphp
 
                     <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+<<<<<<< HEAD
 
                 </div>
                 @endforeach
             </div>
+=======
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if ($scheduledProjects && count($scheduledProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
+                </div>
+                @foreach ($scheduledProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            @if ($completedProjects && count($completedProjects) > 0)
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
+                </div>
+                @foreach ($completedProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+            @if ($overdueProjects && count($overdueProjects) > 0)
+
+            <div class="basiccont word-wrap shadow mt-2 me-3">
+                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
+                </div>
+                @foreach ($overdueProjects as $project)
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                    @php
+                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                    @endphp
+
+                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+>>>>>>> origin/main
         </div>
 
     </div>
 
 </div>
+<<<<<<< HEAD
 
+=======
+@if ($currentproject)
+>>>>>>> origin/main
 <!-- New Project -->
 
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
@@ -259,6 +448,7 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
+<<<<<<< HEAD
                         <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Project Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -266,6 +456,15 @@
                     </li>.
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false">Project Objectives</button>
+=======
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Members</button>
+                    </li>.
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false" disabled>Project Objectives</button>
+>>>>>>> origin/main
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -274,14 +473,20 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
+<<<<<<< HEAD
                             <!--<input type="text" name="id" value="{{ Auth::user()->id }}">-->
                             <input type="text" class="d-none" id="department" name="department" value="{{ Auth::user()->department }}">
+=======
+                            <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
+                            <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
+>>>>>>> origin/main
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
                                 <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
+<<<<<<< HEAD
                             </div>
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
@@ -290,25 +495,76 @@
 
                                 </select>
                                 <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
+=======
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="projectleader" class="form-label">Project Leader</label>
+                                <select class="form-select" name="projectleader" id="projectleader">
+                                    <option value="0" selected disabled>Select Project Leader</option>
+                                </select>
+                                <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+>>>>>>> origin/main
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
                                 <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
+<<<<<<< HEAD
+=======
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+>>>>>>> origin/main
                             </div>
                             <div class="mb-3">
                                 <label for="programleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="programleader" id="programleader">
+<<<<<<< HEAD
                                     <option selected disabled>Select Program Leader</option>
 
                                 </select>
+=======
+                                    <option value="0" selected disabled>Select Program Leader</option>
+
+                                </select>
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+>>>>>>> origin/main
                             </div>
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
                                 <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+<<<<<<< HEAD
                             </div>
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
                                 <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+=======
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="projectenddate" class="form-label">Project End Date</label>
+                                <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
+>>>>>>> origin/main
                             </div>
                         </form>
 
@@ -322,6 +578,7 @@
                                 @csrf
                                 <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
                                 <div class="mb-2 row rounded" id="selectmember">
+<<<<<<< HEAD
                                     <select class="col-7 m-1 member-select p-2 rounded" id="member-select" name="projectmember[]">
                                         <option value="" selected disabled>Select a Member</option>
                                     </select>
@@ -334,6 +591,33 @@
                             <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
                                 <b class="small">Add Member</b>
                             </button>
+=======
+                                    <select class="col-7 m-1 member-select p-2 rounded is-invalid" id="member-select" name="projectmember[]">
+                                        <option value="0" selected disabled>Select a Member</option>
+                                    </select>
+
+                                    <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
+                                        <b class="small">Remove</b>
+                                    </button>
+
+
+                                </div>
+
+                            </form>
+
+
+                            <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
+                                <b class="small">Add Member</b>
+                            </button>
+                            <br>
+                            <span class="small text-danger nomember-error">
+                                <strong>Assign atleast one member.</strong>
+                            </span>
+
+                            <span class="small text-danger noselectmember-error">
+                                <strong>Please ensure that a member is selected in every dropdown.</strong>
+                            </span>
+>>>>>>> origin/main
 
                         </div>
 
@@ -352,11 +636,25 @@
                                             <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
+<<<<<<< HEAD
+=======
+
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>Make</strong>
+                                            </span>
+>>>>>>> origin/main
                                         </div>
                                     </div>
                                     <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
                                         <b class="small">Add Objective</b>
                                     </button>
+<<<<<<< HEAD
+=======
+                                    <br>
+                                    <span class="small text-danger projectobjective-error">
+                                        <strong>Please ensure that there is objective in every input.</strong>
+                                    </span>
+>>>>>>> origin/main
 
                                     <hr>
                                 </div>
@@ -382,6 +680,10 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+@endif
+>>>>>>> origin/main
 <!-- Add activity -->
 
 <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
@@ -396,11 +698,21 @@
                 <form id="act1" data-url="{{ route('activity.store') }}">
                     @csrf
 
+<<<<<<< HEAD
                     <input type="number" id="projectindex" name="projectindex" value="{{ $currentproject['id'] }}" class="d-none">
+=======
+                    <input type="number" id="projectindex" name="projectindex" value="{{ $indexproject['id'] }}" class="d-none">
+>>>>>>> origin/main
                     <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                     <div class="mb-3">
                         <label for="activityname" class="form-label">Activity Name</label>
                         <input type="text" class="form-control" id="activityname" name="activityname">
+<<<<<<< HEAD
+=======
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+>>>>>>> origin/main
                     </div>
                     <div class="mb-3">
                         <label for="objectives" class="form-label">Objectives</label>
@@ -408,26 +720,63 @@
                             <option value="" selected disabled>Choose Objectives</option>
                             <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
                         </select>
+<<<<<<< HEAD
+=======
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+>>>>>>> origin/main
                     </div>
                     <div class="mb-3">
                         <label for="expectedoutput" class="form-label">Expected Output</label>
                         <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
+<<<<<<< HEAD
+=======
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+>>>>>>> origin/main
                     </div>
                     <div class="mb-3">
                         <label for="startdate" class="form-label">Activity Start Date</label>
                         <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
+<<<<<<< HEAD
+=======
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+>>>>>>> origin/main
                     </div>
                     <div class="mb-3">
                         <label for="enddate" class="form-label">Activity End Date</label>
                         <input type="date" class="form-control" id="activityenddate" name="activityenddate">
+<<<<<<< HEAD
+=======
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+>>>>>>> origin/main
                     </div>
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>
                         <input type="number" class="form-control" id="budget" name="budget">
+<<<<<<< HEAD
                     </div>
                     <div class="mb-3">
                         <label for="Source" class="form-label">Source</label>
                         <input type="text" class="form-control" id="Source" name="source">
+=======
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Source" class="form-label">Source</label>
+                        <input type="text" class="form-control" id="source" name="source">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+>>>>>>> origin/main
                     </div>
                 </form>
 
@@ -456,7 +805,11 @@
     var objectives = <?php echo json_encode($objectives);
                         ?>;
 
+<<<<<<< HEAD
     var selectElement = $('#project-select');
+=======
+    var selectElement = $('#year-select');
+>>>>>>> origin/main
     var url = "";
     var objoption = 1;
 
@@ -581,15 +934,23 @@
             var department = $('#department').val();
 
 
+<<<<<<< HEAD
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid);
             url = url.replace(':department', encodeURIComponent(department));
             url = url.replace(':projectname', encodeURIComponent(projectname));
+=======
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+
+>>>>>>> origin/main
             window.location.href = url;
         });
 
         // Add an event listener to the select element
         selectElement.change(function() {
+<<<<<<< HEAD
             // Get the currently selected option
             var selectedOption = $(this).find(':selected');
             var projectid = selectedOption.val();
@@ -600,6 +961,17 @@
             url = url.replace(':projectid', projectid);
             url = url.replace(':department', encodeURIComponent(department));
             url = url.replace(':projectname', encodeURIComponent(projectname));
+=======
+            var selectedOption = $(this).find(':selected');
+            var currentyear = selectedOption.val();
+
+            var department = $('#department').val();
+
+            var baseUrl = "{{ route('yearproject.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
+            var url = baseUrl.replace(':department', department)
+                .replace(':currentyear', currentyear);
+
+>>>>>>> origin/main
             window.location.href = url;
         });
 

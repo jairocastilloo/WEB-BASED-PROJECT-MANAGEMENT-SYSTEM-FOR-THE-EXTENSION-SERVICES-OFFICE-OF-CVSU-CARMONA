@@ -3,8 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\ActivityUser;
+<<<<<<< HEAD
 use App\Models\Output;
 use App\Models\Activity;
+=======
+use App\Models\Notification;
+use App\Models\Output;
+use App\Models\Activity;
+use App\Models\activityContribution;
+use App\Models\ActivitycontributionsUser;
+>>>>>>> origin/main
 use App\Models\Objective;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -185,6 +193,7 @@ class ActivityController extends Controller
         $outputids = Output::where('activity_id', $activityid)
             ->where('output_type', $outputtype)
             ->pluck('id');
+<<<<<<< HEAD
 
         $outputcreated_at_list = []; // Initialize an empty array to store the $outputcreated_at values
         $unapprovedoutputs = [];
@@ -221,6 +230,16 @@ class ActivityController extends Controller
             ->get();
 
 
+=======
+        $outputNames = Output::where('activity_id', $activityid)
+            ->where('output_type', $outputtype)
+            ->pluck('output_name')
+            ->toArray();
+        $submittedoutput = OutputUser::whereIn('output_id', $outputids)
+            ->get();
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
+>>>>>>> origin/main
 
         return view('activity.output', [
             'activity' => $activity,
@@ -229,6 +248,7 @@ class ActivityController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
+<<<<<<< HEAD
             'unique_outputcreated' => $unique_outputcreated,
             'unapprovedoutputdata' => $unapprovedoutputdata,
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt
@@ -287,6 +307,14 @@ class ActivityController extends Controller
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
         ]);
     }
+=======
+            'submittedoutput' => $submittedoutput,
+            'outputNames' => $outputNames,
+            'notifications' => $notifications,
+        ]);
+    }
+
+>>>>>>> origin/main
 
     public function displayactivity($activityid, $department, $activityname)
     {
@@ -330,6 +358,7 @@ class ActivityController extends Controller
         $activities = Activity::where('project_id', $projectId)
             ->whereNotIn('id', [$activityid])
             ->get();
+<<<<<<< HEAD
 
         $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
             ->where('approval', 0)
@@ -344,6 +373,9 @@ class ActivityController extends Controller
 
 
         $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
+=======
+        $notifications = Notification::where('user_id', Auth::user()->id)
+>>>>>>> origin/main
             ->get();
 
         return view('activity.index', [
@@ -357,8 +389,12 @@ class ActivityController extends Controller
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
+<<<<<<< HEAD
             'unapprovedactivitydata' => $unapprovedactivitydata,
             'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
+=======
+            'notifications' => $notifications,
+>>>>>>> origin/main
         ]);
     }
 
@@ -391,10 +427,17 @@ class ActivityController extends Controller
         $actid = $request->input('act-id');
 
         $activity = Activity::findOrFail($actid);
+<<<<<<< HEAD
         $activity->update(['totalhours_rendered' => 0]);
 
 
         return response()->json(['success' => true]);
+=======
+        $activity->update(['subtask' => 0]);
+
+
+        return response()->json(['success' => true, 'actid' => $actid]);
+>>>>>>> origin/main
     }
 
     public function complyactivity($activityid, $activityname)
@@ -405,12 +448,21 @@ class ActivityController extends Controller
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
+<<<<<<< HEAD
 
+=======
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
+>>>>>>> origin/main
         return view('activity.submitactivity', [
             'activity' => $activity,
             'projectName' => $projectName,
             'projectId' => $projectId,
             'currentassignees' => $currentassignees,
+<<<<<<< HEAD
+=======
+            'notifications' => $notifications,
+>>>>>>> origin/main
         ]);
     }
 
@@ -420,18 +472,40 @@ class ActivityController extends Controller
         $validatedData = $request->validate([
             'activity-id' => 'required|integer',
             'activity-contributor.*' => 'required|integer',
+<<<<<<< HEAD
+=======
+            'start-date' => 'required|date',
+            'end-date' => 'required|date',
+>>>>>>> origin/main
             'contributornumber' => 'required|integer',
             'hours-rendered' => 'required|integer',
         ]);
 
+<<<<<<< HEAD
+=======
+        $activitycontributions = new activityContribution();
+        $activitycontributions->activity_id = $validatedData['activity-id'];
+        $activitycontributions->startdate = $validatedData['start-date'];
+        $activitycontributions->enddate = $validatedData['end-date'];
+        $activitycontributions->hours_rendered = $validatedData['hours-rendered'];
+        $activitycontributions->submitter_id = Auth::user()->id;
+        $activitycontributions->save();
+        $newActContri = $activitycontributions->id;
+>>>>>>> origin/main
 
         for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
 
 
+<<<<<<< HEAD
             $subtaskcontributor = new SubtaskContributor();
             $subtaskcontributor->user_id = $validatedData['activity-contributor'][$i];
             $subtaskcontributor->activity_id = $validatedData['activity-id'];
             $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+=======
+            $subtaskcontributor = new ActivitycontributionsUser();
+            $subtaskcontributor->user_id = $validatedData['activity-contributor'][$i];
+            $subtaskcontributor->activitycontribution_id = $newActContri;
+>>>>>>> origin/main
             $subtaskcontributor->save();
         }
 
@@ -443,7 +517,11 @@ class ActivityController extends Controller
         $file = $request->file('activitydocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
+<<<<<<< HEAD
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
+=======
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+>>>>>>> origin/main
         $currentDateTime = date('Y-m-d_H-i-s');
         // Store the file
         $path = $request->file('activitydocs')->storeAs('uploads/' . $currentDateTime, $fileName);
@@ -452,6 +530,7 @@ class ActivityController extends Controller
 
         return 'File uploaded successfully.';
     }
+<<<<<<< HEAD
 
     public function acceptacthours(Request $request)
     {
@@ -471,4 +550,6 @@ class ActivityController extends Controller
 
         return 'File uploaded successfully.';
     }
+=======
+>>>>>>> origin/main
 }

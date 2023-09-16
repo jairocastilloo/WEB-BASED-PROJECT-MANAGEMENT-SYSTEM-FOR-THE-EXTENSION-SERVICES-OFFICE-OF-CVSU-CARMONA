@@ -5,8 +5,12 @@
 
 <div class="container rounded border shadow p-3">
     <!-- Content goes here -->
+<<<<<<< HEAD
     <input type="text" class="d-none" value="{{ Auth::user()->role }}" id="userrole">
     <input type="text" class="d-none" value="{{ Auth::user()->approval }}" id="userapproval">
+=======
+
+>>>>>>> origin/main
     <h3 class="ms-2">
         @if (session('status'))
         <div>
@@ -21,6 +25,7 @@
     </form>
     <button class="btn btn-primary" id="goBackBtn">Go Back</button>
 </div>
+<<<<<<< HEAD
 @endsection
 @section('scripts')
 
@@ -51,4 +56,6 @@
     });
 </script>
 
+=======
+>>>>>>> origin/main
 @endsection

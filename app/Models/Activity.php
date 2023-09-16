@@ -18,6 +18,10 @@ class Activity extends Model
         'actbudget',
         'actsource',
         'totalhours_rendered',
+<<<<<<< HEAD
+=======
+        'subtask'
+>>>>>>> origin/main
     ];
     public function project()
     {

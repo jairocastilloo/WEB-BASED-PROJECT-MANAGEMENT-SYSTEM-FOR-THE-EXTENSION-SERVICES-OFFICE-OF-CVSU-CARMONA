@@ -17,6 +17,11 @@ class Project extends Model
         'projectstartdate',
         'projectenddate',
         'department',
+<<<<<<< HEAD
+=======
+        'calendaryear',
+        'projectstatus'
+>>>>>>> origin/main
     ];
     public function users()
     {

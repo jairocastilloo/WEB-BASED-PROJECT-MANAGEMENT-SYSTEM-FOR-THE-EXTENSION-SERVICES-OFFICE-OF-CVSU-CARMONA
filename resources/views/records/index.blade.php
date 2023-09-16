@@ -4,6 +4,57 @@
 <div class="maincontainer">
     &nbsp;
     <div class="container">
+<<<<<<< HEAD
+=======
+
+        <div class="basiccont mt-0 mb-4 m-2 pb-2 rounded shadow">
+            <div class="border-bottom ps-3 pt-2 bggreen">
+                <h6 class="fw-bold small" style="color:darkgreen;">Browse My Records</h6>
+            </div>
+            @if (!$inCurrentYear)
+            <span class="small ms-2"><em>
+                    Note: Not the current Semester and AY.
+                </em></span>
+            @endif
+            <div class="form-floating m-3 mb-2 mt-3">
+
+                <select id="sem-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;" aria-label="Select an acadamic year and semster">
+                    @if ($ayfirstsem)
+                    @foreach ($allAY as $ay)
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}" {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
+                        {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}">
+                        {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    @endforeach
+                    @elseif ($aysecondsem)
+                    @foreach ($allAY as $ay)
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}">
+                        {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}" {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
+                        {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    @endforeach
+                    @elseif ($latestAy)
+                    @foreach ($allAY as $ay)
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}" {{ $ay->id == $latestAy->id ? 'selected' : '' }}>
+                        {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}">
+                        {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    </option>
+                    @endforeach
+                    @endif
+                </select>
+                <label for="ay-select" style="color:darkgreen;">
+                    <h6><strong>SEMESTER and AY:</strong></h6>
+                </label>
+            </div>
+
+        </div>
+>>>>>>> origin/main
         <div class="basiccont shadow">
             <div class="text-center shadow bg-success text-white p-2 pt-3">
                 <h5 class="fw-bold">
@@ -47,7 +98,11 @@
                                         Total Hours Rendered:
                                     </h6>
                                     <p class="card-text">
+<<<<<<< HEAD
                                         <em>37 million</em>
+=======
+                                        <em>{{ $totalhoursrendered }}</em>
+>>>>>>> origin/main
                                     </p>
                                 </div>
                             </div>
@@ -68,7 +123,11 @@
                                         Total Number of Activities Conducted:
                                     </h6>
                                     <p class="card-text">
+<<<<<<< HEAD
                                         <em>1 million</em>
+=======
+                                        <em>{{ count($allactivities) }}</em>
+>>>>>>> origin/main
                                     </p>
                                 </div>
                             </div>
@@ -83,6 +142,7 @@
                     <table class="recordtable small">
 
                         <thead>
+<<<<<<< HEAD
                             <tr id="actheader">
                                 <th class="p-2 text-center majority">
                                     <strong>PROJECT</strong>
@@ -107,12 +167,39 @@
                                 </th>
                                 <th class="p-2 text-center majority">
                                     <strong>DEPARTMENT</strong>
+=======
+                            <tr class="actheader recordth">
+                                <th class="p-1 text-center majority">
+                                    PROJECT
+                                </th>
+                                <th class="p-1 text-center extension">
+                                    EXTENSION ACTIVITY
+                                </th>
+                                <th class="p-1 text-center num">
+                                    DATE
+                                </th>
+                                <th class="p-1 text-center majority">
+                                    RELATED PROGRAM/S (if any)
+                                </th>
+                                <th class="p-1 text-center num">
+                                    TOTAL NUMBERS OF HOURS
+                                </th>
+                                <th class="p-1 text-center majority">
+                                    NO. OF CLIENTELE/BENEFICIARIES
+                                </th>
+                                <th class="p-1 text-center majority">
+                                    AGENCY
+                                </th>
+                                <th class="p-1 text-center majority">
+                                    DEPARTMENT
+>>>>>>> origin/main
                                 </th>
                             </tr>
 
                         </thead>
                         @php
                         use App\Models\Project;
+<<<<<<< HEAD
                         use App\Models\SubtaskContributor;
                         @endphp
                         <tbody>
@@ -234,6 +321,128 @@
                             @endif
                             @endforeach
 
+=======
+                        @endphp
+                        <tbody>
+                            @foreach ($allactivities as $activity)
+                            @php
+                            $actcontristartdate = null;
+                            $actcontrienddate = null;
+                            $actcontrihours = null;
+                            @endphp
+
+                            @foreach ($activityContributions as $key => $actcontribution)
+                            @if ($activity->id === $actcontribution->activity_id)
+                            @php
+                            $actcontristartdate = $actcontribution->startdate;
+                            $actcontrienddate = $actcontribution->enddate;
+                            $actcontrihours = $actcontribution->hours_rendered;
+                            unset($activityContributions[$key]); // Remove the processed contribution
+                            @endphp
+
+                            @break
+                            @endif
+                            @endforeach
+
+                            <tr>
+                                <td class="majority p-1">
+                                    @php
+                                    $proj = Project::where('id', $activity['project_id'])->first(['projecttitle', 'department']);
+                                    $projectdept = Project::where('id', $activity['project_id'])->first(['department']);
+                                    @endphp
+                                    {{ $proj->projecttitle }}
+                                </td>
+                                <td class="extension p-1">
+                                    {{ $activity->actname }}
+                                </td>
+                                <td class="num p-1">
+                                    {{ $actcontristartdate . ' - ' . $actcontrienddate }}
+
+                                </td>
+                                <td class="majority p-1">
+                                    N/A
+                                </td>
+                                <td class="num p-1">
+                                    {{ $actcontrihours }}
+                                </td>
+                                <td class="majority p-1">
+                                    -
+                                </td>
+                                <td class="majority p-1">
+                                    -
+                                </td>
+                                <td class="majority p-1">
+                                    {{ $proj->department }}
+                                </td>
+                            </tr>
+
+                            @if (in_array($activity->id, $otheractivities))
+
+                            @foreach ($subtasks as $key => $subtask)
+
+
+                            @if ($activity->id === $subtask->activity_id)
+
+
+                            @foreach ($subtaskcontributions as $key => $subcontribution)
+                            @if ($subtask->id === $subcontribution->subtask_id)
+                            @php
+                            $subdate = $subcontribution->date;
+                            $subcontrihours = $subcontribution->hours_rendered;
+                            unset($subtaskcontributions[$key]); // Remove the processed contribution
+                            @endphp
+
+                            @break
+                            @endif
+                            @endforeach
+
+
+                            <tr>
+                                <td class="majority p-1">
+
+                                </td>
+                                <td class="extension p-1">
+                                    {{ $subtask->subtask_name }}
+                                </td>
+                                <td class="num p-1">
+                                    {{ $subdate }}
+
+                                </td>
+                                <td class="majority p-1">
+                                    N/A
+                                </td>
+                                <td class="num p-1">
+                                    {{ $subcontrihours }}
+                                </td>
+                                <td class="majority p-1">
+                                    -
+                                </td>
+                                <td class="majority p-1">
+                                    -
+                                </td>
+                                <td class="majority p-1">
+                                    {{ $proj->department }}
+                                </td>
+                            </tr>
+
+
+                            @php
+
+                            unset($subtasks[$key]); // Remove the processed contribution
+                            @endphp
+
+
+                            @endif
+
+                            @endforeach
+
+                            @endif
+
+
+                            @endforeach
+
+
+>>>>>>> origin/main
                         </tbody>
 
                     </table>
@@ -246,6 +455,7 @@
 </div>
 
 @endsection
+<<<<<<< HEAD
 
 @section('scripts')
 <script>
@@ -254,6 +464,29 @@
       // Add your function here
       $('#account .dropdown-menu').toggleClass('shows');
   });
+=======
+@section('scripts')
+<script>
+    $(document).ready(function() {
+
+        $('#navbarDropdown').click(function(event) {
+            // Add your function here
+            event.preventDefault();
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+
+        $('#sem-select').change(function() {
+            var selectedOption = $(this).find(':selected');
+            var selecteday = selectedOption.val();
+            var selectedsem = selectedOption.attr('data-sem');
+
+            var baseUrl = "{{ route('records.select', ['username' => Auth::user()->username, 'ayid' => ':selecteday', 'semester' => ':selectedsem']) }}";
+            var url = baseUrl.replace(':selecteday', selecteday)
+                .replace(':selectedsem', selectedsem);
+
+            window.location.href = url;
+        });
+>>>>>>> origin/main
     });
 </script>
 

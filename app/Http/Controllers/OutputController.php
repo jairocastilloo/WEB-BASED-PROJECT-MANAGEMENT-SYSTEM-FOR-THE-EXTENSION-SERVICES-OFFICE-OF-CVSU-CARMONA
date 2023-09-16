@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use Illuminate\Http\Request;
+=======
+use App\Models\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+>>>>>>> origin/main
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Output;
@@ -79,7 +85,12 @@ class OutputController extends Controller
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
+<<<<<<< HEAD
 
+=======
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
+>>>>>>> origin/main
         return view('activity.submitoutput', [
             'activity' => $activity,
             'currentoutputtype' => $currentoutputtype,
@@ -87,12 +98,19 @@ class OutputController extends Controller
             'projectId' => $projectId,
             'outputtype' => $outputtype,
             'assignees' => $assignees,
+<<<<<<< HEAD
+=======
+            'notifications' => $notifications,
+>>>>>>> origin/main
         ]);
     }
 
     public function addtooutput(Request $request)
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
         $validatedData = $request->validate([
             'output-id.*' => 'required|integer',
             'output-quantity.*' => 'required|integer',
@@ -118,6 +136,10 @@ class OutputController extends Controller
             $outputuser = new OutputUser();
             $outputuser->output_id = $validatedData['output-id'][$j];
             $outputuser->output_submitted = $validatedData['output-quantity'][$j];
+<<<<<<< HEAD
+=======
+            $outputuser->user_id = Auth::user()->id;
+>>>>>>> origin/main
             $outputuser->save();
         }
         $request->validate([
@@ -128,12 +150,19 @@ class OutputController extends Controller
         $file = $request->file('outputdocs');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();
+<<<<<<< HEAD
         $fileName = Str::slug(pathinfo($originalName, PATHINFO_FILENAME)) . '.' . $extension;
 
         // Store the file
         $path = $request->file('outputdocs')->storeAs('uploads', $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
+=======
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('outputdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
+>>>>>>> origin/main
 
         return 'File uploaded successfully.';
     }

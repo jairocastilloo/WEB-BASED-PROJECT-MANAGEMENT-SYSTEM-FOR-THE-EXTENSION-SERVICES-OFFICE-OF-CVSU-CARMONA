@@ -20,11 +20,19 @@ class OutputUser extends Model
 
     public function output()
     {
+<<<<<<< HEAD
         return $this->belongsTo(Output::class);
+=======
+        return $this->belongsTo(Output::class, 'output_id');
+>>>>>>> origin/main
     }
 
     public function user()
     {
+<<<<<<< HEAD
         return $this->belongsTo(User::class);
+=======
+        return $this->belongsTo(User::class, 'user_id');
+>>>>>>> origin/main
     }
 }
