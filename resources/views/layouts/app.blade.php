@@ -27,7 +27,7 @@
     <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
     <!--<script src="{{ mix('js/app.js') }}"></script>-->
 
-
+    @livewireStyles
 
 </head>
 
@@ -149,7 +149,7 @@
         </main>
 
     </div>
-
+    @livewireScripts
 </body>
 
 </html>

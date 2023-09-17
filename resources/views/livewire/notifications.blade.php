@@ -1,3 +1,4 @@
+@if ($notifications)
 <li class="nav-item">
     <div class="dropdown" id="notificationList">
         <a class="nav-link text-dark position-relative me-2 dropdown-toggle" data-url="{{ route('notification.markasread', ['id' => Auth::user()->id]) }}" role="button" id="notificationBar" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -23,3 +24,4 @@
         </ul>
     </div>
 </li>
+@endif

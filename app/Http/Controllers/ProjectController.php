@@ -22,7 +22,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-use App\Events\NewNotification;
+
+use App\Events\NewNotificationEvent;
 
 class ProjectController extends Controller
 {
