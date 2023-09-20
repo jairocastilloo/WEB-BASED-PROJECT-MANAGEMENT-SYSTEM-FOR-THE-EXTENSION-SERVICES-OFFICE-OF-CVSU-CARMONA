@@ -78,7 +78,12 @@
                         <a class="nav-link navtohover text-dark" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
-                        <livewire:notifications />
+                        <li class="nav-item">
+
+                            <!-- Enclose Livewire component in a single root element -->
+                            <livewire:notifications />
+
+                        </li>
 
                         @endif
 
@@ -139,8 +144,9 @@
             <script src="{{ asset('js/jquery.min.js') }}"></script>
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+
             <!--<script src="{{ asset('vendor/livewire/livewire.js') }}"></script>-->
-            <script src="{{ asset('js/main.js') }}"></script>
+            <!--<script src="{{ asset('js/main.js') }}"></script>-->
 
             <!--<script src="{{ asset('js/bootstrap.bundle.min.js.map') }}"></script>
 -->
@@ -148,8 +154,12 @@
 
         </main>
 
+
+
     </div>
+
     @livewireScripts
+
 </body>
 
 </html>

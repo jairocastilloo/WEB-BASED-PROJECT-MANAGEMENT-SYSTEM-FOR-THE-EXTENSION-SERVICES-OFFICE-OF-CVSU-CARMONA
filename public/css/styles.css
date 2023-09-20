@@ -364,3 +364,6 @@ p, h1, h2, h3, h4, h5, h6, span, a{
   background-color: darkgreen; /* Change to your desired color */
   padding-left: 7px;
 }
+div {
+  user-select: none;
+}

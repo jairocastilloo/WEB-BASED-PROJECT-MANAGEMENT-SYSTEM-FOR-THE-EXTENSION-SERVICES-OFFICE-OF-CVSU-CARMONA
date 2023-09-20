@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  
 $('#notificationBar').click(function(event){
     event.preventDefault();
     $('#notificationList .dropdown-menu').toggleClass('shows');
