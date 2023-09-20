@@ -17,37 +17,35 @@
         </li>
         @endforeach
     </ul>
-</div>
-<script>
-    document.addEventListener('livewire:load', function() {
-        const dropdownMenu = document.querySelector('#notificationList .dropdown-menu');
-        const dropdownToggle = document.querySelector('#notificationBar');
-        const notificationBarSpan = document.querySelector('#notificationBar span');
-
-        dropdownToggle.addEventListener('click', function() {
-            if (dropdownToggle && dropdownToggle.hasAttribute('wire:click')) {
-                Livewire.on('updateNotifications', function() {
+    <script>
+        document.addEventListener('livewire:load', function() {
+            const dropdownMenu = document.querySelector('#notificationList .dropdown-menu');
+            const dropdownToggle = document.querySelector('#notificationBar');
 
 
+            dropdownToggle.addEventListener('click', function() {
+                if (dropdownToggle && dropdownToggle.hasAttribute('wire:click')) {
+                    Livewire.on('updateNotifications', function() {
 
 
-                    // Remove the 'shows' class from the notificationBar span
+                        // Remove the 'shows' class from the notificationBar span
 
-                    if (notificationBarSpan) {
-                        notificationBarSpan.remove();
-                    }
-                    dropdownMenu.classList.add('shows');
-                    dropdownToggle.removeAttribute('wire:click');
-                });
-            } else {
-
-                if (dropdownMenu.classList.contains('shows')) {
-                    dropdownMenu.classList.remove('shows');
+                        if (document.querySelector('#notificationBar span')) {
+                            document.querySelector('#notificationBar span').remove();
+                        }
+                        dropdownMenu.classList.add('shows');
+                        dropdownToggle.removeAttribute('wire:click');
+                    });
                 } else {
-                    dropdownMenu.classList.add('shows');
-                }
 
-            }
+                    if (dropdownMenu.classList.contains('shows')) {
+                        dropdownMenu.classList.remove('shows');
+                    } else {
+                        dropdownMenu.classList.add('shows');
+                    }
+
+                }
+            });
         });
-    });
-</script>
+    </script>
+</div>

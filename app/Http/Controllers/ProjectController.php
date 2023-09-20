@@ -22,8 +22,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-
 use App\Events\NewNotificationEvent;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MyMail;
 
 class ProjectController extends Controller
 {
@@ -315,7 +316,7 @@ class ProjectController extends Controller
             $projectobjective->objectiveset_id = $validatedData['objectivesetid'][$i];
             $projectobjective->save();
         }
-
+        Mail::to('recipient@example.com')->send(new MyMail());
 
         return response()->json([
             'projectid' => $newProjectId,
