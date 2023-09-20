@@ -270,9 +270,9 @@ class ProjectController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
         }
-
+        $projecttitle = $request->input('projecttitle');
         $project = new Project([
-            'projecttitle' => $request->input('projecttitle'),
+            'projecttitle' => $projecttitle,
             'projectleader' => $request->input('projectleader'),
             'programtitle' => $request->input('programtitle'),
             'programleader' => $request->input('programleader'),
@@ -305,6 +305,9 @@ class ProjectController extends Controller
             $projectmembers->save();
             $notification = new Notification([
                 'user_id' => $validatedData['projectmember'][$i],
+                'task_id' => $newProjectId,
+                'task_type' => "Project",
+                'task_name' => $projecttitle,
                 'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project.',
             ]);
             $notification->save();
