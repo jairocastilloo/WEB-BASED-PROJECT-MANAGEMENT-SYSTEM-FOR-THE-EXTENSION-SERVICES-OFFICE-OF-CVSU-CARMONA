@@ -34,7 +34,7 @@ class Notifications extends Component
 
         Notification::where('id', $notificationId)
             ->update(['clicked_at' => now()]);
-        if ($taskType === 'Project') {
+        if ($taskType === 'project') {
             return Redirect::route('projects.display', [
                 "projectid" => $taskId,
                 "department" => Auth::user()->department,

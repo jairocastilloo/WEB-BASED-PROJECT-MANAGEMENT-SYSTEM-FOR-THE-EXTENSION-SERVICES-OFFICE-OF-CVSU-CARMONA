@@ -8,10 +8,10 @@
         @endif
     </a>
 
-    <ul class="dropdown-menu">
+    <ul class="dropdown-menu" style="width: 250px; left: -15px; cursor: pointer;">
         @foreach($notifications as $notification)
-        <li>
-            <a wire:click="redirectToTask('{{ $notification->id }}', '{{ $notification->task_type }}', '{{ $notification->task_id }}', '{{ $notification->task_name }}')" class="dropdown-item" data-id="{{ $notification->id }}" data-tasktype="{{ $notification->task_type }}" class="dropdown-item">
+        <li class="border-bottom">
+            <a wire:click="redirectToTask('{{ $notification->id }}', '{{ $notification->task_type }}', '{{ $notification->task_id }}', '{{ $notification->task_name }}')" class="dropdown-item text-wrap">
                 {{ $notification->message }}
             </a>
         </li>
