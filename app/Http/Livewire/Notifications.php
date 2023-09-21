@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Redirect;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
@@ -27,6 +28,21 @@ class Notifications extends Component
             ->update(['read_at' => now()]);
 
         $this->emit('updateNotifications');
+    }
+    public function redirectToTask($notificationId, $taskType, $taskId, $taskName)
+    {
+
+        Notification::where('id', $notificationId)
+            ->update(['clicked_at' => now()]);
+        if ($taskType === 'Project') {
+            return Redirect::route('projects.display', [
+                "projectid" => $taskId,
+                "department" => Auth::user()->department,
+                "projectname" => $taskName,
+            ]);
+        } else {
+            return response()->json(['message' => 'Failed to update'], 500);
+        }
     }
     public function render()
     {

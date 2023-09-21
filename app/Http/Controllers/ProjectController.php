@@ -306,9 +306,9 @@ class ProjectController extends Controller
             $notification = new Notification([
                 'user_id' => $validatedData['projectmember'][$i],
                 'task_id' => $newProjectId,
-                'task_type' => "Project",
+                'task_type' => "project",
                 'task_name' => $projecttitle,
-                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project.',
+                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project: "' . $projecttitle . '".',
             ]);
             $notification->save();
         }

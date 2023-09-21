@@ -11,7 +11,7 @@
     <ul class="dropdown-menu">
         @foreach($notifications as $notification)
         <li>
-            <a class="dropdown-item">
+            <a wire:click="redirectToTask('{{ $notification->id }}', '{{ $notification->task_type }}', '{{ $notification->task_id }}', '{{ $notification->task_name }}')" class="dropdown-item" data-id="{{ $notification->id }}" data-tasktype="{{ $notification->task_type }}" class="dropdown-item">
                 {{ $notification->message }}
             </a>
         </li>
