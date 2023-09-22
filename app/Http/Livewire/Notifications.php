@@ -19,7 +19,6 @@ class Notifications extends Component
         $this->unreadnotificationscount = count($this->notifications->where('read_at', null));
     }
 
-
     public function updateNotifications()
     {
 
@@ -29,6 +28,7 @@ class Notifications extends Component
 
         $this->emit('updateNotifications');
     }
+
     public function redirectToTask($notificationId, $taskType, $taskId, $taskName)
     {
 
