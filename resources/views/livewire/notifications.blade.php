@@ -10,7 +10,7 @@
         @endif
     </a>
 
-    <a class="nav-link text-dark position-relative me-2 dropdown-toggle" role="button" id="notificationBar">
+    <a class="nav-link text-dark position-relative me-2 dropdown-toggle" role="button" id="notificationBar" style="display:none">
         Notifications
     </a>
 
@@ -28,7 +28,7 @@
             const dropdownMenu = document.querySelector('#notificationList .dropdown-menu');
             const dropdownToggle = document.querySelector('#notificationBar');
             const dropdownToggleHide = document.querySelector('#notificationBarHide');
-            dropdownToggle.style.display = 'none';
+
 
             Livewire.on('updateNotifications', function() {
 

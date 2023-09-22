@@ -89,7 +89,7 @@
                             </button>
                         </div>
                     </div>
-                    @livewire('activity-assignees', ['activity' => $activity, 'assignees' => $assignees])
+                    @livewire('activity-assignees', ['activity' => $activity, 'assignees' => $assignees, 'addassignees' => $addassignees, 'projectName' => $projectName ])
                 </div>
                 @if ($activity['subtask'] == 1)
 
@@ -324,39 +324,7 @@
             </div>
         </div>
     </div>
-    <!--add activity assignees-->
-    <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="assigneeform" data-url="{{ route('add.assignee') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="assigneeSelect" class="form-label">Assignee</label>
-                            <input type="number" class="d-none" name="assigneeactnumber" value="{{ $activity['id'] }}">
-                            <select class="form-select" id="assigneeselect" name="assigneeselect">
-                                <option value="" selected disabled>Select Assignee</option>
-                                @foreach($addassignees as $assignee)
 
-                                <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="addassignee-btn">Add Assignee</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- add output -->
     <div class="modal fade" id="addoutputmodal" tabindex="-1" aria-labelledby="addoutputmodalLabel" aria-hidden="true">
         <div class="modal-dialog">
