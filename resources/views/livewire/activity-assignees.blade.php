@@ -53,18 +53,24 @@
             const saveAssigneeButton = document.getElementById('saveAssigneeButton');
 
             saveAssigneeButton.addEventListener('click', function() {
-                // Get all checked checkboxes
-                /*
+
                 const checkboxes = document.querySelectorAll('input[name="assignees[]"]:checked');
 
                 // Extract their values and store them in an array
                 var selectedAssignees = Array.from(checkboxes).map(checkbox => checkbox.value);
 
                 Livewire.emit('saveAssignees', selectedAssignees);
-                */
-                document.getElementById('update').click();
-            });
 
+            });
+            Livewire.on('updateAssignees', function() {
+
+                // Remove the 'shows' class from the notificationBar span
+
+                document.getElementById('myModalCloseButton').click();
+                document.getElementById('updatedata').click();
+
+
+            });
 
         });
     </script>

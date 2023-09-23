@@ -24,8 +24,9 @@ class ActivityAssignees extends Component
     {
         // Loop through the selected assignees and save them to the database
         foreach ($selectedAssignees as $assigneeId) {
-            ActivityUser::create(['user_id' => $assigneeId, 'activity_id' => $this->activity->id]);
+            ActivityUser::create(['user_id' => $assigneeId, 'activity_id' => $this->activityid]);
         }
+        $this->emit('updateAssignees');
     }
     public function handleSaveAssignees($selectedAssignees)
     {

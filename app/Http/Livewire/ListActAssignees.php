@@ -10,10 +10,19 @@ use App\Models\User;
 class ListActAssignees extends Component
 {
     public $assignees;
-
+    public $actid;
     public function mount($activityid)
     {
+        $this->actid = $activityid;
         $assigneesids = ActivityUser::where('activity_id', $activityid)
+            ->pluck('user_id')
+            ->toArray();
+        $this->assignees = User::whereIn('id', $assigneesids)
+            ->get();
+    }
+    public function increment()
+    {
+        $assigneesids = ActivityUser::where('activity_id', $this->actid)
             ->pluck('user_id')
             ->toArray();
         $this->assignees = User::whereIn('id', $assigneesids)
