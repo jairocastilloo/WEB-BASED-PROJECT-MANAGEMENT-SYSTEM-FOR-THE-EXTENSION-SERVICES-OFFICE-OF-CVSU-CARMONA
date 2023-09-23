@@ -1,28 +1,15 @@
 <div class="basiccont shadow p-2 mt-4 ms-2 mb-4">
+
     <div class="border-bottom ps-2 bggreen">
         <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
     </div>
-    @php $count = 0; @endphp
+
     <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
         @csrf
         <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
-        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
+        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activityid }}">
     </form>
-    <div data-count="{{ count($assignees) }}">
-        @foreach ($assignees as $key=> $assignee)
-        @if ($count % 2 == 0)
-        <div class="row p-1">
-            @endif
-            <div class="col-md border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
-
-                <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
-            </div>
-            @if ($count % 2 == 1 || $loop->last)
-        </div>
-        @endif
-        @php $count++; @endphp
-        @endforeach
-    </div>
+    @livewire('list-act-assignees', ['activityid' => $activityid])
     <div class="btn-group ms-2 mt-2 mb-2 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn" id="ediwow">
             <b class="small">Add Assignees</b>
@@ -67,20 +54,18 @@
 
             saveAssigneeButton.addEventListener('click', function() {
                 // Get all checked checkboxes
+                /*
                 const checkboxes = document.querySelectorAll('input[name="assignees[]"]:checked');
 
                 // Extract their values and store them in an array
                 var selectedAssignees = Array.from(checkboxes).map(checkbox => checkbox.value);
 
                 Livewire.emit('saveAssignees', selectedAssignees);
+                */
+                document.getElementById('update').click();
             });
 
-            Livewire.on('updateAssignees', function() {
 
-                document.getElementById('myModalCloseButton').click();
-
-
-            });
         });
     </script>
 </div>

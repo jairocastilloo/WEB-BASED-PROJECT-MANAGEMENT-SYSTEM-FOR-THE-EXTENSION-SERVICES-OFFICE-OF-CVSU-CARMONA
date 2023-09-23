@@ -89,7 +89,7 @@
                             </button>
                         </div>
                     </div>
-                    @livewire('activity-assignees', ['activity' => $activity, 'assignees' => $assignees, 'addassignees' => $addassignees, 'projectName' => $projectName ])
+                    @livewire('activity-assignees', ['activityid' => $activity['id'], 'assignees' => $assignees, 'addassignees' => $addassignees, 'projectName' => $projectName ])
                 </div>
                 @if ($activity['subtask'] == 1)
 

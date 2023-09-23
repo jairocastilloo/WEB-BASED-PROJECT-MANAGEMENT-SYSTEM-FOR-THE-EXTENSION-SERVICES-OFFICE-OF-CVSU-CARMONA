@@ -8,14 +8,14 @@ use App\Models\ActivityUser;
 class ActivityAssignees extends Component
 {
     public $assignees;
-    public $activity;
+    public $activityid;
     public $addassignees;
     public $projectName;
     protected $listeners = ['saveAssignees' => 'handleSaveAssignees'];
 
-    public function mount($assignees, $activity, $addassignees, $projectName)
+    public function mount($assignees, $activityid, $addassignees, $projectName)
     {
-        $this->activity = $activity;
+        $this->activityid = $activityid;
         $this->assignees = $assignees;
         $this->addassignees = $addassignees;
         $this->projectName = $projectName;
@@ -33,7 +33,7 @@ class ActivityAssignees extends Component
         // For example, you can call the saveAssignees method
         $this->saveAssignees($selectedAssignees);
         // You can also perform other actions or emit events in response to this event
-        $this->emit('updateAssignees');
+
     }
 
     public function render()
