@@ -8,21 +8,23 @@
         <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
         <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
     </form>
-    @foreach ($assignees as $key=> $assignee)
-    @if ($count % 2 == 0)
-    <div class="row p-1" data-value="">
-        @endif
-        <div class="col border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
+    <div data-count="{{ count($assignees) }}">
+        @foreach ($assignees as $key=> $assignee)
+        @if ($count % 2 == 0)
+        <div class="row p-1">
+            @endif
+            <div class="col-md border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
 
-            <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
+                <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
+            </div>
+            @if ($count % 2 == 1 || $loop->last)
         </div>
-        @if ($count % 2 == 1 || $loop->last)
+        @endif
+        @php $count++; @endphp
+        @endforeach
     </div>
-    @endif
-    @php $count++; @endphp
-    @endforeach
     <div class="btn-group ms-2 mt-2 mb-2 shadow">
-        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn">
+        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn" id="ediwow">
             <b class="small">Add Assignees</b>
         </button>
     </div>
@@ -35,6 +37,7 @@
                     <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label fw-bold">{{ $projectName . "'s Team Members" }}</label>
@@ -51,12 +54,33 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="addassignee-btn">Add Assignee</button>
+                    <button type="button" class="btn btn-secondary" id="myModalCloseButton" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="saveAssigneeButton" class="btn btn-primary">Save Assignee</button>
                 </div>
+
             </div>
         </div>
     </div>
     <script>
+        document.addEventListener('livewire:load', function() {
+            const saveAssigneeButton = document.getElementById('saveAssigneeButton');
+
+            saveAssigneeButton.addEventListener('click', function() {
+                // Get all checked checkboxes
+                const checkboxes = document.querySelectorAll('input[name="assignees[]"]:checked');
+
+                // Extract their values and store them in an array
+                var selectedAssignees = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+                Livewire.emit('saveAssignees', selectedAssignees);
+            });
+
+            Livewire.on('updateAssignees', function() {
+
+                document.getElementById('myModalCloseButton').click();
+
+
+            });
+        });
     </script>
 </div>
