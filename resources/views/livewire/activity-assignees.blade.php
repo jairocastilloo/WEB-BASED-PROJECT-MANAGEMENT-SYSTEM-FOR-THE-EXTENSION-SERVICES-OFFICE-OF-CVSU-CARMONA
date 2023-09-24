@@ -4,11 +4,6 @@
         <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
     </div>
 
-    <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
-        @csrf
-        <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
-        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
-    </form>
     @livewire('list-act-assignees', ['activityid' => $activity['id']])
     <div class="btn-group ms-2 mt-2 mb-2 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn" id="ediwow">
@@ -32,12 +27,8 @@
                             <input class="form-check-input border border-primary" type="checkbox" id="" name="" value="">
                             <label class="form-check-label" for="">Select All</label>
                         </div>
-                        @foreach($addassignees as $assignee)
-                        <div class="form-check ms-3">
-                            <input class="form-check-input border border-primary" type="checkbox" id="assignee_{{ $assignee->id }}" name="assignees[]" value="{{ $assignee->id }}">
-                            <label class="form-check-label" for="assignee_{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</label>
-                        </div>
-                        @endforeach
+                        @livewire('list-add-assignees', ['activityid' => $activity['id']])
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -69,6 +60,7 @@
 
                 document.getElementById('myModalCloseButton').click();
                 document.getElementById('updatedata').click();
+
                 setTimeout(function() {
                     Livewire.emit('sendmessage');
                 }, 200); // 2-second delay
@@ -86,6 +78,7 @@
 
                 document.getElementById('unassignassignee-dismiss').click();
                 document.getElementById('updatedata').click();
+                document.getElementById('updateaddAssigneesdata').click();
 
             });
         });

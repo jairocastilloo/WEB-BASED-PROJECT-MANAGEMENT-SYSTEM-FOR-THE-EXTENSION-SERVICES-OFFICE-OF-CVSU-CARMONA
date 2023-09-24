@@ -19,11 +19,9 @@ class ActivityAssignees extends Component
     public $activityName;
     public $assigneeIds = [];
     protected $listeners = ['saveAssignees' => 'handleSaveAssignees', 'sendmessage' => 'handlesendmessage', 'unassignAssignees' => 'handleUnassignAssignees'];
-    public function mount($assignees, $activity, $addassignees, $projectName, $activityName)
+    public function mount($activity, $projectName, $activityName)
     {
         $this->activity = $activity;
-        $this->assignees = $assignees;
-        $this->addassignees = $addassignees;
         $this->projectName = $projectName;
         $this->activityName = $activityName;
     }
