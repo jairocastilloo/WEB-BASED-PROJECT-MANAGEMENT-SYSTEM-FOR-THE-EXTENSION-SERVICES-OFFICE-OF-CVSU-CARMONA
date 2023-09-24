@@ -390,10 +390,11 @@
                     <p id="assigneeemail"> johndoe@example.com</p>
                     <p><strong>Role:</strong> </p>
                     <p id="assigneerole">Developer</p>
+                    <input type="hidden" id="assigneedataid" name="assigneedataid">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger" id="unassignassignee-btn">Unassign</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" id="unassignassignee-dismiss" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

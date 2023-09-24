@@ -42,7 +42,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="myModalCloseButton" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="saveAssigneeButton" class="btn btn-primary">Save Assignee</button>
+                    <button type="button" id="saveAssigneeButton" class="btn btn-primary">Add Assignees</button>
                 </div>
 
             </div>
@@ -52,7 +52,7 @@
     <script>
         document.addEventListener('livewire:load', function() {
             const saveAssigneeButton = document.getElementById('saveAssigneeButton');
-
+            const unassignAssigneeButton = document.getElementById('unassignassignee-btn');
             saveAssigneeButton.addEventListener('click', function() {
 
                 const checkboxes = document.querySelectorAll('input[name="assignees[]"]:checked');
@@ -74,7 +74,20 @@
                 }, 200); // 2-second delay
 
             });
+            unassignAssigneeButton.addEventListener('click', function() {
 
+                var assigneedataid = document.getElementById('assigneedataid').value;
+                Livewire.emit('unassignAssignees', assigneedataid);
+
+            });
+            Livewire.on('updateunassignAssignees', function() {
+
+                // Remove the 'shows' class from the notificationBar span
+
+                document.getElementById('unassignassignee-dismiss').click();
+                document.getElementById('updatedata').click();
+
+            });
         });
     </script>
 </div>

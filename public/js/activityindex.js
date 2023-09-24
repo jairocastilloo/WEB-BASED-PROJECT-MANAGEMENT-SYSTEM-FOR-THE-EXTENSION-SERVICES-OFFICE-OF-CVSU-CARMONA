@@ -132,7 +132,7 @@ $(document).ready(function(){
         $('#assigneename').text($(this).attr('data-name'));
         $('#assigneeemail').text($(this).attr('data-email'));
         $('#assigneerole').text($(this).attr('data-role'));
-
+        $('#assigneedataid').val($(this).attr('data-id'));
         // Open the modal or perform other actions
         $('#assigneedetails').modal('show');
     });
@@ -299,6 +299,7 @@ $(document).ready(function(){
         });
 
     });
+    /*
     $('#unassignassignee-btn').click(function(event) {
         event.preventDefault();
 
@@ -320,5 +321,6 @@ $(document).ready(function(){
             }
         });
     });
+    */
 
 });

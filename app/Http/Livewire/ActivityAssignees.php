@@ -18,7 +18,7 @@ class ActivityAssignees extends Component
     public $projectName;
     public $activityName;
     public $assigneeIds = [];
-    protected $listeners = ['saveAssignees' => 'handleSaveAssignees', 'sendmessage' => 'handlesendmessage'];
+    protected $listeners = ['saveAssignees' => 'handleSaveAssignees', 'sendmessage' => 'handlesendmessage', 'unassignAssignees' => 'handleUnassignAssignees'];
     public function mount($assignees, $activity, $addassignees, $projectName, $activityName)
     {
         $this->activity = $activity;
@@ -35,6 +35,15 @@ class ActivityAssignees extends Component
         }
         $this->assigneeIds = $selectedAssignees;
         $this->emit('updateAssignees');
+    }
+    public function unassignAssignees($assigneedataid)
+    {
+        // Loop through the selected assignees and save them to the database
+
+        ActivityUser::where(['user_id' => $assigneedataid, 'activity_id' => $this->activity->id])
+            ->delete();
+
+        $this->emit('updateunassignAssignees');
     }
     public function sendmessage()
     {
@@ -66,6 +75,10 @@ class ActivityAssignees extends Component
     public function handlesendmessage()
     {
         $this->sendmessage();
+    }
+    public function handleUnassignAssignees($assigneedataid)
+    {
+        $this->unassignAssignees($assigneedataid);
     }
     public function handleSaveAssignees($selectedAssignees)
     {
