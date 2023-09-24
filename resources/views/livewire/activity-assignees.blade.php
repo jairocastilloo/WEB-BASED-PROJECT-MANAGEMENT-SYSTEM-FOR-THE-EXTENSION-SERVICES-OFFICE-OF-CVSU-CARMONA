@@ -24,8 +24,8 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">{{ $projectName . "'s Team Members" }}</label>
                         <div class="form-check ms-1">
-                            <input class="form-check-input border border-primary" type="checkbox" id="" name="" value="">
-                            <label class="form-check-label" for="">Select All</label>
+                            <input class="form-check-input border border-primary" type="checkbox" id="selectAll">
+                            <label class="form-check-label" for="selectAll">Select All</label>
                         </div>
                         @livewire('list-add-assignees', ['activityid' => $activity['id']])
 
@@ -44,6 +44,9 @@
         document.addEventListener('livewire:load', function() {
             const saveAssigneeButton = document.getElementById('saveAssigneeButton');
             const unassignAssigneeButton = document.getElementById('unassignassignee-btn');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const assigneeCheckboxes = document.querySelectorAll('input[name="assignees[]"]');
+
             saveAssigneeButton.addEventListener('click', function() {
 
                 const checkboxes = document.querySelectorAll('input[name="assignees[]"]:checked');
@@ -54,6 +57,36 @@
                 Livewire.emit('saveAssignees', selectedAssignees);
 
             });
+            selectAllCheckbox.addEventListener('change', function() {
+                var areAssigneesChecked = areAllAssigneesChecked();
+
+                if (!areAssigneesChecked) {
+                    if (this.checked === true) {
+                        for (checkbox of assigneeCheckboxes) {
+                            if (!checkbox.checked) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    }
+                } else {
+                    if (this.checked === false) {
+                        for (checkbox of assigneeCheckboxes) {
+                            if (checkbox.checked) {
+                                checkbox.checked = false;
+                            }
+                        }
+                    }
+                }
+            });
+
+            function areAllAssigneesChecked() {
+                for (checkbox of assigneeCheckboxes) {
+                    if (!checkbox.checked) {
+                        return false; // Exit the loop early if any checkbox is unchecked
+                    }
+                }
+                return true;
+            }
             Livewire.on('updateAssignees', function() {
 
                 // Remove the 'shows' class from the notificationBar span
