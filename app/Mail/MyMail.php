@@ -10,15 +10,26 @@ use Illuminate\Queue\SerializesModels;
 class MyMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    protected $message;
+    protected $name;
+    protected $sendername;
+    protected $activityname;
+    protected $activitydeadline;
+    protected $senderemail;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message, $name, $sendername, $activityname, $activitydeadline, $senderemail)
     {
         //
+        $this->message = $message;
+        $this->name = $name;
+        $this->sendername = $sendername;
+        $this->activityname = $activityname;
+        $this->activitydeadline = $activitydeadline;
+        $this->senderemail = $senderemail;
     }
 
     /**
@@ -28,13 +39,17 @@ class MyMail extends Mailable
      */
     public function build()
     {
+
         return $this->from('sender@example.com', 'Sender Name')
-            ->subject('Subject of the Email')
-            ->view('emails.my_email_template')
+            ->subject($this->message)
+            ->view('emails.notification')
             ->with([
-                'subject' => 'Subject of the Email',
-                'title' => 'Welcome to our website',
-                'content' => 'Thank you for joining us!',
+                'subject' => $this->message,
+                'name' => $this->name,
+                'activityname' => $this->activityname,
+                'sendername' => $this->sendername,
+                'activitydeadline' => $this->activitydeadline,
+                'senderemail' => $this->senderemail,
             ]);
     }
 }

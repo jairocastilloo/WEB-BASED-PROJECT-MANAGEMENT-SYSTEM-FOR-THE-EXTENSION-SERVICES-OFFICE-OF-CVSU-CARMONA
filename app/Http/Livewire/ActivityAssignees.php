@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Mail\MyMail;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -12,15 +13,15 @@ use App\Models\Notification;
 class ActivityAssignees extends Component
 {
     public $assignees;
-    public $activityid;
+    public $activity;
     public $addassignees;
     public $projectName;
     public $activityName;
     public $assigneeIds = [];
     protected $listeners = ['saveAssignees' => 'handleSaveAssignees', 'sendmessage' => 'handlesendmessage'];
-    public function mount($assignees, $activityid, $addassignees, $projectName, $activityName)
+    public function mount($assignees, $activity, $addassignees, $projectName, $activityName)
     {
-        $this->activityid = $activityid;
+        $this->activity = $activity;
         $this->assignees = $assignees;
         $this->addassignees = $addassignees;
         $this->projectName = $projectName;
@@ -30,25 +31,37 @@ class ActivityAssignees extends Component
     {
         // Loop through the selected assignees and save them to the database
         foreach ($selectedAssignees as $assigneeId) {
-            ActivityUser::create(['user_id' => $assigneeId, 'activity_id' => $this->activityid]);
+            ActivityUser::create(['user_id' => $assigneeId, 'activity_id' => $this->activity->id]);
         }
         $this->assigneeIds = $selectedAssignees;
         $this->emit('updateAssignees');
     }
     public function sendmessage()
     {
-        $assignees = $this->assigneeIds;
-        foreach ($assignees as $assignee) {
+        $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
+        $assigneeIds = $this->assigneeIds;
+        $message =  $sendername . ' assigned you to a new activity: "' . $this->activityName . '".';
+        foreach ($assigneeIds as $assigneeId) {
             $notification = new Notification([
-                'user_id' => $assignee,
-                'task_id' => $this->activityid,
+                'user_id' => $assigneeId,
+                'task_id' => $this->activity->id,
                 'task_type' => "activity",
                 'task_name' => $this->activityName,
-                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new activity: "' . $this->activityName . '".',
+                'message' => $message,
             ]);
             $notification->save();
+            $assignee = User::findorFail($assigneeId);
+            $email = $assignee->email;
+            $name = $assignee->name . ' ' . $assignee->last_name;
+            $activityname = $this->activity->actname;
+
+            $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
+            $endDate = date('F d, Y', strtotime($this->activity->actenddate));
+
+            $activitydeadline = $startDate . ' - ' . $endDate;
+            $senderemail = Auth::user()->email;
         }
-        Mail::to('recipient@example.com')->send(new MyMail());
+        Mail::to('recipient@example.com')->send(new MyMail($message, $name, $sendername, $activityname, $activitydeadline, $senderemail));
     }
     public function handlesendmessage()
     {

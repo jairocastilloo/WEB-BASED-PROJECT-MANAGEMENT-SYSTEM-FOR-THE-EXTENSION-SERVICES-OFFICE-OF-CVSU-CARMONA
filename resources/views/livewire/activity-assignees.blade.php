@@ -7,9 +7,9 @@
     <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
         @csrf
         <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
-        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activityid }}">
+        <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
     </form>
-    @livewire('list-act-assignees', ['activityid' => $activityid])
+    @livewire('list-act-assignees', ['activityid' => $activity['id']])
     <div class="btn-group ms-2 mt-2 mb-2 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn" id="ediwow">
             <b class="small">Add Assignees</b>
