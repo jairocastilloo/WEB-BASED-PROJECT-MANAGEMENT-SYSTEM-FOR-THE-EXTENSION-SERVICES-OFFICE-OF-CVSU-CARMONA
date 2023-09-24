@@ -68,7 +68,9 @@
 
                 document.getElementById('myModalCloseButton').click();
                 document.getElementById('updatedata').click();
-
+                setTimeout(function() {
+                    Livewire.emit('sendmessage');
+                }, 200); // 2-second delay
 
             });
 

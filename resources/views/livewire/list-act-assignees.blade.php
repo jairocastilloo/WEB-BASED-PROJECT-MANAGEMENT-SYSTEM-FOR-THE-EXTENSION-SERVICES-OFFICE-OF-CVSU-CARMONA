@@ -13,5 +13,5 @@
     @endif
     @php $count++; @endphp
     @endforeach
-    <button id="updatedata" wire:click="increment">Increment</button>
+    <button class="d-none" id="updatedata" wire:click="updateAssignees"></button>
 </div>

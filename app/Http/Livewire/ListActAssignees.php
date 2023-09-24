@@ -20,7 +20,7 @@ class ListActAssignees extends Component
         $this->assignees = User::whereIn('id', $assigneesids)
             ->get();
     }
-    public function increment()
+    public function updateAssignees()
     {
         $assigneesids = ActivityUser::where('activity_id', $this->actid)
             ->pluck('user_id')
