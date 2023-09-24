@@ -4,7 +4,7 @@
     @if ($count % 2 == 0)
     <div class="row p-1">
         @endif
-        <div class="col-md border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
+        <div class="col-md border-bottom p-1 divhover checkassignee hoverassignee" data-name="{{ $assignee->name . ' ' . $assignee->last_name }}" data-email="{{ $assignee->email }}" data-role="{{ $assignee->role }}">
 
             <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
         </div>

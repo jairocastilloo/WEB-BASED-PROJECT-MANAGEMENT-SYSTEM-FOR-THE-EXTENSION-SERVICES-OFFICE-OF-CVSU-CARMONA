@@ -454,7 +454,7 @@
     <script>
         var url = "";
         var unassignassigneeid;
-        var assignees = <?php echo json_encode($assignees) ?>;
+
         $(document).ready(function() {
 
             $('#activityhours-btn').click(function(event) {

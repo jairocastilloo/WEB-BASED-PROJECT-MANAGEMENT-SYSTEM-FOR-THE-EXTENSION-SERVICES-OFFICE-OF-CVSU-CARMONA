@@ -48,6 +48,7 @@
             </div>
         </div>
     </div>
+
     <script>
         document.addEventListener('livewire:load', function() {
             const saveAssigneeButton = document.getElementById('saveAssigneeButton');

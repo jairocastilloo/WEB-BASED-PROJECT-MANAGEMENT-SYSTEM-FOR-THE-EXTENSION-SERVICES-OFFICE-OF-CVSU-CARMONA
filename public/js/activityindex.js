@@ -127,24 +127,11 @@ $(document).ready(function(){
     });
 
     $(document).on('click', '.checkassignee', function(event) {
-        unassignassigneeid = $(this).attr('value');
-        var name, email, role;
+       
 
-        // Find the assignee object with the matching ID
-        var assignee = assignees.find(function(assignee) {
-            return assignee.id == unassignassigneeid;
-        });
-
-        // Check if the assignee object exists
-        if (assignee) {
-            name = assignee.name + " " + assignee.last_name;
-            email = assignee.email;
-            role = assignee.role;
-        }
-
-        $('#assigneename').text(name);
-        $('#assigneeemail').text(email);
-        $('#assigneerole').text(role);
+        $('#assigneename').text($(this).attr('data-name'));
+        $('#assigneeemail').text($(this).attr('data-email'));
+        $('#assigneerole').text($(this).attr('data-role'));
 
         // Open the modal or perform other actions
         $('#assigneedetails').modal('show');
