@@ -27,7 +27,7 @@
     <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
     <!--<script src="{{ mix('js/app.js') }}"></script>-->
 
-
+    @livewireStyles
 
 </head>
 
@@ -78,33 +78,13 @@
                         <a class="nav-link navtohover text-dark" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
-                        @if ($notifications)
                         <li class="nav-item">
-                            <div class="dropdown" id="notificationList">
-                                <a class="nav-link text-dark position-relative me-2 dropdown-toggle" data-url="{{ route('notification.markasread', ['id' => Auth::user()->id]) }}" role="button" id="notificationBar" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Notifications
-                                    @php
-                                    $countOfUnread = count($notifications->where('read_at', null));
-                                    @endphp
-                                    @if($countOfUnread)
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {{ $countOfUnread }}
 
-                                    </span>
-                                    @endif
-                                </a>
-                                <ul class="dropdown-menu">
-                                    @foreach($notifications as $notification)
-                                    <li>
-                                        <a class="dropdown-item">
-                                            {{ ($notification->message) }}
-                                        </a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                            <!-- Enclose Livewire component in a single root element -->
+                            <livewire:notifications />
+
                         </li>
-                        @endif
+
                         @endif
 
                         <li class="nav-item dropdown">
@@ -164,8 +144,9 @@
             <script src="{{ asset('js/jquery.min.js') }}"></script>
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-            <script src="{{ asset('vendor/livewire/livewire.js') }}"></script>
-            <script src="{{ asset('js/main.js') }}"></script>
+
+            <!--<script src="{{ asset('vendor/livewire/livewire.js') }}"></script>-->
+            <!--<script src="{{ asset('js/main.js') }}"></script>-->
 
             <!--<script src="{{ asset('js/bootstrap.bundle.min.js.map') }}"></script>
 -->
@@ -173,7 +154,11 @@
 
         </main>
 
+
+
     </div>
+
+    @livewireScripts
 
 </body>
 

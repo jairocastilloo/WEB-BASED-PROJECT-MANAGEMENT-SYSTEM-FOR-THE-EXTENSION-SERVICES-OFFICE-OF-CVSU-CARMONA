@@ -89,36 +89,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="basiccont shadow p-2 mt-4 ms-2 mb-4">
-                        <div class="border-bottom ps-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
-                        </div>
-                        @php $count = 0; @endphp
-                        <form id="unassignassigneeform" data-url="{{ route('unassign.assignee') }}">
-                            @csrf
-                            <input type="number" id="unassignassigneeid" name="unassignassigneeid" class="d-none">
-                            <input type="number" id="unassignactivityid" name="unassignactivityid" class="d-none" value="{{ $activity['id'] }}">
-                        </form>
-                        @foreach ($assignees as $key=> $assignee)
-                        @if ($count % 2 == 0)
-                        <div class="row p-1">
-                            @endif
-                            <div class="col border-bottom p-1 divhover checkassignee hoverassignee" value="{{ $assignee->id }}">
-
-                                <p class="m-2 ms-3">{{ $assignee->name . ' ' . $assignee->last_name }}</p>
-                            </div>
-                            @if ($count % 2 == 1 || $loop->last)
-                        </div>
-                        @endif
-                        @php $count++; @endphp
-                        @endforeach
-                        <div class="btn-group ms-2 mt-2 mb-2 shadow">
-                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn">
-                                <b class="small">Add Assignees</b>
-                            </button>
-                        </div>
-                    </div>
-
+                    @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $projectName, 'activityName' => $activity['actname'] ])
                 </div>
                 @if ($activity['subtask'] == 1)
 
@@ -353,39 +324,7 @@
             </div>
         </div>
     </div>
-    <!--add activity assignees-->
-    <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="assigneeform" data-url="{{ route('add.assignee') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="assigneeSelect" class="form-label">Assignee</label>
-                            <input type="number" class="d-none" name="assigneeactnumber" value="{{ $activity['id'] }}">
-                            <select class="form-select" id="assigneeselect" name="assigneeselect">
-                                <option value="" selected disabled>Select Assignee</option>
-                                @foreach($addassignees as $assignee)
 
-                                <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="addassignee-btn">Add Assignee</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- add output -->
     <div class="modal fade" id="addoutputmodal" tabindex="-1" aria-labelledby="addoutputmodalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -451,10 +390,11 @@
                     <p id="assigneeemail"> johndoe@example.com</p>
                     <p><strong>Role:</strong> </p>
                     <p id="assigneerole">Developer</p>
+                    <input type="hidden" id="assigneedataid" name="assigneedataid">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger" id="unassignassignee-btn">Unassign</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" id="unassignassignee-dismiss" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -515,7 +455,7 @@
     <script>
         var url = "";
         var unassignassigneeid;
-        var assignees = <?php echo json_encode($assignees) ?>;
+
         $(document).ready(function() {
 
             $('#activityhours-btn').click(function(event) {

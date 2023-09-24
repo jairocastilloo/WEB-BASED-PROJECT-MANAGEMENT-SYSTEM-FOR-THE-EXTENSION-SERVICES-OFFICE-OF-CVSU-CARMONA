@@ -72,8 +72,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(activityContribution::class, 'activitycontributions_users', 'user_id', 'activitycontribution_id');
     }
+    // User.php
     public function notifications()
     {
-        return $this->belongsToMany(Notification::class);
+        return $this->hasMany(Notification::class);
     }
 }

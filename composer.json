@@ -15,7 +15,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "livewire/livewire": "^2.12",
-        "nesbot/carbon": "^2.68",
+        "nesbot/carbon": "^2.70",
         "twbs/bootstrap": "5.1.*"
     },
     "require-dev": {

@@ -22,7 +22,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
-use App\Events\NewNotification;
+use App\Events\NewNotificationEvent;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MyMail;
 
 class ProjectController extends Controller
 {
@@ -268,9 +270,9 @@ class ProjectController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()]);
         }
-
+        $projecttitle = $request->input('projecttitle');
         $project = new Project([
-            'projecttitle' => $request->input('projecttitle'),
+            'projecttitle' => $projecttitle,
             'projectleader' => $request->input('projectleader'),
             'programtitle' => $request->input('programtitle'),
             'programleader' => $request->input('programleader'),
@@ -303,7 +305,10 @@ class ProjectController extends Controller
             $projectmembers->save();
             $notification = new Notification([
                 'user_id' => $validatedData['projectmember'][$i],
-                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project.',
+                'task_id' => $newProjectId,
+                'task_type' => "project",
+                'task_name' => $projecttitle,
+                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project: "' . $projecttitle . '".',
             ]);
             $notification->save();
         }
@@ -314,7 +319,7 @@ class ProjectController extends Controller
             $projectobjective->objectiveset_id = $validatedData['objectivesetid'][$i];
             $projectobjective->save();
         }
-
+        Mail::to('recipient@example.com')->send(new MyMail());
 
         return response()->json([
             'projectid' => $newProjectId,

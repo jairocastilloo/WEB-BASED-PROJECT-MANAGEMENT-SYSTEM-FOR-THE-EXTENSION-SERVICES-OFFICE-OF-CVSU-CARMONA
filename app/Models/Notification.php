@@ -10,9 +10,11 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',    // User who receives the notification
-        'message',    // Notification message
-        'read_at',    // Timestamp when the notification is read
+        'user_id',
+        'task_id',
+        'task_type',
+        'task_name',
+        'message',
     ];
     public function user()
     {
