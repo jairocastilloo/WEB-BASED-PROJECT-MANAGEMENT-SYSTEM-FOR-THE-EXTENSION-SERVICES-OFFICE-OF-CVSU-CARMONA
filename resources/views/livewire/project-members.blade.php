@@ -5,16 +5,34 @@
         @if ($count % 2 == 0)
         <div class="row">
             @endif
-            <div class="col-md border-end border-bottom p-1 divhover checkassignee hoverassignee" data-name="{{ $member->name . ' ' . $member->last_name }}" data-email="{{ $member->email }}" data-role="{{ $member->role }}" data-id="{{ $member->id }}">
+            <div class="col-md border-end border-bottom divhover">
+                <div class="row">
+                    <div class="col-10 checkmember" data-name="{{ $member->name . ' ' . $member->last_name }}" data-email="{{ $member->email }}" data-role="{{ $member->role }}">
 
-                <p class="m-2 ms-3">{{ $member->name . ' ' . $member->last_name }}</p>
+                        <p class="m-2 ms-3">{{ $member->name . ' ' . $member->last_name }}
+
+
+                        </p>
+
+
+
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-outline-danger fs-5 border float-end" wire:click="unassignMembers('{{ $member->id }}')">
+                            <i class="bi bi-person-dash"></i>
+                        </button>
+                    </div>
+                </div>
+
             </div>
+
             @if ($count % 2 == 1 || $loop->last)
         </div>
         @endif
         @php $count++; @endphp
         @endforeach
     </div>
+
     <div class="btn-group ms-3 mt-2 mb-3 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#addAssigneeModal">
             <b class="small">Add Members</b>
@@ -47,7 +65,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="myModalCloseButton" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" id="addMembersCloseButton" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" id="saveMembersButton" class="btn btn-primary">Add Members</button>
                 </div>
 
@@ -65,7 +83,7 @@
                 var checkedAddMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]:checked');
 
                 var selectedMembers = Array.from(checkedAddMemberCheckboxes).map(checkedAddMemberCheckbox => checkedAddMemberCheckbox.value);
-
+                document.getElementById('addMembersCloseButton').click();
                 Livewire.emit('saveMembers', selectedMembers);
             });
 

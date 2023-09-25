@@ -523,13 +523,47 @@
     </div>
 </div>
 
+<!--members details-->
+<div class="modal fade" id="memberdetails" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong></p>
+                <p id="membername"> John Doe</p>
+                <p><strong>Email:</strong></p>
+                <p id="memberemail"> johndoe@example.com</p>
+                <p><strong>Role:</strong> </p>
+                <p id="memberrole">Developer</p>
+                <input type="hidden" id="memberdataid" name="memberdataid">
+            </div>
+            <div class="modal-footer">
 
+                <button type="button" class="btn btn-secondary" id="unassignmember-dismiss" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
 
 <script>
     $(document).ready(function() {
+
+        $(document).on('click', '.checkmember', function(event) {
+
+
+            $('#membername').text($(this).attr('data-name'));
+            $('#memberemail').text($(this).attr('data-email'));
+            $('#memberrole').text($(this).attr('data-role'));
+            $('#memberdataid').val($(this).attr('data-id'));
+            // Open the modal or perform other actions
+            $('#memberdetails').modal('show');
+        });
 
     });
 </script>

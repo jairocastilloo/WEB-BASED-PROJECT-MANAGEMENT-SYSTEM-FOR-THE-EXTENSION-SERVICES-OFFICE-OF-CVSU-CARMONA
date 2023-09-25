@@ -18,13 +18,15 @@ class ProjectMembers extends Component
         $this->project = $indexproject;
 
         // Retrieve the member IDs associated with the project
-        $memberIds = ProjectUser::where('project_id', $this->project->id)->pluck('user_id');
+        $memberIds = ProjectUser::where('project_id', $this->project->id)
+            ->pluck('user_id');
 
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
 
         $this->addmembers = User::where('department', Auth::user()->department)
             ->whereNotIn('id', $memberIds)
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get();
     }
 
@@ -41,15 +43,26 @@ class ProjectMembers extends Component
 
         $this->addmembers = User::where('department', Auth::user()->department)
             ->whereNotIn('id', $memberIds)
+            ->where('role', '!=', 'FOR APPROVAL')
+            ->get();
+    }
+    public function unassignMembers($selectedMember)
+    {
+        ProjectUser::where('user_id', $selectedMember)
+            ->delete();
+        $memberIds = ProjectUser::where('project_id', $this->project->id)->pluck('user_id');
+
+        // Fetch the members using the retrieved IDs
+        $this->members = User::whereIn('id', $memberIds)->get();
+
+        $this->addmembers = User::where('department', Auth::user()->department)
+            ->whereNotIn('id', $memberIds)
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get();
     }
     public function handleSaveMembers($selectedMembers)
     {
-        // Your code to handle the event goes here
-        // For example, you can call the saveAssignees method
         $this->saveMembers($selectedMembers);
-        // You can also perform other actions or emit events in response to this event
-
     }
     public function render()
     {
