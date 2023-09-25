@@ -9,12 +9,9 @@
                 <div class="row">
                     <div class="col-10 checkmember" data-name="{{ $member->name . ' ' . $member->last_name }}" data-email="{{ $member->email }}" data-role="{{ $member->role }}">
 
-                        <p class="m-2 ms-3">{{ $member->name . ' ' . $member->last_name }}
-
-
+                        <p class="m-2 ms-3">
+                            {{ $member->name . ' ' . $member->last_name }}
                         </p>
-
-
 
                     </div>
                     <div class="col-2">
@@ -34,39 +31,47 @@
     </div>
 
     <div class="btn-group ms-3 mt-2 mb-3 shadow">
-        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#addAssigneeModal">
+        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnAddMember" data-bs-toggle="modal" data-bs-target="#addAssigneeModal">
             <b class="small">Add Members</b>
         </button>
+
     </div>
+    <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email...</span>
 
     <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
+                    <h5 class="modal-title" id="addAssigneeModalLabel">Add Team Members</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">{{ $project->projecttitle . "'s Team Members" }}</label>
+                        <label class="form-label fw-bold">{{ Auth::user()->department . "'s Team Members" }}</label>
 
-                        <div class="form-check ms-1">
+                        <div class="form-check ms-1" @if($addmembers->isEmpty())style="display:none"@endif>
                             <input class="form-check-input border border-primary" type="checkbox" id="selectAllMembers">
                             <label class="form-check-label" for="selectAllMembers">Select All</label>
                         </div>
+
+                        @if($addmembers->isEmpty())
+                        <h5 class="ms-3"><i>Every Members have been added.</i></h5>
+                        @endif
                         @foreach($addmembers as $addmember)
                         <div class="form-check ms-3">
                             <input class="form-check-input border border-primary" type="checkbox" id="addmember_{{ $addmember->id }}" name="addmember[]" value="{{ $addmember->id }}">
                             <label class="form-check-label" for="addmember_{{ $addmember->id }}">{{ $addmember->name . ' ' . $addmember->last_name }}</label>
                         </div>
                         @endforeach
-
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="addMembersCloseButton" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="saveMembersButton" class="btn btn-primary">Add Members</button>
+
+                    <button type="button" id="saveMembersButton" class="btn btn-primary" @if($addmembers->isEmpty())style="display:none"@endif>Add Members</button>
+
+
                 </div>
 
             </div>
@@ -82,7 +87,20 @@
             addMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]');
             saveMembersButton = document.getElementById('saveMembersButton');
 
-            Livewire.on('updateElements', function() {
+            Livewire.on('updateElements', function(selectedMembers) {
+                selectAllMembers = document.getElementById('selectAllMembers');
+                addMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]');
+                saveMembersButton = document.getElementById('saveMembersButton');
+                selectAllMembers.checked = false;
+                document.getElementById('loadingSpan').style.display = "inline-block";
+                document.getElementById('btnAddMember').disabled = true;
+                Livewire.emit('sendNotification', selectedMembers);
+            });
+            Livewire.on('updateLoading', function() {
+                document.getElementById('loadingSpan').style.display = "none";
+                document.getElementById('btnAddMember').disabled = false;
+            });
+            Livewire.on('updateUnassignElements', function() {
                 selectAllMembers = document.getElementById('selectAllMembers');
                 addMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]');
                 saveMembersButton = document.getElementById('saveMembersButton');

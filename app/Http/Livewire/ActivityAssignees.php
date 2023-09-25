@@ -60,15 +60,15 @@ class ActivityAssignees extends Component
             $assignee = User::findorFail($assigneeId);
             $email = $assignee->email;
             $name = $assignee->name . ' ' . $assignee->last_name;
-            $activityname = $this->activity->actname;
-
+            $taskname = $this->activity->actname;
+            $tasktype = "activity";
             $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
             $endDate = date('F d, Y', strtotime($this->activity->actenddate));
 
-            $activitydeadline = $startDate . ' - ' . $endDate;
+            $taskdeadline = $startDate . ' - ' . $endDate;
             $senderemail = Auth::user()->email;
+            Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
         }
-        Mail::to('recipient@example.com')->send(new MyMail($message, $name, $sendername, $activityname, $activitydeadline, $senderemail));
     }
     public function handlesendmessage()
     {

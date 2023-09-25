@@ -13,22 +13,24 @@ class MyMail extends Mailable
     protected $message;
     protected $name;
     protected $sendername;
-    protected $activityname;
-    protected $activitydeadline;
+    protected $taskname;
+    protected $tasktype;
+    protected $taskdeadline;
     protected $senderemail;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($message, $name, $sendername, $activityname, $activitydeadline, $senderemail)
+    public function __construct($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail)
     {
         //
         $this->message = $message;
         $this->name = $name;
         $this->sendername = $sendername;
-        $this->activityname = $activityname;
-        $this->activitydeadline = $activitydeadline;
+        $this->taskname = $taskname;
+        $this->tasktype = $tasktype;
+        $this->taskdeadline = $taskdeadline;
         $this->senderemail = $senderemail;
     }
 
@@ -46,9 +48,10 @@ class MyMail extends Mailable
             ->with([
                 'subject' => $this->message,
                 'name' => $this->name,
-                'activityname' => $this->activityname,
+                'taskname' => $this->taskname,
+                'tasktype' => $this->tasktype,
                 'sendername' => $this->sendername,
-                'activitydeadline' => $this->activitydeadline,
+                'taskdeadline' => $this->taskdeadline,
                 'senderemail' => $this->senderemail,
             ]);
     }
