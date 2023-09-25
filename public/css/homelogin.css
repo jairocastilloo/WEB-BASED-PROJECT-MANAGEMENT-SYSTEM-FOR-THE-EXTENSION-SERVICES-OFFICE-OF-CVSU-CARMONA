@@ -1,0 +1,83 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-shadow: border-box;
+}
+.row{
+    border-radius: 30px;
+    box-shadow: 5px 10px 20px rgba(0,0,0,0.15);
+}
+
+
+h1{
+    font-family: 'Borel', cursive;
+}
+h2{
+    color: rgb(0, 0, 0);
+    font-family: 'Roboto', sans-serif;
+}
+
+.bold-label {
+  font-weight: bold;
+}
+
+.homeloginpage{
+    background: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.reg-page{
+  background: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+
+  .divider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .divider {
+    flex: 1;
+    border-top: 1px solid gray;
+    margin: 0 10px;
+  }
+  
+  .or-text {
+    font-weight: bold;
+    margin: 0 10px;
+  }
+
+
+.btn-success{
+  padding: 10px;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.btn-secondary{
+  padding: 10px;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+
+
+.form-control{
+  height: 50px;
+}
+
+.form-select{
+  height: 50px;
+}
