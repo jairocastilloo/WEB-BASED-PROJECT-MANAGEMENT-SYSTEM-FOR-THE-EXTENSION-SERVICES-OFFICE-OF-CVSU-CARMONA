@@ -11,7 +11,7 @@
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
-            <h5><b>Project: {{ $indexproject['projecttitle'] }}</b></h5>
+            <h5 class="fw-bold">Project: {{ $indexproject['projecttitle'] }}</h5>
         </div>
 
     </div>

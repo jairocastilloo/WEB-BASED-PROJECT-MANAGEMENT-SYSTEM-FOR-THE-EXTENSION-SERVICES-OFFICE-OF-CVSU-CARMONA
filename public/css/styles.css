@@ -5,9 +5,7 @@ body {
   background-color: #eaeaea; /* Set a default background color */
   color: #333333; /* Set a default text color */
 }
-p, h1, h2, h3, h4, h5, h6, span, a{
-  font-family: 'Inter', sans-serif;
-}
+
 .basicrow{
   background-color: #dadadc;
   padding: 10px;
@@ -287,6 +285,7 @@ p, h1, h2, h3, h4, h5, h6, span, a{
   display: flex;
   flex-wrap: wrap;
   background-color: white;
+  font-family: 'Bebas Neue', sans-serif;
   color: #1b651b;
 }
 .position-triangle {
