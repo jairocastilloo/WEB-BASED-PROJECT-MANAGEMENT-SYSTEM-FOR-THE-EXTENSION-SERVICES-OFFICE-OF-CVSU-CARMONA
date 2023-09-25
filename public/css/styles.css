@@ -5,9 +5,7 @@ body {
   background-color: #eaeaea; /* Set a default background color */
   color: #333333; /* Set a default text color */
 }
-p, h1, h2, h3, h4, h5, h6, span, a{
-  font-family: 'Inter', sans-serif;
-}
+
 .basicrow{
   background-color: #dadadc;
   padding: 10px;
@@ -287,6 +285,7 @@ p, h1, h2, h3, h4, h5, h6, span, a{
   display: flex;
   flex-wrap: wrap;
   background-color: white;
+  font-family: 'Bebas Neue', sans-serif;
   color: #1b651b;
 }
 .position-triangle {
@@ -366,4 +365,21 @@ p, h1, h2, h3, h4, h5, h6, span, a{
 }
 div {
   user-select: none;
+}
+/* Define a CSS keyframes animation for fading in and out */
+@keyframes fadeInOut {
+  0% {
+      opacity: 0; /* Start with no opacity */
+  }
+  50% {
+      opacity: 1; /* Fade in to full opacity */
+  }
+  100% {
+      opacity: 0; /* Fade out to no opacity */
+  }
+}
+
+/* Apply the animation to the loading span */
+#loadingSpan {
+  animation: fadeInOut 2s infinite; /* Use fadeInOut animation, 2 seconds duration, infinite loop */
 }

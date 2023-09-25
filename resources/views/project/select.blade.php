@@ -11,7 +11,7 @@
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
-            <h5><b>Project: {{ $indexproject['projecttitle'] }}</b></h5>
+            <h5 class="fw-bold">Project: {{ $indexproject['projecttitle'] }}</h5>
         </div>
 
     </div>
@@ -111,6 +111,9 @@
                             <b class="small">View Activity Calendar</b>
                         </a>
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                            <b class="small">Team Members</b>
+                        </a>
                     </div>
                 </div>
                 <!--
@@ -122,6 +125,7 @@
             </div>
 
             <div class="basiccont m-4 me-0 d-flex justify-content-center align-items-center border rounded small shadow">
+
                 <div class="tablecontainer pb-2">
 
                     <table class="firsttable">
@@ -230,6 +234,7 @@
                     </table>
 
                 </div>
+
             </div>
 
 
