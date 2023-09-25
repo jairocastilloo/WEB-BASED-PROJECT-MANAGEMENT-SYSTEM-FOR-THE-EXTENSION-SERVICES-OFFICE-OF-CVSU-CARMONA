@@ -16,12 +16,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
+
     <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
 
     <!--<link href="{{ asset('css/bootstrap.css.map') }}" type="text/css" rel="stylesheet">-->
 
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ asset('css/homelogin.css') }}" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
