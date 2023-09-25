@@ -36,7 +36,7 @@
         </button>
 
     </div>
-    <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email...</span>
+    <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
 
     <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
