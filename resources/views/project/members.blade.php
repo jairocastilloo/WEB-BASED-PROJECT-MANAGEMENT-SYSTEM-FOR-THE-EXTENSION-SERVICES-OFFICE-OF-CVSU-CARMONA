@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <input class="d-none" type="number" id="acturl" data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
 
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
@@ -102,7 +101,7 @@
 
                 <div class="btn-group dropdown mt-3 shadow">
                     <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <b class="small">Edit Project</b>
+                        <b class="small">Menu</b>
                     </button>
                     <div class="dropdown-menu">
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
@@ -111,16 +110,31 @@
                         <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
                             <b class="small">View Activity Calendar</b>
                         </a>
+                        <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
                         <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Team Members</b>
                         </a>
                     </div>
                 </div>
+                <!--
+                <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
+                    <b class="small">Add Activity</b>
+                </button>
+-->
+
             </div>
 
-            <div class="basiccont m-4 me-0 p-3 rounded shadow">
-                <div id="calendar"></div>
+            <div class="basiccont mt-2 m-4 me-0 rounded shadow">
+
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Team Members</h6>
+                </div>
+
+                @livewire('project-members', ['indexproject' => $indexproject])
+
+
             </div>
+
 
         </div>
 
@@ -509,50 +523,15 @@
     </div>
 </div>
 
+
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/fullcalendar.global.min.js') }}"></script>
-<script src="{{ asset('js/fullcalendarbootstrap5.global.min.js') }}" defer></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        try {
-            var activities = <?php echo json_encode($activityArray); ?>;
-            if (!Array.isArray(activities)) {
-                throw new Error('Invalid activities data');
-            }
-
-            var eventsArray = activities.map(function(activity) {
-                return {
-                    title: activity.actname,
-                    start: activity.actstartdate,
-                    end: activity.actenddate
-                };
-            });
-
-            var calendarEl = document.getElementById('calendar');
-
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                themeSystem: 'bootstrap5',
-
-                dateClick: function(info) {
-                    alert('Clicked on: ' + info.dateStr);
 
 
-                },
 
-                eventClick: function(info) {
-                    alert(info.event.title);
-                },
-
-                events: eventsArray
-            });
-
-            calendar.render();
-
-        } catch (error) {
-            console.error(error);
-        }
-    });
 </script>
+
 @endsection
