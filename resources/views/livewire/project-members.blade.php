@@ -75,10 +75,19 @@
 
     <script>
         document.addEventListener('livewire:load', function() {
-            var selectAllMembers = document.getElementById('selectAllMembers');
-            var addMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]');
-            var saveMembersButton = document.getElementById('saveMembersButton');
+            var selectAllMembers;
+            var addMemberCheckboxes;
+            var saveMembersButton;
+            selectAllMembers = document.getElementById('selectAllMembers');
+            addMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]');
+            saveMembersButton = document.getElementById('saveMembersButton');
 
+            Livewire.on('updateElements', function() {
+                selectAllMembers = document.getElementById('selectAllMembers');
+                addMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]');
+                saveMembersButton = document.getElementById('saveMembersButton');
+                selectAllMembers.checked = false;
+            });
             saveMembersButton.addEventListener('click', function() {
                 var checkedAddMemberCheckboxes = document.querySelectorAll('input[name="addmember[]"]:checked');
 

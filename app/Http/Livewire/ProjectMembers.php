@@ -45,6 +45,7 @@ class ProjectMembers extends Component
             ->whereNotIn('id', $memberIds)
             ->where('role', '!=', 'FOR APPROVAL')
             ->get();
+        $this->emit('updateElements');
     }
     public function unassignMembers($selectedMember)
     {
@@ -59,6 +60,7 @@ class ProjectMembers extends Component
             ->whereNotIn('id', $memberIds)
             ->where('role', '!=', 'FOR APPROVAL')
             ->get();
+        $this->emit('updateElements');
     }
     public function handleSaveMembers($selectedMembers)
     {
