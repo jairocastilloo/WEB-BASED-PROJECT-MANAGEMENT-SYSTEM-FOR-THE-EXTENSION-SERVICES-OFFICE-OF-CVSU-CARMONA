@@ -122,6 +122,8 @@ Route::get('/calendar/{projectid}/{department}', [ProjectController::class, 'dis
     ->name('projects.calendar');
 Route::get('/members/{projectid}/{department}', [ProjectController::class, 'displayMembers'])
     ->name('projects.members');
+Route::get('/details/{projectid}/{department}', [ProjectController::class, 'displayDetails'])
+    ->name('projects.details');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
@@ -146,5 +148,3 @@ Route::prefix('/actsubmission')->group(function () {
 });
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
 Route::get('/mark-notification-as-read/{id}', [NotificationController::class, 'markasread'])->name('notification.markasread');
-
-Route::get('/notification', Notifications::class);
