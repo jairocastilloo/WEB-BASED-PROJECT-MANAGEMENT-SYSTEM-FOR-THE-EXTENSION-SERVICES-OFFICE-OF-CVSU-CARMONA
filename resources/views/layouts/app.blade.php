@@ -24,7 +24,10 @@
     <!--<link href="{{ asset('css/bootstrap.css.map') }}" type="text/css" rel="stylesheet">-->
 
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
+    @if(Route::currentRouteName() == 'login')
     <link href="{{ asset('css/homelogin.css') }}" type="text/css" rel="stylesheet">
+    @endif
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
@@ -37,7 +40,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-light shadow-sm p-1">
+        <nav class="navbar navbar-expand-md navbar-light bg-light shadow p-1">
 
             <div class="container">
 

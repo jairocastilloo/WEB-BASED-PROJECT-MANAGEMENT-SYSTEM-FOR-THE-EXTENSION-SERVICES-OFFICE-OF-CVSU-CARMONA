@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="homeloginpage full-page-container py-5">
+<section class="maincontainer homeloginpage full-page-container py-5">
     <div class="container">
-        <div class="row g-0 border rowjonel">
+        <div class="row g-0 border rowjonel pt-4" style="background-color: white;">
             <div class="col-lg-6 text-center d-flex align-items-center justify-content-center">
                 <div class="d-flex flex-column gap-4 align-items-center justify-content-center">
                     <div class="logos"><img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" width="350px"></div>
@@ -35,7 +35,7 @@
 
                         <div class="form-group">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-4" for="Username1">Username:</label>
+                                <label class="bold-label fw-bold py-4" for="Password1">Password:</label>
                                 <input placeholder="Password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
