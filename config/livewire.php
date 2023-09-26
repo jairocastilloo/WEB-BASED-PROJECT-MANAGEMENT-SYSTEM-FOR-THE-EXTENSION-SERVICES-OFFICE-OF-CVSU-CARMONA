@@ -54,8 +54,8 @@ return [
     |
     */
 
-    'asset_url' => "http://192.168.1.5/esopms",
-
+    /* for local 'asset_url' => "http://192.168.1.5/esopms",*/
+    'asset_url' => null,
     /*
     |--------------------------------------------------------------------------
     | Livewire App URL
