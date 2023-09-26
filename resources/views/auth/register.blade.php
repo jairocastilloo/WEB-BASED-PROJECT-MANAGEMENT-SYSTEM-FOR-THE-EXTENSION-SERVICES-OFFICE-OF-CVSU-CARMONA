@@ -97,7 +97,7 @@
 
                     <div class="container p-3 btn-block">
                         <div class="form-group text-center">
-                            <div class="offset-1 col-lg-10">
+                            <div class="offset-1 col-lg-10 registerdiv2">
                                 <button type="register" class="btn btn-success">Register</button>
                             </div>
                         </div>

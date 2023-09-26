@@ -85,7 +85,7 @@
 
                     </div>
                 </form>
-                <div class="form-group text-center mb-5">
+                <div class="form-group text-center mb-5 registerdiv">
                     <div class="offset-1 col-lg-10">
                         <button type="button" class="btn btn-secondary">
                             <a href="{{ route('register') }}" class="text-white text-decoration-none">Register</a>
