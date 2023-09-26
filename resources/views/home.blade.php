@@ -17,7 +17,20 @@
     </h3>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf
+
     </form>
     <button class="btn btn-primary" id="goBackBtn">Go Back</button>
 </div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $("#goBackBtn").click(function() {
+            // Submit the form when the button is clicked
+            $("#logout-form").submit();
+        });
+
+    });
+</script>
+
 @endsection

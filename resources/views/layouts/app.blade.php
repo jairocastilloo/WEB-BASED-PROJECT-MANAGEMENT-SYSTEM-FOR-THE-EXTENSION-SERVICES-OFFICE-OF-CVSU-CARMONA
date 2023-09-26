@@ -88,7 +88,7 @@
                         <li class="nav-item">
 
                             <!-- Enclose Livewire component in a single root element -->
-                            <livewire:notifications />
+                            @livewire('notifications')
 
                         </li>
 

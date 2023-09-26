@@ -38,6 +38,7 @@ Auth::routes();
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('homepage');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
 Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 //Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
@@ -145,3 +146,5 @@ Route::prefix('/actsubmission')->group(function () {
 });
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
 Route::get('/mark-notification-as-read/{id}', [NotificationController::class, 'markasread'])->name('notification.markasread');
+
+Route::get('/notification', Notifications::class);
