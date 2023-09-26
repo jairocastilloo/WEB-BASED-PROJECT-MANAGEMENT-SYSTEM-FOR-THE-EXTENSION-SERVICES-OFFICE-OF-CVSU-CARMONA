@@ -7,12 +7,12 @@ use Livewire\Component;
 class ProjectDetails extends Component
 {
     public $indexproject;
-    public $projectid;
+    public $members;
     protected $listeners = ['saveMembers' => 'handleSaveMembers', 'sendNotification' => 'handleSendNotification'];
-    public function mount($indexproject, $projectid)
+    public function mount($indexproject, $members)
     {
         $this->indexproject = $indexproject;
-        $this->projectid = $projectid;
+        $this->members = $members;
     }
 
     public function render()

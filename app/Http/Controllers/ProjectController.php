@@ -383,6 +383,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
 

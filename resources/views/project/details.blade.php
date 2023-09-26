@@ -50,7 +50,7 @@
                 </div>
 
             </div>
-            @livewire('project-details', ['indexproject' => $indexproject, 'projectid' => $projectid])
+            @livewire('project-details', ['indexproject' => $indexproject, 'members' => $members ])
 
 
         </div>

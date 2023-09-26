@@ -53,16 +53,16 @@
                 <b class="small">Menu</b>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item small hrefnav" href="{{ route('projects.details', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                     <b class="small">Edit Details</b>
                 </a>
                 <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Objectives</b></a>
                 <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
-                <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                     <b class="small">View Activity Calendar</b>
                 </a>
                 <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
-                <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                     <b class="small">Team Members</b>
                 </a>
 
@@ -70,86 +70,64 @@
         </div>
     </div>
 
-    <div class="basiccont m-4 me-0 p-3 rounded shadow">
-
-        <div class="form-group inputlg">
-            <div class="offset-1 col-lg-10">
-                <label class="bold-label fw-bold py-3" for="Username1">Program Title:</label>
-                <input placeholder="Enter Username" id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
-
-                @error('username')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
+    <div class="basiccont m-4 me-0 rounded shadow">
+        <div class="border-bottom ps-3 pt-2 bggreen">
+            <h6 class="fw-bold small" style="color:darkgreen;">Edit Project Details</h6>
         </div>
+        <div class="px-4 pt-2 pb-3">
 
-        <div class="form-group inputlg">
-            <div class="offset-1 col-lg-10">
-                <label class="bold-label fw-bold py-3" for="Firstname1">Program Leader:</label>
+            <form>
+                <!-- Program Title -->
+                <div class="mb-3">
+                    <label for="programTitle" class="form-label">Program Title:</label>
+                    <input value="{{ $indexproject->programtitle }}" type="text" class="form-control" id="programTitle" name="programTitle" required>
+                </div>
 
-                <input placeholder="Enter First Name" id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                <!-- Program Leader -->
+                <div class="mb-3">
+                    <label for="programLeader" class="form-label">Program Leader</label>
+                    <select class="form-select" id="programLeader" name="programLeader" required>
+                        @foreach ($members as $member)
+                        <option value="{{ $member->id }}" @if ($member->id == $indexproject->programleader) selected @endif>
+                            {{ $member->name . ' ' . $member->last_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                @error('name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
+                <!-- Project Title -->
+                <div class="mb-3">
+                    <label for="projectTitle" class="form-label">Project Title:</label>
+                    <input value="{{ $indexproject->projecttitle }}" type="text" class="form-control" id="projectTitle" name="projectTitle" required>
+                </div>
 
-            </div>
-        </div>
+                <!-- Project Leader -->
+                <div class="mb-3">
+                    <label for="projectLeader" class="form-label">Project Leader</label>
+                    <select class="form-select" id="projectLeader" name="projectLeader" required>
+                        @foreach ($members as $member)
+                        <option value="{{ $member->id }}" @if ($member->id == $indexproject->projectleader) selected @endif>
+                            {{ $member->name . ' ' . $member->last_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
 
-        <div class="form-group inputlg">
-            <div class="offset-1 col-lg-10">
-                <label class="bold-label fw-bold py-3" for="Middelname1">Project Title:</label>
-                <input placeholder="Enter Middle Name" id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
+                <!-- Project Start Date -->
+                <div class="mb-3">
+                    <label for="projectStartDate" class="form-label">Project Start Date:</label>
+                    <input value="{{ $indexproject->projectstartdate }}" type="date" class="form-control" id="projectStartDate" name="projectStartDate" required>
+                </div>
 
-                @error('middle_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-        </div>
+                <!-- Project End Date -->
+                <div class="mb-3">
+                    <label for="projectEndDate" class="form-label">Project End Date:</label>
+                    <input value="{{ $indexproject->projectenddate }}" type="date" class="form-control" id="projectEndDate" name="projectEndDate" required>
+                </div>
 
-        <div class="form-group inputlg">
-            <div class="offset-1 col-lg-10">
-                <label class="bold-label fw-bold py-3" for="Lastname1">Project Leader:</label>
-                <input placeholder="Enter Last Name" id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
-
-                @error('last_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-        </div>
-
-        <div class="form-group inputlg">
-            <div class="offset-1 col-lg-10">
-                <label class="bold-label fw-bold py-3" for="Emailaddress1">Project Start Date:</label>
-                <input placeholder="Enter Email Address" id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-        </div>
-
-        <div class="form-group inputlg">
-            <div class="offset-1 col-lg-10">
-                <label class="bold-label fw-bold py-3" for="Password1">Project End Date</label>
-                <input placeholder="Enter Password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                @error('password')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
 
     </div>
