@@ -56,6 +56,11 @@
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Emailaddress1">Email Address:</label>
                                 <input type="email1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
@@ -63,6 +68,11 @@
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Password1">Password:</label>
                                 <input type="pass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
@@ -70,6 +80,11 @@
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="ConfirmPassword1">Confirm Password:</label>
                                 <input type="confirmpass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
