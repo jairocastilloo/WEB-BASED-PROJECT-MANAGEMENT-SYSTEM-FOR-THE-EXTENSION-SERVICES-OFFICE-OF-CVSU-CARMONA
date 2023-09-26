@@ -27,7 +27,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
-                                <input type="user1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" placeholder="Enter Username" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                             </div>
                         </div>
 
