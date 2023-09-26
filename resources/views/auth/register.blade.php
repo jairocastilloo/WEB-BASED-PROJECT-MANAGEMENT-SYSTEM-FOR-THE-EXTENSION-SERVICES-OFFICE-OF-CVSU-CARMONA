@@ -22,54 +22,93 @@
             <div class="col-lg-6">
                 <h1 class="text-center p-5">Register</h1>
 
-                <form>
+                <form method="POST" action="{{ route('register') }}">
+                    @csrf
                     <div class="container p-3">
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
-                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" placeholder="Enter Username" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+
+                                @error('username')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
-                                <input type="first1" class="form-control" aria-describedby="usernameHelp" placeholder="Username">
+                                <div class="col-md-3">
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                    @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Middelname1">Middle Name:</label>
-                                <input type="middle1" class="form-control" aria-describedby="passwordHelp" placeholder="Password">
+                                <input id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
+
+                                @error('middle_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
-                                <input type="last1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
+
+                                @error('last_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Emailaddress1">Email Address:</label>
-                                <input type="email1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Password1">Password:</label>
-                                <input type="pass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="ConfirmPassword1">Confirm Password:</label>
-                                <input type="confirmpass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
 
@@ -77,7 +116,7 @@
 
 
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Department1">Deparment:</label>
+                                <label class="bold-label fw-bold py-3" for="Department1">Department:</label>
                                 <select name="department" id="department" class="form-select @error('department') is-invalid @enderror" value="{{ old('department') }}" required autocomplete="department" autofocus>
                                     <option value="" disabled selected>Select your Department</option>
                                     <option value="Department of Management">Department of Management</option>
@@ -104,10 +143,6 @@
                     </div>
 
                 </form>
-
-
-
-
 
             </div>
         </div>
