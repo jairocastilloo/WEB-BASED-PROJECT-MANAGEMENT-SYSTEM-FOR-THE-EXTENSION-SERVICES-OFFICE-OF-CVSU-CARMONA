@@ -9,8 +9,8 @@
     box-shadow: 5px 10px 20px rgba(0,0,0,0.15);
 }
 @media (max-width: 991px) {
-  input {
-    width: 50px;
+  .rowjonel {
+    padding-right: 50px;
   }
 }
 
@@ -27,8 +27,9 @@ h2{
 }
 
 .homeloginpage{
-    background: #fdfdfd;
+    background: #fcfcfc;
     display: flex;
+
     height: 100vh;
 }
 

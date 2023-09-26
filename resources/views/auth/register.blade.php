@@ -1,6 +1,121 @@
 @extends('layouts.app')
 
 @section('content')
+
+<section class="maincontainer homeloginpage full-page-container py-5">
+    <div class="container">
+        <div class="row g-0 border rowjonel pt-4">
+
+            <div class="col-lg-6 text-center d-flex align-items-center justify-content-center">
+
+                <div class="d-flex flex-column gap-4 align-items-center justify-content-center">
+                    <div class="logos"><img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" width="350px"></div>
+                    <div>
+                        <h6 class="fw-bold">Cavite States University - Carmona</h6>
+                        <h2 class="fw-bold text-uppercase">Extension Service Office</h2>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-6">
+                <h1 class="text-center p-5">Register</h1>
+
+                <form>
+                    <div class="container p-3">
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
+                                <input type="user1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
+                                <input type="first1" class="form-control" aria-describedby="usernameHelp" placeholder="Username">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Middelname1">Middle Name:</label>
+                                <input type="middle1" class="form-control" aria-describedby="passwordHelp" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
+                                <input type="last1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Emailaddress1">Email Address:</label>
+                                <input type="email1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Password1">Password:</label>
+                                <input type="pass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="ConfirmPassword1">Confirm Password:</label>
+                                <input type="confirmpass1" class="form-control " aria-describedby="passwordHelp" placeholder="Password">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Department1">Deparment:</label>
+                                <select name="department" id="department" class="form-select @error('department') is-invalid @enderror" value="{{ old('department') }}" required autocomplete="department" autofocus>
+                                    <option value="" disabled selected>Select your Department</option>
+                                    <option value="Department of Management">Department of Management</option>
+                                    <option value="Department of Industrial and Information Technology">Department of Industrial and Information Technology</option>
+                                    <option value="Department of Teacher Education">Department of Teacher Education</option>
+                                    <option value="Department of Arts and Science">Department of Arts and Science</option>
+                                </select>
+
+                                @error('department')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container p-3 btn-block">
+                        <div class="form-group text-center">
+                            <div class="offset-1 col-lg-10">
+                                <button type="register" class="btn btn-success">Register</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+
+
+
+
+            </div>
+        </div>
+        <div class="pb-3">&nbsp;</div>
+    </div>
+
+</section>
+<!--
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -139,4 +254,5 @@
         </div>
     </div>
 </div>
+-->
 @endsection

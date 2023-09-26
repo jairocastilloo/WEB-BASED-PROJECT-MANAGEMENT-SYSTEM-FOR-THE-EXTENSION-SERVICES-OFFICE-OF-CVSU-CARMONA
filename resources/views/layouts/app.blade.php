@@ -24,7 +24,7 @@
     <!--<link href="{{ asset('css/bootstrap.css.map') }}" type="text/css" rel="stylesheet">-->
 
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
-    @if(Route::currentRouteName() == 'login')
+    @if(in_array(Route::currentRouteName(), ['login', 'register']))
     <link href="{{ asset('css/homelogin.css') }}" type="text/css" rel="stylesheet">
     @endif
 

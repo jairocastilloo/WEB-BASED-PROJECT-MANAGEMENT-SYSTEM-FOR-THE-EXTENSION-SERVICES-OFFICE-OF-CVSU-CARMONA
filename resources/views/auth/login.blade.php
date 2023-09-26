@@ -3,7 +3,7 @@
 @section('content')
 <section class="maincontainer homeloginpage full-page-container py-5">
     <div class="container">
-        <div class="row g-0 border rowjonel pt-4" style="background-color: white;">
+        <div class="row g-0 border rowjonel pt-4">
             <div class="col-lg-6 text-center d-flex align-items-center justify-content-center">
                 <div class="d-flex flex-column gap-4 align-items-center justify-content-center">
                     <div class="logos"><img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" width="350px"></div>
