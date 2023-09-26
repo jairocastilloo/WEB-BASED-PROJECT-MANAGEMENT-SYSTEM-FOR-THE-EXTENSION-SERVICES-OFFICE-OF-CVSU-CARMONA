@@ -72,5 +72,85 @@
 
     <div class="basiccont m-4 me-0 p-3 rounded shadow">
 
+        <div class="form-group inputlg">
+            <div class="offset-1 col-lg-10">
+                <label class="bold-label fw-bold py-3" for="Username1">Program Title:</label>
+                <input placeholder="Enter Username" id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+
+                @error('username')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group inputlg">
+            <div class="offset-1 col-lg-10">
+                <label class="bold-label fw-bold py-3" for="Firstname1">Program Leader:</label>
+
+                <input placeholder="Enter First Name" id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                @error('name')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+
+            </div>
+        </div>
+
+        <div class="form-group inputlg">
+            <div class="offset-1 col-lg-10">
+                <label class="bold-label fw-bold py-3" for="Middelname1">Project Title:</label>
+                <input placeholder="Enter Middle Name" id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
+
+                @error('middle_name')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group inputlg">
+            <div class="offset-1 col-lg-10">
+                <label class="bold-label fw-bold py-3" for="Lastname1">Project Leader:</label>
+                <input placeholder="Enter Last Name" id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
+
+                @error('last_name')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group inputlg">
+            <div class="offset-1 col-lg-10">
+                <label class="bold-label fw-bold py-3" for="Emailaddress1">Project Start Date:</label>
+                <input placeholder="Enter Email Address" id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
+        <div class="form-group inputlg">
+            <div class="offset-1 col-lg-10">
+                <label class="bold-label fw-bold py-3" for="Password1">Project End Date</label>
+                <input placeholder="Enter Password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
+        </div>
+
     </div>
 </div>
