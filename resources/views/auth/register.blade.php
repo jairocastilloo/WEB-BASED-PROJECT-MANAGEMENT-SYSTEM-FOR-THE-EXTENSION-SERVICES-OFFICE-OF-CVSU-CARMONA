@@ -41,15 +41,15 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
-                                <div class="col-md-3">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-                                    @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+
                             </div>
                         </div>
 
@@ -134,7 +134,7 @@
                         </div>
                     </div>
 
-                    <div class="container p-3 btn-block">
+                    <div class="container p-3 btn-block mb-4">
                         <div class="form-group text-center">
                             <div class="offset-1 col-lg-10 registerdiv2">
                                 <button type="register" class="btn btn-success">Register</button>
