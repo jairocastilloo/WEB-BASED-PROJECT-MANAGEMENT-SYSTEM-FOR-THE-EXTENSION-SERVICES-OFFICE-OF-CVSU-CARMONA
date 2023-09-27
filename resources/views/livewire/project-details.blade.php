@@ -75,18 +75,17 @@
             <h6 class="fw-bold small" style="color:darkgreen;">Edit Project Details</h6>
         </div>
         <div class="px-4 pt-2 pb-3">
-
-            <form>
+            <form id="form-projectDetails">
                 <!-- Program Title -->
                 <div class="mb-3">
                     <label for="programTitle" class="form-label">Program Title:</label>
-                    <input value="{{ $indexproject->programtitle }}" type="text" class="form-control" id="programTitle" name="programTitle" required>
+                    <input value="{{ $indexproject->programtitle }}" type="text" class="form-control" id="programTitle" name="programTitle" required disabled>
                 </div>
 
                 <!-- Program Leader -->
                 <div class="mb-3">
                     <label for="programLeader" class="form-label">Program Leader</label>
-                    <select class="form-select" id="programLeader" name="programLeader" required>
+                    <select class="form-select" id="programLeader" name="programLeader" required disabled>
                         @foreach ($members as $member)
                         <option value="{{ $member->id }}" @if ($member->id == $indexproject->programleader) selected @endif>
                             {{ $member->name . ' ' . $member->last_name }}
@@ -98,13 +97,13 @@
                 <!-- Project Title -->
                 <div class="mb-3">
                     <label for="projectTitle" class="form-label">Project Title:</label>
-                    <input value="{{ $indexproject->projecttitle }}" type="text" class="form-control" id="projectTitle" name="projectTitle" required>
+                    <input value="{{ $indexproject->projecttitle }}" type="text" class="form-control" id="projectTitle" name="projectTitle" required disabled>
                 </div>
 
                 <!-- Project Leader -->
                 <div class="mb-3">
                     <label for="projectLeader" class="form-label">Project Leader</label>
-                    <select class="form-select" id="projectLeader" name="projectLeader" required>
+                    <select class="form-select" id="projectLeader" name="projectLeader" required disabled>
                         @foreach ($members as $member)
                         <option value="{{ $member->id }}" @if ($member->id == $indexproject->projectleader) selected @endif>
                             {{ $member->name . ' ' . $member->last_name }}
@@ -116,18 +115,34 @@
                 <!-- Project Start Date -->
                 <div class="mb-3">
                     <label for="projectStartDate" class="form-label">Project Start Date:</label>
-                    <input value="{{ $indexproject->projectstartdate }}" type="date" class="form-control" id="projectStartDate" name="projectStartDate" required>
+                    <input value="{{ $indexproject->projectstartdate }}" type="date" class="form-control" id="projectStartDate" name="projectStartDate" required disabled>
                 </div>
 
                 <!-- Project End Date -->
                 <div class="mb-3">
                     <label for="projectEndDate" class="form-label">Project End Date:</label>
-                    <input value="{{ $indexproject->projectenddate }}" type="date" class="form-control" id="projectEndDate" name="projectEndDate" required>
+                    <input value="{{ $indexproject->projectenddate }}" type="date" class="form-control" id="projectEndDate" name="projectEndDate" required disabled>
                 </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <div class="btn-group mt-1 mb-2 shadow" id="div-editDetails">
+                <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" id="btn-editDetails" aria-haspopup="true" aria-expanded="false">
+                    <b class="small">Edit Details</b>
+                </button>
+            </div>
+
+
+            <div class="container text-center mb-2 d-none" id="div-cancelDetails">
+                <!-- Use 'justify-content-center' to center-align items horizontally -->
+                <button type="button" class="btn shadow btn-light text-primary border-primary" id="btn-cancelDetails" aria-haspopup="true" aria-expanded="false">
+                    Cancel
+                </button>
+            </div>
+            <div class="container text-center d-none" id="div-confirmDetails">
+                <button type="button" class="btn shadow btn-primary" id="btn-confirmDetails" aria-haspopup="true" aria-expanded="false">
+                    Confirm
+                </button>
+            </div>
+
         </div>
 
     </div>

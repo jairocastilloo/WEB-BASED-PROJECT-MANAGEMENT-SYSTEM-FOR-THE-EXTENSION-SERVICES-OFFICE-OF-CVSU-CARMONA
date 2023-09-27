@@ -441,3 +441,17 @@
 </div>
 
 @endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#btn-editDetails').click(function(event) {
+            event.preventDefault();
+            $('#div-cancelDetails').removeClass('d-none');
+            $('#div-confirmDetails').removeClass('d-none');
+            $(this).parent().addClass('d-none');
+            $('#form-projectDetails input').prop('disabled', false);
+            $('#programTitle').focus();
+        })
+    });
+</script>
+@endsection
