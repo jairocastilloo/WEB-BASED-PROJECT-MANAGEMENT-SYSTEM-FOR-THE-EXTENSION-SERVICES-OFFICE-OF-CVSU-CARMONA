@@ -118,7 +118,7 @@
                         <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Team Members</b>
                         </a>
-
+                        x
                     </div>
                 </div>
                 <!--

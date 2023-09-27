@@ -35,6 +35,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
         $currentDate = Carbon::now();
         $currentyear = $currentDate->year;
@@ -65,6 +66,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
         $currentDate = Carbon::now();
         $otheryear = $currentDate->year;
@@ -116,6 +118,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
 
@@ -161,6 +164,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
         $activities = $indexproject->activities;
@@ -346,6 +350,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
 
