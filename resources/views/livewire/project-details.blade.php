@@ -146,4 +146,42 @@
         </div>
 
     </div>
+    <script>
+        document.addEventListener('livewire:load', function() {
+            var programTitle;
+            var programLeader;
+            var projectTitle;
+            var projectLeader;
+            var projectStartDate;
+            var projectEndDate;
+            programTitle = document.getElementById('programTitle');
+            programLeader = document.getElementById('programLeader');
+            projectTitle = document.getElementById('projectTitle');
+            projectLeader = document.getElementById('projectLeader');
+            projectStartDate = document.getElementById('projectStartDate');
+            projectEndDate = document.getElementById('projectEndDate');
+            btnConfirmDetails = document.getElementById('btn-confirmDetails');
+
+
+            btnConfirmDetails.addEventListener('click', function() {
+                var valProgramTitle = programTitle.value;
+                var valProgramLeader = programLeader.value;
+                var valProjectTitle = projectTitle.value;
+                var valProjectLeader = projectLeader.value;
+                var valProjectStartDate = projectStartDate.value;
+                var valProjectEndDate = projectEndDate.value;
+                var projectDetails = [
+                    valProgramTitle,
+                    valProgramLeader,
+                    valProjectTitle,
+                    valProjectLeader,
+                    valProjectStartDate,
+                    valProjectEndDate
+                ];
+                document.activeElement.blur();
+                Livewire.emit('saveProjectDetails', projectDetails);
+            });
+
+        });
+    </script>
 </div>

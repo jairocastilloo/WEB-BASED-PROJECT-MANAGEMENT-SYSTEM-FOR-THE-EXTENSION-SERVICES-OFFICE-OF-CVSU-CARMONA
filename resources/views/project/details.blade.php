@@ -450,8 +450,17 @@
             $('#div-confirmDetails').removeClass('d-none');
             $(this).parent().addClass('d-none');
             $('#form-projectDetails input').prop('disabled', false);
+            $('#form-projectDetails select').prop('disabled', false);
             $('#programTitle').focus();
-        })
+        });
+        $('#btn-cancelDetails').click(function(event) {
+            event.preventDefault();
+            $('#div-cancelDetails').addClass('d-none');
+            $('#div-confirmDetails').addClass('d-none');
+            $('#btn-editDetails').parent().removeClass('d-none');
+            $('#form-projectDetails input').prop('disabled', true);
+            $('#form-projectDetails select').prop('disabled', true);
+        });
     });
 </script>
 @endsection
