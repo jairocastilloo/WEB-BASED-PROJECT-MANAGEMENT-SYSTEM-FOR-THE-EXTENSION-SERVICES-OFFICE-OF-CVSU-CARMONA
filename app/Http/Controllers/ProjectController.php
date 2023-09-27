@@ -401,4 +401,44 @@ class ProjectController extends Controller
             'notifications' => $notifications,
         ]);
     }
+    public function displayObjectives($projectid, $department)
+    {
+
+        $indexproject = Project::findOrFail($projectid);
+        $currentyear = $indexproject->calendaryear;
+        $currentproject = Project::where('department', $department)
+            ->whereNotIn('id', [$projectid])
+            ->where('calendaryear', $currentyear)
+            ->get();
+        $currentDate = Carbon::now();
+        $otheryear = $currentDate->year;
+
+        if ($otheryear == $currentyear) {
+            $inCurrentYear = true;
+        } else {
+            $inCurrentYear = false;
+        }
+
+        $calendaryears = CalendarYear::pluck('year');
+
+        $users = User::where('department', $department)
+            ->where('role', '!=', 'Admin')
+            ->where('role', '!=', 'FOR APPROVAL')
+            ->get(['id', 'name', 'middle_name', 'last_name']);
+
+
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->get();
+
+        return view('project.objectives', [
+            'members' => $users,
+            'currentproject' => $currentproject,
+            'indexproject' => $indexproject,
+            'calendaryears' => $calendaryears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentyear' => $currentyear,
+            'projectid' => $projectid,
+            'notifications' => $notifications,
+        ]);
+    }
 }

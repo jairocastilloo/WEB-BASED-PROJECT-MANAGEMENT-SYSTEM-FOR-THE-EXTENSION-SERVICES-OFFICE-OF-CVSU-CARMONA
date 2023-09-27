@@ -104,16 +104,18 @@
                         <b class="small">Menu</b>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.details', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Edit Details</b>
                         </a>
-                        <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Objectives</b></a>
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.objectives', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <b class="small">Edit Objectives</b>
+                        </a>
                         <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">View Activity Calendar</b>
                         </a>
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $projectid, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Team Members</b>
                         </a>
 
