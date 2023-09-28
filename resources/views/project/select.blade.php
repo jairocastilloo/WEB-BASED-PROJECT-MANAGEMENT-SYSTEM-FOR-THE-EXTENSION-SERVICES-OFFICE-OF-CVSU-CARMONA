@@ -8,369 +8,374 @@
 
 <input class="d-none" type="date" id="projsavestartdate" value="{{ $indexproject['projectstartdate'] }}">
 <input class="d-none" type="date" id="projsaveenddate" value="{{ $indexproject['projectenddate'] }}">
-<div class="maincontainer">
+<div class="maincontainer shadow" style="background-color: #f9f9f9;">
     <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
             <h5 class="fw-bold">Project: {{ $indexproject['projecttitle'] }}</h5>
         </div>
 
     </div>
-    <div class="row">
-        <div class="col-10">
+    <div class="container">
+        <div class="row px-1">
+            <div class="col-lg-10">
 
-            <div class="basiccont mt-2 m-4 me-0 rounded shadow pb-2">
-                <div class="border-bottom ps-3 pt-2 bggreen">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
-                </div>
-                @if (!$inCurrentYear)
-                <span class="small ms-2"><em>
-                        Note: Not the Current Year.
-                    </em></span>
-                @endif
-                <div class="form-floating m-3 mb-2 mt-2">
+                <div class="basiccont rounded shadow pb-2">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
+                    </div>
+                    @if (!$inCurrentYear)
+                    <span class="small ms-2"><em>
+                            Note: Not the Current Year.
+                        </em></span>
+                    @endif
+                    <div class="form-floating m-3 mb-2 mt-2">
 
-                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an calendar year">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 19px;" aria-label="Select an calendar year">
 
-                        @foreach ($calendaryears as $calendaryear)
-                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
-                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
-                        </option>
-                        @endforeach
+                            @foreach ($calendaryears as $calendaryear)
+                            <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
+                                &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+                            </option>
+                            @endforeach
 
-                    </select>
-                    <label for="year-select" style="color:darkgreen;">
-                        <h5><strong>Calendar Year:</strong></h5>
-                    </label>
-                </div>
-                <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                        <b class="small">Create Project</b>
-                    </button>
-                </div>
-
-            </div>
-
-            <div class="basiccont m-4 me-0 p-3 rounded shadow">
-                <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-                <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
-                <div class="flex-container">
-                    <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
-                </div>
-                <div class="flex-container">
-                    <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">
-                        @php
-                        use App\Models\User;
-                        $programleader = User::where('id', $indexproject['programleader'])->first(['name', 'middle_name', 'last_name']);
-                        $projectleader = User::where('id', $indexproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
-                        @endphp
-
-                        @if ($programleader)
-                        {{ $programleader->name }}
-                        @if ($programleader->middle_name)
-                        {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
-                        @endif
-                        {{ ucfirst($programleader->last_name) }}
-                        @endif
+                        </select>
+                        <label for="year-select" style="color:darkgreen;">
+                            <h5><strong>Calendar Year:</strong></h5>
+                        </label>
+                    </div>
+                    <div class="btn-group mt-1 ms-3 mb-2 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                            <b class="small">Create Project</b>
+                        </button>
                     </div>
 
-
                 </div>
-                <div class="flex-container">
-                    <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
-                </div>
-                <div class="flex-container">
-                    <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">
 
-                        @if ($projectleader)
-                        {{ $projectleader->name }}
-                        @if ($projectleader->middle_name)
-                        {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
-                        @endif
-                        {{ ucfirst($projectleader->last_name) }}
-                        @endif
+                <div class="basiccont p-3 rounded shadow">
+                    <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
+                    <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
+                    <div class="flex-container">
+                        <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                        <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
                     </div>
-                </div>
-                <div class="flex-container">
-                    <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
-                </div>
+                    <div class="flex-container">
+                        <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                        <div class="underline-space inline-div ps-2">
+                            @php
+                            use App\Models\User;
+                            $programleader = User::where('id', $indexproject['programleader'])->first(['name', 'middle_name', 'last_name']);
+                            $projectleader = User::where('id', $indexproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
+                            @endphp
 
-                <div class="btn-group dropdown mt-3 shadow">
-                    <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <b class="small">Menu</b>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item small bg-warning border-bottom">
-                            <b class="small">Table</b>
-                        </a>
-                        <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
-                            <b class="small">Team Members</b>
-                        </a>
-                        <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
-                            <b class="small">Activities</b>
-                        </a>
-                        <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
-                            <b class="small">Calendar</b>
-                        </a>
-                        <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
-                            <b class="small">Edit Details</b>
-                        </a>
-                        <a class="dropdown-item small hrefnav border-bottom" href="#"><b class="small">Close Project</b></a>
-                        <!-- if included
+                            @if ($programleader)
+                            {{ $programleader->name }}
+                            @if ($programleader->middle_name)
+                            {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
+                            @endif
+                            {{ ucfirst($programleader->last_name) }}
+                            @endif
+                        </div>
+
+
+                    </div>
+                    <div class="flex-container">
+                        <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                        <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
+                    </div>
+                    <div class="flex-container">
+                        <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                        <div class="underline-space inline-div ps-2">
+
+                            @if ($projectleader)
+                            {{ $projectleader->name }}
+                            @if ($projectleader->middle_name)
+                            {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
+                            @endif
+                            {{ ucfirst($projectleader->last_name) }}
+                            @endif
+                        </div>
+                    </div>
+                    <div class="flex-container">
+                        <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                        <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
+                    </div>
+
+                    <div class="btn-group dropdown mt-3 shadow">
+                        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <b class="small">Menu</b>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item small bg-warning border-bottom">
+                                <b class="small">Table</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                                <b class="small">Team Members</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                                <b class="small">Activities</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                                <b class="small">Calendar</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                                <b class="small">Edit Details</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="#"><b class="small">Close Project</b></a>
+                            <!-- if included
                         <a class="dropdown-item small hrefnav" href="{{ route('projects.objectives', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Edit Objectives</b>
                         </a> -->
-                        <!-- <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a> -->
+                            <!-- <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a> -->
 
 
 
+                        </div>
                     </div>
-                </div>
-                <!--
+                    <!--
                 <button type="button" class="btn btn-sm add-assignees-btn mt-2 shadow rounded border border-2 border-warning" style="background-color: gold;" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity">
                     <b class="small">Add Activity</b>
                 </button>
 -->
 
-            </div>
+                </div>
+                <div class="basiccont rounded shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen mb-1">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Table</h6>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center border small">
 
-            <div class="basiccont m-4 me-0 d-flex justify-content-center align-items-center border rounded small shadow">
+                        <div class="tablecontainer pb-2">
 
-                <div class="tablecontainer pb-2">
+                            <table class="firsttable">
+                                <thead>
+                                    <tr id="objheader">
+                                        <th class="p-2 text-center">OBJECTIVES</th>
+                                    </tr>
+                                </thead>
 
-                    <table class="firsttable">
-                        <thead>
-                            <tr id="objheader">
-                                <th class="p-2 text-center">OBJECTIVES</th>
-                            </tr>
-                        </thead>
+                                <tbody>
+                                    @php
 
-                        <tbody>
-                            @php
+                                    $lastObject = $objectives->last();
+                                    $lastObjectivesetId = $lastObject['objectiveset_id'];
+                                    $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                                    $x = 0;
+                                    $y = 1;
+                                    @endphp
 
-                            $lastObject = $objectives->last();
-                            $lastObjectivesetId = $lastObject['objectiveset_id'];
-                            $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
-                            $x = 0;
-                            $y = 1;
-                            @endphp
+                                    @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                                        @endphp
+                                        <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
+                                            <td class="ps-3 pt-3">
 
-                            @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
-                                @endphp
-                                <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
-                                    <td class="ps-3 pt-3">
-
-                                        @foreach($objectives->where('objectiveset_id', $x) as $objective)
+                                                @foreach($objectives->where('objectiveset_id', $x) as $objective)
 
 
-                                        <p class="lh-sm">{{ __($y) . '. ' . $objective['name'] }}</p>
+                                                <p class="lh-sm">{{ __($y) . '. ' . $objective['name'] }}</p>
 
+
+                                                @php
+                                                $y++;
+                                                @endphp
+                                                @endforeach
+
+
+                                            </td>
+                                        </tr>
+                                        @php
+                                        $x++;
+                                        @endphp
+                                        @endwhile
+
+                                </tbody>
+                            </table>
+
+                            <table class="secondtable">
+                                <thead>
+                                    <tr id="actheader">
+                                        <th class="p-2 text-center">ACTIVITIES</th>
+                                        <th class="p-2 text-center">EXPECTED OUTPUT</th>
+                                        <th class="p-2 text-center">START DATE</th>
+                                        <th class="p-2 text-center">END DATE</th>
+                                        <th class="p-2 text-center">BUDGET</th>
+                                        <th class="p-2 text-center">SOURCE</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @php
+
+                                    $lastObject = $objectives->last();
+                                    $lastObjectivesetId = $lastObject['objectiveset_id'];
+                                    $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
+                                    $x = 0;
+                                    $y = 1;
+                                    @endphp
+
+                                    @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
+                                        @endphp
+
+                                        @if ($actcount > 0)
+                                        @foreach($activities->where('actobjectives', $x) as $activity)
+                                        <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}" act-name="{{ $activity['actname'] }}">
+                                            <td class="pt-4 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
+                                                <ul>
+                                                    <li>{{ $activity['actname'] }}</li>
+                                                </ul>
+                                            </td>
+                                            <td class="p-2">{{ $activity['actoutput'] }}</td>
+                                            <td class="p-2">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
+                                            <td class="p-2">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
+                                            <td class="p-2">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                                            <td class="p-2">{{ $activity['actsource'] }}</td>
+                                        </tr>
+                                        @endforeach
+                                        @else
+                                        <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="0">
+                                            <td class="pt-2 pb-2 pe-2" data-value="0" id="actid">
+                                                &nbsp;
+                                            </td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        @endif
 
                                         @php
-                                        $y++;
+                                        $x++;
                                         @endphp
-                                        @endforeach
+                                        @endwhile
 
+                                </tbody>
+                            </table>
 
-                                    </td>
-                                </tr>
-                                @php
-                                $x++;
-                                @endphp
-                                @endwhile
+                        </div>
 
-                        </tbody>
-                    </table>
-
-                    <table class="secondtable">
-                        <thead>
-                            <tr id="actheader">
-                                <th class="p-2 text-center">ACTIVITIES</th>
-                                <th class="p-2 text-center">EXPECTED OUTPUT</th>
-                                <th class="p-2 text-center">START DATE</th>
-                                <th class="p-2 text-center">END DATE</th>
-                                <th class="p-2 text-center">BUDGET</th>
-                                <th class="p-2 text-center">SOURCE</th>
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            @php
-
-                            $lastObject = $objectives->last();
-                            $lastObjectivesetId = $lastObject['objectiveset_id'];
-                            $sortedactivity = collect($activities)->sortBy('actobjectives')->values();
-                            $x = 0;
-                            $y = 1;
-                            @endphp
-
-                            @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
-                                @endphp
-
-                                @if ($actcount > 0)
-                                @foreach($activities->where('actobjectives', $x) as $activity)
-                                <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}" act-name="{{ $activity['actname'] }}">
-                                    <td class="pt-4 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
-                                        <ul>
-                                            <li>{{ $activity['actname'] }}</li>
-                                        </ul>
-                                    </td>
-                                    <td class="p-2">{{ $activity['actoutput'] }}</td>
-                                    <td class="p-2">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
-                                    <td class="p-2">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                                    <td class="p-2">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
-                                    <td class="p-2">{{ $activity['actsource'] }}</td>
-                                </tr>
-                                @endforeach
-                                @else
-                                <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="0">
-                                    <td class="pt-2 pb-2 pe-2" data-value="0" id="actid">
-                                        &nbsp;
-                                    </td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                    <td>&nbsp;</td>
-                                </tr>
-                                @endif
-
-                                @php
-                                $x++;
-                                @endphp
-                                @endwhile
-
-                        </tbody>
-                    </table>
-
+                    </div>
                 </div>
+
 
             </div>
 
+            <div class="col-lg-2">
+                @php
+
+                $sortedProjects= $currentproject->sortBy('projectstartdate');
+
+                $inProgressProjects = $sortedProjects->filter(function ($project) {
+                return $project['projectstatus'] === 'In Progress';
+                });
+                $scheduledProjects = $sortedProjects->filter(function ($project) {
+                return $project['projectstatus'] === 'Scheduled';
+                });
+                $overdueProjects = $sortedProjects->filter(function ($project) {
+                return $project['projectstatus'] === 'Incomplete';
+                });
+                $completedProjects = $sortedProjects->filter(function ($project) {
+                return $project['projectstatus'] === 'Completed';
+                });
+                @endphp
+                @if($currentproject->isEmpty())
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
+                    </div>
+                    <div class="text-center p-4">
+                        <h4><em>No Other Projects Yet.</em></h4>
+                    </div>
+                </div>
+                @endif
+                @if ($inProgressProjects && count($inProgressProjects) > 0)
+
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
+                    </div>
+                    @foreach ($inProgressProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                        <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                        $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
+                @if ($scheduledProjects && count($scheduledProjects) > 0)
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
+                    </div>
+                    @foreach ($scheduledProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                        <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                        $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
+                @if ($completedProjects && count($completedProjects) > 0)
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
+                    </div>
+                    @foreach ($completedProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                        <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                        $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if ($overdueProjects && count($overdueProjects) > 0)
+
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
+                    </div>
+                    @foreach ($overdueProjects as $project)
+                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+
+                        <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+
+                        @php
+                        $startDate = date('M d, Y', strtotime($project['projectstartdate']));
+                        $endDate = date('M d, Y', strtotime($project['projectenddate']));
+                        @endphp
+
+                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
+            </div>
 
         </div>
-
-        <div class="col-2">
-            @php
-
-            $sortedProjects= $currentproject->sortBy('projectstartdate');
-
-            $inProgressProjects = $sortedProjects->filter(function ($project) {
-            return $project['projectstatus'] === 'In Progress';
-            });
-            $scheduledProjects = $sortedProjects->filter(function ($project) {
-            return $project['projectstatus'] === 'Scheduled';
-            });
-            $overdueProjects = $sortedProjects->filter(function ($project) {
-            return $project['projectstatus'] === 'Incomplete';
-            });
-            $completedProjects = $sortedProjects->filter(function ($project) {
-            return $project['projectstatus'] === 'Completed';
-            });
-            @endphp
-            @if($currentproject->isEmpty())
-            <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
-                </div>
-                <div class="text-center p-4">
-                    <h4><em>No Other Projects Yet.</em></h4>
-                </div>
-            </div>
-            @endif
-            @if ($inProgressProjects && count($inProgressProjects) > 0)
-
-            <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
-                </div>
-                @foreach ($inProgressProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                    @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                    @endphp
-
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                </div>
-                @endforeach
-            </div>
-            @endif
-
-            @if ($scheduledProjects && count($scheduledProjects) > 0)
-            <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
-                </div>
-                @foreach ($scheduledProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                    @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                    @endphp
-
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                </div>
-                @endforeach
-            </div>
-            @endif
-
-            @if ($completedProjects && count($completedProjects) > 0)
-            <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
-                </div>
-                @foreach ($completedProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                    <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
-
-                    @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                    @endphp
-
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                </div>
-                @endforeach
-            </div>
-            @endif
-            @if ($overdueProjects && count($overdueProjects) > 0)
-
-            <div class="basiccont word-wrap shadow mt-2 me-3">
-                <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
-                </div>
-                @foreach ($overdueProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                    @php
-                    $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                    $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                    @endphp
-
-                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                </div>
-                @endforeach
-            </div>
-            @endif
-
-        </div>
-
     </div>
-
 </div>
 @if ($currentproject)
 <!-- New Project -->

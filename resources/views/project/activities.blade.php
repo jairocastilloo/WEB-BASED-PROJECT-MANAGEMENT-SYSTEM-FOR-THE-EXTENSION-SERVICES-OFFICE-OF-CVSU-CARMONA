@@ -138,10 +138,11 @@
 
             </div>
 
-            <div class="basiccont word-wrap shadow mt-2 me-3">
+            <div class="basiccont word-wrap ms-4 shadow mt-2 me-0">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                    <h6 class="fw-bold small" style="color:darkgreen;">List of Activities</h6>
+                    <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                 </div>
+                @livewire('list-of-activities', ['indexproject' => $indexproject ])
             </div>
 
 
@@ -452,5 +453,25 @@
 @endsection
 
 @section('scripts')
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.actdiv', function() {
+            event.preventDefault();
 
+            var activityid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+
+        });
+
+    });
+</script>
 @endsection
