@@ -4,7 +4,7 @@
         @php
         $x = 0;
         @endphp
-        @while ($x <= $lastObjectivesetId)<div class="py-2 border-bottom">
+        @while ($x <= $lastObjectivesetId) <div class="py-2 border-bottom">
             <label class="form-label">{{ $x + 1 }}.</label>
             @foreach($objectives->where('objectiveset_id', $x) as $objective)
 

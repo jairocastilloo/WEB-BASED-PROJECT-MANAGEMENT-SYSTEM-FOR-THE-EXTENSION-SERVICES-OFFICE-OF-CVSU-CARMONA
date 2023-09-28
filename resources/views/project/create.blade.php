@@ -2,10 +2,6 @@
 
 @section('content')
 
-@php
-
-
-@endphp
 <input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
 <div class="maincontainer">
@@ -36,9 +32,9 @@
 
 
     <div class="row">
-        <div class="col-10">
+        <div class="col-lg-10">
 
-            <div class="basiccont mt-2 m-4 me-0 rounded shadow">
+            <div class="basiccont mt-2 m-4 me-0 ms-0 rounded shadow">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                 </div>
@@ -89,7 +85,7 @@
             });
             @endphp
             @if($currentproject->isEmpty())
-            <div class="basiccont word-wrap shadow mt-2 ms-4">
+            <div class="basiccont word-wrap shadow mt-2 ms-0">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
@@ -100,14 +96,14 @@
             @endif
             @if ($inProgressProjects && count($inProgressProjects) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2 ms-4">
+            <div class="basiccont word-wrap shadow mt-2 ms-0">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h5 class="fw-bold">{{ $project['projecttitle'] }}</h5>
+                    <h5 class="fw-bold small">{{ $project['projecttitle'] }}</h5>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -121,7 +117,7 @@
             @endif
 
             @if ($scheduledProjects && count($scheduledProjects) > 0)
-            <div class="basiccont word-wrap shadow mt-2 ms-4">
+            <div class="basiccont word-wrap shadow mt-2 ms-0">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
@@ -144,9 +140,9 @@
 
         </div>
 
-        <div class="col-2">
+        <div class="col-lg-2">
             @if ($completedProjects && count($completedProjects) > 0)
-            <div class="basiccont word-wrap shadow mt-2 me-4">
+            <div class="basiccont word-wrap shadow mt-2 me-0">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
                 </div>
@@ -167,14 +163,14 @@
             @endif
             @if ($overdueProjects && count($overdueProjects) > 0)
 
-            <div class="basiccont word-wrap shadow mt-2 me-4">
+            <div class="basiccont word-wrap shadow mt-2 me-0">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
                 </div>
                 @foreach ($overdueProjects as $project)
                 <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
 
-                    <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
                     @php
                     $startDate = date('M d, Y', strtotime($project['projectstartdate']));
@@ -187,7 +183,7 @@
             </div>
             @endif
             @if($currentproject && count($overdueProjects) == 0 && count($overdueProjects) == 0)
-            <div class="basiccont word-wrap shadow mt-2 me-4">
+            <div class="basiccont word-wrap shadow mt-2 me-0">
                 <div class="border-bottom ps-3 pt-2 bggreen pe-2">
                     <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                 </div>
