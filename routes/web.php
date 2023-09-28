@@ -126,6 +126,8 @@ Route::get('/details/{projectid}/{department}', [ProjectController::class, 'disp
     ->name('projects.details');
 Route::get('/objectives/{projectid}/{department}', [ProjectController::class, 'displayObjectives'])
     ->name('projects.objectives');
+Route::get('/activities/{projectid}/{department}', [ProjectController::class, 'displayActivities'])
+    ->name('projects.activities');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
