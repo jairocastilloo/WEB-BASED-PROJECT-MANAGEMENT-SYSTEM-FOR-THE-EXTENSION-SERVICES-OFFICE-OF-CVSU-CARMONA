@@ -253,6 +253,7 @@ body {
 /*container for a selected activity*/
 .maincontainer {
   width: 100%;
+  background-color: #f9f9f9;
   margin-right: auto;
   margin-left: auto;
   min-height: 1080px;
