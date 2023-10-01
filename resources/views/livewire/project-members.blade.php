@@ -30,7 +30,7 @@
         @endforeach
     </div>
 
-    <div class="btn-group ms-3 mt-2 mb-3 shadow">
+    <div class="btn-group ms-3 mt-2 mb-2 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnAddMember" data-bs-toggle="modal" data-bs-target="#addAssigneeModal">
             <b class="small">Add Members</b>
         </button>

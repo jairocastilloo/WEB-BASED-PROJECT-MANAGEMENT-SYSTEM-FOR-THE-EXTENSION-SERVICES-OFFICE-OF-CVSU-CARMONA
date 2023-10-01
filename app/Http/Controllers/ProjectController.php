@@ -273,17 +273,17 @@ class ProjectController extends Controller
             ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
-
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+        $activities = $indexproject->activities;
 
         return view('project.members', [
-            'members' => $users, 'currentproject' => $currentproject,
+            'members' => $users,
+            'currentproject' => $currentproject,
             'indexproject' => $indexproject,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear, 'projectid' => $projectid,
-            'notifications' => $notifications,
+            'currentyear' => $currentyear,
+            'activities' => $activities,
+
         ]);
     }
     public function displayDetails($projectid, $department)
@@ -391,9 +391,7 @@ class ProjectController extends Controller
             ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
 
-
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+        $activities = $indexproject->activities;;
 
         return view('project.activities', [
             'members' => $users,
@@ -402,8 +400,7 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'projectid' => $projectid,
-            'notifications' => $notifications,
+            'activities' => $activities,
         ]);
     }
 }

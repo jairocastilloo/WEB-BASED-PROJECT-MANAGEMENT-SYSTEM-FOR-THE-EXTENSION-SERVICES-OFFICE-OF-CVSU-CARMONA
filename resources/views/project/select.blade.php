@@ -297,7 +297,7 @@
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
                 @if($currentproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2" id="toggleButton">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Projects
                             <span class="badge bggold text-dark">
@@ -317,7 +317,7 @@
                 @if ($inProgressProjects && count($inProgressProjects) > 0)
 
                 <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2" id="toggleButton">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             In Progress
                             <span class="badge bggold text-dark">
@@ -347,7 +347,7 @@
 
                 @if ($scheduledProjects && count($scheduledProjects) > 0)
                 <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2" id="toggleButton">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Scheduled
                             <span class="badge bggold text-dark">
@@ -378,7 +378,7 @@
 
                 @if ($completedProjects && count($completedProjects) > 0)
                 <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2" id="toggleButton">
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Completed
                             <span class="badge bggold text-dark">
@@ -408,7 +408,7 @@
                 @if ($overdueProjects && count($overdueProjects) > 0)
 
                 <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2" id="toggleButton">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Incomplete
                             <span class="badge bggold text-dark">

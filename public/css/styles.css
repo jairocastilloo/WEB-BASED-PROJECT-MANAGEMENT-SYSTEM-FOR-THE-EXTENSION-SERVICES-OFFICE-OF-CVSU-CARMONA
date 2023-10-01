@@ -384,3 +384,49 @@ div {
 #loadingSpan {
   animation: fadeInOut 2s infinite; /* Use fadeInOut animation, 2 seconds duration, infinite loop */
 }
+/* Default styles for larger screens */
+/* Default styles for larger screens */
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Default styles for larger screens */
+.dropdown-text {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Default styles for larger screens */
+.dropdown-options {
+  display: none;
+  position: absolute;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-top: none;
+  list-style: none;
+  padding: 0;
+}
+
+/* Default styles for larger screens */
+.dropdown-options li {
+  padding: 8px;
+  cursor: pointer;
+  border-top: 1px solid #ccc;
+}
+
+/* Default styles for larger screens */
+.dropdown-options li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Media query for smaller screens (769px to 991px) */
+
+
