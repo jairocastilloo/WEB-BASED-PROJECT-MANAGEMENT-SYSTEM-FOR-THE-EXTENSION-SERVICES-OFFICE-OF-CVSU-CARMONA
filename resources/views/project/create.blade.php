@@ -236,8 +236,7 @@
          -->
 
 
-@if ($currentproject)
-<!-- New Project -->
+
 
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -418,7 +417,7 @@
         </div>
     </div>
 </div>
-@endif
+
 
 @endsection
 @section('scripts')

@@ -2,16 +2,33 @@
 
 @section('content')
 
-<input class="d-none" type="number" id="acturl" data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
-
-<input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
-
-<input class="d-none" type="date" id="projsavestartdate" value="{{ $indexproject['projectstartdate'] }}">
-<input class="d-none" type="date" id="projsaveenddate" value="{{ $indexproject['projectenddate'] }}">
 <div class="maincontainer shadow">
-    <div class="mainnav mb-2 shadow">
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold">Project</h6>
+    <div class="mainnav mb-3 shadow">
+        <div class="col-4 p-2 pt-3 border-end position-triangle text-wrap" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6 class="fw-bold">Projects</h6>
+        </div>
+        <div class="dropdown col-4 border-end text-wrap containerhover">
+            <div class="p-2 pt-3" data-bs-toggle="dropdown">
+                <h6 class="fw-bold">Activities
+
+                    <i class="bi bi-caret-down-fill text-end"></i>
+                </h6>
+            </div>
+            <ul class="dropdown-menu">
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedActivities = $activities->sortBy('actstartdate');
+                @endphp
+                @foreach ($sortedActivities as $activity)
+                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">{{ $activity['actname'] }}</a></li>
+                @endforeach
+
+
+            </ul>
+        </div>
+
+        <div class="col-4 p-2 pt-3 border-end text-wrap text-center" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6 class="fw-bold">Subtasks</h6>
         </div>
 
     </div>
@@ -425,7 +442,7 @@
         </div>
     </div>
 </div>
-@if ($currentproject)
+
 <!-- New Project -->
 
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
@@ -441,11 +458,9 @@
                         <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Members</button>
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Objectives</button>
                     </li>.
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false" disabled>Project Objectives</button>
-                    </li>
+
                 </ul>
                 <div class="tab-content">
 
@@ -471,6 +486,11 @@
                                 <label for="projectleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="projectleader" id="projectleader">
                                     <option value="0" selected disabled>Select Project Leader</option>
+                                    @foreach ($members as $member)
+                                    @if ($member->role === 'Coordinator' || $member->role === 'Admin')
+                                    <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
+                                    @endif
+                                    @endforeach
                                 </select>
                                 <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
 
@@ -490,7 +510,11 @@
                                 <label for="programleader" class="form-label">Project Leader</label>
                                 <select class="form-select" name="programleader" id="programleader">
                                     <option value="0" selected disabled>Select Program Leader</option>
-
+                                    @foreach ($members as $member)
+                                    @if ($member->role === 'Coordinator' || $member->role === 'Admin')
+                                    <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
+                                    @endif
+                                    @endforeach
                                 </select>
 
                                 <span class="invalid-feedback" role="alert">
@@ -518,49 +542,13 @@
 
 
                     </div>
+
+
                     <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                         <!-- Form for tab 2 -->
 
-                        <div class="container-fluid" id="memberform">
-                            <form id="form2">
-                                @csrf
-                                <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
-                                <div class="mb-2 row rounded" id="selectmember">
-                                    <select class="col-7 m-1 member-select p-2 rounded is-invalid" id="member-select" name="projectmember[]">
-                                        <option value="0" selected disabled>Select a Member</option>
-                                    </select>
-
-                                    <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
-                                        <b class="small">Remove</b>
-                                    </button>
-
-
-                                </div>
-
-                            </form>
-
-
-                            <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
-                                <b class="small">Add Member</b>
-                            </button>
-                            <br>
-                            <span class="small text-danger nomember-error">
-                                <strong>Assign atleast one member.</strong>
-                            </span>
-
-                            <span class="small text-danger noselectmember-error">
-                                <strong>Please ensure that a member is selected in every dropdown.</strong>
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                    <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
-                        <!-- Form for tab 2 -->
-
                         <div class="container-fluid" id="objform">
-                            <form id="form3">
+                            <form id="form2">
                                 @csrf
                                 <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
                                 <div class="container-fluid" id="objectiveset">
@@ -570,9 +558,7 @@
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
                                             <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
 
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>Make</strong>
-                                            </span>
+
                                         </div>
                                     </div>
                                     <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
@@ -607,90 +593,6 @@
         </div>
     </div>
 </div>
-@endif
-<!-- Add activity -->
-
-<div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newactivityLabel">Adding Activity</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-                <form id="act1" data-url="{{ route('activity.store') }}">
-                    @csrf
-
-                    <input type="number" id="projectindex" name="projectindex" value="{{ $indexproject['id'] }}" class="d-none">
-                    <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
-                    <div class="mb-3">
-                        <label for="activityname" class="form-label">Activity Name</label>
-                        <input type="text" class="form-control" id="activityname" name="activityname">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="objectives" class="form-label">Objectives</label>
-                        <select class="form-select" id="objective-select" name="objectives">
-                            <option value="" selected disabled>Choose Objectives</option>
-                            <option value="0" style="font-weight: bold;">OBJECTIVE SET 1</option>
-                        </select>
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="expectedoutput" class="form-label">Expected Output</label>
-                        <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="startdate" class="form-label">Activity Start Date</label>
-                        <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="enddate" class="form-label">Activity End Date</label>
-                        <input type="date" class="form-control" id="activityenddate" name="activityenddate">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="budget" class="form-label">Budget</label>
-                        <input type="number" class="form-control" id="budget" name="budget">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                    <div class="mb-3">
-                        <label for="Source" class="form-label">Source</label>
-                        <input type="text" class="form-control" id="source" name="source">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
-                </form>
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal">
-                    <b class="small">Close</b>
-                </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
-                    <b class="small">Add activity</b>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 @endsection
@@ -698,8 +600,6 @@
 @section('scripts')
 <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
-    var users = <?php echo json_encode($members);
-                ?>;
     var objectives = <?php echo json_encode($objectives);
                         ?>;
 
@@ -714,6 +614,27 @@
 
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
+
+        var currentstep = 0;
+        var setcount = 0;
+
+        $('#addmember').hide();
+
+        $('.noselectmember-error strong').hide();
+        $('.projectobjective-error strong').hide();
+
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+
+        $(document).on('input', '.autocapital', function() {
+            var inputValue = $(this).val();
+            if (inputValue.length > 0) {
+                $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+            }
+        });
+
 
         $(".subtoggle").toggle();
         $(document).on('click', '#toggleButton', function(event) {
@@ -816,7 +737,6 @@
             }
         });
 
-
         $.each(objectives, function(index, item) {
             if (item.objectiveset_id === "1") {
                 $('#objective-select').append($('<option>', {
@@ -854,11 +774,242 @@
             window.location.href = url;
         });
 
+        function updateButtons() {
+            if (currentstep == 0) {
+                $('#prevproject').hide();
+                $('#nextproject').show();
+                $('#createproject').hide();
+                $('#tab1-tab').tab('show');
+            } else if (currentstep == 1) {
+                $('#prevproject').show();
+                $('#nextproject').hide();
+                $('#createproject').show();
+                $('#tab2-tab').tab('show');
+            }
 
+        }
+
+        $('#nextproject').click((event) => {
+
+            event.preventDefault();
+
+
+            var hasError = handleError();
+
+            if (!hasError) {
+                currentstep++;
+                updateButtons();
+            }
+
+
+        });
+        $('#prevproject').click((event) => {
+
+            event.preventDefault();
+
+
+            currentstep--;
+            updateButtons();
+
+
+        });
+
+        $('#addproj').click((event) => {
+
+            event.preventDefault();
+
+            updateButtons();
+            $('#newproject').modal('show');
+        });
+
+        $('#objectiveset').on('click', '.add-objective', function() {
+            var setid = $(this).prev().find('div:first .objectivesetid').val();
+
+            var $newInput = $('<input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+            var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setid + '" class="objectivesetid d-none">');
+
+            var $newButton2 = $('<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>');
+            var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton2);
+            $(this).prev().append($newDiv);
+
+        });
+        $('#objform form').on('click', '.remove-objective', function() {
+            $(this).parent().remove();
+        });
+        $('#objform form').on('click', '.edit-objective', function() {
+            $(this).prev().focus();
+        });
+        $('#objform form').on('keydown', '.input-objective', function() {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+
+                $(this).blur();
+
+            }
+        });
+
+
+
+        $('#addset').click((event) => {
+            event.preventDefault();
+            setcount++;
+            var $newInput = $('<input type="text" class="col-8 m-1 input-objective p-2 rounded autocapital" id="objective-input" name="projectobjective[]" placeholder="Enter objective">');
+            var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' + setcount + '" class="objectivesetid d-none">');
+            var $newButton2 = $('<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>');
+            var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1, $newButton2);
+            var $newDiv1 = $('<div>').append($newDiv);
+            var $newButton3 = $('<button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective"><b class="small">Add Objective</b></button><hr>');
+            $('#objectiveset').append($newDiv1, $newButton3);
+
+        });
+
+        $('#createproject').click((event) => {
+            event.preventDefault();
+
+            var hasError = handleError();
+
+            if (!hasError) {
+                var department = $('#department').val();
+                var projectname = $('#projecttitle').val();
+
+                var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+
+                projecturl = projecturl.replace(':department', department);
+                projecturl = projecturl.replace(':projectname', projectname);
+
+                var objectiveindex = $('input[name="projectobjective[]"]').length;
+
+                $('input[name="projectobjective[]"]').each(function(index) {
+                    $(this).attr('name', 'projectobjective[' + index + ']');
+
+                });
+
+                $('input[name="objectivesetid[]"]').each(function(index) {
+                    $(this).attr('name', 'objectivesetid[' + index + ']');
+
+                });
+
+
+                $('#objectiveindex').val(objectiveindex);
+
+                var dataurl = $('#form1').attr('data-url');
+                var data1 = $('#form1').serialize();
+                var data2 = $('#form2').serialize();
+
+                // concatenate serialized data into a single string
+                var formData = data1 + '&' + data2;
+
+                // send data via AJAX
+                $.ajax({
+                    url: dataurl,
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+
+                        var projectId = response.projectid;
+                        projecturl = projecturl.replace(':projectid', projectId);
+                        window.location.href = projecturl;
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
+                    }
+                });
+            }
+        });
+
+        function handleError() {
+
+            if (currentstep === 0) {
+
+                var hasErrors = false;
+
+                $('.invalid-feedback strong').text('');
+                $('.is-invalid').removeClass('is-invalid');
+
+                var projectTitle = $('#projecttitle').val();
+
+                var selectprojlead = $('#projectleader').find(':selected');
+                var projectLeader = selectprojlead.val();
+                var programTitle = $('#programtitle').val();
+
+                var selectproglead = $('#programleader').find(':selected');
+                var programLeader = selectproglead.val();
+
+                var projectStartDate = new Date($('#projectstartdate').val());
+                var projectEndDate = new Date($('#projectenddate').val());
+
+                var targetYear = parseInt($('#currentyear').val(), 10);
+
+                // Validation for Project Title
+                if (projectTitle.trim() === '') {
+                    $('#projecttitle').addClass('is-invalid');
+                    $('#projecttitle').next('.invalid-feedback').find('strong').text('Project Title is required.');
+                    hasErrors = true;
+                }
+
+                // Validation for Project Leader
+                if (projectLeader == 0) {
+                    $('#projectleader').addClass('is-invalid');
+                    $('#projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
+                    hasErrors = true;
+                }
+
+                // Validation for Program Title
+                if (programTitle.trim() === '') {
+                    $('#programtitle').addClass('is-invalid');
+                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
+                    hasErrors = true;
+                }
+
+                // Validation for Program Leader
+                if (programLeader == 0) {
+                    $('#programleader').addClass('is-invalid');
+                    $('#programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
+                    hasErrors = true;
+                }
+
+                // Validation for Project Start Date
+                if (projectStartDate.getFullYear() !== targetYear) {
+                    $('#projectstartdate').addClass('is-invalid');
+                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                    hasErrors = true;
+                }
+
+                // Validation for Project End Date
+                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
+                    $('#projectenddate').addClass('is-invalid');
+                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+                    hasErrors = true;
+                }
+
+                return hasErrors;
+
+            } else if (currentstep === 1) {
+                var hasErrors = false;
+
+                if ($('input[name="projectobjective[]"]').length === 0) {
+                    $('.projectobjective-error strong').show();
+                    hasErrors = true;
+                } else {
+                    $('input[name="projectobjective[]"]').each(function(index, element) {
+
+                        if ($(element).val() === "") {
+                            $('.projectobjective-error strong').show();
+                            hasErrors = true;
+                        }
+
+                    });
+
+                }
+                return hasErrors;
+            }
+
+        }
 
 
     });
 </script>
-<script src="{{ asset('js/create.js') }}"></script>
-<script src="{{ asset('js/select.js') }}"></script>
 @endsection

@@ -151,4 +151,4 @@ Route::prefix('/actsubmission')->group(function () {
     Route::get('/{actsubmissionid}/{actsubmissionname}', [SubmissionController::class, 'displayactsubmission'])->name('actsubmission.display');
 });
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
-Route::get('/mark-notification-as-read/{id}', [NotificationController::class, 'markasread'])->name('notification.markasread');
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');

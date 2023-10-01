@@ -34,7 +34,6 @@ class ProjectController extends Controller
     {
 
         $users = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
             ->get(['id', 'name', 'middle_name', 'last_name']);
         $currentDate = Carbon::now();
@@ -45,7 +44,6 @@ class ProjectController extends Controller
             ->get();
 
         $inCurrentYear = true;
-
 
         $calendaryears = CalendarYear::pluck('year');
         $notifications = Notification::where('user_id', Auth::user()->id)
@@ -117,28 +115,22 @@ class ProjectController extends Controller
         $calendaryears = CalendarYear::pluck('year');
 
         $users = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
 
 
         $objectives = $indexproject->objectives;
         $activities = $indexproject->activities;
 
-        $sortedActivities = $activities->sortBy('actobjectives');
-
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
-        //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives, 'projectid' => $projectid, 'assignees' => $assignees]);
-
-        //return response()->json(['members' => $users, 'projects' => $projects, 'objectives' => $objectives]);
         return view('project.select', [
-            'members' => $users, 'currentproject' => $currentproject, 'indexproject' => $indexproject,
+            'members' => $users,
+            'currentproject' => $currentproject,
+            'indexproject' => $indexproject,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'objectives' => $objectives, 'projectid' => $projectid, 'activities' => $activities, 'sortedActivities' => $sortedActivities,
-            'notifications' => $notifications,
+            'objectives' => $objectives,
+            'activities' => $activities,
         ]);
     }
 
@@ -189,92 +181,14 @@ class ProjectController extends Controller
         ]);
     }
 
-    /*
-    public function getactivity($id, $activityid)
-    {
-        // activity details
-        $activity = Activity::find($activityid);
-        // activity assignees
-        $activityUser = ActivityUser::where('activity_id', $activityid)
-            ->with('user:id,name,middle_name,last_name,email,role')
-            ->get();
-
-        $assignees = $activityUser->map(function ($item) {
-            return $item->user;
-        });
-
-        // activity assignees that can be added
-        $user = User::findOrFail($id);
-        $department = $user->department;
-        $excludeUserIds = $activityUser->pluck('user_id')->toArray();
-
-        $addassignees = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
-            ->whereNotIn('id', $excludeUserIds)
-            ->get(['id', 'name', 'last_name']);
-        // activity subtasks
-        $subtasks = Subtask::where('activity_id', $activityid)->get();
-        // activity outputs
-        $outputs = Output::where('activity_id', $activityid)->get();
-        $outputTypes = $outputs->unique('output_type')->pluck('output_type');
-        // project name
-        $activity = Activity::findOrFail($activityid);
-        $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
-        $objectiveset = $activity->actobjectives;
-        $objectives = Objective::where('project_id', $projectId)
-            ->where('objectiveset_id', $objectiveset)
-            ->get('name');
-
-        $usersWithSameCreatedAt = SubtaskContributor::select(DB::raw('created_at, GROUP_CONCAT(user_id) as user_ids'))
-            ->where('approval', 0)
-            ->where('activity_id', $activityid)
-            ->groupBy('created_at')
-            ->get();
-        $unapprovedactivity = SubtaskContributor::selectRaw('MAX(id) as id')
-            ->where('approval', 0)
-            ->where('activity_id', $activityid)
-            ->groupByRaw('created_at')
-            ->pluck('id');
-
-
-        $unapprovedactivitydata = SubtaskContributor::whereIn('id', $unapprovedactivity)
-            ->get();
-
-        return view('activity.index', [
-            'activity' => $activity,
-            'assignees' => $assignees,
-            'subtasks' => $subtasks,
-            'outputs' => $outputs,
-            'outputTypes' => $outputTypes,
-            'addassignees' => $addassignees,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
-            'objectives' => $objectives,
-            'unapprovedactivitydata' => $unapprovedactivitydata,
-            'usersWithSameCreatedAt' => $usersWithSameCreatedAt,
-        ]);
-    }
-*/
 
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'projecttitle' => 'required|max:255',
-            'projectleader' => 'required|max:255',
-            'programtitle' => 'required|max:255',
-            'programleader' => 'required|max:255',
-            'projectstartdate' => "required|date",
-            'projectenddate' => "required|date|after:projectstartdate",
-            'department' => 'required|max:255',
-            'currentyear' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()]);
-        }
         $projecttitle = $request->input('projecttitle');
+        $projectleaderid = $request->input('projectleader');
+        $projectstartdate = $request->input('projectstartdate');
+        $projectenddate = $request->input('projectenddate');
         $project = new Project([
             'projecttitle' => $projecttitle,
             'projectleader' => $request->input('projectleader'),
@@ -290,32 +204,38 @@ class ProjectController extends Controller
         Artisan::call('project:status:update');
         $newProjectId = $project->id;
 
+        $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
+        $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
+
+        $notification = new Notification([
+            'user_id' => $projectleaderid,
+            'task_id' => $newProjectId,
+            'task_type' => "project",
+            'task_name' => $projecttitle,
+            'message' => $message,
+        ]);
+        $notification->save();
+
+        $projectleader = User::findorFail($projectleaderid);
+        $email = $projectleader->email;
+        $name = $projectleader->name . ' ' . $projectleader->last_name;
+        $taskname = $projecttitle;
+        $tasktype = "project";
+        $startDate = date('F d, Y', strtotime($projectstartdate));
+        $endDate = date('F d, Y', strtotime($projectenddate));
+
+        $taskdeadline = $startDate . ' - ' . $endDate;
+        $senderemail = Auth::user()->email;
+        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+
 
 
         $validatedData = $request->validate([
-            'projectmember.*' => 'required|integer', // Validate each select input
-            'memberindex' => 'required|integer',
             'projectobjective.*' => 'required',
             'objectiveindex' => 'required|integer',
             'objectivesetid.*' => 'required|integer',
-            // Validate select count
         ]);
 
-        for ($i = 0; $i < $validatedData['memberindex']; $i++) {
-            $projectmembers = new ProjectUser;
-            $projectmembers->user_id = $validatedData['projectmember'][$i];
-            $projectmembers->project_id = $newProjectId;
-
-            $projectmembers->save();
-            $notification = new Notification([
-                'user_id' => $validatedData['projectmember'][$i],
-                'task_id' => $newProjectId,
-                'task_type' => "project",
-                'task_name' => $projecttitle,
-                'message' => Auth::user()->name . ' ' . Auth::user()->last_name . ' added you to a new project: "' . $projecttitle . '".',
-            ]);
-            $notification->save();
-        }
         for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
             $projectobjective = new Objective;
             $projectobjective->name = $validatedData['projectobjective'][$i];
