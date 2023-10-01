@@ -13,8 +13,8 @@ class NotificationController extends Controller
     {
 
         $notifications = Notification::where('user_id', Auth::user()->id)
-            ->latest() // Orders the notifications by created_at in descending order (latest first)
-            ->limit(10) // Limits the number of notifications to 10
+            ->latest()
+            ->limit(10)
             ->get();
         return view('implementer.notifications', [
             'notifications' =>  $notifications

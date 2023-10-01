@@ -1,11 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="maincontainer shadow">
+<div class="maincontainer shadow px-4 pt-4">
 
-    <div class="container p-2">
-        @livewire('notification-index', [ 'notifications' => $notifications ])
-    </div>
+    @livewire('notification-index', [ 'notifications' => $notifications ])
 
 </div>
 
