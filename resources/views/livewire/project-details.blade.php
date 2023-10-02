@@ -1,5 +1,5 @@
 <div>
-    <div class="basiccont m-4 me-0 p-3 rounded shadow">
+    <div class="basiccont p-3 rounded shadow">
         <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
         <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
         <div class="flex-container">
@@ -50,27 +50,38 @@
 
         <div class="btn-group dropdown mt-3 shadow">
             <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <b class="small">Menu</b>
+                <b class="small"> <i class="bi bi-list"></i> Menu</b>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item small hrefnav" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
-                    <b class="small">Edit Details</b>
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                    <b class="small">Table</b>
                 </a>
-                <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Objectives</b></a>
-                <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
-                <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
-                    <b class="small">View Activity Calendar</b>
-                </a>
-                <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
-                <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                     <b class="small">Team Members</b>
                 </a>
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                    <b class="small">Activities</b>
+                </a>
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                    <b class="small">Calendar</b>
+                </a>
+                <a class="dropdown-item small bg-warning border-bottom">
+                    <b class="small">Edit Details</b>
+                </a>
+                <a class="dropdown-item small hrefnav border-bottom" href="#"><b class="small">Close Project</b></a>
+                <!-- if included
+                        <a class="dropdown-item small hrefnav" href="{{ route('projects.objectives', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <b class="small">Edit Objectives</b>
+                        </a> -->
+                <!-- <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a> -->
+
+
 
             </div>
         </div>
     </div>
 
-    <div class="basiccont m-4 me-0 rounded shadow">
+    <div class="basiccont rounded shadow">
         <div class="border-bottom ps-3 pt-2 bggreen">
             <h6 class="fw-bold small" style="color:darkgreen;">Edit Project Details</h6>
         </div>
@@ -124,7 +135,7 @@
                     <input value="{{ $indexproject->projectenddate }}" type="date" class="form-control" id="projectEndDate" name="projectEndDate" required disabled>
                 </div>
             </form>
-            <div class="btn-group mt-1 mb-2 shadow" id="div-editDetails">
+            <div class="btn-group mt-1 mb-1 shadow" id="div-editDetails">
                 <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" id="btn-editDetails" aria-haspopup="true" aria-expanded="false">
                     <b class="small">Edit Details</b>
                 </button>

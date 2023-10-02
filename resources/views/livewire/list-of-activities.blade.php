@@ -1,4 +1,6 @@
 <div>
+    <input type="hidden" id="projsavestartdate" name="projsavestartdate" value="{{ $indexproject->projectstartdate }}">
+    <input type="hidden" id="projsaveenddate" name="projsaveenddate" value="{{ $indexproject->projectenddate }}">
     @php
     // Sort the $activities array by actstartdate in ascending order
     $sortedActivities = $activities->sortBy('actstartdate');
@@ -44,18 +46,36 @@
                     </div>
                     <div class="mb-3">
                         <label for="objectives" class="form-label">Objectives</label>
+                        @php
+
+                        $lastObject = $objectives->last();
+                        $lastObjectivesetId = $lastObject['objectiveset_id'];
+                        $x = 0;
+                        $y = 1;
+                        @endphp
                         <div class="custom-dropdown">
                             <input type="hidden" id="selected-option" name="selected-option">
-                            <div class="dropdown-text" onclick="toggleDropdown()">Select objectives</div>
+                            <div class="dropdown-text" id="objective-select" onclick="toggleDropdown()">Select objectives<i class="bi bi-caret-down-fill float-end"></i></div>
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
                             <ul class="dropdown-options" id="dropdown-options">
-                                @foreach($objectives)
-                                <li onclick="selectOption(1)">Option 1:<br>This is a long description that spans multiple lines.</li>
-                                @endforeach
+                                @while ($x <= $lastObjectivesetId) <li onclick="selectOption({{ $x + 1 }})">@foreach($objectives->where('objectiveset_id', $x) as $objective)
+
+                                    {{ $y . '. ' . $objective['name'] }}<br>
+                                    @php
+                                    $y++;
+                                    @endphp
+                                    @endforeach
+                                    </li>
+                                    @php
+                                    $x++;
+                                    @endphp
+
+                                    @endwhile
                             </ul>
                         </div>
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
+
                     </div>
                     <div class="mb-3">
                         <label for="expectedoutput" class="form-label">Expected Output</label>
@@ -95,7 +115,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal">
+                    <button type="button" class="btn shadow rounded border border-1 btn-light" id="closeActivity" data-bs-dismiss="modal">
                         <b class="small">Close</b>
                     </button>
                     <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
@@ -106,20 +126,157 @@
         </div>
     </div>
     <script>
+        let selectedOptionId = null;
+        var actname;
+        var objectivevalue;
+        var expectedoutput;
+        var actstartdate;
+        var actenddate;
+        var projstartdate = document.getElementById('projsavestartdate').value;
+        var projenddate = document.getElementById('projsaveenddate').value;
+        var actbudget;
+        var actsource;
+        document.addEventListener('livewire:load', function() {
+            var confirmActivityBtn = document.getElementById("confirmactivity");
+            confirmActivityBtn.addEventListener('click', function() {
+                var theresErrors = acthasError();
+                if (!theresErrors) {
+                    Livewire.emit('saveActivity', {
+                        actname: actname,
+                        objectivevalue: objectivevalue,
+                        expectedoutput: expectedoutput,
+                        actstartdate: actstartdate,
+                        actenddate: actenddate,
+                        actbudget: actbudget,
+                        actsource: actsource
+                    });
+                }
+            });
+
+            Livewire.on('closeActivity', function() {
+                document.getElementById('closeActivity').click();
+                document.getElementById('activityname').value = "";
+                selectedOptionId = null;
+                document.getElementById('expectedoutput').value = "";
+                document.getElementById('activitystartdate').value = "";
+                document.getElementById('activityenddate').value = "";
+                document.getElementById('budget').value = "";
+                document.getElementById('source').value = "";
+                actname = "";
+                objectivevalue = null;
+                expectedoutput = "";
+                actstartdate = "";
+                actenddate = "";
+                actbudget = "";
+                actsource = "";
+            });
+        });
+
         function toggleDropdown() {
             const dropdown = document.getElementById("dropdown-options");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
 
         function selectOption(optionId) {
+            selectedOptionId = optionId - 1;
             const selectedOption = document.getElementById("selected-option");
             const dropdownText = document.querySelector(".dropdown-text");
             const option = document.querySelector(`#dropdown-options li:nth-child(${optionId})`);
 
             selectedOption.value = option.textContent;
             dropdownText.textContent = option.textContent;
-
             toggleDropdown();
+        }
+
+        function acthasError() {
+            var hasErrors = false;
+            document.querySelectorAll('.invalid-feedback strong').forEach(function(element) {
+                element.textContent = '';
+            });
+            document.querySelectorAll('.is-invalid').forEach(function(element) {
+                element.classList.remove('is-invalid');
+            });
+
+            actname = document.getElementById('activityname').value;
+            objectivevalue = selectedOptionId;
+            expectedoutput = document.getElementById('expectedoutput').value;
+            actstartdate = document.getElementById('activitystartdate').value;
+            actenddate = document.getElementById('activityenddate').value;
+
+            actbudget = document.getElementById('budget').value;
+            actsource = document.getElementById('source').value;
+
+            // Validation for Project Title
+            if (actname.trim() === '') {
+                document.getElementById('activityname').classList.add('is-invalid');
+                document.querySelector('#activityname + .invalid-feedback strong').textContent = 'Activity Name is required.';
+                hasErrors = true;
+            }
+
+            // Validation for Project Leader
+            if (objectivevalue == null) {
+                document.getElementById('objective-select').classList.add('is-invalid');
+                document.querySelector('#objective-select + .invalid-feedback strong').textContent = 'Make sure that there is an objective selected.';
+                hasErrors = true;
+            }
+
+            // Validation for Program Title
+            if (expectedoutput.trim() === '') {
+                document.getElementById('expectedoutput').classList.add('is-invalid');
+                document.querySelector('#expectedoutput + .invalid-feedback strong').textContent = 'Expected Output is required.';
+                hasErrors = true;
+            }
+
+            if (actstartdate === '') {
+                document.getElementById('activitystartdate').classList.add('is-invalid');
+                document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date is required.';
+                hasErrors = true;
+            }
+
+            // Validation for Project Start Date
+            else if (new Date(projstartdate) > new Date(actstartdate)) {
+                document.getElementById('activitystartdate').classList.add('is-invalid');
+                document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                }) + '.';
+                hasErrors = true;
+            }
+
+            if (actenddate === '') {
+                document.getElementById('activityenddate').classList.add('is-invalid');
+                document.querySelector('#activityenddate + .invalid-feedback strong').textContent = 'Activity End Date is required';
+                hasErrors = true;
+            } else if (new Date(actenddate) < new Date(actstartdate)) {
+                document.getElementById('activityenddate').classList.add('is-invalid');
+                document.querySelector('#activityenddate + .invalid-feedback strong').textContent = 'Activity End Date must be after ' + new Date(actstartdate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                }) + '.';
+                hasErrors = true;
+            } else if (new Date(projenddate) < new Date(actenddate)) {
+                document.getElementById('activityenddate').classList.add('is-invalid');
+                document.querySelector('#activityenddate + .invalid-feedback strong').textContent = 'Activity End Date must be before ' + new Date(projenddate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                }) + '.';
+                hasErrors = true;
+            }
+
+            if (actbudget.trim() === '') {
+                document.getElementById('budget').classList.add('is-invalid');
+                document.querySelector('#budget + .invalid-feedback strong').textContent = 'Budget is required.';
+                hasErrors = true;
+            }
+            if (actsource.trim() === '') {
+                document.getElementById('source').classList.add('is-invalid');
+                document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
+                hasErrors = true;
+            }
+            return hasErrors;
         }
     </script>
 </div>

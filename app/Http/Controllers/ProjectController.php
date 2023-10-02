@@ -35,7 +35,7 @@ class ProjectController extends Controller
 
         $users = User::where('department', $department)
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
         $currentDate = Carbon::now();
         $currentyear = $currentDate->year;
 
@@ -46,8 +46,7 @@ class ProjectController extends Controller
         $inCurrentYear = true;
 
         $calendaryears = CalendarYear::pluck('year');
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
 
         return view('project.create', [
             'members' => $users,
@@ -55,7 +54,6 @@ class ProjectController extends Controller
             'currentproject' => $currentproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'notifications' => $notifications,
         ]);
     }
 
@@ -65,7 +63,7 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
         $currentDate = Carbon::now();
         $otheryear = $currentDate->year;
 
@@ -80,8 +78,6 @@ class ProjectController extends Controller
             ->get();
 
         $calendaryears = CalendarYear::pluck('year');
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
 
 
         return view('project.create', [
@@ -90,7 +86,6 @@ class ProjectController extends Controller
             'currentproject' => $currentproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'notifications' => $notifications,
         ]);
     }
 
@@ -157,7 +152,7 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
 
         $activities = $indexproject->activities;
         $activityArray = $activities->map(function ($activity) {
@@ -167,17 +162,16 @@ class ProjectController extends Controller
                 'actenddate' => $activity->actenddate,
             ];
         })->toArray();
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
 
         return view('project.calendar', [
-            'members' => $users, 'currentproject' => $currentproject,
+            'members' => $users,
+            'currentproject' => $currentproject,
             'indexproject' => $indexproject,
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear, 'projectid' => $projectid,
+            'currentyear' => $currentyear,
+            'activities' => $activities,
             'activityArray' => $activityArray,
-            'notifications' => $notifications,
         ]);
     }
 
@@ -271,7 +265,7 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
 
         $activities = $indexproject->activities;
 
@@ -283,7 +277,6 @@ class ProjectController extends Controller
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
             'activities' => $activities,
-
         ]);
     }
     public function displayDetails($projectid, $department)
@@ -309,12 +302,9 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
 
-
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
-
+        $activities = $indexproject->activities;
         return view('project.details', [
             'members' => $users,
             'currentproject' => $currentproject,
@@ -322,8 +312,7 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'projectid' => $projectid,
-            'notifications' => $notifications,
+            'activities' => $activities
         ]);
     }
     public function displayObjectives($projectid, $department)
@@ -349,11 +338,8 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
 
-
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
 
         return view('project.objectives', [
             'members' => $users,
@@ -362,8 +348,6 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'projectid' => $projectid,
-            'notifications' => $notifications,
         ]);
     }
     public function displayActivities($projectid, $department)
@@ -389,7 +373,7 @@ class ProjectController extends Controller
         $users = User::where('department', $department)
             ->where('role', '!=', 'Admin')
             ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name']);
+            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
 
         $activities = $indexproject->activities;;
 

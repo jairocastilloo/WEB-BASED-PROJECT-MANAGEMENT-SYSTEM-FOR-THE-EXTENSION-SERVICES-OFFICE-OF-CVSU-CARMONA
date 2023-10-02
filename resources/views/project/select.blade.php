@@ -618,9 +618,6 @@
         var currentstep = 0;
         var setcount = 0;
 
-        $('#addmember').hide();
-
-        $('.noselectmember-error strong').hide();
         $('.projectobjective-error strong').hide();
 
         $('#navbarDropdown').click(function() {
