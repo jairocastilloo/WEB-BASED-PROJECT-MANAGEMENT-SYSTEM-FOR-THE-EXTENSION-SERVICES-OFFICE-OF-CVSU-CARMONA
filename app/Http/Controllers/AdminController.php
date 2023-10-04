@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -13,6 +14,13 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     //
+    public function index($department)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $user->department = $department;
+        $user->save();
+        return redirect()->route('tasks.show', ['username' => Auth::user()->username]);
+    }
     public function manageaccount($id)
     {
         $user = User::findOrFail($id);

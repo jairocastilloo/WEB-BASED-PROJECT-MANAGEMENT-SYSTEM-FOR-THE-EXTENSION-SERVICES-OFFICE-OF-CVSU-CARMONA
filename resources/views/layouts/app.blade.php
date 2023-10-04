@@ -76,7 +76,7 @@
                         @endif
                         @else
                         @if (Auth::user()->approval === 1)
-                        @if (Auth::user()->role === 'Coordinator' || Auth::user()->role === 'Admin')
+                        @if (Auth::user()->role === 'Coordinator' || (Auth::user()->role === 'Admin' && (!in_array(Route::currentRouteName(), ['admin.choosedepartment']))))
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['tasks.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Home
                         </a>
@@ -109,6 +109,7 @@
                                     </li>
 
                                     @if (Auth::user()->role === 'Admin')
+                                    @if (!in_array(Route::currentRouteName(), ['admin.choosedepartment']))
                                     <li>
                                         <a class="dropdown-item" href="{{ route('admin.manage', ['id' => Auth::user()->id]) }}">
                                             Account Management
@@ -119,6 +120,7 @@
                                             Account Approval
                                         </a>
                                     </li>
+                                    @endif
                                     <li>
                                         <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">
                                             Set an Academic Year

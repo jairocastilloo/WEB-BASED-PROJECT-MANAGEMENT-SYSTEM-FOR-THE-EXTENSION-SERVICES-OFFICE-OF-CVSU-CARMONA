@@ -30,7 +30,7 @@ class HomeController extends Controller
         $username = $user->username;
         $role = $user->role;
         if ($role == "Admin") {
-            return view('adminhome');
+            return redirect()->route('admin.choosedepartment');
         }
         if ($approval == 1) {
             return redirect()->route('tasks.show', ["username" => $username]);

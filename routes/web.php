@@ -152,3 +152,5 @@ Route::prefix('/actsubmission')->group(function () {
 });
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
+Route::view('/choosedepartment', 'admin.choosedepartment')->name('admin.choosedepartment');
+Route::get('/adminindex/{department}', [AdminController::class, 'index'])->name('admin.index');
