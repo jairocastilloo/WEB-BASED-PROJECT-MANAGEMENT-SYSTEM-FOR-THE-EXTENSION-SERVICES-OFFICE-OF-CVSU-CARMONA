@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="maincontainer shadow">
+<div class="maincontainer border border-start border-end">
     <div class="container">
         &nbsp;
 

@@ -33,7 +33,7 @@
 
                 @endphp
 
-                <div class="basiccont word-wrap shadow mt-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                <div class="basiccont word-wrap shadow mt-2 pb-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
                     </div>
@@ -41,14 +41,14 @@
                     <p class="ps-4 lh-1"><b>Total Hours Rendered:</b> {{ $subtask['hours_rendered'] }}</p>
                     <p class="ps-4 lh-1"><b>Due Date:</b> {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
                     </p>
-
                     @if (count($acceptedSubmission) == 0)
-                    <div class="btn-group ms-3 mb-3 shadow">
+                    <div class="btn-group ms-3 mb-1 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
                             <b class="small">Submit Hours</b>
                         </button>
                     </div>
                     @endif
+
                 </div>
 
                 @if($contributions->isEmpty())

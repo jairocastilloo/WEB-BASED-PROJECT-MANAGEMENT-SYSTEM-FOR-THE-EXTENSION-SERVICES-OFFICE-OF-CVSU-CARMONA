@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="maincontainer">
+<div class="maincontainer shadow">
     &nbsp;
     <div class="container">
 

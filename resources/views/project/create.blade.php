@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="maincontainer shadow">
+<div class="maincontainer border border-start border-end">
 
     <div class="container pt-3">
         <div class="row">

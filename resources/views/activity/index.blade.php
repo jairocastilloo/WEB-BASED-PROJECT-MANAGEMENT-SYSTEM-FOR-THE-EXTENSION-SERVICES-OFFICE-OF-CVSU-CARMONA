@@ -69,11 +69,11 @@
                         <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                             <div class="row">
                                 <div class="col">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
+                                    <h6 class="fw-bold small mt-2" style="color:darkgreen;">Subtasks</h6>
                                 </div>
                                 @if ($subtasks->count() == 0)
                                 <div class="col-auto mb-1">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#nohoursmodal">x</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#nohoursmodal"><i class="bi bi-x-lg"></i></button>
                                 </div>
                                 @endif
                             </div>

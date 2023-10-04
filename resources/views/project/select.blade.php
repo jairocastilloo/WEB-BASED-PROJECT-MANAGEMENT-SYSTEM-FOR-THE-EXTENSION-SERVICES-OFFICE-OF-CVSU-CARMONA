@@ -2,16 +2,16 @@
 
 @section('content')
 
-<div class="maincontainer shadow">
-    <div class="mainnav mb-3 shadow">
-        <div class="col-4 p-2 pt-3 border-end position-triangle text-wrap" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold">Projects</h6>
+<div class="maincontainer border border-start border-end">
+    <div class="mainnav mb-3 shadow-sm">
+        <div class="col-4 p-2 pt-3 border-end border-bottom border-start text-wrap text-center text-dark position-triangle" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6>Project</h6>
         </div>
-        <div class="dropdown col-4 border-end text-wrap containerhover">
-            <div class="p-2 pt-3" data-bs-toggle="dropdown">
-                <h6 class="fw-bold">Activities
+        <div class="dropdown col-4 border-end border-bottom text-wrap containerhover text-center text-dark">
+            <div class="p-2 pt-3 dropdown" data-bs-toggle="dropdown">
+                <h6 class="dropdown-toggle">Activities
 
-                    <i class="bi bi-caret-down-fill text-end"></i>
+
                 </h6>
             </div>
             <ul class="dropdown-menu">
@@ -27,8 +27,23 @@
             </ul>
         </div>
 
-        <div class="col-4 p-2 pt-3 border-end text-wrap text-center" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold">Subtasks</h6>
+        <div class="dropdown col-4 border-end border-bottom text-wrap containerhover text-center text-dark">
+            <div class="p-2 pt-3 dropdown" data-bs-toggle="dropdown">
+                <h6 class="dropdown-toggle">Subtasks
+
+                </h6>
+            </div>
+            <ul class="dropdown-menu">
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedActivities = $activities->sortBy('actstartdate');
+                @endphp
+                @foreach ($sortedActivities as $activity)
+                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">{{ $activity['actname'] }}</a></li>
+                @endforeach
+
+
+            </ul>
         </div>
 
     </div>
@@ -277,33 +292,14 @@
             </div>
 
             <div class="col-lg-2">
-                @php
 
-                $sortedProjects= $currentproject->sortBy('projectstartdate');
 
-                $inProgressProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'In Progress';
-                });
-                $scheduledProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Scheduled';
-                });
-                $overdueProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Incomplete';
-                });
-                $completedProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Completed';
-                });
-                @endphp
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
                 @if($currentproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($currentproject) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
 
                     </div>
@@ -313,129 +309,10 @@
                         </div>
                     </div>
                 </div>
-                @endif
-                @if ($inProgressProjects && count($inProgressProjects) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            In Progress
-                            <span class="badge bggold text-dark">
-                                {{ count($inProgressProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($inProgressProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+                @else
+                @livewire('other-projects', ['currentproject' => $currentproject])
                 @endif
 
-                @if ($scheduledProjects && count($scheduledProjects) > 0)
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Scheduled
-                            <span class="badge bggold text-dark">
-                                {{ count($scheduledProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($scheduledProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                @if ($completedProjects && count($completedProjects) > 0)
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Completed
-                            <span class="badge bggold text-dark">
-                                {{ count($completedProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($completedProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-                @if ($overdueProjects && count($overdueProjects) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Incomplete
-                            <span class="badge bggold text-dark">
-                                {{ count($overdueProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($overdueProjects as $project)
-
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
 
             </div>
 
