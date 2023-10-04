@@ -126,16 +126,7 @@ $(document).ready(function(){
         $(this).focus();
     });
 
-    $(document).on('click', '.checkassignee', function(event) {
-       
-
-        $('#assigneename').text($(this).attr('data-name'));
-        $('#assigneeemail').text($(this).attr('data-email'));
-        $('#assigneerole').text($(this).attr('data-role'));
-        $('#assigneedataid').val($(this).attr('data-id'));
-        // Open the modal or perform other actions
-        $('#assigneedetails').modal('show');
-    });
+    
 
     $('.addsubtask-btn').click(function(event) {
         event.preventDefault();

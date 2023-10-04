@@ -1,22 +1,51 @@
-<div class="basiccont shadow p-2 mt-4 ms-2 mb-4">
-
-    <div class="border-bottom ps-2 bggreen">
+<div class="basiccont word-wrap shadow mt-2">
+    <div class="border-bottom ps-3 pt-2 bggreen">
         <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
     </div>
+    <div class="container">
+        @php $count = 0; @endphp
+        @foreach ($assignees as $key=> $assignee)
+        @if ($count % 2 == 0)
+        <div class="row">
+            @endif
+            <div class="col-md border-end border-bottom divhover">
+                <div class="row">
+                    <div class="col-10 checkassignee" data-name="{{ $assignee->name . ' ' . $assignee->last_name }}" data-email="{{ $assignee->email }}" data-role="{{ $assignee->role }}">
 
-    @livewire('list-act-assignees', ['activityid' => $activity['id']])
-    <div class="btn-group ms-2 mt-2 mb-2 shadow">
-        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addassignees-btn" id="ediwow">
-            <b class="small">Add Assignees</b>
-        </button>
+                        <p class="m-2 ms-3">
+                            {{ $assignee->name . ' ' . $assignee->last_name }}
+                        </p>
+
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="btn btn-outline-danger fs-5 border float-end" wire:click="unassignAssignees('{{ $assignee->id }}')">
+                            <i class="bi bi-person-dash"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            @if ($count % 2 == 1 || $loop->last)
+        </div>
+        @endif
+        @php $count++; @endphp
+        @endforeach
     </div>
 
-    <!--add activity assignees-->
-    <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
+    <div class="btn-group ms-3 mt-2 mb-2 shadow">
+        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnAddAssignee" data-bs-toggle="modal" data-bs-target="#addActivityAssigneeModal">
+            <b class="small">Add Assignees</b>
+        </button>
+
+    </div>
+    <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
+
+    <div class="modal fade" id="addActivityAssigneeModal" tabindex="-1" aria-labelledby="addActivityAssigneeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
+                    <h5 class="modal-title" id="addActivityAssigneeModalLabel">Add Assignees</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -24,13 +53,28 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">{{ $projectName . "'s Team Members" }}</label>
 
-                        @livewire('list-add-assignees', ['activityid' => $activity['id']])
+                        <div class="form-check ms-1" @if($addassignees->isEmpty())style="display:none"@endif>
+                            <input class="form-check-input border border-primary" type="checkbox" id="selectAllAssignees">
+                            <label class="form-check-label" for="selectAllAssignees">Select All</label>
+                        </div>
 
+                        @if($addassignees->isEmpty())
+                        <h5 class="ms-3"><i>Every Team Members have been added.</i></h5>
+                        @endif
+                        @foreach($addassignees as $addassignee)
+                        <div class="form-check ms-3">
+                            <input class="form-check-input border border-primary" type="checkbox" id="addassignee_{{ $addassignee->id }}" name="addassignee[]" value="{{ $addassignee->id }}">
+                            <label class="form-check-label" for="addassignee_{{ $addassignee->id }}">{{ $addassignee->name . ' ' . $addassignee->last_name }}</label>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="myModalCloseButton" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" id="saveAssigneeButton" class="btn btn-primary">Add Assignees</button>
+                    <button type="button" class="btn btn-secondary" id="addAssigneesCloseButton" data-bs-dismiss="modal">Cancel</button>
+
+                    <button type="button" id="saveAssigneesButton" class="btn btn-primary" @if($addassignees->isEmpty())style="display:none"@endif>Add Assignees</button>
+
+
                 </div>
 
             </div>
@@ -39,49 +83,74 @@
 
     <script>
         document.addEventListener('livewire:load', function() {
-            const saveAssigneeButton = document.getElementById('saveAssigneeButton');
-            const unassignAssigneeButton = document.getElementById('unassignassignee-btn');
+            var selectAllAssignees;
+            var addAssigneeCheckboxes;
+            var saveAssigneesButton;
+            selectAllAssignees = document.getElementById('selectAllAssignees');
+            addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
+            saveAssigneesButton = document.getElementById('saveAssigneesButton');
 
+            Livewire.on('updateElements', function(selectedAssignees) {
+                selectAllAssignees = document.getElementById('selectAllAssignees');
+                addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
+                saveAssigneesButton = document.getElementById('saveAssigneesButton');
+                selectAllAssignees.checked = false;
+                document.getElementById('loadingSpan').style.display = "inline-block";
+                document.getElementById('btnAddAssignee').disabled = true;
+                Livewire.emit('sendNotification', selectedAssignees);
+            });
 
-            saveAssigneeButton.addEventListener('click', function() {
+            Livewire.on('updateLoading', function() {
+                document.getElementById('loadingSpan').style.display = "none";
+                document.getElementById('btnAddAssignee').disabled = false;
+            });
 
-                const checkboxes = document.querySelectorAll('input[name="assignees[]"]:checked');
+            Livewire.on('updateUnassignElements', function() {
+                selectAllAssignees = document.getElementById('selectAllAssignees');
+                addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
+                saveAssigneesButton = document.getElementById('saveAssigneesButton');
+                selectAllAssignees.checked = false;
+            });
 
-                // Extract their values and store them in an array
-                var selectedAssignees = Array.from(checkboxes).map(checkbox => checkbox.value);
+            saveAssigneesButton.addEventListener('click', function() {
+                var checkedAddAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]:checked');
 
+                var selectedAssignees = Array.from(checkedAddAssigneeCheckboxes).map(checkedAddAssigneeCheckbox => checkedAddAssigneeCheckbox.value);
+                document.getElementById('addAssigneesCloseButton').click();
                 Livewire.emit('saveAssignees', selectedAssignees);
-
             });
 
-            Livewire.on('updateAssignees', function() {
 
-                // Remove the 'shows' class from the notificationBar span
-                document.getElementById('updatedata').click();
-                document.getElementById('updateaddAssigneesdata').click();
-                document.getElementById('myModalCloseButton').click();
+            selectAllAssignees.addEventListener('change', function() {
+                var areAddAssigneeChecked = areAllAddAssigneeChecked();
 
-                setTimeout(function() {
-                    Livewire.emit('sendmessage');
-                }, 200); // 2-second delay
-
+                if (!areAddAssigneeChecked) {
+                    if (this.checked === true) {
+                        for (checkbox of addAssigneeCheckboxes) {
+                            if (!checkbox.checked) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    }
+                } else {
+                    if (this.checked === false) {
+                        for (checkbox of addAssigneeCheckboxes) {
+                            if (checkbox.checked) {
+                                checkbox.checked = false;
+                            }
+                        }
+                    }
+                }
             });
-            unassignAssigneeButton.addEventListener('click', function() {
 
-                var assigneedataid = document.getElementById('assigneedataid').value;
-                Livewire.emit('unassignAssignees', assigneedataid);
-
-            });
-            Livewire.on('updateunassignAssignees', function() {
-
-                // Remove the 'shows' class from the notificationBar span
-
-
-                document.getElementById('updatedata').click();
-                document.getElementById('updateaddAssigneesdata').click();
-                document.getElementById('unassignassignee-dismiss').click();
-
-            });
+            function areAllAddAssigneeChecked() {
+                for (checkbox of addAssigneeCheckboxes) {
+                    if (!checkbox.checked) {
+                        return false; // Exit the loop early if any checkbox is unchecked
+                    }
+                }
+                return true;
+            }
         });
     </script>
 </div>

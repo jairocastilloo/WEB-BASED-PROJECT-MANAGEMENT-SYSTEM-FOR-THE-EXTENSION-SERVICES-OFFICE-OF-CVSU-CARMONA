@@ -4,14 +4,14 @@
 
 <input class="d-none" type="date" value="{{ $activity['actstartdate'] }}" id="actsavestartdate">
 <input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
-<div class="maincontainer">
+<div class="maincontainer shadow">
     <div class="mainnav mb-2 shadow">
         <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <b class="small">Project: {{ $projectName }} </b>
         </div>
         <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
-            <h5><b>Activity: {{ $activity['actname'] }}</b></h5>
+            <b class="small">Activity: {{ $activity['actname'] }}</b>
         </div>
 
 
@@ -20,49 +20,20 @@
 
         <div class="row">
             @if ($activity['subtask'] == 1)
-            <div class="col-6">
+            <div class="col-lg-6">
                 @elseif ($activity['subtask'] == 0)
-                <div class="col-10">
+                <div class="col-lg-10">
                     @endif
-                    <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                         </div>
-                        <p class="lh-sm ms-4 mt-2 me-2"><strong class="text-secondary">Activity Name:</strong>
-                            {{ $activity['actname'] }}
-                            <em class="text-success fw-bold">( {{ $activity['actremark'] }} )</em>
-                        </p>
-
-
-                        @foreach ($objectives as $index => $objective)
-                        @if ($index === 0)
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Objectives:</strong> {{ $objective['name'] }}</p>
-                        @else
-                        <p class="lh-1 ms-5 me-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ $objective['name'] }}</p>
-                        @endif
-                        @endforeach
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Expected Output:</strong> {{ $activity['actoutput'] }} </p>
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
-                        </p>
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">End Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Source:</strong> {{ $activity['actsource'] }}</p>
-                        <p class="lh-sm ms-4 me-2"><strong class="text-secondary">Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
-                        <div class="btn-group dropdown ms-3 mb-3 shadow">
-                            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <b class="small">Edit Activity</b>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item small hrefnav" href="#"><b class="small">Edit Details</b></a>
-                                <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
-                                <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Participation Hours</b></a>
-                            </div>
-                        </div>
+                        @livewire('activity-details', [ 'activity' => $activity, 'objectives' => $objectives ])
 
                     </div>
 
 
-                    <div class="basiccont word-wrap shadow ms-2 mt-4">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
                         </div>
@@ -70,7 +41,7 @@
                         $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
                         @endphp
                         @foreach ($outputTypes as $outputType)
-                        <div class="border-bottom p-2 divhover selectoutputdiv" data-value="{{ $outputType }}">
+                        <div class="border-bottom p-2 divhover selectoutputdiv small" data-value="{{ $outputType }}">
                             @php
                             $outputarray = array_diff($outputarray, [$outputType]);
                             @endphp
@@ -89,12 +60,12 @@
                             </button>
                         </div>
                     </div>
-                    @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $projectName, 'activityName' => $activity['actname'] ])
+                    @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $projectName ])
                 </div>
                 @if ($activity['subtask'] == 1)
 
-                <div class="col-4">
-                    <div class="basiccont word-wrap shadow mt-4">
+                <div class="col-lg-4">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                             <div class="row">
                                 <div class="col">
@@ -141,7 +112,7 @@
 
                 @endif
 
-                <div class="col-2">
+                <div class="col-lg-2">
 
 
                     @php
@@ -165,7 +136,7 @@
                     });
                     @endphp
                     @if($activities->isEmpty())
-                    <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                         </div>
@@ -176,7 +147,7 @@
                     @endif
                     @if ($inProgressActivities && count($inProgressActivities) > 0)
 
-                    <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
                         </div>
@@ -197,7 +168,7 @@
                     @endif
                     @if ($pendingActivities && count($pendingActivities) > 0)
 
-                    <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
                         </div>
@@ -217,7 +188,7 @@
 
                     @endif
                     @if ($scheduledActivities && count($scheduledActivities) > 0)
-                    <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
                         </div>
@@ -238,7 +209,7 @@
                     @endif
                     @if ($overdueActivities && count($overdueActivities) > 0)
 
-                    <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
                         </div>
@@ -258,7 +229,7 @@
                     </div>
                     @endif
                     @if ($completedActivities && count($completedActivities) > 0)
-                    <div class="basiccont word-wrap shadow mt-4 me-2">
+                    <div class="basiccont word-wrap shadow mt-2">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                         </div>
@@ -393,12 +364,13 @@
                     <input type="hidden" id="assigneedataid" name="assigneedataid">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" id="unassignassignee-btn">Unassign</button>
+
                     <button type="button" class="btn btn-secondary" id="unassignassignee-dismiss" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- mark as completed -->
     <div class="modal fade" id="completeactivitymodal" tabindex="-1" aria-labelledby="completeactivityModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -448,138 +420,148 @@
     </div>
     <input class="d-none" type="number" id="actid-hrs" value="{{ $activity['id'] }}">
     <input class="d-none" type="text" id="actname-hrs" value="{{ $activity['actname'] }}">
-    @endsection
+</div>
+@endsection
 
-    @section('scripts')
+@section('scripts')
 
-    <script>
-        var url = "";
-        var unassignassigneeid;
+<script>
+    var url = "";
+    var unassignassigneeid;
 
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            $('#activityhours-btn').click(function(event) {
-                event.preventDefault();
-                var activityid = $('#actid-hrs').val();
-                var activityname = $('#actname-hrs').val();
-
-
-                var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
-                url = url.replace(':activityid', activityid);
-                url = url.replace(':activityname', activityname);
+        $('#activityhours-btn').click(function(event) {
+            event.preventDefault();
+            var activityid = $('#actid-hrs').val();
+            var activityname = $('#actname-hrs').val();
 
 
-                window.location.href = url;
-            });
-
-            $('#completeactivity-btn').click(function(event) {
-                event.preventDefault();
-                $('#completeactivitymodal').modal('show');
-
-            });
+            var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':activityname', activityname);
 
 
-            $('#markcomplete-btn').click(function(event) {
-                event.preventDefault();
+            window.location.href = url;
+        });
 
-                var dataurl = $('#markcompleteform').attr('data-url');
-                // Create a data object with the value you want to send
-                var data1 = $('#markcompleteform').serialize();
-
-                $.ajax({
-                    url: dataurl, // Replace with your actual AJAX endpoint URL
-                    type: 'POST',
-                    data: data1,
-                    success: function(response) {
-                        console.log(response);
-                        window.location.href = url;
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle the error here
-                        console.log(xhr.responseText);
-                        console.error(error);
-                    }
-                });
-            });
-
-            $('#setnosubtask-btn').click(function(event) {
-                event.preventDefault();
-
-                var dataurl = $('#nosubtaskform').attr('data-url');
-                // Create a data object with the value you want to send
-                var data1 = $('#nosubtaskform').serialize();
-
-                $.ajax({
-                    url: dataurl, // Replace with your actual AJAX endpoint URL
-                    type: 'POST',
-                    data: data1,
-                    success: function(response) {
-                        console.log(response.actid);
-                        window.location.href = url;
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle the error here
-                        console.log(xhr.responseText);
-                        console.error(error);
-                    }
-                });
-            });
-            $('#projectdiv').click(function(event) {
-                event.preventDefault();
-                var projectid = $(this).attr('data-value');
-                var projectname = $(this).attr('data-name');
-                var department = $('#department').val();
-
-
-                var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
-                url = url.replace(':projectid', projectid);
-                url = url.replace(':department', encodeURIComponent(department));
-                url = url.replace(':projectname', encodeURIComponent(projectname));
-                window.location.href = url;
-            });
-
-            $(document).on('click', '.selectoutputdiv', function() {
-                var outputtype = $(this).attr('data-value');
-                var actid = $('#actid').val();
-
-                var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
-                url = url.replace(':activityid', actid);
-                url = url.replace(':outputtype', outputtype);
-                window.location.href = url;
-            });
-
-            $(document).on('click', '.subtaskdiv', function() {
-
-                event.preventDefault();
-
-                var subtaskname = $(this).attr("data-name");
-                var subtaskid = $(this).attr("data-value");
-
-                var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
-                url = url.replace(':subtaskid', subtaskid);
-                url = url.replace(':subtaskname', subtaskname);
-                window.location.href = url;
-            });
-
-            $(document).on('click', '.actdiv', function() {
-                event.preventDefault();
-
-                var activityid = $(this).attr('data-value');
-                var activityname = $(this).attr('data-name');
-                var department = $('#department').val();
-
-
-
-                var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
-                url = url.replace(':activityid', activityid);
-                url = url.replace(':department', department);
-                url = url.replace(':activityname', activityname);
-                window.location.href = url;
-
-            });
-
+        $('#completeactivity-btn').click(function(event) {
+            event.preventDefault();
+            $('#completeactivitymodal').modal('show');
 
         });
-    </script>
-    <script src="{{ asset('js/activityindex.js') }}"></script>
-    @endsection
+
+
+        $('#markcomplete-btn').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#markcompleteform').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#markcompleteform').serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
+
+        $('#setnosubtask-btn').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#nosubtaskform').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#nosubtaskform').serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response.actid);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
+        $('#projectdiv').click(function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.selectoutputdiv', function() {
+            var outputtype = $(this).attr('data-value');
+            var actid = $('#actid').val();
+
+            var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':outputtype', outputtype);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.subtaskdiv', function() {
+
+            event.preventDefault();
+
+            var subtaskname = $(this).attr("data-name");
+            var subtaskid = $(this).attr("data-value");
+
+            var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
+            url = url.replace(':subtaskid', subtaskid);
+            url = url.replace(':subtaskname', subtaskname);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.actdiv', function() {
+            event.preventDefault();
+
+            var activityid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+            var department = $('#department').val();
+
+
+
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+
+        });
+
+        $(document).on('click', '.checkassignee', function(event) {
+
+
+            $('#assigneename').text($(this).attr('data-name'));
+            $('#assigneeemail').text($(this).attr('data-email'));
+            $('#assigneerole').text($(this).attr('data-role'));
+            $('#assigneedataid').val($(this).attr('data-id'));
+            // Open the modal or perform other actions
+            $('#assigneedetails').modal('show');
+        });
+    });
+</script>
+<script src="{{ asset('js/activityindex.js') }}"></script>
+@endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Mail\MyMail;
+use App\Models\ProjectUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -16,14 +17,24 @@ class ActivityAssignees extends Component
     public $activity;
     public $addassignees;
     public $projectName;
-    public $activityName;
-    public $assigneeIds = [];
-    protected $listeners = ['saveAssignees' => 'handleSaveAssignees', 'sendmessage' => 'handlesendmessage', 'unassignAssignees' => 'handleUnassignAssignees'];
-    public function mount($activity, $projectName, $activityName)
+
+    protected $listeners = ['saveAssignees' => 'handleSaveAssignees', 'sendNotification' => 'handleSendNotification'];
+    public function mount($activity, $projectName)
     {
         $this->activity = $activity;
         $this->projectName = $projectName;
-        $this->activityName = $activityName;
+
+        $assigneesIds = ActivityUser::where('activity_id', $activity->id)
+            ->pluck('user_id');
+
+        // Fetch the members using the retrieved IDs
+        $this->assignees = User::whereIn('id', $assigneesIds)->get();
+
+        $addassigneesIds = ProjectUser::where('project_id', $activity->project_id)
+            ->pluck('user_id');
+        $this->addassignees = User::whereIn('id', $addassigneesIds)
+            ->whereNotIn('id', $assigneesIds)
+            ->get();
     }
     public function saveAssignees($selectedAssignees)
     {
@@ -31,33 +42,52 @@ class ActivityAssignees extends Component
         foreach ($selectedAssignees as $assigneeId) {
             ActivityUser::create(['user_id' => $assigneeId, 'activity_id' => $this->activity->id]);
         }
-        $this->assigneeIds = $selectedAssignees;
-        $this->emit('updateAssignees');
+
+        $assigneesIds = ActivityUser::where('activity_id', $this->activity->id)
+            ->pluck('user_id');
+
+        // Fetch the members using the retrieved IDs
+        $this->assignees = User::whereIn('id', $assigneesIds)->get();
+
+        $addassigneesIds = ProjectUser::where('project_id', $this->activity->project_id)
+            ->pluck('user_id');
+        $this->addassignees = User::whereIn('id', $addassigneesIds)
+            ->whereNotIn('id', $assigneesIds)
+            ->get();
+        $this->emit('updateElements', $selectedAssignees);
     }
-    public function unassignAssignees($assigneedataid)
+    public function unassignAssignees($selectedAssignee)
     {
-        // Loop through the selected assignees and save them to the database
-
-        ActivityUser::where(['user_id' => $assigneedataid, 'activity_id' => $this->activity->id])
+        ActivityUser::where('user_id', $selectedAssignee)
             ->delete();
+        $assigneesIds = ActivityUser::where('activity_id', $this->activity->id)
+            ->pluck('user_id');
 
-        $this->emit('updateunassignAssignees');
+        // Fetch the members using the retrieved IDs
+        $this->assignees = User::whereIn('id', $assigneesIds)->get();
+
+        $addassigneesIds = ProjectUser::where('project_id', $this->activity->project_id)
+            ->pluck('user_id');
+        $this->addassignees = User::whereIn('id', $addassigneesIds)
+            ->whereNotIn('id', $assigneesIds)
+            ->get();
+        $this->emit('updateUnassignElements');
     }
-    public function sendmessage()
+    public function sendNotification($selectedAssignees)
     {
         $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
-        $assigneeIds = $this->assigneeIds;
-        $message =  $sendername . ' assigned you to a new activity: "' . $this->activityName . '".';
-        foreach ($assigneeIds as $assigneeId) {
+
+        $message =  $sendername . ' assigned you to a new activity: "' . $this->activity->actname . '".';
+        foreach ($selectedAssignees as $selectedAssignee) {
             $notification = new Notification([
-                'user_id' => $assigneeId,
+                'user_id' => $selectedAssignee,
                 'task_id' => $this->activity->id,
                 'task_type' => "activity",
-                'task_name' => $this->activityName,
+                'task_name' => $this->activity->actname,
                 'message' => $message,
             ]);
             $notification->save();
-            $assignee = User::findorFail($assigneeId);
+            $assignee = User::findorFail($selectedAssignee);
             $email = $assignee->email;
             $name = $assignee->name . ' ' . $assignee->last_name;
             $taskname = $this->activity->actname;
@@ -68,23 +98,18 @@ class ActivityAssignees extends Component
             $taskdeadline = $startDate . ' - ' . $endDate;
             $senderemail = Auth::user()->email;
             Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+            $this->emit('updateLoading');
         }
     }
-    public function handlesendmessage()
+
+    public function handleSendNotification($selectedAssignees)
     {
-        $this->sendmessage();
-    }
-    public function handleUnassignAssignees($assigneedataid)
-    {
-        $this->unassignAssignees($assigneedataid);
+        $this->sendNotification($selectedAssignees);
     }
     public function handleSaveAssignees($selectedAssignees)
     {
-        // Your code to handle the event goes here
-        // For example, you can call the saveAssignees method
-        $this->saveAssignees($selectedAssignees);
-        // You can also perform other actions or emit events in response to this event
 
+        $this->saveAssignees($selectedAssignees);
     }
 
     public function render()

@@ -216,15 +216,6 @@ class ActivityController extends Controller
         // activity details
         $activity = Activity::find($activityid);
         // activity assignees
-        $activityUser = ActivityUser::where('activity_id', $activityid)
-            ->with('user:id,name,middle_name,last_name,email,role')
-            ->get();
-
-        $assignees = $activityUser->map(function ($item) {
-            return $item->user;
-        });
-
-        $excludeUserIds = $activityUser->pluck('user_id')->toArray();
 
         // activity subtasks
         $subtasks = Subtask::where('activity_id', $activityid)->get();
@@ -238,36 +229,22 @@ class ActivityController extends Controller
         $objectiveset = $activity->actobjectives;
         $objectives = Objective::where('project_id', $projectId)
             ->where('objectiveset_id', $objectiveset)
-            ->get('name');
-
-        //add assignees
-        $projectuser = ProjectUser::where('project_id', $projectId)
-            ->whereNotIn('user_id', $excludeUserIds)
-            ->with('user:id,name,middle_name,last_name')
             ->get();
-        $addassignees = $projectuser->map(function ($item) {
-            return $item->user;
-        });
 
         // all activities in a project
         $activities = Activity::where('project_id', $projectId)
             ->whereNotIn('id', [$activityid])
             ->get();
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
 
         return view('activity.index', [
             'activity' => $activity,
             'activities' => $activities,
-            'assignees' => $assignees,
             'subtasks' => $subtasks,
             'outputs' => $outputs,
             'outputTypes' => $outputTypes,
-            'addassignees' => $addassignees,
             'projectName' => $projectName,
             'projectId' => $projectId,
             'objectives' => $objectives,
-            'notifications' => $notifications,
         ]);
     }
 

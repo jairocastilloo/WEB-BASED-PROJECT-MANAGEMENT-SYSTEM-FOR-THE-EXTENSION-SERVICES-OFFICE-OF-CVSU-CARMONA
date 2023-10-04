@@ -112,7 +112,7 @@
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
-                            Scheduled
+                            Scheduled Projects
                             <span class="badge bggold text-dark">
                                 {{ count($scheduledProjects) }}
                             </span>
