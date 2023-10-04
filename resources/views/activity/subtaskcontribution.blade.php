@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="maincontainer">
-    <div class="mainnav mb-2">
+<div class="maincontainer shadow">
+    <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>

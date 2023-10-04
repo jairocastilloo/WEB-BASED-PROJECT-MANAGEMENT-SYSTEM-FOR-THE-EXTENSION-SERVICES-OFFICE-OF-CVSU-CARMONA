@@ -2,8 +2,8 @@
 
 @section('content')
 
-<div class="maincontainer">
-    <div class="mainnav mb-2">
+<div class="maincontainer shadow">
+    <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
@@ -18,7 +18,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-lg-8">
                 @php
 
                 $unevaluatedSubmission = $contributions->filter(function ($contri) {
@@ -33,23 +33,17 @@
 
                 @endphp
 
-                <div class="basiccont word-wrap shadow ms-2 mt-4 pb-1" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                <div class="basiccont word-wrap shadow mt-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
                     </div>
-                    <p class="ps-4 lh-1 pt-2"><b>Name: {{ $subtask['subtask_name'] }}</b></p>
-                    <p class="ps-5 lh-1">Total Hours Rendered: {{ $subtask['hours_rendered'] }}</p>
-                    <p class="ps-5 lh-1">Due Date: {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
+                    <p class="ps-4 lh-1 pt-2"><b>Name:</b> {{ $subtask['subtask_name'] }}</p>
+                    <p class="ps-4 lh-1"><b>Total Hours Rendered:</b> {{ $subtask['hours_rendered'] }}</p>
+                    <p class="ps-4 lh-1"><b>Due Date:</b> {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
                     </p>
-                    <p class="ps-5 lh-1">Assignees:
-                        @foreach($currentassignees as $currentassignee)
-                        {{ $currentassignee->name . ' ' . $currentassignee->last_name . ' |'}}
 
-                        @endforeach
-                        <button type="button" class="btn btn-sm btn-outline-secondary ms-1" id="add-subtaskassignees">+</button>
-                    </p>
                     @if (count($acceptedSubmission) == 0)
-                    <div class="btn-group ms-3 mb-2 shadow">
+                    <div class="btn-group ms-3 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
                             <b class="small">Submit Hours</b>
                         </button>
@@ -58,7 +52,7 @@
                 </div>
 
                 @if($contributions->isEmpty())
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow mt-2">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
                     </div>
@@ -70,7 +64,7 @@
 
                 @if (count($unevaluatedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow mt-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
@@ -88,7 +82,7 @@
                 @endif
                 @if (count($acceptedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow mt-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
                     </div>
@@ -105,7 +99,7 @@
                 @endif
                 @if (count($rejectedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow ms-2 mt-4">
+                <div class="basiccont word-wrap shadow mt-2">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>
@@ -120,19 +114,20 @@
                     @endforeach
                 </div>
                 @endif
-
+                @livewire('subtask-assignees', ['subtask' => $subtask, 'activity' => $activity ])
             </div>
 
-            <div class="col-4">
-                <div class="basiccont word-wrap shadow mt-4 me-2">
+            <div class="col-lg-4">
+                <div class="basiccont word-wrap shadow mt-2">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Subtasks</h6>
                     </div>
                     @foreach ($subtasks as $sub)
                     @if ($sub->subtask_name != $subtask['subtask_name'])
 
-                    <div class="divhover p-2 ps-4 subtaskdiv" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">
-                        <b class="small">{{ $sub->subtask_name }}</b>
+                    <div class="divhover ps-4 p-2 subtaskdiv border border-bottom" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">
+                        <h6 class="lh-1 small"><strong>{{ $sub->subtask_name }}</strong></h6>
+                        <h6 class="lh-1 small">Due {{ date('M d, Y', strtotime($sub->subduedate)) }}</h6>
                     </div>
 
                     @endif
@@ -145,41 +140,31 @@
 
 </div>
 
-<!--add activity assignees-->
-<div class="modal fade" id="addSubtaskAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
+<!--assignees details-->
+<div class="modal fade" id="assigneedetails" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addAssigneeModalLabel">Add Assignee</h5>
+                <h5 class="modal-title" id="detailsModalLabel">Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
-                <form id="assigneeform" data-url="{{ route('add.subtaskassignee') }}">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="assigneeSelect" class="form-label">Assignee</label>
-                        <input type="number" class="d-none" name="subtaskid" value="{{ $subtask['id'] }}">
-                        <select class="form-select" id="subtaskassigneeselect" name="userid">
-                            <option value="" selected disabled>Select Assignee</option>
-                            @foreach($assignees as $assignee)
-
-                            <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                </form>
-
+                <p><strong>Name:</strong></p>
+                <p id="assigneename"> John Doe</p>
+                <p><strong>Email:</strong></p>
+                <p id="assigneeemail"> johndoe@example.com</p>
+                <p><strong>Role:</strong> </p>
+                <p id="assigneerole">Developer</p>
+                <input type="hidden" id="assigneedataid" name="assigneedataid">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmsubtaskassignee-btn">Add Assignee</button>
-            </div>
 
+                <button type="button" class="btn btn-secondary" id="unassignassignee-dismiss" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
     </div>
 </div>
+
 @endsection
 @section('scripts')
 <script>
@@ -330,6 +315,17 @@
             window.location.href = url;
         });
 
+
+        $(document).on('click', '.checkassignee', function(event) {
+
+
+            $('#assigneename').text($(this).attr('data-name'));
+            $('#assigneeemail').text($(this).attr('data-email'));
+            $('#assigneerole').text($(this).attr('data-role'));
+            $('#assigneedataid').val($(this).attr('data-id'));
+            // Open the modal or perform other actions
+            $('#assigneedetails').modal('show');
+        });
     });
 </script>
 @endsection

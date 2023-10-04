@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="maincontainer">
-    <div class="mainnav mb-2">
+<div class="maincontainer shadow">
+    <div class="mainnav mb-2 shadow">
         <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}">
             <h6><b>Project: {{ $projectName }}</b></h6>
         </div>
@@ -142,9 +142,9 @@
         $('#addcontributor-confirm').click(function(event) {
             event.preventDefault();
             var contributorname = $('#contributorselect option:selected').text();
-            var contributordiv = `<div class="col-6 divhover p-2">
+            var contributordiv = `<div class="col-lg-6 divhover p-2">
                             ${contributorname}
-                            <button type="button" class="btn btn-outline-danger btn-sm float-end"> x </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm float-end fs-6"><i class="bi bi-person-dash"></i></button>
                         </div>`
 
             $('.contributor-name').append(contributordiv);

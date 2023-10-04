@@ -1,29 +1,29 @@
 <div>
     <input type="hidden" id="projsavestartdate" name="projsavestartdate" value="{{ $projectdate->projectstartdate }}">
     <input type="hidden" id="projsaveenddate" name="projsaveenddate" value="{{ $projectdate->projectenddate }}">
-    <p class="lh-sm ms-4 mt-2 me-2 small"><strong>Name:</strong>
+    <p class="lh-sm ms-4 mt-2 me-2"><strong>Name:</strong>
         {{ $activity['actname'] }}
         <em class="text-success fw-bold">( {{ $activity['actremark'] }} )</em>
     </p>
 
-    <p class="lh-sm ms-4 me-2 small"><strong>Objectives:</strong></p>
+    <p class="lh-sm ms-4 me-2"><strong>Objectives:</strong></p>
     @foreach ($currentobjectives as $currentobjective)
 
-    <p class="ms-4 me-2 small lh-1">- {{ $currentobjective['name'] }}</p>
+    <p class="ms-4 me-2 lh-1">- {{ $currentobjective['name'] }}</p>
 
     @endforeach
-    <p class="lh-sm ms-4 me-2 small"><strong>Expected Output:</strong> {{ $activity['actoutput'] }} </p>
-    <p class="lh-sm ms-4 me-2 small"><strong>Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
+    <p class="lh-sm ms-4 me-2"><strong>Expected Output:</strong> {{ $activity['actoutput'] }} </p>
+    <p class="lh-sm ms-4 me-2"><strong>Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
     </p>
-    <p class="lh-sm ms-4 me-2 small"><strong>Due Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
-    <p class="lh-sm ms-4 me-2 small"><strong>Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
-    <p class="lh-sm ms-4 me-2 small"><strong>Source:</strong> {{ $activity['actsource'] }}</p>
-    <p class="lh-sm ms-4 me-2 small"><strong>Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
+    <p class="lh-sm ms-4 me-2"><strong>Due Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
+    <p class="lh-sm ms-4 me-2"><strong>Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
+    <p class="lh-sm ms-4 me-2"><strong>Source:</strong> {{ $activity['actsource'] }}</p>
+    <p class="lh-sm ms-4 me-2"><strong>Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
     <div class="btn-group dropdown ms-3 mb-3 shadow">
         <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <b class="small"> <i class="bi bi-list"></i> Menu</b>
         </button>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu border border-1 border-warning">
             <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Edit Details</b></a>
             <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
             <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Participation Hours</b></a>

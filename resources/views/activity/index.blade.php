@@ -6,12 +6,12 @@
 <input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
 <div class="maincontainer shadow">
     <div class="mainnav mb-2 shadow">
-        <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+        <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword text-break" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
-            <b class="small">Project: {{ $projectName }} </b>
+            <b>Project: {{ $projectName }} </b>
         </div>
         <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
-            <b class="small">Activity: {{ $activity['actname'] }}</b>
+            <b>Activity: {{ $activity['actname'] }}</b>
         </div>
 
 
@@ -41,7 +41,7 @@
                         $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
                         @endphp
                         @foreach ($outputTypes as $outputType)
-                        <div class="border-bottom p-2 divhover selectoutputdiv small" data-value="{{ $outputType }}">
+                        <div class="border-bottom p-2 divhover selectoutputdiv" data-value="{{ $outputType }}">
                             @php
                             $outputarray = array_diff($outputarray, [$outputType]);
                             @endphp
@@ -91,9 +91,9 @@
 
                         @foreach ($subtasks as $subtask)
 
-                        <div class="divhover p-3 pe-2 ps-4 subtaskdiv border-bottom" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
-                            <p class="lh-1">Name: {{ $subtask->subtask_name }}</p>
-                            <p class="lh-1">Due Date: {{ $subtask->subduedate }}</p>
+                        <div class="divhover p-2 ps-4 subtaskdiv border-bottom word-wrap" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
+                            <h6 class="lh-1 small"><strong>{{ $subtask->subtask_name }}</strong> </h6>
+                            <h6 class="lh-1 small">Due {{ date('M d, Y', strtotime($subtask->subduedate)) }}</h6>
                         </div>
 
                         @endforeach
@@ -135,8 +135,9 @@
                     return $act['actremark'] === 'Completed';
                     });
                     @endphp
+                    <label class="ms-3 small form-label text-secondary fw-bold">Other Activities</label>
                     @if($activities->isEmpty())
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
                         </div>
@@ -147,7 +148,7 @@
                     @endif
                     @if ($inProgressActivities && count($inProgressActivities) > 0)
 
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
                         </div>
@@ -168,7 +169,7 @@
                     @endif
                     @if ($pendingActivities && count($pendingActivities) > 0)
 
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
                         </div>
@@ -188,7 +189,7 @@
 
                     @endif
                     @if ($scheduledActivities && count($scheduledActivities) > 0)
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
                         </div>
@@ -209,7 +210,7 @@
                     @endif
                     @if ($overdueActivities && count($overdueActivities) > 0)
 
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
                         </div>
@@ -229,7 +230,7 @@
                     </div>
                     @endif
                     @if ($completedActivities && count($completedActivities) > 0)
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                         </div>

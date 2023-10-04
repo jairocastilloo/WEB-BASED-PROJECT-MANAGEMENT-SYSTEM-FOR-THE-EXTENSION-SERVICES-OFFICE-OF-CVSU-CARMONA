@@ -198,9 +198,6 @@ $(document).ready(function(){
        
         url = url.replace(':subtaskname', $('#subtaskname').val());
 
-        
-        window.location.href = url;
-
         var dataurl = $('#subtaskform').attr('data-url');
         var data1 = $('#subtaskform').serialize();
 
@@ -211,7 +208,6 @@ $(document).ready(function(){
             type: 'POST',
             data: data1,
             success: function(response) {
-                console.log(response);
                 url = url.replace(':subtaskid', response.lastsubtaskid);
                 window.location.href = url;
 

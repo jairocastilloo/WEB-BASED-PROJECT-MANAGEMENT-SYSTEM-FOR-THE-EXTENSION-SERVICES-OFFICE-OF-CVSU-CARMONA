@@ -51,7 +51,7 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">{{ $projectName . "'s Team Members" }}</label>
+                        <label class="form-label fw-bold">{{ $activity['actname'] . "'s Assignees" }}</label>
 
                         <div class="form-check ms-1" @if($addassignees->isEmpty())style="display:none"@endif>
                             <input class="form-check-input border border-primary" type="checkbox" id="selectAllAssignees">
@@ -59,7 +59,7 @@
                         </div>
 
                         @if($addassignees->isEmpty())
-                        <h5 class="ms-3"><i>Every Team Members have been added or there`s no team member assigned for the project.</i></h5>
+                        <h5 class="ms-3"><i>Every Assignees have been added or there`s no assignee for the activity.</i></h5>
                         @endif
                         @foreach($addassignees as $addassignee)
                         <div class="form-check ms-3">

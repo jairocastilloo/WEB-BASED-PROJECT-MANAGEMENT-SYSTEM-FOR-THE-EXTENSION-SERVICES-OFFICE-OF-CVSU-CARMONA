@@ -106,15 +106,13 @@ class SubtaskController extends Controller
 
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
         return view('activity.submitsubtask', [
             'activity' => $activity,
             'subtask' => $subtask,
             'projectName' => $projectName,
             'projectId' => $projectId,
             'currentassignees' => $currentassignees,
-            'notifications' => $notifications,
         ]);
     }
 
@@ -176,24 +174,7 @@ class SubtaskController extends Controller
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 
-        $currentassignees = $subtask->users;
-
-        $subtaskuser = SubtaskUser::where('subtask_id', $subtaskid)->get();
-
-
-        $excludeUserIds = $subtaskuser->pluck('user_id')->toArray();
-        $activityUser = ActivityUser::where('activity_id', $activityid)
-            ->whereNotIn('user_id', $excludeUserIds)
-            ->with('user:id,name,middle_name,last_name,email,role')
-            ->get();
-
-        $assignees = $activityUser->map(function ($item) {
-            return $item->user;
-        });
-
         $contributions = Contribution::where('subtask_id', $subtaskid)
-            ->get();
-        $notifications = Notification::where('user_id', Auth::user()->id)
             ->get();
 
         return view('activity.subtask', [
@@ -202,10 +183,7 @@ class SubtaskController extends Controller
             'subtasks' => $subtasks,
             'projectName' => $projectName,
             'projectId' => $projectId,
-            'assignees' => $assignees,
-            'currentassignees' => $currentassignees,
             'contributions' => $contributions,
-            'notifications' => $notifications,
         ]);
     }
 
