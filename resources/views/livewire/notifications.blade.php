@@ -1,6 +1,6 @@
 <div>
 
-    <a wire:click="update" class="nav-link text-white position-relative me-2 navtohover mx-2" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+    <a wire:click="update" class="nav-link text-white position-relative me-2 @if(in_array(Route::currentRouteName(), ['notification.index'])) currenthover @else navtohover @endif mx-2" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
 
         Notifications
         @if($unreadnotificationscount)

@@ -41,6 +41,12 @@ class ProjectController extends Controller
 
         $currentproject = Project::where('department', $department)
             ->where('calendaryear', $currentyear)
+            ->where('projectenddate', '>=', $currentDate)
+            ->get();
+
+        $pastproject = Project::where('department', $department)
+            ->where('calendaryear', $currentyear)
+            ->where('projectenddate', '<', $currentDate)
             ->get();
 
         $inCurrentYear = true;
@@ -52,6 +58,7 @@ class ProjectController extends Controller
             'members' => $users,
             'calendaryears' => $calendaryears,
             'currentproject' => $currentproject,
+            'pastproject' => $pastproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
         ]);
@@ -75,8 +82,12 @@ class ProjectController extends Controller
 
         $currentproject = Project::where('department', $department)
             ->where('calendaryear', $currentyear)
+            ->where('projectenddate', '>=', $currentDate)
             ->get();
-
+        $pastproject = Project::where('department', $department)
+            ->where('calendaryear', $currentyear)
+            ->where('projectenddate', '<', $currentDate)
+            ->get();
         $calendaryears = CalendarYear::pluck('year');
 
 
@@ -84,6 +95,7 @@ class ProjectController extends Controller
             'members' => $users,
             'calendaryears' => $calendaryears,
             'currentproject' => $currentproject,
+            'pastproject' => $pastproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
         ]);

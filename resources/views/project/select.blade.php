@@ -293,7 +293,9 @@
 
             <div class="col-lg-2">
 
-
+                @php
+                $sortedProjects= $currentproject->sortBy('projectstartdate');
+                @endphp
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
                 @if($currentproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
@@ -310,7 +312,8 @@
                     </div>
                 </div>
                 @else
-                @livewire('other-projects', ['currentproject' => $currentproject])
+
+                @livewire('other-projects', ['currentproject' => $sortedProjects])
                 @endif
 
 

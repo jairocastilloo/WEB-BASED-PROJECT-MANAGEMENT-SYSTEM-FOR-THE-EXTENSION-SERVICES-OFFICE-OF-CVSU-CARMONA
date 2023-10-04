@@ -242,14 +242,17 @@ body {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: gold;
+  background-color: white;
   transform: scaleX(0);
 }
 
 .navtohover:hover::after {
   transform: scaleX(1);
 }
-
+.currenthover {
+  position: relative;
+  border-bottom: 3px solid gold;
+}
 /*container for a selected activity*/
 .maincontainer {
   width: 100%;

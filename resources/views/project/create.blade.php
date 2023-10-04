@@ -44,20 +44,8 @@
 
                 $sortedProjects= $currentproject->sortBy('projectstartdate');
 
-                $inProgressProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'In Progress';
-                });
-                $scheduledProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Scheduled';
-                });
-                $overdueProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Incomplete';
-                });
-                $completedProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Completed';
-                });
                 @endphp
-
+                <label class="ms-2 small form-label text-secondary fw-bold">Upcoming and Ongoing Projects</label>
                 @if($currentproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
@@ -72,73 +60,14 @@
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
                         <div class="text-center p-4">
-                            <h4><em>No Other Projects Yet.</em></h4>
+                            <h4><em>No Projects Yet.</em></h4>
                         </div>
                     </div>
                 </div>
+                @else
+
+                @livewire('other-projects', ['currentproject' => $sortedProjects])
                 @endif
-                @if ($inProgressProjects && count($inProgressProjects) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            In Progress Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($inProgressProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($inProgressProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                @if ($scheduledProjects && count($scheduledProjects) > 0)
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Scheduled Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($scheduledProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($scheduledProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
 
 
 
@@ -146,67 +75,35 @@
 
             <div class="col-lg-2">
 
+                @php
 
-                @if ($completedProjects && count($completedProjects) > 0)
+                $pastProjects= $pastproject->sortBy('projectstartdate');
+
+                @endphp
+                <label class="ms-2 small form-label text-secondary fw-bold">Past Projects</label>
+                @if($pastproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
-                            Completed
+                            Projects
                             <span class="badge bggold text-dark">
-                                {{ count($completedProjects) }}
+                                {{ count($pastproject) }}
                             </span>
                             <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
 
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($completedProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                        <div class="text-center p-4">
+                            <h4><em>No Projects Yet.</em></h4>
                         </div>
-                        @endforeach
                     </div>
                 </div>
+                @else
+
+                @livewire('other-projects', ['currentproject' => $pastProjects])
                 @endif
-                @if ($overdueProjects && count($overdueProjects) > 0)
 
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Incomplete
-                            <span class="badge bggold text-dark">
-                                {{ count($overdueProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($overdueProjects as $project)
-
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
 
             </div>
 

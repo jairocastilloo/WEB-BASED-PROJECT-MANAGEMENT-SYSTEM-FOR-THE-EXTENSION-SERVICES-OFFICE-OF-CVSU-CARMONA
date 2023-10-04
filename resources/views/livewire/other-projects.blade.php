@@ -16,7 +16,7 @@
 
         @foreach ($currentproject as $project)
         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
+            <h6 class="fw-bold">{{ $project['projecttitle'] }} - <span class="text-success">{{ $project['projectstatus'] }}</span></h6>
             @php
             $startDate = date('M d, Y', strtotime($project['projectstartdate']));
             $endDate = date('M d, Y', strtotime($project['projectenddate']));
