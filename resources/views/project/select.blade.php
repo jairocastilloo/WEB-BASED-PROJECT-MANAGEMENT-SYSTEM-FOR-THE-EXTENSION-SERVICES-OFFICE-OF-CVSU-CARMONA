@@ -4,15 +4,12 @@
 
 <div class="maincontainer border border-start border-end border-bottom">
     <div class="mainnav mb-4 shadow-sm ps-3">
-        <div class="p-2 pt-3 border-end border-bottom border-start border-success text-wrap text-success px-3" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold">Project</h6>
+        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6 class="fw-bold text-success">Project</h6>
         </div>
         <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
 
-            <h6 class="dropdown-toggle text-dark fw-bold">Activities
-
-
-            </h6>
+            <h6 class="dropdown-toggle text-dark fw-bold">Activities</h6>
 
             <ul class="dropdown-menu">
                 @php
@@ -27,24 +24,7 @@
             </ul>
         </div>
 
-        <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
 
-            <h6 class="dropdown-toggle text-dark fw-bold">Subtasks
-
-            </h6>
-
-            <ul class="dropdown-menu">
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedActivities = $activities->sortBy('actstartdate');
-                @endphp
-                @foreach ($sortedActivities as $activity)
-                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">{{ $activity['actname'] }}</a></li>
-                @endforeach
-
-
-            </ul>
-        </div>
 
     </div>
     <div class="container">
@@ -75,12 +55,13 @@
                             <h5><strong>Calendar Year:</strong></h5>
                         </label>
                     </div>
+                    @if (Auth::user()->role === 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                             <b class="small">Create Project</b>
                         </button>
                     </div>
-
+                    @endif
                 </div>
 
                 <div class="basiccont p-3 rounded shadow">

@@ -2,18 +2,17 @@
 
 @section('content')
 
-<div class="maincontainer shadow">
-    <div class="mainnav mb-3 shadow">
-        <div class="col-4 p-2 pt-3 border-end position-triangle text-wrap" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold">Projects</h6>
-        </div>
-        <div class="dropdown col-4 border-end text-wrap containerhover">
-            <div class="p-2 pt-3" data-bs-toggle="dropdown">
-                <h6 class="fw-bold">Activities
+<div class="maincontainer border border-start border-end border-bottom">
+    <div class="mainnav mb-4 shadow-sm ps-3">
 
-                    <i class="bi bi-caret-down-fill text-end"></i>
-                </h6>
-            </div>
+        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle">
+            <h6 class="fw-bold" style="color:darkgreen;">Project</h6>
+        </div>
+
+        <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
+
+            <h6 class="dropdown-toggle text-dark fw-bold">Activities</h6>
+
             <ul class="dropdown-menu">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
@@ -23,12 +22,8 @@
                 <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">{{ $activity['actname'] }}</a></li>
                 @endforeach
 
-
             </ul>
-        </div>
 
-        <div class="col-4 p-2 pt-3 border-end text-wrap text-center" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold">Subtasks</h6>
         </div>
 
     </div>

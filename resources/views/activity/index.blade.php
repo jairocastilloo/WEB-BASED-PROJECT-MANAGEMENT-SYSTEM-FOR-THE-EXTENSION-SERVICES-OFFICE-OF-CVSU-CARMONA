@@ -88,15 +88,13 @@
                         </div>
 
                         @else
+                        @php
+                        // Sort the $activities array by actstartdate in ascending order
+                        $sortedSubtasks = $subtasks->sortBy('subduedate');
 
-                        @foreach ($subtasks as $subtask)
+                        @endphp
+                        @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
 
-                        <div class="divhover p-2 ps-4 subtaskdiv border-bottom word-wrap" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
-                            <h6 class="lh-1 small"><strong>{{ $subtask->subtask_name }}</strong> </h6>
-                            <h6 class="lh-1 small">Due {{ date('M d, Y', strtotime($subtask->subduedate)) }}</h6>
-                        </div>
-
-                        @endforeach
 
                         @endif
 

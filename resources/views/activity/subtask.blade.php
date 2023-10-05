@@ -118,20 +118,18 @@
             </div>
 
             <div class="col-lg-4">
-                <div class="basiccont word-wrap shadow mt-2">
+                <label class="ms-3 small form-label text-secondary fw-bold">Other Subtasks</label>
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Other Subtasks</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
                     </div>
-                    @foreach ($subtasks as $sub)
-                    @if ($sub->subtask_name != $subtask['subtask_name'])
+                    @php
+                    // Sort the $activities array by actstartdate in ascending order
+                    $sortedSubtasks = $subtasks->sortBy('subduedate');
 
-                    <div class="divhover ps-4 p-2 subtaskdiv border border-bottom" data-value="{{ $sub->id }}" data-name="{{ $sub->subtask_name }}">
-                        <h6 class="lh-1 small"><strong>{{ $sub->subtask_name }}</strong></h6>
-                        <h6 class="lh-1 small">Due {{ date('M d, Y', strtotime($sub->subduedate)) }}</h6>
-                    </div>
+                    @endphp
+                    @livewire('other-subtasks', ['subtasks' => $subtasks] )
 
-                    @endif
-                    @endforeach
 
                 </div>
             </div>
