@@ -1,17 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="maincontainer">
+<div class="maincontainer border border-start border-end border-bottom">
     <input id="department" class="d-none" type="text" value="{{ Auth::user()->department }}">
-    <div class="mainnav mb-2">
 
-        <div class="col-6 p-2 pt-3 border-end text-center position-triangle ">
-            <h6><b>Project Insights</b></h6>
-        </div>
-        <div class="col-6 p-2 pt-3 text-center mainnavpassive">
-            <h6><b>Financial Report</b></h6>
-        </div>
-    </div>
     <div class="container">
         <div class="basiccont m-4 p-3 rounded shadow">
 

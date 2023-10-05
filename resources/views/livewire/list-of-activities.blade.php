@@ -1,15 +1,19 @@
 <div>
     <input type="hidden" id="projsavestartdate" name="projsavestartdate" value="{{ $indexproject->projectstartdate }}">
     <input type="hidden" id="projsaveenddate" name="projsaveenddate" value="{{ $indexproject->projectenddate }}">
+    <div class="input-container m-2">
+        <input type="text" class="form-control" wire:model="search" placeholder="Search activities...">
+    </div>
     @php
     // Sort the $activities array by actstartdate in ascending order
     $sortedActivities = $activities->sortBy('actstartdate');
     @endphp
+
     @foreach ($sortedActivities as $activity)
 
     <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}">
 
-        <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+        <h6 class="fw-bold small">{{ $activity['actname'] }} - <span class="text-success">{{ $activity['actremark'] }}</span></h6>
 
         @php
         $startDate = date('M d', strtotime($activity['actstartdate']));

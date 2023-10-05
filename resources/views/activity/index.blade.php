@@ -119,21 +119,6 @@
                     // Sort the $activities array by actstartdate in ascending order
                     $sortedActivities = $activities->sortBy('actstartdate');
 
-                    $inProgressActivities = $sortedActivities->filter(function ($act) {
-                    return $act['actremark'] === 'In Progress';
-                    });
-                    $pendingActivities = $sortedActivities->filter(function ($act) {
-                    return $act['actremark'] === 'Pending';
-                    });
-                    $scheduledActivities = $sortedActivities->filter(function ($act) {
-                    return $act['actremark'] === 'Scheduled';
-                    });
-                    $overdueActivities = $sortedActivities->filter(function ($act) {
-                    return $act['actremark'] === 'Overdue';
-                    });
-                    $completedActivities = $sortedActivities->filter(function ($act) {
-                    return $act['actremark'] === 'Completed';
-                    });
                     @endphp
                     <label class="ms-3 small form-label text-secondary fw-bold">Other Activities</label>
                     @if($activities->isEmpty())
@@ -145,110 +130,11 @@
                             <h4><em>No Other Activities Yet.</em></h4>
                         </div>
                     </div>
-                    @endif
-                    @if ($inProgressActivities && count($inProgressActivities) > 0)
-
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">In Progress Activities</h6>
-                        </div>
-                        @foreach ($inProgressActivities as $act)
-                        <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
-
-                            <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($act['actstartdate']));
-                            $endDate = date('M d, Y', strtotime($act['actenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-                    @if ($pendingActivities && count($pendingActivities) > 0)
-
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Pending Activities</h6>
-                        </div>
-                        @foreach ($pendingActivities as $act)
-                        <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
-                            <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($act['actstartdate']));
-                            $endDate = date('M d, Y', strtotime($act['actenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
+                    @else
+                    @livewire('other-activities', ['activities' => $sortedActivities] )
 
                     @endif
-                    @if ($scheduledActivities && count($scheduledActivities) > 0)
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Activities</h6>
-                        </div>
-                        @foreach ($scheduledActivities as $act)
-                        <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
 
-                            <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($act['actstartdate']));
-                            $endDate = date('M d, Y', strtotime($act['actenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-                    @if ($overdueActivities && count($overdueActivities) > 0)
-
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Overdue Activities</h6>
-                        </div>
-                        @foreach ($overdueActivities as $act)
-                        <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
-
-                            <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($act['actstartdate']));
-                            $endDate = date('M d, Y', strtotime($act['actenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
-                    @if ($completedActivities && count($completedActivities) > 0)
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
-                        </div>
-                        @foreach ($completedActivities as $act)
-                        <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $act['id'] }}" data-name="{{ $act->actname }}">
-
-                            <h6 class="fw-bold small">{{ $act['actname'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($act['actstartdate']));
-                            $endDate = date('M d, Y', strtotime($act['actenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                    @endif
 
                 </div>
             </div>

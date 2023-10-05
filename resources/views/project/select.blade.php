@@ -2,18 +2,18 @@
 
 @section('content')
 
-<div class="maincontainer border border-start border-end">
-    <div class="mainnav mb-3 shadow-sm">
-        <div class="col-4 p-2 pt-3 border-end border-bottom border-start text-wrap text-center text-dark position-triangle" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6>Project</h6>
+<div class="maincontainer border border-start border-end border-bottom">
+    <div class="mainnav mb-4 shadow-sm ps-3">
+        <div class="p-2 pt-3 border-end border-bottom border-start border-success text-wrap text-success px-3" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6 class="fw-bold">Project</h6>
         </div>
-        <div class="dropdown col-4 border-end border-bottom text-wrap containerhover text-center text-dark">
-            <div class="p-2 pt-3 dropdown" data-bs-toggle="dropdown">
-                <h6 class="dropdown-toggle">Activities
+        <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
+
+            <h6 class="dropdown-toggle text-dark fw-bold">Activities
 
 
-                </h6>
-            </div>
+            </h6>
+
             <ul class="dropdown-menu">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
@@ -27,12 +27,12 @@
             </ul>
         </div>
 
-        <div class="dropdown col-4 border-end border-bottom text-wrap containerhover text-center text-dark">
-            <div class="p-2 pt-3 dropdown" data-bs-toggle="dropdown">
-                <h6 class="dropdown-toggle">Subtasks
+        <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
 
-                </h6>
-            </div>
+            <h6 class="dropdown-toggle text-dark fw-bold">Subtasks
+
+            </h6>
+
             <ul class="dropdown-menu">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
@@ -84,6 +84,7 @@
                 </div>
 
                 <div class="basiccont p-3 rounded shadow">
+
                     <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
                     <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
                     <div class="flex-container">

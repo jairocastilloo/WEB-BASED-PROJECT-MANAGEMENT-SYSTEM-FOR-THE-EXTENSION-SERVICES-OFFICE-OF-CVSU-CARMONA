@@ -8,17 +8,21 @@ use Livewire\Component;
 
 class ListOfActivities extends Component
 {
+    public $search = '';
     public $activities;
+    public $activityIds = [];
     public $objectives;
     public $indexproject;
     protected $listeners = ['saveActivity' => 'handlesaveActivity'];
     public function mount($indexproject)
     {
+
         $this->activities = Activity::where('project_id', $indexproject->id)
             ->get();
         $this->objectives = Objective::where('project_id', $indexproject->id)
             ->get();
         $this->indexproject = $indexproject;
+        $this->activityIds = $this->activities->pluck('id')->toArray();
     }
     public function saveActivity($arguments)
     {
@@ -42,6 +46,9 @@ class ListOfActivities extends Component
     }
     public function render()
     {
+        $this->activities = Activity::where('actname', 'like', '%' . $this->search . '%')
+            ->whereIn('id', $this->activityIds)
+            ->get();
         return view('livewire.list-of-activities');
     }
 }
