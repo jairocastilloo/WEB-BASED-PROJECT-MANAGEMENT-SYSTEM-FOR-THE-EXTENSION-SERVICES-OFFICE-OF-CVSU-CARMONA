@@ -2,7 +2,7 @@
     <div class="basiccont word-wrap shadow">
         <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover">
             <h6 class="fw-bold small" style="color: darkgreen;">
-                Projects
+                Project Reports
                 <span class="badge bggold text-dark">
                     {{ count($currentproject) }}
                 </span>
@@ -16,7 +16,8 @@
 
         @foreach ($currentproject as $project)
         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-            <h6 class="fw-bold"><i class="bi bi-kanban"></i> {{ $project['projecttitle'] }} - <span class="text-success">{{ $project['projectstatus'] }}</span></h6>
+
+            <h6 class="fw-bold"><i class="bi bi-file-earmark-richtext-fill"></i> {{ $project['projecttitle'] }} - <span class="text-success">{{ $project['projectstatus'] }}</span></h6>
             @php
             $startDate = date('M d, Y', strtotime($project['projectstartdate']));
             $endDate = date('M d, Y', strtotime($project['projectenddate']));

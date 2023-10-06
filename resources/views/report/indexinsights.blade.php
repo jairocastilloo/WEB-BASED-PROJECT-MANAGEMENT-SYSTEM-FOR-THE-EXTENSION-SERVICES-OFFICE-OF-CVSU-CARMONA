@@ -3,8 +3,10 @@
 @section('content')
 
 @php
-$activityCount = count($activities);
 
+$PendingActivities = $activities->filter(function ($activity) {
+return $activity->actremark === 'Pending';
+});
 $InProgressActivities = $activities->filter(function ($activity) {
 return $activity->actremark === 'Incomplete' &&
 $activity->actstartdate <= now() && $activity->actenddate >= now();
@@ -35,7 +37,7 @@ $activity->actstartdate <= now() && $activity->actenddate >= now();
 
 
         return $activity->actremark === 'Incomplete' &&
-        $activity->actenddate < now(); }); $upcoming=count($UpcomingActivities); $scheduled=count($ScheduledActivities);$inprogress=count($InProgressActivities);$overdue=count($OverdueActivities);$completed=count($CompletedActivities);@endphp <input id="department" class="d-none" type="text" value="{{ Auth::user()->department }}">
+        $activity->actenddate < now(); }); $pending=count($PendingActivities); $upcoming=count($UpcomingActivities); $scheduled=count($ScheduledActivities);$inprogress=count($InProgressActivities);$overdue=count($OverdueActivities);$completed=count($CompletedActivities);@endphp <input id="department" class="d-none" type="text" value="{{ Auth::user()->department }}">
 
 
             <div class="maincontainer border border-start border-end border-bottom">
@@ -60,7 +62,17 @@ $activity->actstartdate <= now() && $activity->actenddate >= now();
 
                     </div>
                     <div>
-                        <canvas id="myChart"></canvas>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h3>Project Progress Chart</h3>
+                                    <canvas id="projectProgressChart"></canvas>
+
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
@@ -71,14 +83,16 @@ $activity->actstartdate <= now() && $activity->actenddate >= now();
             @section('scripts')
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
             <script>
+                var pending = <?php echo $scheduled; ?>;
                 var scheduled = <?php echo $scheduled; ?>;
                 var upcoming = <?php echo $upcoming; ?>;
                 var completed = <?php echo $completed; ?>;
                 var inprogress = <?php echo $inprogress; ?>;
                 var overdue = <?php echo $overdue; ?>;
-                const ctx = document.getElementById('myChart');
+                const ctx = document.getElementById('projectProgressChart');
                 const data = {
                     labels: [
+                        'Pending',
                         'Scheduled',
                         'Upcoming',
                         'Completed ',
@@ -87,8 +101,9 @@ $activity->actstartdate <= now() && $activity->actenddate >= now();
                     ],
                     datasets: [{
                         label: 'Number of Activities',
-                        data: [scheduled, upcoming, completed, inprogress, overdue],
+                        data: [pending, scheduled, upcoming, completed, inprogress, overdue],
                         backgroundColor: [
+                            'rgb(255, 165, 0',
                             'rgb(255, 99, 132)',
                             'rgb(54, 162, 235)',
                             'rgb(255, 205, 86)',
@@ -101,13 +116,7 @@ $activity->actstartdate <= now() && $activity->actenddate >= now();
                 new Chart(ctx, {
                     type: 'doughnut',
                     data: data,
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
+
                 });
 
                 $(document).ready(function() {
