@@ -11,7 +11,7 @@
             <div class="col-lg-6 p-2 pt-0">
                 <div class="basiccont rounded shadow pb-2">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Dutities Test</h6>
                     </div>
                     @if (!$inCurrentYear)
                     <span class="small ms-2"><em>
