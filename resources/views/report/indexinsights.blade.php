@@ -40,24 +40,7 @@
                     </h1>
                 </div>
 
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
-                    <div class="border-bottom">
-                        <h6 class="fw-bold small text-secondary text-center">Scheduled Activities</h6>
-                    </div>
-                    <h1 class="text-center">
-                        @php
-                        $count = 0;
-                        foreach ($activities as $activity) {
-                        if ($activity['actremark'] == 'Scheduled') {
-                        $count++;
-                        }
-                        }
-                        @endphp
 
-                        {{ $count }}
-
-                    </h1>
-                </div>
 
 
             </div>
@@ -66,78 +49,26 @@
                     <div class="border-bottom">
                         <h6 class="fw-bold small text-secondary text-center">In Progress Activities</h6>
                     </div>
+
                     <h1 class="text-center">
                         @php
-                        $count = 0;
-                        foreach ($activities as $activity) {
-                        if ($activity['actremark'] == 'In Progress') {
-                        $count++;
-                        }
-                        }
-                        @endphp
 
-                        {{ $count }}
+                        $inProgressActivities = $activities->filter(function ($activity) {
+                        return $activity->actremark === 'Incomplete' &&
+                        $activity->actstartdate <= now() && $activity->actenddate >= now();
 
-                    </h1>
-                </div>
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
-                    <div class="border-bottom">
-                        <h6 class="fw-bold small text-secondary text-center">Overdue Activities</h6>
-                    </div>
-                    <h1 class="text-center">
-                        @php
-                        $count = 0;
-                        foreach ($activities as $activity) {
-                        if ($activity['actremark'] == 'Overdue') {
-                        $count++;
-                        }
-                        }
-                        @endphp
+                            });
 
-                        {{ $count }}
+                            @endphp
+
+                            {{ count($inProgressActivities) }}
 
                     </h1>
                 </div>
 
             </div>
             <div class="col">
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
-                    <div class="border-bottom">
-                        <h6 class="fw-bold small text-secondary text-center">Pending Activities</h6>
-                    </div>
-                    <h1 class="text-center">
-                        @php
-                        $count = 0;
-                        foreach ($activities as $activity) {
-                        if ($activity['actremark'] == 'Pending') {
-                        $count++;
-                        }
-                        }
-                        @endphp
 
-                        {{ $count }}
-
-                    </h1>
-                </div>
-
-                <div class="basiccont rounded m-2 mb-4 mt-0 p-2 shadow">
-                    <div class="border-bottom">
-                        <h6 class="fw-bold small text-secondary text-center">Completed Activities</h6>
-                    </div>
-                    <h1 class="text-center">
-                        @php
-                        $count = 0;
-                        foreach ($activities as $activity) {
-                        if ($activity['actremark'] == 'Completed') {
-                        $count++;
-                        }
-                        }
-                        @endphp
-
-                        {{ $count }}
-
-                    </h1>
-                </div>
             </div>
         </div>
 

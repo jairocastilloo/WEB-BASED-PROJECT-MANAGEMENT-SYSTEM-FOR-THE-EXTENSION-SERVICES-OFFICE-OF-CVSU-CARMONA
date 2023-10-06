@@ -30,15 +30,14 @@ class ReportController extends Controller
         $projects = Project::where('department', $department)->get();
 
         $selectedproject = Project::findOrFail($projectid);
+
         $activities = $selectedproject->activities;
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
         return view('report.indexinsights', [
             'projectid' => $projectid,
             'selectedproject' => $selectedproject,
             'projects' => $projects,
             'activities' => $activities,
-            'notifications' => $notifications,
         ]);
     }
 }

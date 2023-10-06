@@ -1,9 +1,6 @@
 <div>
     <input type="hidden" id="projsavestartdate" name="projsavestartdate" value="{{ $indexproject->projectstartdate }}">
     <input type="hidden" id="projsaveenddate" name="projsaveenddate" value="{{ $indexproject->projectenddate }}">
-    <div class="input-container m-2">
-        <input type="text" class="form-control" wire:model="search" placeholder="Search activities...">
-    </div>
     @php
     // Sort the $activities array by actstartdate in ascending order
     $sortedActivities = $activities->sortBy('actstartdate');

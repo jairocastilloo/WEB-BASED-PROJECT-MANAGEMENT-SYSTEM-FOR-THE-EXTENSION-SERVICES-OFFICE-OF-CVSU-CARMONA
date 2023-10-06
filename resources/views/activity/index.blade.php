@@ -4,18 +4,36 @@
 
 <input class="d-none" type="date" value="{{ $activity['actstartdate'] }}" id="actsavestartdate">
 <input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
-<div class="maincontainer shadow">
-    <div class="mainnav mb-2 shadow">
-        <div class="word-wrap col-4 p-2 pt-3 border-end text-center mainnavpassive longword text-break" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
-            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
-            <b>Project: {{ $projectName }} </b>
-        </div>
-        <div class="word-wrap col-4 p-2 pt-3 border-end text-center position-triangle longword">
-            <b>Activity: {{ $activity['actname'] }}</b>
-        </div>
 
+<div class="maincontainer border border-start border-end border-bottom">
+
+    <div class="mainnav mb-3 shadow-sm ps-3">
+        <div class="p-2 pt-3 px-3 border-start border-end text-wrap divhover" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
+            <h6 class="fw-bold text-dark small">Project</h6>
+        </div>
+        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle">
+            <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
+        </div>
+        <div class="dropdown border-end border-bottom">
+            <div class="dropdown-toggle text-dark fw-bold p-2 pt-3 px-3 small text-dark containerhover" data-bs-toggle="dropdown">
+                Subtasks
+            </div>
+            <ul class="dropdown-menu" aria-labelledby="subtasksDropdown">
+                @php
+                // Sort the $activities array by actstartdate in ascending order
+                $sortedSubtasks = $subtasks->sortBy('subduedate');
+                @endphp
+                @foreach ($sortedSubtasks as $subtask)
+                <li><a class="dropdown-item" href="{{ route('subtasks.display', ['subtaskid' => $subtask->id , 'subtaskname' => $subtask['subtask_name']]) }}">
+                        {{ $subtask['subtask_name'] }}</a></li>
+                @endforeach
+            </ul>
+        </div>
 
     </div>
+
+
     <div class="container">
 
         <div class="row">
@@ -88,11 +106,7 @@
                         </div>
 
                         @else
-                        @php
-                        // Sort the $activities array by actstartdate in ascending order
-                        $sortedSubtasks = $subtasks->sortBy('subduedate');
 
-                        @endphp
                         @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
 
 

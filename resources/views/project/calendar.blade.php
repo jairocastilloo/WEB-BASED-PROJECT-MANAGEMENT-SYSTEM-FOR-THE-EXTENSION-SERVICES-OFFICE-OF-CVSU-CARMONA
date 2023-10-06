@@ -3,30 +3,29 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-bottom">
-    <div class="mainnav mb-4 shadow-sm ps-3">
-
-        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle">
-            <h6 class="fw-bold" style="color:darkgreen;">Project</h6>
+    <div class="mainnav mb-3 shadow-sm ps-3">
+        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6 class="fw-bold small" style="color:darkgreen;">Project</h6>
         </div>
-
-        <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
-
-            <h6 class="dropdown-toggle text-dark fw-bold">Activities</h6>
-
-            <ul class="dropdown-menu">
+        <div class="dropdown border-end border-bottom">
+            <div class="dropdown-toggle text-dark fw-bold p-2 pt-3 px-3 small text-dark containerhover" data-bs-toggle="dropdown">
+                Activities
+            </div>
+            <ul class="dropdown-menu" aria-labelledby="activitiesDropdown">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
                 $sortedActivities = $activities->sortBy('actstartdate');
                 @endphp
                 @foreach ($sortedActivities as $activity)
-                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">{{ $activity['actname'] }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">
+                        {{ $activity['actname'] }}
+                    </a></li>
                 @endforeach
-
             </ul>
-
         </div>
 
     </div>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-10">
@@ -165,21 +164,7 @@
 
             <div class="col-lg-2">
                 @php
-
                 $sortedProjects= $currentproject->sortBy('projectstartdate');
-
-                $inProgressProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'In Progress';
-                });
-                $scheduledProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Scheduled';
-                });
-                $overdueProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Incomplete';
-                });
-                $completedProjects = $sortedProjects->filter(function ($project) {
-                return $project['projectstatus'] === 'Completed';
-                });
                 @endphp
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
                 @if($currentproject->isEmpty())
@@ -187,10 +172,6 @@
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($currentproject) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
 
                     </div>
@@ -200,128 +181,9 @@
                         </div>
                     </div>
                 </div>
-                @endif
-                @if ($inProgressProjects && count($inProgressProjects) > 0)
+                @else
 
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            In Progress
-                            <span class="badge bggold text-dark">
-                                {{ count($inProgressProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($inProgressProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                @if ($scheduledProjects && count($scheduledProjects) > 0)
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Scheduled
-                            <span class="badge bggold text-dark">
-                                {{ count($scheduledProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($scheduledProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-
-                @if ($completedProjects && count($completedProjects) > 0)
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Completed
-                            <span class="badge bggold text-dark">
-                                {{ count($completedProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($completedProjects as $project)
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-                @if ($overdueProjects && count($overdueProjects) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Incomplete
-                            <span class="badge bggold text-dark">
-                                {{ count($overdueProjects) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        @foreach ($overdueProjects as $project)
-
-                        <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
-
-                            <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
-
-                            @php
-                            $startDate = date('M d, Y', strtotime($project['projectstartdate']));
-                            $endDate = date('M d, Y', strtotime($project['projectenddate']));
-                            @endphp
-
-                            <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
+                @livewire('other-projects', ['currentproject' => $sortedProjects])
                 @endif
 
             </div>

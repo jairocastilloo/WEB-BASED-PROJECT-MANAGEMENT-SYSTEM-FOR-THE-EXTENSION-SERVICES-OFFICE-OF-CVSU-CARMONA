@@ -3,30 +3,31 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-bottom">
-    <div class="mainnav mb-4 shadow-sm ps-3">
 
-        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle">
-            <h6 class="fw-bold" style="color:darkgreen;">Project</h6>
+    <div class="mainnav mb-3 shadow-sm ps-3">
+        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle" data-value="{{ $indexproject['projecttitle'] }}">
+            <h6 class="fw-bold small" style="color:darkgreen;">Project</h6>
         </div>
 
-        <div class="p-2 pt-3 dropdown border-end border-bottom text-wrap containerhover text-center text-dark px-3" data-bs-toggle="dropdown">
+        <div class="dropdown dropdown-toggle text-dark fw-bold p-2 pt-3 px-3 small border-end border-bottom text-dark containerhover" data-bs-toggle="dropdown">
+            Activities
 
-            <h6 class="dropdown-toggle text-dark fw-bold">Activities</h6>
 
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" aria-labelledby="activitiesDropdown">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
                 $sortedActivities = $activities->sortBy('actstartdate');
                 @endphp
                 @foreach ($sortedActivities as $activity)
-                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">{{ $activity['actname'] }}</a></li>
+                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">
+                        {{ $activity['actname'] }}
+                    </a></li>
                 @endforeach
-
             </ul>
-
         </div>
 
     </div>
+
     <div class="container">
         <div class="row">
             <div class="col-lg-10">
