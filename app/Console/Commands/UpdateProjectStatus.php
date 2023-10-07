@@ -15,10 +15,24 @@ class UpdateProjectStatus extends Command
 
     public function handle()
     {
-
+        /*
         $this->updateScheduledProjects();
         $this->updateInProgressProjects();
         $this->updateIncompleteProjects();
+   */
+        $this->changeAllRemarks();
+    }
+
+    public function changeAllRemarks()
+    {
+        $activities = Project::all();
+        foreach ($activities as $activity) {
+            // Generate a random value between 'Incomplete' and 'Completed'
+            $CompleteorIncomplete = rand(0, 1) ? 'Completed' : 'Incomplete';
+
+            // Update the 'actremark' field with the randomly generated value
+            $activity->update(['projectstatus' => $CompleteorIncomplete]);
+        }
     }
     private function updateInProgressProjects()
     {

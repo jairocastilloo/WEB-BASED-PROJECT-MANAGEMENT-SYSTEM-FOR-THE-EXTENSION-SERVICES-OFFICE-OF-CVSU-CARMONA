@@ -207,7 +207,6 @@ class ProjectController extends Controller
         ]);
 
         $project->save();
-        Artisan::call('project:status:update');
         $newProjectId = $project->id;
 
         $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;

@@ -16,11 +16,24 @@ class UpdateActivityStatus extends Command
 
     public function handle()
     {
-
+        /*
         $this->updateScheduledActivities();
         $this->updateInProgressActivities();
         $this->updatePendingActivities();
         $this->updateOverdueActivities();
+        */
+        $this->changeAllRemarks();
+    }
+    public function changeAllRemarks()
+    {
+        $activities = Activity::all();
+        foreach ($activities as $activity) {
+            // Generate a random value between 'Incomplete' and 'Completed'
+            $CompleteorIncomplete = rand(0, 1) ? 'Completed' : 'Incomplete';
+
+            // Update the 'actremark' field with the randomly generated value
+            $activity->update(['actremark' => $CompleteorIncomplete]);
+        }
     }
     private function updateInProgressActivities()
     {
