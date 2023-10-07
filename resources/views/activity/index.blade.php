@@ -46,38 +46,13 @@
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                         </div>
+
                         @livewire('activity-details', [ 'activity' => $activity, 'objectives' => $objectives ])
 
                     </div>
 
 
-                    <div class="basiccont word-wrap shadow mt-2">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
-                        </div>
-                        @php
-                        $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
-                        @endphp
-                        @foreach ($outputTypes as $outputType)
-                        <div class="border-bottom p-2 divhover selectoutputdiv" data-value="{{ $outputType }}">
-                            @php
-                            $outputarray = array_diff($outputarray, [$outputType]);
-                            @endphp
-                            <p class="lh-base fw-bold ps-3">{{ $outputType }}</p>
-                            @foreach ($outputs as $output)
-                            @if ($output->output_type === $outputType)
-                            <p class="lh-1 ps-5">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }}</p>
-                            @endif
-                            @endforeach
-                        </div>
-                        @endforeach
-
-                        <div class="btn-group ms-3 mt-2 mb-3 shadow">
-                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addoutput-btn">
-                                <b class="small">Add Output</b>
-                            </button>
-                        </div>
-                    </div>
+                    @livewire('activity-output', [ 'outputTypes' => $outputTypes, 'outputs' => $outputs, 'activityid' => $activity['id'] ])
                     @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $projectName ])
                 </div>
                 @if ($activity['subtask'] == 1)
@@ -196,55 +171,7 @@
     </div>
 
     <!-- add output -->
-    <div class="modal fade" id="addoutputmodal" tabindex="-1" aria-labelledby="addoutputmodalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addAssigneeModalLabel">Add Output</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="outputform" data-url="{{ route('add.output') }}">
-                        @csrf
-                        <input type="number" class="d-none" name="outputactnumber" value="{{ $activity['id'] }}">
-                        <input type="number" class="d-none" name="outputindex" id="outputindex">
-                        <div class="mb-3">
-                            <label for="assigneeSelect" class="form-label">Select the type of output to be submitted.</label>
-                            <select class="form-select" id="outputtype-select" name="outputtype">
-                                <option value="" selected disabled>Select Output Type</option>
-                                @foreach($outputarray as $outputarr)
-                                <option value="{{ $outputarr }}">{{ $outputarr }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <label class="form-label">Output</label>
 
-                        <div class="divhover pt-2 pb-1 ps-1 outputnamediv d-none">
-                            <h6></h6>
-                        </div>
-                        <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
-                            <div class="col-9">
-                                <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
-                            </div>
-                            <div class="col-3">
-                                <button type="button" class="btn btn-danger btn-sm removeoutput-btn">Remove</button>
-                            </div>
-
-                        </div>
-
-
-                    </form>
-                    <div class="w-60">
-                        <button type="button" class="btn btn-success addmoreoutput-btn btn-sm d-none"> Add more Output </button>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="createoutput-btn">Add Output</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!--assignees details-->
     <div class="modal fade" id="assigneedetails" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -327,9 +254,27 @@
 <script>
     var url = "";
     var unassignassigneeid;
-
+    var buttonClicked = false;
     $(document).ready(function() {
+        $('#editOutput').click(function(event) {
+            event.preventDefault();
+            $('.numberInput').attr('type', 'text');
+            $('.expectedoutput').hide();
+            $('#saveOutput').removeClass('d-none');
+            $('#cancelOutput').removeClass('d-none');
+            buttonClicked = true;
 
+            $(this).parent().parent().hide();
+        });
+        $('#cancelOutput').click(function(event) {
+            event.preventDefault();
+            $('.numberInput').attr('type', 'hidden');
+            $('.expectedoutput').show();
+            $('#saveOutput').addClass('d-none');
+            $('#cancelOutput').addClass('d-none');
+            buttonClicked = false;
+            $('#editOutput').parent().parent().show();
+        });
         $('#activityhours-btn').click(function(event) {
             event.preventDefault();
             var activityid = $('#actid-hrs').val();
@@ -411,6 +356,9 @@
         });
 
         $(document).on('click', '.selectoutputdiv', function() {
+            if (buttonClicked) {
+                return; // Skip the handling for .selectoutputdiv
+            }
             var outputtype = $(this).attr('data-value');
             var actid = $('#actid').val();
 
