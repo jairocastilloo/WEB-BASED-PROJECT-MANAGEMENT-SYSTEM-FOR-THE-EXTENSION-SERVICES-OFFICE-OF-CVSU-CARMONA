@@ -16,8 +16,14 @@ $(document).ready(function(){
         $('.outputnamediv:first').removeClass('d-none');
         $('.outputinputdiv:first').addClass('d-none');
         if (selectedOutputType === "Capacity Building") {
-            var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-        <h6>Number of Training</h6>
+            var divtoadd = `<div class="row divhover pt-2 pb-1 ps-1 outputnamediv">
+        
+        <div class="col-9">
+            <h6>Number of Training</h6>
+        </div>
+        <div class="col-3">
+            <input type="number" class="shadow numberInput" id="outputneeded" name="outputneeded[]" pattern="\d{5}" title="Please enter exactly 5 digits" maxlength="5" value="0">
+        </div>
     </div>
     <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
         <div class="col-9">
@@ -31,8 +37,14 @@ $(document).ready(function(){
             $('.outputnamediv:first h6').text("Number of trainees");
             $('#outputform').append(divtoadd);
         } else if (selectedOutputType === "IEC Material") {
-            var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-        <h6>Number of IEC Material</h6>   
+            var divtoadd = `<div class="row divhover pt-2 pb-1 ps-1 outputnamediv">
+        <div class="col-9">
+            <h6>Number of IEC Material</h6>
+        </div>
+        <div class="col-3">
+            <input type="number" class="shadow numberInput" id="outputneeded" name="outputneeded[]" pattern="\d{5}" title="Please enter exactly 5 digits" maxlength="5" value="0">
+        </div>
+         
     </div>
     <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
         <div class="col-9">
@@ -61,7 +73,9 @@ $(document).ready(function(){
 
     
     $(document).on('click', '.outputnamediv', function() {
-
+        if (event.target.id === 'outputneeded') {
+            return; // Skip the handling for the input field
+        }
         $(this).addClass("d-none");
         //$(this).next().find("input").val($(this).find("h6").text());
         $(this).next().removeClass("d-none");
@@ -77,8 +91,13 @@ $(document).ready(function(){
     $('.addmoreoutput-btn').click(function(event) {
         event.preventDefault();
 
-        var divtoadd = `<div class="divhover pt-2 pb-1 ps-1 outputnamediv">
-  <h6>Untitled Output</h6>
+        var divtoadd = `<div class="row divhover pt-2 pb-1 ps-1 outputnamediv">
+        <div class="col-9">
+        <h6>Untitled Output</h6>
+    </div>
+    <div class="col-3">
+        <input type="number" class="shadow numberInput" id="outputneeded" name="outputneeded[]" pattern="\d{5}" title="Please enter exactly 5 digits" maxlength="5" value="0">
+    </div>
 </div>
 <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
   <div class="col-9">

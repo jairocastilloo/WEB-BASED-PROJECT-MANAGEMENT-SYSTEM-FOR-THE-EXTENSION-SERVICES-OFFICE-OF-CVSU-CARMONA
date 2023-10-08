@@ -21,13 +21,14 @@ class ActivityOutput extends Component
         $this->activityid = $activityid;
     }
 
-    public function addOutput($actid, $outputtype, $outputnumber, $outputValues)
+    public function addOutput($actid, $outputtype, $outputnumber, $outputValues, $outputNeeded)
     {
         for ($i = 0; $i < $outputnumber; $i++) {
             $output = new Output();
             $output->output_type = $outputtype;
             $output->output_name = $outputValues[$i];
             $output->activity_id = $actid;
+            $output->expectedoutput = $outputNeeded[$i];
             $output->save();
         }
         $this->outputs = Output::where('activity_id', $this->activityid)->get();
@@ -43,9 +44,9 @@ class ActivityOutput extends Component
         $this->outputs = Output::where('activity_id', $this->activityid)->get();
         $this->outputTypes = $this->outputs->unique('output_type')->pluck('output_type');
     }
-    public function handleaddOutput($actid, $outputtype, $outputnumber, $outputValues)
+    public function handleaddOutput($actid, $outputtype, $outputnumber, $outputValues, $outputNeeded)
     {
-        $this->addOutput($actid, $outputtype, $outputnumber, $outputValues);
+        $this->addOutput($actid, $outputtype, $outputnumber, $outputValues, $outputNeeded);
     }
     public function handlesaveEditOutput($valuesByParentId)
     {

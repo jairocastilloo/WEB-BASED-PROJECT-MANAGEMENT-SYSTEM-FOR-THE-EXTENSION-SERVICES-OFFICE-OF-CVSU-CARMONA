@@ -2,6 +2,7 @@
     <div class="basiccont word-wrap shadow mt-2">
         <div class="border-bottom ps-3 pt-2 bggreen">
             <h6 class="fw-bold small" style="color:darkgreen;">Output</h6>
+
         </div>
         @php
         $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
@@ -68,10 +69,26 @@
                                 @endforeach
                             </select>
                         </div>
-                        <label class="form-label">Output</label>
+                        <div class="row">
+                            <div class="col-9">
+                                <br>
+                                <label class="form-label fw-bold">Output Name:</label>
+                            </div>
+                            <div class="col-3">
+                                <label class="form-label fw-bold">Output Needed:</label>
+                            </div>
+                        </div>
 
-                        <div class="divhover pt-2 pb-1 ps-1 outputnamediv d-none">
-                            <h6></h6>
+
+                        <div class="row divhover pt-2 pb-1 ps-1 outputnamediv d-none">
+                            <div class="col-9">
+                                <h6></h6>
+                            </div>
+                            <div class="col-3">
+                                <input type="number" class="shadow numberInput" id="outputneeded" name="outputneeded[]" pattern="\d{5}" title="Please enter exactly 5 digits" maxlength="5" value="0">
+                            </div>
+
+
                         </div>
                         <div class="row divhover p-2 mt-1 ps-1 outputinputdiv d-none">
                             <div class="col-9">
@@ -88,6 +105,10 @@
                     <div class="w-60">
                         <button type="button" class="btn btn-success addmoreoutput-btn btn-sm d-none"> Add more Output </button>
                     </div>
+                    <span class="text-danger small d-none" id="outputErr">
+                        <strong>Make sure that there is output listed and output needed is provided.</strong>
+                    </span>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="cancelAddOutput" data-bs-dismiss="modal">Cancel</button>
@@ -106,13 +127,24 @@
                 var outputtype = document.getElementById('outputtype-select').value;
                 var outputnumber = document.querySelectorAll('input[name="newoutput[]"]').length;
                 var outputElements = document.querySelectorAll('input[name="newoutput[]"]');
+                var outputNeededNumber = document.querySelectorAll('input[name="outputneeded[]"]');
                 var outputValues = [];
+                var outputNeeded = [];
 
+                if (outputtype === "") {
+                    $('#outputErr').removeClass('d-none');
+                    return;
+                }
                 for (var i = 0; i < outputElements.length; i++) {
                     outputValues.push(outputElements[i].value);
+                    if (outputNeededNumber[i].value === "" || outputNeededNumber[i].value == 0) {
+                        $('#outputErr').removeClass('d-none');
+                        return;
+                    }
+                    outputNeeded.push(outputNeededNumber[i].value);
                 }
 
-                Livewire.emit('addOutput', actid, outputtype, outputnumber, outputValues);
+                Livewire.emit('addOutput', actid, outputtype, outputnumber, outputValues, outputNeeded);
 
             });
 
