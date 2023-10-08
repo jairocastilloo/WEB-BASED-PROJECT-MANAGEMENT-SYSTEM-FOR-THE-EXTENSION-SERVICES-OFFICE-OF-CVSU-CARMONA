@@ -91,7 +91,7 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                 $averageoutputpercentage = array_sum($projectpercents) / count($projectpercents);
                 $formattedaverageoutputpercentage = number_format($averageoutputpercentage, 2);
                 @endphp
-                <div class="basiccont rounded shadow pb-2">
+                <div class="basiccont rounded shadow pb-2 mb-3">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Browse Reports</h6>
                     </div>
@@ -125,7 +125,7 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                 </div>
                 <div class="container p-0">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-xl-3">
                             <div class="basiccont rounded shadow mb-3">
                                 <div class="border-bottom pt-2 text-center bggreen">
                                     <h6 class="fw-bold small" style="color:darkgreen;">Total Projects</h6>
@@ -163,7 +163,7 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-xl-3">
                             <div class="basiccont rounded shadow mb-3">
                                 <div class="border-bottom pt-2 text-center bggreen">
                                     <h6 class="fw-bold small" style="color:darkgreen;">Overall Outputs</h6>
@@ -175,11 +175,11 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                             </div>
                             <div class="basiccont rounded shadow mb-3">
                                 <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Hours Rendered</h6>
+                                    <h6 class="fw-bold small" style="color:darkgreen;">Total Hours</h6>
                                 </div>
                                 <div class="p-2 text-center">
                                     <h1>{{ $activityHoursRendered + $subtaskHoursRendered }}</h1>
-                                    <h6 class="text-secondary small">Hours</h6>
+                                    <h6 class="text-secondary small">Hours Rendered</h6>
                                 </div>
                             </div>
                             <div class="basiccont rounded shadow mb-3">
@@ -201,12 +201,12 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-xl-6">
                             <div class="basiccont rounded shadow">
                                 <div class="border-bottom ps-3 pt-2 bggreen">
                                     <h6 class="fw-bold small" style="color:darkgreen;">Projects by Progress</h6>
                                 </div>
-                                <canvas id="ProjectProgressChart" class="p-2"></canvas>
+                                <canvas id="ProjectProgressChart" class="p-1"></canvas>
                             </div>
                         </div>
 
@@ -215,10 +215,10 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                     </div>
                     <div class="container p-0 mt-3">
                         <div class="basiccont rounded shadow">
-                            <div class="border-bottom ps-2 pt-2 bggreen">
+                            <div class="border-bottom ps-3 pt-2 bggreen">
                                 <h6 class="fw-bold small" style="color:darkgreen;">Outputs Percentage by Project</h6>
                             </div>
-                            <canvas id="OutputsByProjectsChart" class="p-2"></canvas>
+                            <canvas id="OutputsByProjectsChart" class="p-1"></canvas>
                         </div>
                     </div>
                 </div>
