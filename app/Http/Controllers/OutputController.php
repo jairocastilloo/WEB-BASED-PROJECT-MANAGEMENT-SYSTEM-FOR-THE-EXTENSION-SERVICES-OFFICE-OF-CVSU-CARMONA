@@ -161,7 +161,7 @@ class OutputController extends Controller
             $outputsubmitted = $outputuser->output_submitted;
             Output::where('id', $outputid)->increment('totaloutput_submitted', $outputsubmitted);
         }
-        Artisan::call('activity:status:update');
+
         return 'File uploaded successfully.';
     }
 }

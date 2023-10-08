@@ -67,7 +67,6 @@ class ActivityController extends Controller
         $activity->project_id = $projectindex;
         $activity->save();
         $newActId = $activity->id;
-        Artisan::call('activity:status:update');
         return response()->json([
             'actid' => $newActId,
         ]);
