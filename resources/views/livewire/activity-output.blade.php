@@ -15,7 +15,7 @@
             <p class="lh-base fw-bold ps-3">{{ $outputType }}</p>
             @foreach ($outputs as $output)
             @if ($output->output_type === $outputType)
-            <p class="lh-1 ps-5" data-value="{{ $output->id }}">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }} / <span class="expectedoutput">{{ $output->expectedoutput }} </span>
+            <p class="lh-1 ps-5" data-id="{{ $output->id }}">{{ $output->output_name . ': ' .  $output->totaloutput_submitted }} / <span class="expectedoutput">{{ $output->expectedoutput }} </span>
                 <input type="hidden" class="shadow numberInput" id="numberInput" name="numberInput" pattern="\d{5}" title="Please enter exactly 5 digits" maxlength="5" value="{{ $output->expectedoutput }}">
             </p>
             @endif
@@ -153,7 +153,7 @@
             });
             saveOutput.addEventListener('click', function() {
                 // Select all the hidden input elements with class "numberInput"
-                var numberInputs = document.querySelectorAll('.numberInput');
+                var numberInputs = document.querySelectorAll('#numberInput');
 
                 // Create an object to store the values by their parent's data-value attribute
                 var valuesByParentId = {};
@@ -164,10 +164,10 @@
                     var parentParagraph = numberInput.closest('p');
 
                     // Get the data-value attribute value of the parent <p> element
-                    var parentId = parentParagraph.getAttribute('data-value');
+                    var parentId = parentParagraph.getAttribute('data-id');
 
                     // Get the value of the hidden input element
-                    var inputValue = parseInt(numberInput.value); // Parse the value as an integer
+                    var inputValue = numberInput.value; // Parse the value as an integer
 
                     // Check if the parent already exists in the object, if not, create it
                     if (!valuesByParentId[parentId]) {

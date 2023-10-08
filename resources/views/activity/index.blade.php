@@ -258,7 +258,7 @@
     $(document).ready(function() {
         $('#editOutput').click(function(event) {
             event.preventDefault();
-            $('.numberInput').attr('type', 'text');
+            $('.numberInput').attr('type', 'number');
             $('.expectedoutput').hide();
             $('#saveOutput').removeClass('d-none');
             $('#cancelOutput').removeClass('d-none');
