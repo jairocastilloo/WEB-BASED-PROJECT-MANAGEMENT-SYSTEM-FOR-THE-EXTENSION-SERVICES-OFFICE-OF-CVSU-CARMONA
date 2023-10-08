@@ -2,150 +2,206 @@
 
 @section('content')
 
-<div class="maincontainer border border-start border-end">
-    <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
-    <div class="container pt-3">
-        <div class="row">
-            <div class="col-lg-10">
+@php
 
-                <div class="basiccont rounded shadow pb-2">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Reports</h6>
-                    </div>
-                    @if (!$inCurrentYear)
-                    <span class="small ms-2"><em>
-                            Note: Not the Current Year.
-                        </em></span>
-                    @endif
-                    <div class="form-floating m-3 mb-2 mt-2">
+$CompletedProjects = $projects->filter(function ($project) {
+return $project->projectstatus === 'Completed';
+});
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 19px;" aria-label="Select an calendar year">
+$InProgressProjects = $projects->filter(function ($project) {
+return $project->projectstatus === 'Incomplete' &&
+$project->projectstartdate <= now() && $project->projectenddate >= now();});
 
-                            @foreach ($calendaryears as $calendaryear)
-                            <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
-                            </option>
-                            @endforeach
+    $NotStartedProjects = $projects->filter(function ($project) {
+    return $project->projectstatus === 'Incomplete' &&
+    $project->projectstartdate > now();
+    });
 
-                        </select>
-                        <label for="year-select" style="color:darkgreen;">
-                            <h5><strong>Calendar Year:</strong></h5>
-                        </label>
-                    </div>
-                    @if (Auth::user()->role === 'Admin')
-                    <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                            <b class="small">Create Project</b>
-                        </button>
-                    </div>
-                    @endif
+    $IncompleteProjects = $projects->filter(function ($project) {
+
+    return $project->projectstatus === 'Incomplete' &&
+    $project->projectenddate < now(); }); @endphp <div class="maincontainer border border-start border-end">
+        <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
+        <div class="container pt-3">
+
+            @php
+            $CompletedProjectsCount = count($CompletedProjects);
+            $InProgressProjectsCount = count($InProgressProjects);
+            $NotStartedProjectsCount = count($NotStartedProjects);
+            $IncompleteProjectsCount = count($IncompleteProjects);
+            @endphp
+            <div class="basiccont rounded shadow pb-2">
+                <div class="border-bottom ps-3 pt-2 bggreen">
+                    <h6 class="fw-bold small" style="color:darkgreen;">Browse Reports</h6>
                 </div>
+                @if (!$inCurrentYear)
+                <span class="small ms-2"><em>
+                        Note: Not the Current Year.
+                    </em></span>
+                @endif
+                <div class="form-floating m-3 mb-2 mt-2">
 
-                @php
+                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 19px;" aria-label="Select an calendar year">
 
-                $sortedProjects= $currentproject->sortBy('projectstartdate');
+                        @foreach ($calendaryears as $calendaryear)
+                        <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
+                            &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+                        </option>
+                        @endforeach
 
-                @endphp
-                <label class="ms-2 small form-label text-secondary fw-bold">Upcoming and Ongoing Projects</label>
-                @if($currentproject->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($currentproject) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        <div class="text-center p-4">
-                            <h4><em>No Projects Yet.</em></h4>
+                    </select>
+                    <label for="year-select" style="color:darkgreen;">
+                        <h5><strong>Calendar Year:</strong></h5>
+                    </label>
+                </div>
+                @if (Auth::user()->role === 'Admin')
+                <div class="btn-group mt-1 ms-3 mb-2 shadow">
+                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                        <b class="small">Create Project</b>
+                    </button>
+                </div>
+                @endif
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="basiccont rounded shadow">
+                            <div class="border-bottom ps-2 pt-2 bggreen">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
+                            </div>
+                            <div class="p-2 text-center">
+                                <h1>{{ count($projects) }}</h1>
+                            </div>
+                        </div>
+                        <div class="basiccont rounded shadow">
+                            <div class="border-bottom ps-2 pt-2 bggreen">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Hours Rendered</h6>
+                            </div>
+                            <div class="p-2 text-center">
+                                <h1>{{ $activityHoursRendered + $subtaskHoursRendered }}</h1>
+                                <h6 class="text-secondary small">Hours</h6>
+                            </div>
+                        </div>
+                        <div class="basiccont rounded shadow">
+                            <div class="border-bottom ps-2 pt-2 bggreen">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
+                            </div>
+                            <div class="p-2 text-center">
+                                <h1>{{ $completedActivities }}</h1>
+                                <h6 class="text-secondary small">Activities</h6>
+                            </div>
+                        </div>
+                        <div class="basiccont rounded shadow">
+                            <div class="border-bottom ps-2 pt-2 bggreen">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Remaining Activities</h6>
+                            </div>
+                            <div class="p-2 text-center">
+                                <h1>{{ $incompleteActivities }}</h1>
+                                <h6 class="text-secondary small">Activities</h6>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @else
-
-                @livewire('other-reports', ['currentproject' => $sortedProjects])
-                @endif
-
-
-
-            </div>
-
-            <div class="col-lg-2">
-
-                @php
-
-                $pastProjects= $pastproject->sortBy('projectstartdate');
-
-                @endphp
-                <label class="ms-2 small form-label text-secondary fw-bold">Past Projects</label>
-                @if($pastproject->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($pastproject) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
-                        <div class="text-center p-4">
-                            <h4><em>No Projects Yet.</em></h4>
+                    <div class="col-lg-4">
+                        <div class="basiccont rounded shadow">
+                            <div class="border-bottom ps-2 pt-2 bggreen">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Projects by Progress</h6>
+                            </div>
+                            <canvas id="ProjectProgressChart" class="p-2"></canvas>
                         </div>
                     </div>
+                    <div class="col-lg-6">
+                        <div class="basiccont rounded shadow">
+                            <div class="border-bottom ps-2 pt-2 bggreen">
+                                <h6 class="fw-bold small" style="color:darkgreen;">Output Completion Rate by Project</h6>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
-                @else
-
-                @livewire('other-reports', ['currentproject' => $pastProjects])
-                @endif
-
-
             </div>
+
+
+
+
+
 
         </div>
-    </div>
-</div>
+        </div>
 
 
 
-@endsection
+        @endsection
 
-@section('scripts')
-<!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
-<script>
-    var selectElement = $('#year-select');
-    var url = "";
-
-
-    $(document).ready(function() {
-
-        $('#navbarDropdown').click(function() {
-            // Add your function here
-            $('#account .dropdown-menu').toggleClass('shows');
-        });
-
-        // Add an event listener to the select element
-        selectElement.change(function() {
-            var selectedOption = $(this).find(':selected');
-            var currentyear = selectedOption.val();
-
-            var department = $('#department').val();
-
-            var baseUrl = "{{ route('yearinsights.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
-            var url = baseUrl.replace(':department', department)
-                .replace(':currentyear', currentyear);
-
-            window.location.href = url;
-        });
+        @section('scripts')
+        <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            var CompletedProjectsCount = <?php echo $CompletedProjectsCount; ?>;
+            var InProgressProjectsCount = <?php echo $InProgressProjectsCount; ?>;
+            var NotStartedProjectsCount = <?php echo $NotStartedProjectsCount; ?>;
+            var IncompleteProjectsCount = <?php echo $IncompleteProjectsCount; ?>;
 
 
+            const ctx = document.getElementById('ProjectProgressChart');
+            const data = {
+                labels: [
+                    'Completed',
+                    'In Progress',
+                    'Not Started',
+                    'Failed',
+                ],
+                datasets: [{
+                    label: 'Number of Projects',
+                    data: [CompletedProjectsCount, InProgressProjectsCount, NotStartedProjectsCount, IncompleteProjectsCount],
+                    backgroundColor: [
+                        'rgb(255, 215, 0)',
+                        'rgb(50, 205, 50)',
+                        'rgb(152, 251, 152)',
+                        'rgb(85, 107, 47)',
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
 
-    });
-</script>
-@endsection
+            });
+
+
+
+
+
+
+
+            var selectElement = $('#year-select');
+            var url = "";
+
+
+            $(document).ready(function() {
+
+                $('#navbarDropdown').click(function() {
+                    // Add your function here
+                    $('#account .dropdown-menu').toggleClass('shows');
+                });
+
+                // Add an event listener to the select element
+                selectElement.change(function() {
+                    var selectedOption = $(this).find(':selected');
+                    var currentyear = selectedOption.val();
+
+                    var department = $('#department').val();
+
+                    var baseUrl = "{{ route('yearinsights.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
+                    var url = baseUrl.replace(':department', department)
+                        .replace(':currentyear', currentyear);
+
+                    window.location.href = url;
+                });
+
+
+
+            });
+        </script>
+        @endsection

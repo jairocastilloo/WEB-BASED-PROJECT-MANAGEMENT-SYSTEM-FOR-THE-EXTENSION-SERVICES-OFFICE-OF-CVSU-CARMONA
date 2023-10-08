@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalendarYear;
 use App\Models\Notification;
+use App\Models\Subtask;
 use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\User;
@@ -18,34 +19,40 @@ class ReportController extends Controller
     public function showinsights($department)
     {
 
-        $users = User::where('department', $department)
-            ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+
         $currentDate = Carbon::now();
         $currentyear = $currentDate->year;
 
-        $currentproject = Project::where('department', $department)
+        // Retrieve projects based on department and calendar year
+        $projects = Project::where('department', $department)
             ->where('calendaryear', $currentyear)
-            ->where('projectenddate', '>=', $currentDate)
             ->get();
 
-        $pastproject = Project::where('department', $department)
-            ->where('calendaryear', $currentyear)
-            ->where('projectenddate', '<', $currentDate)
+        // Extract project IDs and convert them to an array
+        $projectIds = $projects->pluck('id')->toArray();
+        $activities = Activity::whereIn('project_id', $projectIds)
             ->get();
 
+        $activityHoursRendered = $activities->sum('totalhours_rendered');
+
+        $completedActivities = $activities->where('actremark', 'Completed')->count();
+        $incompleteActivities = $activities->whereIn('actremark', ['Incomplete', 'Pending'])->count();
+        $activityIds = $activities->pluck('id')->toArray();
+        $subtaskHoursRendered = Subtask::whereIn('activity_id', $activityIds)->sum('hours_rendered');
         $inCurrentYear = true;
 
         $calendaryears = CalendarYear::pluck('year');
 
 
         return view('report.selectinsights', [
-            'members' => $users,
             'calendaryears' => $calendaryears,
-            'currentproject' => $currentproject,
-            'pastproject' => $pastproject,
+            'projects' => $projects,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
+            'activityHoursRendered' => $activityHoursRendered,
+            'completedActivities' => $completedActivities,
+            'incompleteActivities' => $incompleteActivities,
+            'subtaskHoursRendered' => $subtaskHoursRendered
         ]);
     }
 
