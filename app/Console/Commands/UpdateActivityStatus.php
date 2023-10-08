@@ -22,7 +22,7 @@ class UpdateActivityStatus extends Command
         $this->updatePendingActivities();
         $this->updateOverdueActivities();
         */
-        $this->changeAllRemarks();
+        $this->changeAllOutputs();
     }
     public function changeAllRemarks()
     {
@@ -33,6 +33,17 @@ class UpdateActivityStatus extends Command
 
             // Update the 'actremark' field with the randomly generated value
             $activity->update(['actremark' => $CompleteorIncomplete]);
+        }
+    }
+    public function changeAllOutputs()
+    {
+        $outputs = Output::all();
+        foreach ($outputs as $output) {
+            // Generate a random value between 'Incomplete' and 'Completed'
+            $CompleteorIncomplete = rand(0, 100);
+
+            // Update the 'actremark' field with the randomly generated value
+            $output->update(['expectedoutput' => $CompleteorIncomplete]);
         }
     }
     private function updateInProgressActivities()

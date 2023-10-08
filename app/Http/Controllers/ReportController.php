@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CalendarYear;
 use App\Models\Notification;
+use App\Models\Output;
 use App\Models\Subtask;
 use Illuminate\Http\Request;
 use App\Models\Activity;
@@ -39,6 +40,10 @@ class ReportController extends Controller
         $incompleteActivities = $activities->whereIn('actremark', ['Incomplete', 'Pending'])->count();
         $activityIds = $activities->pluck('id')->toArray();
         $subtaskHoursRendered = Subtask::whereIn('activity_id', $activityIds)->sum('hours_rendered');
+
+        $outputs = Output::whereIn('activity_id', $activityIds)
+            ->get();
+
         $inCurrentYear = true;
 
         $calendaryears = CalendarYear::pluck('year');
@@ -52,7 +57,9 @@ class ReportController extends Controller
             'activityHoursRendered' => $activityHoursRendered,
             'completedActivities' => $completedActivities,
             'incompleteActivities' => $incompleteActivities,
-            'subtaskHoursRendered' => $subtaskHoursRendered
+            'subtaskHoursRendered' => $subtaskHoursRendered,
+            'activities' => $activities,
+            'outputs' => $outputs
         ]);
     }
 

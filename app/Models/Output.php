@@ -10,6 +10,14 @@ class Output extends Model
     use HasFactory;
     protected $table = 'outputs';
 
+    protected $fillable = [
+        'output_name',
+        'output_type',
+        'activity_id',
+        'totaloutput_submitted',
+        'expectedoutput',
+    ];
+
     public function activity()
     {
         return $this->belongsTo(Activity::class);

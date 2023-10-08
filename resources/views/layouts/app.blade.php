@@ -56,6 +56,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        <h6 class="text-white pt-3">@livewire('time')</h6>
 
                     </ul>
 

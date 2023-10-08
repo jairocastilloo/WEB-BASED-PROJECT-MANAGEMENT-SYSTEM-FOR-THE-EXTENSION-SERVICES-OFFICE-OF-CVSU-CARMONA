@@ -30,6 +30,72 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
             $NotStartedProjectsCount = count($NotStartedProjects);
             $IncompleteProjectsCount = count($IncompleteProjects);
             @endphp
+
+            @php
+            $projectpercents = [];
+            @endphp
+
+            @foreach($projects as $project)
+            @php
+            $percentactivity = [];
+            @endphp
+
+            @foreach($activities as $activity)
+            @php
+            $percentoutput = [];
+            @endphp
+
+            @if($activity->project_id == $project->id)
+            @foreach ($outputs as $output)
+            @if ($output->activity_id == $activity->id)
+
+            @if ($output->expectedoutput != 0)
+            @php
+
+            array_push($percentoutput, ($output->totaloutput_submitted / $output->expectedoutput) * 100);
+            @endphp
+            @else
+            @php
+
+            array_push($percentoutput, 0); // Push a default value of 0
+            @endphp
+            @endif
+
+            @endif
+            @endforeach
+
+            @if (count($percentoutput) > 0)
+            @php
+
+            array_push($percentactivity, array_sum($percentoutput) / count($percentoutput));
+            @endphp
+            @endif
+            @endif
+            @endforeach
+
+            @if(count($percentactivity) > 0)
+            @php
+            $averagePercentage = array_sum($percentactivity) / count($percentactivity);
+            $formattedPercentage = number_format($averagePercentage, 2);
+            array_push($projectpercents, $formattedPercentage);
+            @endphp
+            @else
+            @php
+            array_push($projectpercents, 0);
+            @endphp
+            @endif
+
+            @endforeach
+
+
+            @php
+            $projectNames = [];
+            @endphp
+            @foreach ($projects as $project)
+            @php
+            array_push($projectNames, $project->projecttitle);
+            @endphp
+            @endforeach
             <div class="basiccont rounded shadow pb-2">
                 <div class="border-bottom ps-3 pt-2 bggreen">
                     <h6 class="fw-bold small" style="color:darkgreen;">Browse Reports</h6>
@@ -69,16 +135,16 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                             <div class="border-bottom ps-2 pt-2 bggreen">
                                 <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
                             </div>
-                            <div class="p-2 text-center">
-                                <h1>{{ count($projects) }}</h1>
+                            <div class="p-1 text-center">
+                                <h3>{{ count($projects) }}</h3>
                             </div>
                         </div>
                         <div class="basiccont rounded shadow">
                             <div class="border-bottom ps-2 pt-2 bggreen">
                                 <h6 class="fw-bold small" style="color:darkgreen;">Hours Rendered</h6>
                             </div>
-                            <div class="p-2 text-center">
-                                <h1>{{ $activityHoursRendered + $subtaskHoursRendered }}</h1>
+                            <div class="p-1 text-center">
+                                <h3>{{ $activityHoursRendered + $subtaskHoursRendered }}</h3>
                                 <h6 class="text-secondary small">Hours</h6>
                             </div>
                         </div>
@@ -86,8 +152,8 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                             <div class="border-bottom ps-2 pt-2 bggreen">
                                 <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
                             </div>
-                            <div class="p-2 text-center">
-                                <h1>{{ $completedActivities }}</h1>
+                            <div class="p-1 text-center">
+                                <h3>{{ $completedActivities }}</h3>
                                 <h6 class="text-secondary small">Activities</h6>
                             </div>
                         </div>
@@ -95,8 +161,8 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                             <div class="border-bottom ps-2 pt-2 bggreen">
                                 <h6 class="fw-bold small" style="color:darkgreen;">Remaining Activities</h6>
                             </div>
-                            <div class="p-2 text-center">
-                                <h1>{{ $incompleteActivities }}</h1>
+                            <div class="p-1 text-center">
+                                <h3>{{ $incompleteActivities }}</h3>
                                 <h6 class="text-secondary small">Activities</h6>
                             </div>
                         </div>
@@ -112,8 +178,9 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                     <div class="col-lg-6">
                         <div class="basiccont rounded shadow">
                             <div class="border-bottom ps-2 pt-2 bggreen">
-                                <h6 class="fw-bold small" style="color:darkgreen;">Output Completion Rate by Project</h6>
+                                <h6 class="fw-bold small" style="color:darkgreen;">Outputs by Project</h6>
                             </div>
+                            <canvas id="OutputsByProjectsChart" class="p-2"></canvas>
                         </div>
                     </div>
 
@@ -170,6 +237,55 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
             });
 
 
+            function getRandomColor() {
+                var r = Math.floor(Math.random() * 256);
+                var g = Math.floor(Math.random() * 256);
+                var b = Math.floor(Math.random() * 256);
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+
+            // Generate random background colors and border colors
+            const backgroundColors = Array.from({
+                length: <?php echo count($projects); ?>
+            }, () => getRandomColor());
+            const borderColors = Array.from({
+                length: <?php echo count($projects); ?>
+            }, () => getRandomColor());
+
+
+            const ctx2 = document.getElementById('OutputsByProjectsChart');
+
+
+
+            const data2 = {
+                labels: <?php echo json_encode($projectNames); ?>,
+                datasets: [{
+                    label: 'Outputs',
+                    data: <?php echo json_encode($projectpercents); ?>,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            };
+
+            new Chart(ctx2, {
+                type: 'bar',
+                data: data2,
+
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100, // Set the maximum value of the y-axis to 100%
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%'; // Add '%' suffix to y-axis labels
+                                }
+                            }
+                        }
+                    }
+                }
+            });
 
 
 

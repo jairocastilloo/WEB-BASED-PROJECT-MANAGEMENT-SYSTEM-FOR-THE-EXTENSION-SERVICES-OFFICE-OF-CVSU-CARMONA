@@ -43,10 +43,13 @@
                 @endphp
                 @if($subtasks->isEmpty())
                 <div class="basiccont word-wrap shadow rounded">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2">
-                        <h6 class="fw-bold small" style="color: darkgreen;">Tasks</h6>
+                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                        <h6 class="fw-bold small" style="color: darkgreen;">
+                            <i class="bi bi-list-task"></i>
+                            Tasks
+                        </h6>
                     </div>
-                    <div class="text-center p-4">
+                    <div class="text-center p-4 toggle-container subtoggle" style="display: none;">
                         <h4><em>No Tasks.
                             </em></h4>
                     </div>
