@@ -170,7 +170,9 @@ class SubtaskController extends Controller
         $activityid = Subtask::where('id', $subtaskid)
             ->value('activity_id');
         $activity = Activity::findOrFail($activityid);
-        $subtasks = Subtask::where('activity_id', $activityid)->get();
+        $subtasks = Subtask::where('activity_id', $activityid)
+            ->where('id', '!=', $subtaskid) // Corrected to use '!='
+            ->get();
         $projectId = $activity->project_id;
         $projectName = $activity->project->projecttitle;
 

@@ -457,9 +457,9 @@ div {
 .step {
   display: block;
   padding-top: 8px;
-  padding-left: 24px;
+  padding-left: 26px;
   position: relative;
-  width: 200px;
+  width: 180px;
   height: 40px;
   font-family: Arial;
   color: green;
@@ -513,6 +513,21 @@ div {
   display: block;
 }
 
+.steps {
+  display: block;
+  padding-top: 8px;
+  padding-left: 26px;
+  position: relative;
+  width: 180px;
+  height: 40px;
+  font-family: Arial;
+  color: white;
+  background-color: green;
+}
+
+  .steps:hover .message-box {
+    display: block;
+  }
 
 
 

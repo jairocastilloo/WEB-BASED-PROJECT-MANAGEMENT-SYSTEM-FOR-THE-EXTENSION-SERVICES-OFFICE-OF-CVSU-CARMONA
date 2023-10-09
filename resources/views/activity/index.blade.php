@@ -4,12 +4,14 @@
 
 <input class="d-none" type="date" value="{{ $activity['actstartdate'] }}" id="actsavestartdate">
 <input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
-
+@php
+$department = Auth::user()->department;
+@endphp
 <div class="maincontainer border border-start border-end border-bottom">
 
     <div class="mainnav mb-3 shadow-sm">
         <div class="step-wrapper">
-            <div class="step" data-hover="{{ $projectName }}">
+            <div class="step divhover" id="projectdiv" data-value="{{ $projectId }}" data-value="{{ $projectName }}">
                 <span>Project: {{ $projectName }}</span>
                 <div class="message-box text-white">
                     {{ $projectName }}
@@ -257,13 +259,16 @@
     var url = "";
     var unassignassigneeid;
     var buttonClicked = false;
+    var department = "<?php echo $department; ?>";
     $(document).ready(function() {
+
         $('.step span').each(function() {
             var $span = $(this);
-            if ($span.text().length > 21) { // Adjust the character limit as needed
-                $span.text($span.text().substring(0, 21) + '...'); // Truncate and add ellipsis
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
             }
         });
+
         $('#editOutput').click(function(event) {
             event.preventDefault();
             $('.numberInput').attr('type', 'number');
@@ -353,7 +358,7 @@
             event.preventDefault();
             var projectid = $(this).attr('data-value');
             var projectname = $(this).attr('data-name');
-            var department = $('#department').val();
+
 
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
@@ -394,7 +399,7 @@
 
             var activityid = $(this).attr('data-value');
             var activityname = $(this).attr('data-name');
-            var department = $('#department').val();
+
 
 
 

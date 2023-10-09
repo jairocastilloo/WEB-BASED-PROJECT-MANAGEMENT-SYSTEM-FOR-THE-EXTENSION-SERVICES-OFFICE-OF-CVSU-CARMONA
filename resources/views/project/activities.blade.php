@@ -360,8 +360,8 @@
         });
         $('.step span').each(function() {
             var $span = $(this);
-            if ($span.text().length > 21) { // Adjust the character limit as needed
-                $span.text($span.text().substring(0, 21) + '...'); // Truncate and add ellipsis
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
             }
         });
 

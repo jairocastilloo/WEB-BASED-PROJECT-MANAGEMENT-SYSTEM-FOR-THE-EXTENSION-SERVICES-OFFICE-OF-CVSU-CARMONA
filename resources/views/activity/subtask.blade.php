@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-
-<div class="maincontainer shadow">
-    <div class="mainnav mb-2 shadow">
-        <div class="step-wrapper">
-            <div class="step" data-hover="{{ $projectName }}">
+@php
+$department = Auth::user()->department;
+@endphp
+<div class="maincontainer border border-start border-end border-bottom">
+    <div class="mainnav mb-3 shadow-sm">
+        <div class="step-wrapper divhover" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+            <div class="step">
                 <span>Project: {{ $projectName }}</span>
                 <div class="message-box text-white">
                     {{ $projectName }}
@@ -14,7 +16,7 @@
 
 
         </div>
-        <div class="step-wrapper">
+        <div class="step-wrapper divhover" id="activitydiv" data-value="{{ $activity->id }}" data-name="{{ $activity->actname }}">
             <div class="step" data-hover="{{ $activity['actname'] }}">
                 <span>Activity: {{ $activity['actname'] }}</span>
                 <div class="message-box text-white">
@@ -186,11 +188,12 @@
 @section('scripts')
 <script>
     url = "";
+    const department = "<?php echo $department; ?>";
     $(document).ready(function() {
         $('.step span').each(function() {
             var $span = $(this);
-            if ($span.text().length > 21) { // Adjust the character limit as needed
-                $span.text($span.text().substring(0, 21) + '...'); // Truncate and add ellipsis
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
             }
         });
 
@@ -204,7 +207,7 @@
             event.preventDefault();
             var projectid = $(this).attr('data-value');
             var projectname = $(this).attr('data-name');
-            var department = $('#department').val();
+
 
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
@@ -217,10 +220,8 @@
         $('#activitydiv').click(function(event) {
 
             event.preventDefault();
-
-            var actid = $('#actid').val();
+            var actid = $(this).attr('data-value');
             var activityname = $(this).attr('data-name');
-            var department = $('#department').val();
 
             var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
             url = url.replace(':activityid', actid);
