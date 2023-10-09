@@ -10,8 +10,15 @@
 <input class="d-none" type="date" id="projsaveenddate" value="{{ $indexproject['projectenddate'] }}">
 <div class="maincontainer">
     <div class="mainnav mb-2 shadow">
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle text-wrap">
-            <h5 class="fw-bold">Project: {{ $indexproject['projecttitle'] }}</h5>
+        <div class="step-wrapper">
+            <div class="step highlight" data-hover="{{ $indexproject['projecttitle'] }}">
+                <span>Project: {{ $indexproject['projecttitle'] }}</span>
+                <div class="message-box">
+                    {{ $indexproject['projecttitle'] }}
+                </div>
+            </div>
+
+
         </div>
 
     </div>

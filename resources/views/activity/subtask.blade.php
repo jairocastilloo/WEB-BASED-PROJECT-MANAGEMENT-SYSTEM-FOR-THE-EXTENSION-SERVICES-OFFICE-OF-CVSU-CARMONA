@@ -4,16 +4,35 @@
 
 <div class="maincontainer shadow">
     <div class="mainnav mb-2 shadow">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
-            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
-            <h6><b>Project: {{ $projectName }}</b></h6>
+        <div class="step-wrapper">
+            <div class="step" data-hover="{{ $projectName }}">
+                <span>Project: {{ $projectName }}</span>
+                <div class="message-box text-white">
+                    {{ $projectName }}
+                </div>
+            </div>
+
+
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv" data-name="{{ $activity['actname'] }}">
-            <input type="number" class="d-none" id="actid" value="{{ $activity['id'] }}">
-            <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
+        <div class="step-wrapper">
+            <div class="step" data-hover="{{ $activity['actname'] }}">
+                <span>Activity: {{ $activity['actname'] }}</span>
+                <div class="message-box text-white">
+                    {{ $activity['actname'] }}
+                </div>
+            </div>
+
+
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center position-triangle">
-            <h6><b>Subtask: {{ $subtask['subtask_name'] }}</b></h6>
+        <div class="step-wrapper">
+            <div class="step highlight" data-hover="{{ $activity['actname'] }}">
+                <span>Subtask: {{ $subtask['subtask_name'] }}</span>
+                <div class="message-box">
+                    {{ $subtask['subtask_name'] }}
+                </div>
+            </div>
+
+
         </div>
     </div>
     <div class="container">
@@ -128,7 +147,7 @@
                     $sortedSubtasks = $subtasks->sortBy('subduedate');
 
                     @endphp
-                    @livewire('other-subtasks', ['subtasks' => $subtasks] )
+                    @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
 
 
                 </div>
@@ -168,6 +187,12 @@
 <script>
     url = "";
     $(document).ready(function() {
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 21) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 21) + '...'); // Truncate and add ellipsis
+            }
+        });
 
         $('#navbarDropdown').click(function(event) {
             // Add your function here

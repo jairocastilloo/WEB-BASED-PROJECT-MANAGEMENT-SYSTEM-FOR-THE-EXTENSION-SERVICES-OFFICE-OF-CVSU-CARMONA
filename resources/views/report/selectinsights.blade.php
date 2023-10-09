@@ -166,7 +166,7 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                         <div class="col-xl-3">
                             <div class="basiccont rounded shadow mb-3">
                                 <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Overall Outputs</h6>
+                                    <h6 class="fw-bold small" style="color:darkgreen;">Aggregate Project Outputs</h6>
                                 </div>
                                 <div class="p-2 text-center">
                                     <h1>{{ $formattedaverageoutputpercentage . ' %' }}</h1>

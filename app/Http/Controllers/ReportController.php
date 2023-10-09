@@ -28,6 +28,9 @@ class ReportController extends Controller
         $projects = Project::where('department', $department)
             ->where('calendaryear', $currentyear)
             ->get();
+        $inCurrentYear = true;
+
+        $calendaryears = CalendarYear::pluck('year');
 
         // Extract project IDs and convert them to an array
         $projectIds = $projects->pluck('id')->toArray();
@@ -44,9 +47,7 @@ class ReportController extends Controller
         $outputs = Output::whereIn('activity_id', $activityIds)
             ->get();
 
-        $inCurrentYear = true;
 
-        $calendaryears = CalendarYear::pluck('year');
 
 
         return view('report.selectinsights', [
@@ -73,30 +74,48 @@ class ReportController extends Controller
         $currentDate = Carbon::now();
         $otheryear = $currentDate->year;
 
+        $projects = Project::where('department', $department)
+            ->where('calendaryear', $currentyear)
+            ->get();
+
         if ($otheryear == $currentyear) {
             $inCurrentYear = true;
         } else {
             $inCurrentYear = false;
         }
 
-        $currentproject = Project::where('department', $department)
-            ->where('calendaryear', $currentyear)
-            ->where('projectenddate', '>=', $currentDate)
-            ->get();
-        $pastproject = Project::where('department', $department)
-            ->where('calendaryear', $currentyear)
-            ->where('projectenddate', '<', $currentDate)
-            ->get();
         $calendaryears = CalendarYear::pluck('year');
+
+
+        // Extract project IDs and convert them to an array
+        $projectIds = $projects->pluck('id')->toArray();
+        $activities = Activity::whereIn('project_id', $projectIds)
+            ->get();
+
+        $activityHoursRendered = $activities->sum('totalhours_rendered');
+
+        $completedActivities = $activities->where('actremark', 'Completed')->count();
+        $incompleteActivities = $activities->whereIn('actremark', ['Incomplete', 'Pending'])->count();
+        $activityIds = $activities->pluck('id')->toArray();
+        $subtaskHoursRendered = Subtask::whereIn('activity_id', $activityIds)->sum('hours_rendered');
+
+        $outputs = Output::whereIn('activity_id', $activityIds)
+            ->get();
+
 
 
         return view('report.selectinsights', [
             'members' => $users,
             'calendaryears' => $calendaryears,
-            'currentproject' => $currentproject,
-            'pastproject' => $pastproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
+            'activityHoursRendered' => $activityHoursRendered,
+            'completedActivities' => $completedActivities,
+            'incompleteActivities' => $incompleteActivities,
+            'subtaskHoursRendered' => $subtaskHoursRendered,
+            'activities' => $activities,
+            'outputs' => $outputs,
+            'projects' => $projects,
         ]);
     }
     public function indexinsights($projectid, $department, $projectname)

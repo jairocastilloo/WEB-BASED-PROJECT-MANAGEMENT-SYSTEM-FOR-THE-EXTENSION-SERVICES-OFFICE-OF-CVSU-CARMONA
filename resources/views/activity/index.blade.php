@@ -7,28 +7,26 @@
 
 <div class="maincontainer border border-start border-end border-bottom">
 
-    <div class="mainnav mb-3 shadow-sm ps-3">
-        <div class="p-2 pt-3 px-3 border-start border-end text-wrap divhover" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
-            <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
-            <h6 class="fw-bold text-dark small">Project</h6>
-        </div>
-        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle">
-            <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
-        </div>
-        <div class="dropdown border-end border-bottom">
-            <div class="dropdown-toggle text-dark fw-bold p-2 pt-3 px-3 small text-dark containerhover" data-bs-toggle="dropdown">
-                Subtasks
+    <div class="mainnav mb-3 shadow-sm">
+        <div class="step-wrapper">
+            <div class="step" data-hover="{{ $projectName }}">
+                <span>Project: {{ $projectName }}</span>
+                <div class="message-box text-white">
+                    {{ $projectName }}
+                </div>
             </div>
-            <ul class="dropdown-menu" aria-labelledby="subtasksDropdown">
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedSubtasks = $subtasks->sortBy('subduedate');
-                @endphp
-                @foreach ($sortedSubtasks as $subtask)
-                <li><a class="dropdown-item" href="{{ route('subtasks.display', ['subtaskid' => $subtask->id , 'subtaskname' => $subtask['subtask_name']]) }}">
-                        {{ $subtask['subtask_name'] }}</a></li>
-                @endforeach
-            </ul>
+
+
+        </div>
+        <div class="step-wrapper">
+            <div class="step highlight" data-hover="{{ $activity['actname'] }}">
+                <span>Activity: {{ $activity['actname'] }}</span>
+                <div class="message-box">
+                    {{ $activity['actname'] }}
+                </div>
+            </div>
+
+
         </div>
 
     </div>
@@ -71,7 +69,11 @@
                                 @endif
                             </div>
                         </div>
+                        @php
+                        // Sort the $activities array by actstartdate in ascending order
+                        $sortedSubtasks = $subtasks->sortBy('subduedate');
 
+                        @endphp
                         @if ($subtasks->count() == 0)
 
 
@@ -256,6 +258,12 @@
     var unassignassigneeid;
     var buttonClicked = false;
     $(document).ready(function() {
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 21) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 21) + '...'); // Truncate and add ellipsis
+            }
+        });
         $('#editOutput').click(function(event) {
             event.preventDefault();
             $('.numberInput').attr('type', 'number');

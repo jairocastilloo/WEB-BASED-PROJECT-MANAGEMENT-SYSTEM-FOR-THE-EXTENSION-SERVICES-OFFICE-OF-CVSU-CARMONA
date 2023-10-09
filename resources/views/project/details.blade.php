@@ -4,26 +4,16 @@
 
 <div class="maincontainer border border-start border-end border-bottom">
 
-    <div class="mainnav mb-3 shadow-sm ps-3">
-        <div class="p-2 pt-3 border-end border-start border-warning text-wrap px-3 position-triangle" data-value="{{ $indexproject['projecttitle'] }}">
-            <h6 class="fw-bold small" style="color:darkgreen;">Project</h6>
-        </div>
+    <div class="mainnav mb-3 shadow-sm">
+        <div class="step-wrapper">
+            <div class="step highlight" data-hover="{{ $indexproject['projecttitle'] }}">
+                <span>Project: {{ $indexproject['projecttitle'] }}</span>
+                <div class="message-box">
+                    {{ $indexproject['projecttitle'] }}
+                </div>
+            </div>
 
-        <div class="dropdown dropdown-toggle text-dark fw-bold p-2 pt-3 px-3 small border-end border-bottom text-dark containerhover" data-bs-toggle="dropdown">
-            Activities
 
-
-            <ul class="dropdown-menu" aria-labelledby="activitiesDropdown">
-                @php
-                // Sort the $activities array by actstartdate in ascending order
-                $sortedActivities = $activities->sortBy('actstartdate');
-                @endphp
-                @foreach ($sortedActivities as $activity)
-                <li><a class="dropdown-item" href="{{ route('activities.display', ['activityid' => $activity['id'], 'department' => Auth::user()->department, 'activityname' => $activity['actname']]) }}">
-                        {{ $activity['actname'] }}
-                    </a></li>
-                @endforeach
-            </ul>
         </div>
 
     </div>
@@ -412,7 +402,12 @@
             // Add your function here
             $('#account .dropdown-menu').toggleClass('shows');
         });
-
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 21) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 21) + '...'); // Truncate and add ellipsis
+            }
+        });
         $(document).on('input', '.autocapital', function() {
             var inputValue = $(this).val();
             if (inputValue.length > 0) {
