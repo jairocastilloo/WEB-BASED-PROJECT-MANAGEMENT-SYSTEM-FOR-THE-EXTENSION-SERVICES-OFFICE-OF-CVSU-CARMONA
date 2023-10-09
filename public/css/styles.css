@@ -1,3 +1,6 @@
+* {
+  font-family: 'Inter', sans-serif;
+}
 body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
@@ -214,7 +217,7 @@ body {
   cursor: pointer;
 }
 .hrefnav:hover{
-  background-color: #5f5f5f;
+  background-color: #4a4a4a;
   color: gold;
   font-weight: normal;
  

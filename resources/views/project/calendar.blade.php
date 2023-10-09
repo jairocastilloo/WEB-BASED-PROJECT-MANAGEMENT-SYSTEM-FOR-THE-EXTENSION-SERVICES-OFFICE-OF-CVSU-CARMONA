@@ -3,10 +3,10 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-bottom">
-    <div class="mainnav mb-3 shadow-sm">
+    <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
             <div class="step highlight" data-hover="{{ $indexproject['projecttitle'] }}">
-                <span>Project: {{ $indexproject['projecttitle'] }}</span>
+                <span class="fw-bold">Project: {{ $indexproject['projecttitle'] }}</span>
                 <div class="message-box">
                     {{ $indexproject['projecttitle'] }}
                 </div>
@@ -106,7 +106,7 @@
                         <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <b class="small"> <i class="bi bi-list"></i> Menu</b>
                         </button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu border-warning">
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                                 <b class="small">Table</b>
                             </a>

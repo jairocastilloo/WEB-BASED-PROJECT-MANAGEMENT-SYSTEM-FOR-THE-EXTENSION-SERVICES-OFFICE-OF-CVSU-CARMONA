@@ -5,10 +5,10 @@
 $department = Auth::user()->department;
 @endphp
 <div class="maincontainer border border-start border-end border-bottom">
-    <div class="mainnav mb-3 shadow-sm">
+    <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper divhover" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
             <div class="step">
-                <span>Project: {{ $projectName }}</span>
+                <span class="fw-bold">Project: {{ $projectName }}</span>
                 <div class="message-box text-white">
                     {{ $projectName }}
                 </div>
@@ -17,8 +17,8 @@ $department = Auth::user()->department;
 
         </div>
         <div class="step-wrapper divhover" id="activitydiv" data-value="{{ $activity->id }}" data-name="{{ $activity->actname }}">
-            <div class="step" data-hover="{{ $activity['actname'] }}">
-                <span>Activity: {{ $activity['actname'] }}</span>
+            <div class="step">
+                <span class="fw-bold">Activity: {{ $activity['actname'] }}</span>
                 <div class="message-box text-white">
                     {{ $activity['actname'] }}
                 </div>
@@ -28,7 +28,7 @@ $department = Auth::user()->department;
         </div>
         <div class="step-wrapper divhover" id="subtaskdiv" data-value="{{ $subtask->id }}" data-name="{{ $subtask->subtask_name }}">
             <div class="step">
-                <span>Subtask: {{ $subtask['subtask_name'] }}</span>
+                <span class="fw-bold">Subtask: {{ $subtask['subtask_name'] }}</span>
                 <div class="message-box text-white">
                     {{ $subtask['subtask_name'] }}
                 </div>
@@ -38,7 +38,7 @@ $department = Auth::user()->department;
         </div>
         <div class="step-wrapper">
             <div class="steps" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
-                <span>Evaluating Submission for {{ $subtask['subtask_name'] }}</span>
+                <span class="fw-bold">Evaluating Submission for {{ $subtask['subtask_name'] }}</span>
                 <div class="message-box">
                     Evaluating Submission for {{ $subtask['subtask_name'] }}
                 </div>

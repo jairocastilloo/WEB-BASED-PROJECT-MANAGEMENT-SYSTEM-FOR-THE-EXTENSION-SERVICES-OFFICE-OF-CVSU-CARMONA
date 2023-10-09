@@ -20,7 +20,7 @@
     <p class="lh-sm ms-4 me-2"><strong>Source:</strong> {{ $activity['actsource'] }}</p>
     <p class="lh-sm ms-4 me-2"><strong>Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
     <div class="btn-group dropdown ms-3 mb-3 shadow">
-        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-3 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <b class="small"> <i class="bi bi-list"></i> Menu</b>
         </button>
         <div class="dropdown-menu border border-1 border-warning">

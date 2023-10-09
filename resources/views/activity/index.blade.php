@@ -9,10 +9,10 @@ $department = Auth::user()->department;
 @endphp
 <div class="maincontainer border border-start border-end border-bottom">
 
-    <div class="mainnav mb-3 shadow-sm">
+    <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
             <div class="step divhover" id="projectdiv" data-value="{{ $projectId }}" data-value="{{ $projectName }}">
-                <span>Project: {{ $projectName }}</span>
+                <span class="fw-bold">Project: {{ $projectName }}</span>
                 <div class="message-box text-white">
                     {{ $projectName }}
                 </div>
@@ -22,7 +22,7 @@ $department = Auth::user()->department;
         </div>
         <div class="step-wrapper">
             <div class="step highlight" data-hover="{{ $activity['actname'] }}">
-                <span>Activity: {{ $activity['actname'] }}</span>
+                <span class="fw-bold">Activity: {{ $activity['actname'] }}</span>
                 <div class="message-box">
                     {{ $activity['actname'] }}
                 </div>
@@ -42,7 +42,7 @@ $department = Auth::user()->department;
                 @elseif ($activity['subtask'] == 0)
                 <div class="col-lg-10">
                     @endif
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                         </div>
@@ -58,7 +58,7 @@ $department = Auth::user()->department;
                 @if ($activity['subtask'] == 1)
 
                 <div class="col-lg-4">
-                    <div class="basiccont word-wrap shadow mt-2">
+                    <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                             <div class="row">
                                 <div class="col">
