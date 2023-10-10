@@ -52,7 +52,7 @@ $department = Auth::user()->department;
     <div class="container">
         <form id="addtosubtaskform" data-url="{{ route('addto.subtask') }}">
             @csrf
-            <div class="basiccont word-wrap shadow mt-4 me-4 ms-4">
+            <div class="basiccont word-wrap shadow">
                 <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Submit Hours Rendered</b>
                         <span class="text-dark">({{ $subtask['subtask_name'] }})</span>
@@ -113,7 +113,6 @@ $department = Auth::user()->department;
 
 </div>
 
-</div>
 
 <div class="modal fade" id="contributorModal" tabindex="-1" aria-labelledby="contributorModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -17,7 +17,7 @@ $department = Auth::user()->department;
 
         </div>
         <div class="step-wrapper divhover" id="activitydiv" data-value="{{ $activity->id }}" data-name="{{ $activity->actname }}">
-            <div class="step" data-hover="{{ $activity['actname'] }}">
+            <div class="step">
                 <span class="fw-bold">Activity: {{ $activity['actname'] }}</span>
                 <div class="message-box text-white">
                     {{ $activity['actname'] }}
@@ -49,8 +49,8 @@ $department = Auth::user()->department;
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-sm-8">
-                <div class="basiccont word-wrap shadow ms-2 mt-4" data-id="{{ $contribution->id }}" data-approval="{{ $contribution->approval }}">
+            <div class="col-lg-8">
+                <div class="basiccont word-wrap shadow" data-id="{{ $contribution->id }}" data-approval="{{ $contribution->approval }}">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofsubmission }}</h6>
                     </div>
@@ -99,7 +99,7 @@ $department = Auth::user()->department;
                 </div>
 
             </div>
-            <div class="col-sm-4">
+            <div class="col-lg-4">
                 @php
                 // Sort the $activities array by actstartdate in ascending order
 
@@ -116,7 +116,7 @@ $department = Auth::user()->department;
 
                 @endphp
                 @if($othercontribution->isEmpty())
-                <div class="basiccont word-wrap shadow mt-4 me-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Contribution</h6>
                     </div>
@@ -128,7 +128,7 @@ $department = Auth::user()->department;
 
                 @if (count($unevaluatedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-4 me-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
@@ -146,7 +146,7 @@ $department = Auth::user()->department;
                 @endif
                 @if (count($acceptedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-4 me-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
                     </div>
@@ -163,7 +163,7 @@ $department = Auth::user()->department;
                 @endif
                 @if (count($rejectedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-4 me-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>

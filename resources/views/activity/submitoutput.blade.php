@@ -197,7 +197,7 @@ $department = Auth::user()->department;
         });
         $(document).on('click', '.selectoutputdiv', function() {
             var outputtype = $(this).attr('data-value');
-            var actid = $('#activitydiv').attr('data-value')
+            var actid = $('#activitydiv').attr('data-value');
 
             var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);
@@ -264,7 +264,7 @@ $department = Auth::user()->department;
         $('#submitreport-btn').click(function(event) {
             event.preventDefault();
             var outputtype = $(this).attr('data-value');
-            var actid = $('#actid').val();
+            var actid = $('#activitydiv').attr('data-value');
 
             var url = '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
             url = url.replace(':activityid', actid);

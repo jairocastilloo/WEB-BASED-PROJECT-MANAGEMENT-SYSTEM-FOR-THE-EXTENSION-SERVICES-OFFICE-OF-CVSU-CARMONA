@@ -54,7 +54,7 @@ $department = Auth::user()->department;
 
                 @endphp
 
-                <div class="basiccont word-wrap shadow mt-2 pb-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                <div class="basiccont word-wrap shadow pb-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
                     </div>
@@ -73,7 +73,7 @@ $department = Auth::user()->department;
                 </div>
 
                 @if($contributions->isEmpty())
-                <div class="basiccont word-wrap shadow mt-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
                     </div>
@@ -85,7 +85,7 @@ $department = Auth::user()->department;
 
                 @if (count($unevaluatedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
                     </div>
@@ -103,7 +103,7 @@ $department = Auth::user()->department;
                 @endif
                 @if (count($acceptedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
                     </div>
@@ -120,7 +120,7 @@ $department = Auth::user()->department;
                 @endif
                 @if (count($rejectedSubmission) > 0)
 
-                <div class="basiccont word-wrap shadow mt-2">
+                <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
                     </div>

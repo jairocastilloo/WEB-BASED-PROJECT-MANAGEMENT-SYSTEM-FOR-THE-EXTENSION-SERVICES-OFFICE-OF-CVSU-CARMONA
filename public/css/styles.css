@@ -465,9 +465,9 @@ div {
   width: 180px;
   height: 40px;
   font-family: Arial;
-  color: green;
+  color: rgb(27, 27, 27);
   background-color: white;
-  
+    
 
   
   &.highlight {
