@@ -1,15 +1,51 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$department = Auth::user()->department;
+@endphp
+<div class="maincontainer border border-start border-end border-bottom">
+    <div class="mainnav border-bottom mb-3 shadow-sm">
+        <div class="step-wrapper">
+            <div class="step divhover" id="projectdiv" data-value="{{ $projectId }}" data-value="{{ $projectName }}">
+                <span class="fw-bold">Project: {{ $projectName }}</span>
+                <div class="message-box text-white">
+                    {{ $projectName }}
+                </div>
+            </div>
 
-<div class="maincontainer">
-    <div class="mainnav mb-2">
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="projectdiv" data-value="{{ $projectId }}">
-            <h6><b>Project: {{ $projectName }}</b></h6>
+
         </div>
-        <div class="col-4 p-2 pt-3 border-end text-center mainnavpassive" id="activitydiv">
-            <input type="number" class="d-none" id="actid" value="{{ $activity['id'] }}">
-            <h6><b>Activity: {{ $activity['actname'] }}</b></h6>
+        <div class="step-wrapper divhover" id="activitydiv" data-value="{{ $activity->id }}" data-name="{{ $activity->actname }}">
+            <div class="step">
+                <span class="fw-bold">Activity: {{ $activity['actname'] }}</span>
+                <div class="message-box text-white">
+                    {{ $activity['actname'] }}
+                </div>
+            </div>
+
+
+        </div>
+        <div class="step-wrapper containerhover" id="activityhours-btn" data-value="{{ $activity->id }}" data-name="{{ $activity->actname }}">
+            <div class="step">
+                <span class="fw-bold">Participation Hours for {{ $activity['actname'] }}</span>
+                <div class="message-box text-white">
+                    Participation Hours for {{ $activity['actname'] }}
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="step-wrapper">
+            <div class="steps highlight" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
+                <span class="fw-bold">Submitting Report for {{ $activity['actname'] }}</span>
+                <div class="message-box">
+                    Submitting Report for {{ $activity['actname'] }}
+                </div>
+            </div>
+
+
         </div>
     </div>
 
@@ -18,7 +54,7 @@
         <form id="addtoactivityform" data-url="{{ route('addto.activity') }}">
             @csrf
             <input class="d-none" type="text" id="department" value="{{ Auth::user()->department }}">
-            <div class="basiccont word-wrap shadow mt-4 me-4 ms-4">
+            <div class="basiccont word-wrap shadow">
                 <div class="border-bottom pt-2 ps-4 pe-4">
                     <h6 class="small" style="color:darkgreen;"><b>Submit Hours Rendered</b>
                         <span class="text-dark">({{ $activity['actname'] }})</span>
@@ -119,9 +155,63 @@
     var currentassignees = <?php echo json_encode($currentassignees);
                             ?>;
     var contributorindex = 0;
-
+    var department = "<?php echo $department; ?>";
     $(document).ready(function() {
 
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            }
+        });
+        $('.steps span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            }
+        });
+
+
+        $('#projectdiv').click(function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+            var projectname = $(this).attr('data-name');
+
+
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':projectname', encodeURIComponent(projectname));
+            window.location.href = url;
+        });
+
+        $('#activitydiv').click(function(event) {
+
+            event.preventDefault();
+            var actid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':department', department);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+        });
+
+        $('#activityhours-btn').click(function(event) {
+            event.preventDefault();
+            var activityid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+
+
+            var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
+            url = url.replace(':activityname', activityname);
+
+
+            window.location.href = url;
+        });
         $('#navbarDropdown').click(function(event) {
             // Add your function here
             event.preventDefault();
