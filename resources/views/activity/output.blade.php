@@ -77,12 +77,6 @@ $department = Auth::user()->department;
                     </div>
 
                     <div class="btn-group ms-3 mb-3 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="editoutput-btn">
-                            <b class="small">Edit Details</b>
-                        </button>
-                    </div>
-
-                    <div class="btn-group ms-3 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submitoutput-btn">
                             <b class="small">Submit Output</b>
                         </button>
@@ -169,7 +163,7 @@ $department = Auth::user()->department;
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Other Outputs</h6>
                     </div>
-
+                    @if(count($alloutputtypes))
                     @foreach ($alloutputtypes as $alloutputtype)
 
                     <div class="divhover selectoutputdiv p-2 ps-4" data-value="{{ $alloutputtype }}">
@@ -177,7 +171,11 @@ $department = Auth::user()->department;
                     </div>
 
                     @endforeach
-
+                    @else
+                    <div class="text-center p-4">
+                        <h4><em>No Other Output.</em></h4>
+                    </div>
+                    @endif
 
                 </div>
             </div>

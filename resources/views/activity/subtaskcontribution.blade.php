@@ -38,9 +38,9 @@ $department = Auth::user()->department;
         </div>
         <div class="step-wrapper">
             <div class="steps" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">
-                <span class="fw-bold">Submitting Report for {{ $subtask['subtask_name'] }}</span>
+                <span class="fw-bold">Evaluating Report for {{ $subtask['subtask_name'] }}</span>
                 <div class="message-box">
-                    Submitting Report for {{ $subtask['subtask_name'] }}
+                    Evaluating Report for {{ $subtask['subtask_name'] }}
                 </div>
             </div>
 

@@ -86,11 +86,16 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                 array_push($projectNames, $project->projecttitle);
                 @endphp
                 @endforeach
-
+                @if(count($projectpercents) > 0 )
                 @php
                 $averageoutputpercentage = array_sum($projectpercents) / count($projectpercents);
                 $formattedaverageoutputpercentage = number_format($averageoutputpercentage, 2);
                 @endphp
+                @else
+                @php
+                $formattedaverageoutputpercentage = 0;
+                @endphp
+                @endif
                 <div class="basiccont rounded shadow pb-2 mb-3">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Browse Reports</h6>

@@ -28,10 +28,7 @@ class HomeController extends Controller
         $user = Auth::user();
         $approval = $user->approval;
         $username = $user->username;
-        $role = $user->role;
-        if ($role == "Admin") {
-            return redirect()->route('admin.choosedepartment');
-        }
+
         if ($approval == 1) {
             return redirect()->route('tasks.show', ["username" => $username]);
         } else {

@@ -474,7 +474,7 @@
                                 </div>
                                 <div class="toggle-container subtoggle" style="display: none;">
                                     @foreach ($InProgressProjects as $project)
-                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                                         <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
@@ -505,7 +505,7 @@
                                 </div>
                                 <div class="toggle-container subtoggle" style="display: none;">
                                     @foreach ($UpcomingProjects as $project)
-                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                                         <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
@@ -534,7 +534,7 @@
                                 </div>
                                 <div class="toggle-container subtoggle" style="display: none;">
                                     @foreach ($ScheduledProjects as $project)
-                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                                         <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
@@ -564,7 +564,7 @@
                                 </div>
                                 <div class="toggle-container subtoggle" style="display: none;">
                                     @foreach ($CompletedProjects as $project)
-                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                                         <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
@@ -594,7 +594,7 @@
                                 </div>
                                 <div class="toggle-container subtoggle" style="display: none;">
                                     @foreach ($IncompleteProjects as $project)
-                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                                    <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                                         <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
 
@@ -673,9 +673,9 @@
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
 
-            var projectname = $(this).find("h6:first").text();
+            var projectname = $(this).attr("data-name");
             var projectid = $(this).attr("data-value");
-            var department = $('#userdept').val();
+            var department = $(this).attr("data-dept");
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
             url = url.replace(':projectid', projectid)

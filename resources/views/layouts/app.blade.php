@@ -77,11 +77,11 @@
                         @endif
                         @else
                         @if (Auth::user()->approval === 1)
-                        @if (Auth::user()->role === 'Coordinator' || (Auth::user()->role === 'Admin' && (!in_array(Route::currentRouteName(), ['admin.choosedepartment']))))
+
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['tasks.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Home
                         </a>
-                        <a class="nav-link @if(in_array(Route::currentRouteName(), ['project.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link @if(in_array(Route::currentRouteName(), ['project.show'])) currenthover @else navtohover @endif text-white mx-2" href="@if (Auth::user()->role === 'Admin') {{ route('admin.choosedepartment') }} @else {{ route('project.show', ['department' => Auth::user()->department]) }} @endif" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Projects
                         </a>
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['insights.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -94,7 +94,7 @@
 
                         </li>
 
-                        @endif
+
 
                         <li class="nav-item dropdown">
                             <div id="account">

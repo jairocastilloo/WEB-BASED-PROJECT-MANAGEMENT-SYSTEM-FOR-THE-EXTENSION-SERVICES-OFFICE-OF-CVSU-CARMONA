@@ -61,6 +61,7 @@ class ProjectController extends Controller
             'pastproject' => $pastproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
+            'department' => $department
         ]);
     }
 
@@ -98,6 +99,7 @@ class ProjectController extends Controller
             'pastproject' => $pastproject,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
+            'department' => $department
         ]);
     }
 
@@ -138,6 +140,7 @@ class ProjectController extends Controller
             'currentyear' => $currentyear,
             'objectives' => $objectives,
             'activities' => $activities,
+            'department' => $department
         ]);
     }
 
@@ -184,6 +187,7 @@ class ProjectController extends Controller
             'currentyear' => $currentyear,
             'activities' => $activities,
             'activityArray' => $activityArray,
+            'department' => $department
         ]);
     }
 
@@ -288,6 +292,7 @@ class ProjectController extends Controller
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
             'activities' => $activities,
+            'department' => $department
         ]);
     }
     public function displayDetails($projectid, $department)
@@ -323,7 +328,8 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
-            'activities' => $activities
+            'activities' => $activities,
+            'department' => $department
         ]);
     }
     public function displayObjectives($projectid, $department)
@@ -359,6 +365,7 @@ class ProjectController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
+            'department' => $department
         ]);
     }
     public function displayActivities($projectid, $department)
@@ -396,6 +403,7 @@ class ProjectController extends Controller
             'inCurrentYear' => $inCurrentYear,
             'currentyear' => $currentyear,
             'activities' => $activities,
+            'department' => $department
         ]);
     }
 }

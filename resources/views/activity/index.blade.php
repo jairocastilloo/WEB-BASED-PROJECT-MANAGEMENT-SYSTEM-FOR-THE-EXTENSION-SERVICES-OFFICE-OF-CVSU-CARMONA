@@ -262,6 +262,11 @@ $department = Auth::user()->department;
     var department = "<?php echo $department; ?>";
     $(document).ready(function() {
 
+        $(".subtoggle").toggle();
+        $(document).on('click', '#toggleButton', function(event) {
+            $(this).next().slideToggle("fast");
+        });
+
         $('.step span').each(function() {
             var $span = $(this);
             if ($span.text().length > 16) { // Adjust the character limit as needed
@@ -394,7 +399,7 @@ $department = Auth::user()->department;
             window.location.href = url;
         });
 
-        $(document).on('click', '.actdiv', function() {
+        $(document).on('click', '.activitydiv', function() {
             event.preventDefault();
 
             var activityid = $(this).attr('data-value');
