@@ -21,11 +21,11 @@ class AdminController extends Controller
         $user->save();
         return redirect()->route('tasks.show', ['username' => Auth::user()->username]);
     }
-    public function manageaccount($id)
+    public function manageaccount()
     {
-        $user = User::findOrFail($id);
-        $allusers = User::all();
-        return view('admin.accountmanagement', ['allusers' => $allusers]);
+        $pendingusers = User::where('approval', 0)
+            ->get();
+        return view('admin.accountmanagement', ['pendingusers' => $pendingusers]);
     }
 
     public function approveaccount($id)

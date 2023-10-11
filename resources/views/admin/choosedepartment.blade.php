@@ -7,26 +7,26 @@
         @if(Auth::user()->role === 'Admin')
         <div class="basiccont word-wrap shadow">
             <div class="border-bottom ps-3 pt-2 bggreen">
-                <h5 class="fw-bold" style="color:darkgreen;">Choose Department</h5>
+                <h5 class="fw-bold" style="color:darkgreen;">Select Department for Project Viewing</h5>
             </div>
             <div class="container p-4 text-center">
                 <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4">Department of Management</a>
+                    <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Management</a>
 
                 </div>
                 <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4">Department of Industrial and Information Technology</a>
+                    <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Industrial and Information Technology</a>
 
 
                 </div>
 
 
                 <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Teacher Education']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4">Department of Teacher Education</a>
+                    <a href="{{ route('project.show', ['department' => 'Department of Teacher Education']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Teacher Education</a>
 
                 </div>
                 <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Arts and Science']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4">Department of Arts and Science</a>
+                    <a href="{{ route('project.show', ['department' => 'Department of Arts and Science']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Arts and Science</a>
 
                 </div>
 

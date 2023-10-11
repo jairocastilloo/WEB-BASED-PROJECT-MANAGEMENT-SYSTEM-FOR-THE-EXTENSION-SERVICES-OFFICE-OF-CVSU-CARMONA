@@ -131,6 +131,17 @@ body {
     word-wrap: break-word;
     
   }
+  .accounttable, .accounttable th, .accounttable td {
+    border: 1px solid #bababa;
+    min-width: 157px;
+    max-width: 157px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    
+  }
+  .accounttable {
+    flex-shrink: 0;
+    }
   
     .firsttable {
      float:left;
@@ -221,6 +232,10 @@ body {
   color: gold;
   font-weight: normal;
  
+}
+.currentdiv{
+  background-color:darkgreen;
+  color:white;
 }
 .navtohover {
   position: relative;

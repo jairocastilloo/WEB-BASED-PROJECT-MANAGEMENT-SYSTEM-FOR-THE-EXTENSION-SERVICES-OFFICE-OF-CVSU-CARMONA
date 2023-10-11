@@ -45,7 +45,7 @@ Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('ge
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');
-Route::get('/user/{id}/manageaccount', [AdminController::class, 'manageaccount'])->name('admin.manage');
+Route::get('/manageaccount', [AdminController::class, 'manageaccount'])->name('admin.manage');
 Route::get('/user/{id}/approveaccount', [AdminController::class, 'approveaccount'])->name('admin.approve');
 Route::POST('/acceptaccount', [AdminController::class, 'acceptaccount'])->name('admin.accept');
 Route::POST('/declineaccount', [AdminController::class, 'declineaccount'])->name('admin.decline');
@@ -154,4 +154,5 @@ Route::prefix('/actsubmission')->group(function () {
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
 Route::view('/choosedepartment', 'admin.choosedepartment')->name('admin.choosedepartment');
+Route::view('/choosedepartmentreport', 'admin.choosedepartmentreport')->name('admin.choosedepartmentreport');
 Route::get('/adminindex/{department}', [AdminController::class, 'index'])->name('admin.index');

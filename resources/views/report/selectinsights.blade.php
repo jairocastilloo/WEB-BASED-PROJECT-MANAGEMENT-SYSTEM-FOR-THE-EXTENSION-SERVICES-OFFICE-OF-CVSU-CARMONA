@@ -120,13 +120,7 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                             <h5><strong>Calendar Year:</strong></h5>
                         </label>
                     </div>
-                    @if (Auth::user()->role === 'Admin')
-                    <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                            <b class="small">Create Project</b>
-                        </button>
-                    </div>
-                    @endif
+
                 </div>
                 <div class="container p-0">
                     <div class="row">
