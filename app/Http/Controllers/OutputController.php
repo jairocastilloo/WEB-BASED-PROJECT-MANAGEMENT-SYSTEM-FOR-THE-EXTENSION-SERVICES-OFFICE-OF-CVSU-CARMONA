@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Notification;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Routing\RedirectController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Output;
@@ -15,6 +17,7 @@ use App\Models\ActivityUser;
 use App\Models\OutputUser;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Routing\Redirector;
 
 class OutputController extends Controller
 {
@@ -142,24 +145,29 @@ class OutputController extends Controller
     {
 
         $acceptIds = $request->input('acceptids');
+        $isApprove = $request->input('isApprove');
 
-        // Update the 'approval' field in SubtaskContributor table
-        OutputUser::where('created_at', $acceptIds)->update(['approval' => 1]);
+        if ($isApprove === 'true') {
+            // Update the 'approval' field in SubtaskContributor table
+            OutputUser::where('created_at', $acceptIds)->update(['approval' => 1]);
+            $outputids = OutputUser::where('created_at', $acceptIds)
+                ->distinct()
+                ->pluck('output_id');
+            foreach ($outputids as $outputid) {
 
-        $outputids = OutputUser::where('created_at', $acceptIds)
-            ->distinct()
-            ->pluck('output_id');
-
-
-        foreach ($outputids as $outputid) {
-
-            $outputuser = OutputUser::where('created_at', $acceptIds)
-                ->where('output_id', $outputid)
-                ->first();
-            $outputsubmitted = $outputuser->output_submitted;
-            Output::where('id', $outputid)->increment('totaloutput_submitted', $outputsubmitted);
+                $outputuser = OutputUser::where('created_at', $acceptIds)
+                    ->where('output_id', $outputid)
+                    ->first();
+                $outputsubmitted = $outputuser->output_submitted;
+                Output::where('id', $outputid)->increment('totaloutput_submitted', $outputsubmitted);
+            }
+        } else {
+            OutputUser::where('created_at', $acceptIds)->update(['approval' => 0]);
         }
 
-        return 'File uploaded successfully.';
+        $id =   18;
+        $cap = 'Capacity Building';
+        $url = URL::route('get.output', ['activityid' => $id, 'outputtype' => $cap]);
+        return redirect($url);
     }
 }

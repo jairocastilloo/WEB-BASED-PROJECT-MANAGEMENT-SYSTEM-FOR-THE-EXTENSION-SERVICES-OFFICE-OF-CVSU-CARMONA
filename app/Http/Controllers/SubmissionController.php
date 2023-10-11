@@ -90,7 +90,7 @@ class SubmissionController extends Controller
         $activity = Activity::findOrFail($activityid);
 
         $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
+        $project = Project::findorFail($projectId);
 
         $dateTime = $submittedoutput->created_at;
         $currentDateTime = str_replace(' ', '_', $dateTime);
@@ -107,8 +107,7 @@ class SubmissionController extends Controller
             'submittedoutputs' => $submittedoutputs,
             'outputs' => $outputs,
             'activity' => $activity,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
+            'project' => $project,
             'nameofsubmission' => $nameofsubmission,
             'uploadedFiles' => $uploadedFiles,
             'currentDateTime' => $currentDateTime,

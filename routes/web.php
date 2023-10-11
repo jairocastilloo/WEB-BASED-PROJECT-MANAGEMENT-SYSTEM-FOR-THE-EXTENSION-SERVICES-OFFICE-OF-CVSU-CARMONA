@@ -93,7 +93,7 @@ Route::prefix('/activities')->group(function () {
     Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
     Route::post('/unassignassignee', [ActivityController::class, 'unassignassignee'])->name('unassign.assignee');
     Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
-    Route::get('/{activityid}/{department}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
+    Route::get('/{activityid}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
     Route::post('/addtoactivity', [ActivityController::class, 'addtoactivity'])->name('addto.activity');
 });
 
@@ -135,7 +135,7 @@ Route::prefix('/projectinsights')->group(function () {
     Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
 });
 Route::prefix('/output')->group(function () {
-    Route::get('/{activityid}/{outputtype}', [ActivityController::class, 'getoutput'])->name('get.output');
+    Route::get('/{activityid}/{outputtype}/displayoutput', [ActivityController::class, 'getoutput'])->name('get.output');
     Route::get('/{activityid}/{outputtype}/complyoutput', [OutputController::class, 'complyoutput'])->name('comply.output');
     Route::post('/addoutput', [OutputController::class, 'addoutput'])->name('add.output');
     Route::post('/addtooutput', [OutputController::class, 'addtooutput'])->name('addto.output');

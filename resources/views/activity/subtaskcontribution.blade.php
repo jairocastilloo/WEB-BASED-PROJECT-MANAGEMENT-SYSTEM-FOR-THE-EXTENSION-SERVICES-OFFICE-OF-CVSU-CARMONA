@@ -81,16 +81,7 @@
                             <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <b class="small">Evaluate Submission</b>
                             </button>
-                            <div class="dropdown-menu">
-                                <form id="accepthoursform" data-url="{{ route('hours.accept') }}">
-                                    @csrf
-                                    <input type="text" class="d-none" value="{{ $contribution->id }}" name="acceptids" id="acceptids">
-                                    <input type="hidden" name="isApprove" id="isApprove">
-                                    <a class="dropdown-item small hrefnav accept-link" href="#"><b class="small">Accept</b></a>
-                                    <a class="dropdown-item small hrefnav reject-link" href="#"><b class="small">Reject</b></a>
-                                </form>
-
-                            </div>
+                            @livewire('subtask-hours-submission',[ 'contributionid' => $contribution->id, 'subtaskid' => $subtask['id'], 'subtaskname' => $subtask['subtask_name'] ])
                         </div>
                         @endif
                     </div>

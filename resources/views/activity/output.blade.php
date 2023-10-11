@@ -97,7 +97,7 @@
 
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                        <h6 class="fw-bold small" style="color:#F96815;">Pending Submission</h6>
                     </div>
                     @foreach ($groupedUnevaluatedSubmittedOutput as $date => $group)
                     <div class="p-2 pb-1 ps-4 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Unevaluated-Submission">
@@ -118,7 +118,7 @@
 
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
+                        <h6 class="fw-bold small" style="color:darkblue;">Accepted Submission</h6>
                     </div>
                     @foreach ($groupedAcceptedSubmittedOutput as $date => $group)
                     <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Accepted-Submission">
@@ -139,7 +139,7 @@
 
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                        <h6 class="fw-bold small" style="color:darkred;">Rejected Submission</h6>
                     </div>
                     @foreach ($groupedRejectedSubmittedOutput as $date => $group)
                     <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Rejected-Submission">

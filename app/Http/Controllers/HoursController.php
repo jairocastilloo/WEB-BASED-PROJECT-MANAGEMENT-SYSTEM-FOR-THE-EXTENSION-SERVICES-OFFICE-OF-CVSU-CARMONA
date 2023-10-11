@@ -20,8 +20,6 @@ class HoursController extends Controller
         $activity = Activity::findOrFail($activityid);
 
         $project = Project::findorFail($activity->project_id);
-        $projectId = $project->id;
-        $projectName = $project->projecttitle;
 
 
         $activitycontributions = activityContribution::where('activity_id', $activityid)
@@ -32,8 +30,7 @@ class HoursController extends Controller
 
         return view('activity.hours', [
             'activity' => $activity,
-            'projectId' => $projectId,
-            'projectName' => $projectName,
+            'project' => $project,
             'activitycontributions' => $activitycontributions,
             'notifications' => $notifications,
         ]);
