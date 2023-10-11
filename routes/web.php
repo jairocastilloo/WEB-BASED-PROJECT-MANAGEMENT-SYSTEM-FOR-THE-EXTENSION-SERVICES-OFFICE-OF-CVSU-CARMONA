@@ -87,7 +87,7 @@ Route::prefix('/subtasks')->group(function () {
 });
 
 Route::prefix('/activities')->group(function () {
-    Route::get('/{activityid}/{department}/{activityname}', [ActivityController::class, 'displayactivity'])->name('activities.display');
+    Route::get('/{activityid}/{activityname}', [ActivityController::class, 'displayactivity'])->name('activities.display');
     Route::post('/acceptoutput', [OutputController::class, 'acceptoutput'])->name('output.accept');
     Route::post('/markcomplete', [ActivityController::class, 'markcomplete'])->name('activity.markcomplete');
     Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');
@@ -126,7 +126,7 @@ Route::get('/details/{projectid}/{department}', [ProjectController::class, 'disp
     ->name('projects.details');
 Route::get('/objectives/{projectid}/{department}', [ProjectController::class, 'displayObjectives'])
     ->name('projects.objectives');
-Route::get('/activities/{projectid}/{department}', [ProjectController::class, 'displayActivities'])
+Route::get('/activitieslist/{projectid}/{department}', [ProjectController::class, 'displayActivities'])
     ->name('projects.activities');
 
 Route::prefix('/projectinsights')->group(function () {

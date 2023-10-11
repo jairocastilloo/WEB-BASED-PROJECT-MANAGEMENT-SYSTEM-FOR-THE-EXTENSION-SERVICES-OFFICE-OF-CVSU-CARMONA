@@ -15,8 +15,9 @@ class ProjectMembers extends Component
     public $project;
     public $members;
     public $addmembers;
+    public $department;
     protected $listeners = ['saveMembers' => 'handleSaveMembers', 'sendNotification' => 'handleSendNotification'];
-    public function mount($indexproject)
+    public function mount($indexproject, $department)
     {
         $this->project = $indexproject;
 
@@ -27,10 +28,12 @@ class ProjectMembers extends Component
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
 
-        $this->addmembers = User::where('department', Auth::user()->department)
+        $this->addmembers = User::where('department', $department)
             ->whereNotIn('id', $memberIds)
             ->where('role', '!=', 'FOR APPROVAL')
             ->get();
+
+        $this->department = $department;
     }
 
     public function saveMembers($selectedMembers)
@@ -44,7 +47,7 @@ class ProjectMembers extends Component
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
 
-        $this->addmembers = User::where('department', Auth::user()->department)
+        $this->addmembers = User::where('department', $this->department)
             ->whereNotIn('id', $memberIds)
             ->where('role', '!=', 'FOR APPROVAL')
             ->get();
@@ -59,7 +62,7 @@ class ProjectMembers extends Component
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
 
-        $this->addmembers = User::where('department', Auth::user()->department)
+        $this->addmembers = User::where('department', $this->department)
             ->whereNotIn('id', $memberIds)
             ->where('role', '!=', 'FOR APPROVAL')
             ->get();

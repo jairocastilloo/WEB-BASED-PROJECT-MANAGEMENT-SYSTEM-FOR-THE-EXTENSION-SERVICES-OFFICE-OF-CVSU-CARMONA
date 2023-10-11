@@ -661,11 +661,9 @@
 
             var activityname = $(this).find("h6:first").text();
             var activityid = $(this).attr("data-value");
-            var department = $('#userdept').val();
 
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
             url = url.replace(':activityid', activityid);
-            url = url.replace(':department', department);
             url = url.replace(':activityname', activityname);
             window.location.href = url;
         });
@@ -677,10 +675,9 @@
             var projectid = $(this).attr("data-value");
             var department = $(this).attr("data-dept");
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department"]) }}';
             url = url.replace(':projectid', projectid)
-                .replace(':department', department)
-                .replace(':projectname', projectname);
+            url = url.replace(':department', department);
             window.location.href = url;
         });
 

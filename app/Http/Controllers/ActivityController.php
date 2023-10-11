@@ -182,7 +182,7 @@ class ActivityController extends Controller
         $allOutputTypes = $outputs->where('output_type', '!=', $outputtype)->pluck('output_type')->unique();
 
         $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
+        $project = Project::findorFail($projectId);
 
         $outputids = Output::where('activity_id', $activityid)
             ->where('output_type', $outputtype)
@@ -199,8 +199,7 @@ class ActivityController extends Controller
         return view('activity.output', [
             'activity' => $activity,
             'currentoutputtype' => $currentoutputtype,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
+            'project' => $project,
             'outputtype' => $outputtype,
             'alloutputtypes' => $allOutputTypes,
             'submittedoutput' => $submittedoutput,
@@ -210,7 +209,7 @@ class ActivityController extends Controller
     }
 
 
-    public function displayactivity($activityid, $department, $activityname)
+    public function displayactivity($activityid, $activityname)
     {
         // activity details
         $activity = Activity::find($activityid);
@@ -224,7 +223,7 @@ class ActivityController extends Controller
         // project name
         $activity = Activity::findOrFail($activityid);
         $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
+        $project = Project::findorFail($projectId);
         $objectiveset = $activity->actobjectives;
         $objectives = Objective::where('project_id', $projectId)
             ->where('objectiveset_id', $objectiveset)
@@ -241,8 +240,7 @@ class ActivityController extends Controller
             'subtasks' => $subtasks,
             'outputs' => $outputs,
             'outputTypes' => $outputTypes,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
+            'project' => $project,
             'objectives' => $objectives,
         ]);
     }

@@ -9,11 +9,13 @@ class ProjectDetails extends Component
 {
     public $indexproject;
     public $members;
+    public $department;
     protected $listeners = ['saveProjectDetails' => 'handleSaveProjectDetails'];
-    public function mount($indexproject, $members)
+    public function mount($indexproject, $members, $department)
     {
         $this->indexproject = $indexproject;
         $this->members = $members;
+        $this->department = $department;
     }
     public function saveProjectDetails($projectDetails)
     {

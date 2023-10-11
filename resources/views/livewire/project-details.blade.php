@@ -53,16 +53,16 @@
                 <b class="small"> <i class="bi bi-list"></i> Menu</b>
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                     <b class="small">Table</b>
                 </a>
-                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                     <b class="small">Team Members</b>
                 </a>
-                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                     <b class="small">Activities</b>
                 </a>
-                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                     <b class="small">Calendar</b>
                 </a>
                 <a class="dropdown-item small bg-warning border-bottom">

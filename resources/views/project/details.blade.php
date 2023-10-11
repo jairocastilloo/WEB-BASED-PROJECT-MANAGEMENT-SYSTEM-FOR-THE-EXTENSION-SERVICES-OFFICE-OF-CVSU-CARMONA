@@ -54,7 +54,7 @@
 
                 </div>
 
-                @livewire('project-details', ['indexproject' => $indexproject, 'members' => $members ])
+                @livewire('project-details', ['indexproject' => $indexproject, 'members' => $members, 'department' => $department ])
 
             </div>
 
@@ -250,7 +250,7 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
-                            <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
+                            <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
                             <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">

@@ -113,16 +113,16 @@
                             <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Table</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Team Members</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Activities</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Edit Details</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="#"><b class="small">Close Project</b></a>
@@ -582,13 +582,12 @@
 
             var activityid = $(this).data('value');
             var activityname = $(this).attr('act-name');
-            var department = $('#department').val();
+
 
             if (activityid != 0) {
 
-                var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+                var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
                 url = url.replace(':activityid', activityid);
-                url = url.replace(':department', department);
                 url = url.replace(':activityname', activityname);
                 window.location.href = url;
             }

@@ -1,16 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-@php
-$department = Auth::user()->department;
-@endphp
+
 <div class="maincontainer border border-start border-end border-bottom">
     <div class="mainnav border-bottom mb-3 shadow-sm">
-        <div class="step-wrapper divhover" id="projectdiv" data-value="{{ $projectId }}" data-name="{{ $projectName }}">
+        <div class="step-wrapper divhover" id="projectdiv" data-value="{{ $project->id }}" data-name="{{ $project->projecttitle }}" data-dept="{{ $project->department }}">
             <div class="step">
-                <span class="fw-bold">Project: {{ $projectName }}</span>
+                <span class="fw-bold">Project: {{ $project->projecttitle }}</span>
                 <div class="message-box text-white">
-                    {{ $projectName }}
+                    {{ $project->projecttitle }}
                 </div>
             </div>
 
@@ -147,7 +145,6 @@ $department = Auth::user()->department;
                     ?>;
     var url = "";
     var assigneeindex = 0;
-    const department = "<?php echo $department; ?>";
     $(document).ready(function() {
 
         $('.step span').each(function() {
@@ -172,14 +169,13 @@ $department = Auth::user()->department;
         $('#projectdiv').click(function(event) {
             event.preventDefault();
             var projectid = $(this).attr('data-value');
-            var projectname = $(this).attr('data-name');
+            var department = $(this).attr('data-dept');
 
 
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department"]) }}';
             url = url.replace(':projectid', projectid);
             url = url.replace(':department', encodeURIComponent(department));
-            url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
 
@@ -189,9 +185,8 @@ $department = Auth::user()->department;
             var actid = $(this).attr('data-value');
             var activityname = $(this).attr('data-name');
 
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
             url = url.replace(':activityid', actid);
-            url = url.replace(':department', department);
             url = url.replace(':activityname', activityname);
             window.location.href = url;
         });

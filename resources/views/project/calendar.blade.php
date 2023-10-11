@@ -107,19 +107,19 @@
                             <b class="small"> <i class="bi bi-list"></i> Menu</b>
                         </button>
                         <div class="dropdown-menu border-warning">
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Table</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Team Members</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Activities</b>
                             </a>
                             <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Calendar</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Edit Details</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="#"><b class="small">Close Project</b></a>
@@ -208,7 +208,7 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
-                            <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
+                            <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
                             <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">

@@ -51,7 +51,7 @@
 
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">{{ Auth::user()->department . "'s Team Members" }}</label>
+                        <label class="form-label fw-bold">{{ $department . "'s Team Members" }}</label>
 
                         <div class="form-check ms-1" @if($addmembers->isEmpty())style="display:none"@endif>
                             <input class="form-check-input border border-primary" type="checkbox" id="selectAllMembers">

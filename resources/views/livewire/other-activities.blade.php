@@ -65,7 +65,7 @@
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
                         @foreach ($InProgressActivities as $activity)
-                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
                             <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -96,7 +96,7 @@
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
                         @foreach ($UpcomingActivities as $activity)
-                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
                             <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -127,7 +127,7 @@
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
                         @foreach ($ScheduledActivities as $activity)
-                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
                             <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -158,7 +158,7 @@
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
                         @foreach ($OverdueActivities as $activity)
-                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
                             <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 
@@ -187,7 +187,7 @@
                     </div>
                     <div class="toggle-container subtoggle" style="display: none;">
                         @foreach ($CompletedActivities as $activity)
-                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
+                        <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
                             <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
 

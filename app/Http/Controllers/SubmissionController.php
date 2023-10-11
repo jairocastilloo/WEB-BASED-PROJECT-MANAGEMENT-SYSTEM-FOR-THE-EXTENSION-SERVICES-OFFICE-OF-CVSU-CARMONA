@@ -6,6 +6,7 @@ use App\Models\ActivitycontributionsUser;
 use App\Models\Notification;
 use App\Models\Output;
 use App\Models\OutputUser;
+use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Models\Contribution;
 use App\Models\Subtask;
@@ -37,7 +38,7 @@ class SubmissionController extends Controller
         $activity = Activity::findOrFail($activityid);
 
         $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
+        $project = Project::findorFail($projectId);
 
 
         $dateTime = $contribution->created_at;
@@ -48,21 +49,18 @@ class SubmissionController extends Controller
         $othercontribution = Contribution::where('subtask_id', $subtaskid)
             ->whereNotIn('id', [$submissionid])
             ->get();
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
         return view('activity.subtaskcontribution', [
             'contribution' => $contribution,
             'subtask' => $subtask,
             'activity' => $activity,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
+            'project' => $project,
             'nameofsubmission' => $nameofsubmission,
             'uploadedFiles' => $uploadedFiles,
             'currentDateTime' => $currentDateTime,
             'othercontribution' => $othercontribution,
             'contributors' => $contributors,
             'submitter' => $submitter,
-            'notifications' => $notifications,
         ]);
     }
 
