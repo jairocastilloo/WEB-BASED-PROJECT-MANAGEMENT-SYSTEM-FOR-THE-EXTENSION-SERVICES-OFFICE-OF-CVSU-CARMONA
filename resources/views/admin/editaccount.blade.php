@@ -3,10 +3,10 @@
 @section('content')
 <div class="maincontainer border border-start border-end border-bottom">
     <div class="mainnav border-bottom mb-3 shadow-sm px-2">
-        <div class="border-2 border-start border-end p-2 currentdiv">
+        <div class="border-2 border-start divhover border-end p-2">
             Account Approval
         </div>
-        <div class="border-2 border-end p-2 divhover" id="editAccounts">
+        <div class="border-2 border-end p-2 currentdiv">
             Edit Accounts
         </div>
 
@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-center align-items-center border small">
 
                 <div class="tablecontainer pb-2">
-                    @livewire('account-approval', [ 'pendingusers' => $pendingusers ])
+                    @livewire('edit-account', [ 'allusers' => $allusers ])
 
                 </div>
             </div>
@@ -42,10 +42,6 @@
         $('#navbarDropdown').click(function() {
             // Add your function here
             $('.dropdown-menu').toggleClass('shows');
-        });
-
-        $('#editAccounts').click(function() {
-            window.location.href = "{{ route('admin.editaccount') }}";
         });
     });
 </script>

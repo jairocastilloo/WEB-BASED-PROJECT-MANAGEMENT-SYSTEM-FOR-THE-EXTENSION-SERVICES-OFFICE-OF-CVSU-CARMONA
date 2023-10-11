@@ -116,11 +116,6 @@
                                             Account Management
                                         </a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('admin.approve', ['id' => Auth::user()->id]) }}">
-                                            Account Approval
-                                        </a>
-                                    </li>
 
                                     <li>
                                         <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">

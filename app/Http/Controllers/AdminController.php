@@ -28,6 +28,13 @@ class AdminController extends Controller
         return view('admin.accountmanagement', ['pendingusers' => $pendingusers]);
     }
 
+    public function editaccount()
+    {
+        $allusers = User::where('approval', 1)
+            ->get();
+        return view('admin.editaccount', ['allusers' => $allusers]);
+    }
+
     public function approveaccount($id)
     {
         $user = User::findOrFail($id);

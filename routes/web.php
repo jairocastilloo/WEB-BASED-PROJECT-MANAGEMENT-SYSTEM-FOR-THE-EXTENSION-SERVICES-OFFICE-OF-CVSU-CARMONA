@@ -46,7 +46,7 @@ Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
 Route::POST('/savesubtask', [ActivityController::class, 'storesubtask'])->name('subtask.store');
 Route::get('/manageaccount', [AdminController::class, 'manageaccount'])->name('admin.manage');
-Route::get('/user/{id}/approveaccount', [AdminController::class, 'approveaccount'])->name('admin.approve');
+Route::get('/editaccount', [AdminController::class, 'editaccount'])->name('admin.editaccount');
 Route::POST('/acceptaccount', [AdminController::class, 'acceptaccount'])->name('admin.accept');
 Route::POST('/declineaccount', [AdminController::class, 'declineaccount'])->name('admin.decline');
 Route::POST('/deleteaccount', [AdminController::class, 'deleteaccount'])->name('admin.delete');
