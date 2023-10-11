@@ -287,15 +287,12 @@ class ActivityController extends Controller
         $currentassignees = $activity->users;
 
         $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+        $project = Project::findorFail($projectId);
+
         return view('activity.submitactivity', [
             'activity' => $activity,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
+            'project' => $project,
             'currentassignees' => $currentassignees,
-            'notifications' => $notifications,
         ]);
     }
 

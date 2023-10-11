@@ -101,8 +101,6 @@ class SubmissionController extends Controller
             ->whereNotIn('id', $submittedoutputids)
             ->get();
 
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
         return view('activity.outputsubmitted', [
             'submittedoutputs' => $submittedoutputs,
             'outputs' => $outputs,
@@ -113,7 +111,6 @@ class SubmissionController extends Controller
             'currentDateTime' => $currentDateTime,
             'othersubmittedoutput' => $othersubmittedoutput,
             'submitter' => $submitter,
-            'notifications' => $notifications,
         ]);
     }
 
@@ -133,7 +130,7 @@ class SubmissionController extends Controller
         $activity = Activity::findOrFail($activityid);
 
         $projectId = $activity->project_id;
-        $projectName = $activity->project->projecttitle;
+        $project = Project::findorFail($projectId);
 
 
         $dateTime = $actcontribution->created_at;
@@ -144,20 +141,17 @@ class SubmissionController extends Controller
         $otheractcontribution = activityContribution::where('activity_id', $activityid)
             ->whereNotIn('id', [$actsubmissionid])
             ->get();
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
         return view('activity.activitycontributions', [
             'actcontribution' => $actcontribution,
             'activity' => $activity,
-            'projectName' => $projectName,
-            'projectId' => $projectId,
+            'project' => $project,
             'nameofactsubmission' => $nameofactsubmission,
             'uploadedFiles' => $uploadedFiles,
             'currentDateTime' => $currentDateTime,
             'otheractcontribution' => $otheractcontribution,
             'actcontributors' => $actcontributors,
             'submitter' => $submitter,
-            'notifications' => $notifications,
         ]);
     }
 }

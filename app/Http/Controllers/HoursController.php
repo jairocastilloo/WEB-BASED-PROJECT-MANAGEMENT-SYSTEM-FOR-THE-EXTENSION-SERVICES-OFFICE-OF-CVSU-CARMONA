@@ -24,15 +24,11 @@ class HoursController extends Controller
 
         $activitycontributions = activityContribution::where('activity_id', $activityid)
             ->get();
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
-
 
         return view('activity.hours', [
             'activity' => $activity,
             'project' => $project,
             'activitycontributions' => $activitycontributions,
-            'notifications' => $notifications,
         ]);
     }
 

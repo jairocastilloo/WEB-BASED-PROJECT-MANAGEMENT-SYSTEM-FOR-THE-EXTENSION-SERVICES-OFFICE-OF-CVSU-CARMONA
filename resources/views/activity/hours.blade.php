@@ -233,9 +233,8 @@
             var actid = $(this).attr('data-value');
             var activityname = $(this).attr('data-name');
 
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
             url = url.replace(':activityid', actid);
-            url = url.replace(':department', department);
             url = url.replace(':activityname', activityname);
             window.location.href = url;
         });

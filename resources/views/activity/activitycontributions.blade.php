@@ -1,16 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-@php
-$department = Auth::user()->department;
-@endphp
+
 <div class="maincontainer border border-start border-end border-bottom">
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
-            <div class="step divhover" id="projectdiv" data-value="{{ $projectId }}" data-value="{{ $projectName }}">
-                <span class="fw-bold">Project: {{ $projectName }}</span>
+            <div class="step divhover" id="projectdiv" data-value="{{ $project->id }}" data-dept="{{ $project->department }}">
+                <span class="fw-bold">Project: {{ $project->projecttitle }}</span>
                 <div class="message-box text-white">
-                    {{ $projectName }}
+                    {{ $project->projecttitle }}
                 </div>
             </div>
 
@@ -82,16 +80,8 @@ $department = Auth::user()->department;
                             <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <b class="small">Evaluate Submission</b>
                             </button>
-                            <div class="dropdown-menu">
-                                <form id="accepthoursform" data-url="{{ route('acthours.accept') }}">
-                                    @csrf
-                                    <input type="text" class="d-none" value="{{ $actcontribution->id }}" name="acceptids" id="acceptids">
-                                    <input type="hidden" name="isApprove" id="isApprove">
-                                    <a class="dropdown-item small hrefnav accept-link" href="#"><b class="small">Accept</b></a>
-                                    <a class="dropdown-item small hrefnav reject-link" href="#"><b class="small">Reject</b></a>
-                                </form>
+                            @livewire('activity-hours-submission', [ 'actcontributionid' => $actcontribution->id, 'activityid' => $activity->id, 'activityname' => $activity->actname ])
 
-                            </div>
                         </div>
                         @endif
                     </div>
@@ -185,7 +175,6 @@ $department = Auth::user()->department;
 @endsection
 @section('scripts')
 <script>
-    var department = "<?php echo $department; ?>";
     $(document).ready(function() {
 
         $('.step span').each(function() {
@@ -205,14 +194,13 @@ $department = Auth::user()->department;
         $('#projectdiv').click(function(event) {
             event.preventDefault();
             var projectid = $(this).attr('data-value');
-            var projectname = $(this).attr('data-name');
+            var department = $(this).attr('data-dept');
 
 
 
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department", "projectname" => ":projectname"]) }}';
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
             url = url.replace(':projectid', projectid);
             url = url.replace(':department', encodeURIComponent(department));
-            url = url.replace(':projectname', encodeURIComponent(projectname));
             window.location.href = url;
         });
 
@@ -222,9 +210,8 @@ $department = Auth::user()->department;
             var actid = $(this).attr('data-value');
             var activityname = $(this).attr('data-name');
 
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
             url = url.replace(':activityid', actid);
-            url = url.replace(':department', department);
             url = url.replace(':activityname', activityname);
             window.location.href = url;
         });
