@@ -133,8 +133,8 @@ body {
   }
   .accounttable, .accounttable th, .accounttable td {
     border: 1px solid #bababa;
-    min-width: 175px;
-    max-width: 175px;
+    min-width: 187px;
+    max-width: 187px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     
@@ -143,17 +143,29 @@ body {
     min-width: 195px;
     max-width: 195px;
   }
+  .accounttable .username {
+    min-width: 108px;
+    max-width: 108px;
+  }
   .accounttable .name {
     min-width: 120px;
     max-width: 120px;
   }
   .accounttable .role {
+    min-width: 100px;
+    max-width: 100px;
+  }
+  .accounttable .edit {
     min-width: 105px;
     max-width: 105px;
   }
   .accounttable .department {
-    min-width: 300px;
-    max-width: 300px;
+    min-width: 290px;
+    max-width: 290px;
+  }
+  .accounttable .dept {
+    min-width: 360px;
+    max-width: 360px;
   }
   .accounttable .cancel {
     min-width: 70px;

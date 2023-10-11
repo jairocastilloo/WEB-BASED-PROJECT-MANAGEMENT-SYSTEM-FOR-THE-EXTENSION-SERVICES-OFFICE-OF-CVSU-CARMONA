@@ -31,6 +31,7 @@ class AdminController extends Controller
     public function editaccount()
     {
         $allusers = User::where('approval', 1)
+            ->where('role', '!=', 'Admin')
             ->get();
         return view('admin.editaccount', ['allusers' => $allusers]);
     }
