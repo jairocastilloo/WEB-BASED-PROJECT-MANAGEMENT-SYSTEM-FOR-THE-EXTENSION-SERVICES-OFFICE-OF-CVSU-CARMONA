@@ -35,8 +35,7 @@ class TasksController extends Controller
             ->get();
 
 
-        $notifications = Notification::where('user_id', $userid)
-            ->get();
+
 
         $inCurrentYear = true;
 
@@ -75,7 +74,7 @@ class TasksController extends Controller
             'calendaryears' => $calendaryears,
             'inCurrentYear' => $inCurrentYear,
             'currentYear' => $currentYear,
-            'notifications' => $notifications,
+
         ]);
     }
 

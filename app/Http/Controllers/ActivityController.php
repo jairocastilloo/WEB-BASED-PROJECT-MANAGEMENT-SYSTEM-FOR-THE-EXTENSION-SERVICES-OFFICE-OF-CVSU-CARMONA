@@ -193,8 +193,6 @@ class ActivityController extends Controller
             ->toArray();
         $submittedoutput = OutputUser::whereIn('output_id', $outputids)
             ->get();
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
 
         return view('activity.output', [
             'activity' => $activity,
@@ -204,7 +202,6 @@ class ActivityController extends Controller
             'alloutputtypes' => $allOutputTypes,
             'submittedoutput' => $submittedoutput,
             'outputNames' => $outputNames,
-            'notifications' => $notifications,
         ]);
     }
 

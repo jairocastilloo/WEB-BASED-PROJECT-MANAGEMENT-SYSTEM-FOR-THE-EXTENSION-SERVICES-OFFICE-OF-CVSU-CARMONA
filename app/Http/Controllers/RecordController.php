@@ -92,8 +92,7 @@ class RecordController extends Controller
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');
         $totalhoursrendered = $subhours + $acthours;
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
         return view('records.index', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
@@ -107,7 +106,7 @@ class RecordController extends Controller
             'allactivities' => $allactivities,
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
-            'notifications' => $notifications,
+
         ]);
     }
 
@@ -179,8 +178,7 @@ class RecordController extends Controller
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');
         $totalhoursrendered = $subhours + $acthours;
-        $notifications = Notification::where('user_id', Auth::user()->id)
-            ->get();
+
         return view('records.index', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
@@ -194,7 +192,7 @@ class RecordController extends Controller
             'allactivities' => $allactivities,
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
-            'notifications' => $notifications,
+
         ]);
     }
 }

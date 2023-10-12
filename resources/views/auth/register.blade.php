@@ -28,7 +28,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
-                                <input placeholder="Enter Username" id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">
@@ -42,7 +42,7 @@
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
 
-                                <input placeholder="Enter First Name" id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -56,7 +56,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Middelname1">Middle Name:</label>
-                                <input placeholder="Enter Middle Name" id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
+                                <input id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
 
                                 @error('middle_name')
                                 <span class="invalid-feedback" role="alert">
@@ -69,7 +69,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
-                                <input placeholder="Enter Last Name" id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
+                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
 
                                 @error('last_name')
                                 <span class="invalid-feedback" role="alert">
@@ -82,7 +82,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Emailaddress1">Email Address:</label>
-                                <input placeholder="Enter Email Address" id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -95,7 +95,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Password1">Password:</label>
-                                <input placeholder="Enter Password" id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -108,7 +108,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="ConfirmPassword1">Confirm Password:</label>
-                                <input placeholder="Confirm Password" id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
 
