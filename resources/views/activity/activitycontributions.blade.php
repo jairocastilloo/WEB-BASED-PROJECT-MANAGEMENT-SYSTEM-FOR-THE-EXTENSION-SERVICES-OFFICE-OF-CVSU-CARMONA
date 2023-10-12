@@ -176,7 +176,10 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
         $('.step span').each(function() {
             var $span = $(this);
             if ($span.text().length > 16) { // Adjust the character limit as needed

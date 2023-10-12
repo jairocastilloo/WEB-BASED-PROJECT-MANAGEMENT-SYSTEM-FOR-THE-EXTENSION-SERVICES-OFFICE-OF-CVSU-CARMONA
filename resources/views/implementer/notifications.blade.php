@@ -9,3 +9,14 @@
 
 
 @endsection
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+    });
+</script>
+
+@endsection

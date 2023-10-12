@@ -81,7 +81,10 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
         $('#acadyear-btn').click(function() {
             var dataurl = $('#acadyearform').attr('data-url');
             var data1 = $('#acadyearform').serialize();

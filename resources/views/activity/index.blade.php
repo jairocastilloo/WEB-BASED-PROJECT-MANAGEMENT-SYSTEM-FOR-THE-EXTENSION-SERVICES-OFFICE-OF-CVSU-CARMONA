@@ -259,7 +259,10 @@
     var buttonClicked = false;
 
     $(document).ready(function() {
-
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
         $(".subtoggle").toggle();
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");

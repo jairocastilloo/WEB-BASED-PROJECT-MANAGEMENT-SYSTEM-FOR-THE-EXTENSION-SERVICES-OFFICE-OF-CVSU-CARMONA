@@ -1,3 +1,3 @@
 <div>
-    {{ now()->format('l, g:i A') }}
+    {{ now()->format('l, F j') }}
 </div>

@@ -238,6 +238,10 @@
             url = url.replace(':activityname', activityname);
             window.location.href = url;
         });
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
     });
 </script>
 
