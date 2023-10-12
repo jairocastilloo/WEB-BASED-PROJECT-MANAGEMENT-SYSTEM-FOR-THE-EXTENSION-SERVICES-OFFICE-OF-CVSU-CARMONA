@@ -635,16 +635,29 @@
                 $('#prevproject').hide();
                 $('#nextproject').show();
                 $('#createproject').hide();
+                $('#tab1-tab').attr('disabled', true);
                 $('#tab1-tab').tab('show');
             } else if (currentstep == 1) {
                 $('#prevproject').show();
                 $('#nextproject').hide();
                 $('#createproject').show();
+                $('#tab1-tab').removeAttr('disabled');
                 $('#tab2-tab').tab('show');
             }
 
         }
+        $('#tab1-tab').click((event) => {
 
+            event.preventDefault();
+
+
+
+            currentstep--;
+            updateButtons();
+
+
+
+        });
         $('#nextproject').click((event) => {
 
             event.preventDefault();
