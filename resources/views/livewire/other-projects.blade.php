@@ -36,18 +36,7 @@
 
 
             return $proj->projectstatus === 'Incomplete' &&
-            $proj->projectenddate < now(); }); @endphp @if($currentproject->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Projects</h6>
-                    </div>
-                    <div class="text-center p-4">
-                        <h4><em>No Project Created Yet.</em></h4>
-                    </div>
-                </div>
-                @endif
-
-                @if ($InProgressProjects && count($InProgressProjects) > 0)
+            $proj->projectenddate < now(); }); @endphp @if ($InProgressProjects && count($InProgressProjects)> 0)
 
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
@@ -61,7 +50,7 @@
 
                         </h6>
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach ($InProgressProjects as $project)
                         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -92,7 +81,7 @@
 
                         </h6>
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach ($UpcomingProjects as $project)
                         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -121,7 +110,7 @@
                             <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach ($ScheduledProjects as $project)
                         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -151,7 +140,7 @@
                             <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach ($CompletedProjects as $project)
                         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -181,7 +170,7 @@
                             <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach ($IncompleteProjects as $project)
                         <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 

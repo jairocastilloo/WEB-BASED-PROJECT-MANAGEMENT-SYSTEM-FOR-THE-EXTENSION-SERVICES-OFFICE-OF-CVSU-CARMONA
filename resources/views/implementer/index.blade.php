@@ -49,7 +49,7 @@
                             Tasks
                         </h6>
                     </div>
-                    <div class="text-center p-4 toggle-container subtoggle" style="display: none;">
+                    <div class="text-center p-4 toggle-container subtoggle">
                         <h4><em>No Tasks.
                             </em></h4>
                     </div>
@@ -75,7 +75,7 @@
                             <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach($subtasks as $subtask)
 
                         <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
@@ -135,7 +135,7 @@
                         </h6>
                     </div>
                     <!-- overdue -->
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach($overduesubtasks as $overduesubtask)
 
                         <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $overduesubtask['id'] }}">
@@ -181,7 +181,7 @@
                         </h6>
                     </div>
                     <!-- overdue -->
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         @foreach($completedsubtasks as $completedsubtask)
 
                         <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $completedsubtask['id'] }}">
@@ -271,7 +271,7 @@
 
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($InProgressActivities as $activity)
                                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
@@ -302,7 +302,7 @@
 
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($UpcomingActivities as $activity)
                                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
@@ -333,7 +333,7 @@
 
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($ScheduledActivities as $activity)
                                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
@@ -364,7 +364,7 @@
 
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($OverdueActivities as $activity)
                                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
@@ -393,7 +393,7 @@
                                         <i class="bi bi-caret-down-fill text-end"></i>
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($CompletedActivities as $activity)
                                     <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}">
 
@@ -472,7 +472,7 @@
 
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($InProgressProjects as $project)
                                     <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -503,7 +503,7 @@
 
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($UpcomingProjects as $project)
                                     <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -532,7 +532,7 @@
                                         <i class="bi bi-caret-down-fill text-end"></i>
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($ScheduledProjects as $project)
                                     <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -562,7 +562,7 @@
                                         <i class="bi bi-caret-down-fill text-end"></i>
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($CompletedProjects as $project)
                                     <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -592,7 +592,7 @@
                                         <i class="bi bi-caret-down-fill text-end"></i>
                                     </h6>
                                 </div>
-                                <div class="toggle-container subtoggle" style="display: none;">
+                                <div class="toggle-container subtoggle">
                                     @foreach ($IncompleteProjects as $project)
                                     <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
@@ -621,7 +621,6 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        $(".subtoggle").toggle();
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");
         });

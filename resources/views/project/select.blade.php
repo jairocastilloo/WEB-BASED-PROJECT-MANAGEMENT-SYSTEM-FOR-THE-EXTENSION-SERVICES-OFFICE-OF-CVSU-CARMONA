@@ -278,7 +278,7 @@
                         </h6>
 
                     </div>
-                    <div class="toggle-container subtoggle" style="display: none;">
+                    <div class="toggle-container subtoggle">
                         <div class="text-center p-4">
                             <h4><em>No Other Projects Yet.</em></h4>
                         </div>
@@ -493,7 +493,6 @@
         });
 
 
-        $(".subtoggle").toggle();
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");
         });
