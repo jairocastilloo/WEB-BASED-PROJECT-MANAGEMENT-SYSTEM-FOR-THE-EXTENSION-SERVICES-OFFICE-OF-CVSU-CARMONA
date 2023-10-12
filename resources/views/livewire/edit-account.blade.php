@@ -1,49 +1,52 @@
-<table class="accounttable">
-    <thead>
-        <tr id="objheader">
-            <th class="p-2 text-center bg-light name">First Name</th>
-            <th class="p-2 text-center bg-light name">Middle Name</th>
-            <th class="p-2 text-center bg-light name">Last Name</th>
-            <th class="p-2 text-center bg-light username">Username</th>
-            <th class="p-2 text-center bg-light dept">Department</th>
-            <th class="p-2 text-center bg-light role">Role</th>
-            <th class="p-2 text-center bg-light edit">Actions</th>
-            <th class="p-2 text-center bg-light cancel"></th>
-        </tr>
-    </thead>
+<div>
+    <table class="accounttable">
+        <thead>
+            <tr id="objheader">
+                <th class="p-2 text-center bg-light name">First Name</th>
+                <th class="p-2 text-center bg-light name">Middle Name</th>
+                <th class="p-2 text-center bg-light name">Last Name</th>
+                <th class="p-2 text-center bg-light username">Username</th>
+                <th class="p-2 text-center bg-light dept">Department</th>
+                <th class="p-2 text-center bg-light role">Role</th>
+                <th class="p-2 text-center bg-light edit">Actions</th>
+                <th class="p-2 text-center bg-light cancel"></th>
+            </tr>
+        </thead>
 
-    <tbody>
-        @foreach ($allusers as $alluser)
+        <tbody>
+            @foreach ($allusers as $alluser)
 
-        <tr data-value="{{ $alluser->id }}">
-            <td class="p-1 name firstname">{{ $alluser->name }}</td>
-            <td class="p-1 name middlename">{{ $alluser->middle_name }}</td>
-            <td class="p-1 name lastname">{{ $alluser->last_name }}</td>
-            <td class="p-1 username">{{ $alluser->username }}</td>
-            <td class="p-1 dept">{{ $alluser->department }}</td>
-            <td class="p-1 role text-center">{{ $alluser->role }}</td>
-            <td class="p-1 edit">
-                <div class="text-center">
+            <tr data-value="{{ $alluser->id }}">
+                <td class="p-1 name firstname">{{ $alluser->name }}</td>
+                <td class="p-1 name middlename">{{ $alluser->middle_name }}</td>
+                <td class="p-1 name lastname">{{ $alluser->last_name }}</td>
+                <td class="p-1 username">{{ $alluser->username }}</td>
+                <td class="p-1 dept">{{ $alluser->department }}</td>
+                <td class="p-1 role text-center">{{ $alluser->role }}</td>
+                <td class="p-1 edit">
+                    <div class="text-center">
 
-                    <button type="button" class="btn btn-sm btn-outline-primary border editdetails">
-                        <b class="small">Edit Details</b>
+                        <button type="button" class="btn btn-sm btn-outline-primary border editdetails">
+                            <b class="small">Edit Details</b>
+                        </button>
+
+                    </div>
+
+
+                </td>
+                <td class="p-1 cancel text-center">
+                    <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="delete('{{ $alluser->id }}')">
+                        <i class="bi bi-trash fs-5"></i>
                     </button>
+                </td>
 
-                </div>
+            </tr>
+
+            @endforeach
+        </tbody>
 
 
-            </td>
-            <td class="p-1 cancel text-center">
-                <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="decline('{{ $alluser->id }}')">
-                    <i class="bi bi-trash fs-5"></i>
-                </button>
-            </td>
-
-        </tr>
-
-        @endforeach
-    </tbody>
-
+    </table>
     <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -103,7 +106,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEdit">Close</button>
                     <button type="submit" class="btn btn-primary" id="confirmEdit">Confirm</button>
                 </div>
             </div>
@@ -124,6 +127,9 @@
                 };
                 Livewire.emit('updateData', data);
             });
+            Livewire.on('afterUpdateData', function() {
+                document.getElementById('closeEdit').click();
+            });
         });
     </script>
-</table>
+</div>
