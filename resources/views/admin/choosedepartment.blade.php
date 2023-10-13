@@ -9,7 +9,7 @@
             <div class="border-bottom ps-3 pt-2 bggreen">
                 <h5 class="fw-bold" style="color:darkgreen;">Select Department for Project Viewing</h5>
             </div>
-            <div class="container">
+            <div class="container dep-choose-container">
                     <div class="row">
                         <div class="col-lg-6">
                             <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Management</a>
