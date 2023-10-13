@@ -9,6 +9,27 @@ body {
   color: #333333; /* Set a default text color */
 }
 
+
+
+.dep-choose-button {
+  display: block;
+  text-align: center;
+  padding: 20px;
+  background-color: green;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+  margin: 10px 0;
+}
+
+.dep-choose-button:hover {
+  background-color: rgb(0, 54, 0);
+}
+
+
+
+
 .basicrow{
   background-color: #dadadc;
   padding: 10px;
