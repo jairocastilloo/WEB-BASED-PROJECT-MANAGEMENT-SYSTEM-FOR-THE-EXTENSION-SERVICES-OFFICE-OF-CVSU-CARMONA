@@ -578,6 +578,14 @@ div {
   .steps:hover .message-box {
     display: block;
   }
+  .input-container {
+    display: flex;
+    align-items: center;
+}
 
+.input-container input {
+    flex: 1; /* Take up remaining space in the container */
+    margin-right: 10px; /* Add some spacing between the input and button */
+}
 
 

@@ -1,7 +1,10 @@
 <div>
+
     <div class="input-container mb-2">
         <input type="text" class="form-control border-success" wire:model="search" placeholder="Search projects...">
+        <button type="button" class="btn btn-sm btn-success"> <i class="bi bi-search fs-6"></i> </button>
     </div>
+
 
 
     @php
