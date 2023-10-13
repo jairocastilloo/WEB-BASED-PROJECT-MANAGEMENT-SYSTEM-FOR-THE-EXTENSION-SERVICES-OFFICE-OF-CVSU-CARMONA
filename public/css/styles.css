@@ -9,7 +9,9 @@ body {
   color: #333333; /* Set a default text color */
 }
 
-
+.dep-choose-container{
+  padding: 5px 20px;
+}
 
 .dep-choose-button {
   display: block;
@@ -20,7 +22,7 @@ body {
   text-decoration: none;
   border-radius: 10px;
   transition: background-color 0.3s;
-  margin: 10px 10px;
+  margin: 10px 0px;
 }
 
 .dep-choose-button:hover {
