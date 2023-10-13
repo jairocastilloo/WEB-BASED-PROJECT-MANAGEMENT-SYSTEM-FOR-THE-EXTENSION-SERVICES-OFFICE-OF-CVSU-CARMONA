@@ -1,8 +1,8 @@
 <div>
 
     <div class="input-container mb-2">
-        <input type="text" class="form-control border-success" wire:model="search" placeholder="Search projects...">
-        <button type="button" class="btn btn-sm btn-success"> <i class="bi bi-search fs-6"></i> </button>
+        <input type="text" class="form-control border-success" id="searchInputProject" placeholder="Search projects...">
+        <button type="button" class="btn btn-sm btn-success" id="searchBtnProject"> <i class="bi bi-search fs-6"></i> </button>
     </div>
 
 
@@ -191,7 +191,16 @@
                 </div>
                 @endif
 
-
+                <script>
+                    const searchBtnProject = document.getElementById('searchBtnProject');
+                    document.addEventListener('livewire:load', function() {
+                        searchBtnProject.addEventListener('click', function() {
+                            var inputData = document.getElementById('searchInputProject').value;
+                            console.log(inputData);
+                            Livewire.emit('searchInput', inputData);
+                        });
+                    });
+                </script>
 
 
 </div>
