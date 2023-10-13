@@ -9,27 +9,29 @@
             <div class="border-bottom ps-3 pt-2 bggreen">
                 <h5 class="fw-bold" style="color:darkgreen;">Select Department for Project Viewing</h5>
             </div>
-            <div class="container p-4 text-center">
-                <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Management</a>
+            <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Management</a>
 
-                </div>
-                <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Industrial and Information Technology</a>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Industrial and Information Technology</a>
 
 
-                </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="{{ route('project.show', ['department' => 'Department of Teacher Education']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Teacher Education</a>
 
-
-                <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Teacher Education']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Teacher Education</a>
-
-                </div>
-                <div>
-                    <a href="{{ route('project.show', ['department' => 'Department of Arts and Science']) }}" class="btn btn-outline-success btn-lg btn-block mb-3 p-4"><i class="bi bi-kanban fs-2"></i> Department of Arts and Science</a>
-
-                </div>
-
+                        </div>
+                        <div class="col-lg-6">
+                            <a href="{{ route('project.show', ['department' => 'Department of Arts and Science']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Arts and Science</a>
+                        </div>
+                    </div>
             </div>
         </div>
         @else
