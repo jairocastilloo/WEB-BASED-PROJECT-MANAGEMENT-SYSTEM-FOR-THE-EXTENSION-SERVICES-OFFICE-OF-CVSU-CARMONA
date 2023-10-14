@@ -209,9 +209,9 @@
                             return $project;
                             });
                             @endphp
-                            <div class="input-container mb-2">
+                            <div class="mb-2">
                                 <input type="text" class="form-control border-success" id="searchInputProject" placeholder="Search projects...">
-                                <button type="button" class="btn btn-sm btn-success" id="searchBtnProject"> <i class="bi bi-search fs-6"></i> </button>
+
                             </div>
                             <div class="basiccont word-wrap shadow">
                                 <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
@@ -500,8 +500,8 @@
             $('#account .dropdown-menu').toggleClass('shows');
         });
 
+        $('#searchInputProject').on('keyup', function(e) {
 
-        $('#searchBtnProject').on('click', function() {
             var inputData = $('#searchInputProject').val().toLowerCase();
             var x = 0;
             $('.projectdiv').each(function() {
@@ -515,24 +515,7 @@
                 }
             });
             $('.countProjects').text(x);
-        });
 
-        $('#searchInputProject').on('keydown', function(e) {
-            if (e.key === 'Enter' || e.keyCode === 13) {
-                var inputData = $('#searchInputProject').val().toLowerCase();
-                var x = 0;
-                $('.projectdiv').each(function() {
-                    var projectName = $(this).attr('data-name').toLowerCase();
-
-                    if (projectName.includes(inputData)) {
-                        $(this).show();
-                        x++;
-                    } else {
-                        $(this).hide();
-                    }
-                });
-                $('.countProjects').text(x);
-            }
         });
 
         $('.step span').each(function() {
