@@ -2,18 +2,54 @@
 
 @section('content')
 <section class="maincontainer homeloginpage full-page-container py-5">
-    <div class="container">
-        <div class="row g-0 border rowjonel pt-4">
-            <div class="col-lg-6 text-center d-flex align-items-center justify-content-center">
-                <div class="d-flex flex-column gap-4 align-items-center justify-content-center">
-                    <div class="logos"><img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" width="350px"></div>
-                    <div>
-                        <h6 class="fw-bold">Cavite States University - Carmona</h6>
-                        <h2 class="fw-bold text-uppercase">Extension Service Office</h2>
+    <div class="container-fluid">
+        <div class="row g-0 border rowjonel">
+            <div class="col-lg-6 p-0">
+                <div id="myCarousel" class="carousel slide d-flex w-100 h-100 rowjonel2" data-ride="carousel">
+                    <!-- Indicators (optional) -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Slides -->
+                    <div class="carousel-inner d-flex w-100 h-100 rowjonel2">
+                        <div class="carousel-item active">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider1.png')}}" alt="Slide 1">
+                            <div class="carousel-caption">
+                                <h3>Slide 1</h3>
+                                <p>Description for slide 1.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item ">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
+                            <div class="carousel-caption">
+                                <h3>Slide 2</h3>
+                                <p>Description for slide 2.</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item ">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider3.png')}}" alt="Slide 3">
+                            <div class="carousel-caption">
+                                <h3>Slide 3</h3>
+                                <p>Description for slide 3.</p>
+                            </div>
+                        </div>
                     </div>
+
+                        <!-- Controls (optional) -->
+                        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
                 </div>
             </div>
-
+            
             <div class="col-lg-6">
                 <h1 class="text-center p-5">Welcome Back!</h1>
 
@@ -58,7 +94,7 @@
 
                         <div class="container p-3 ">
                             <div class="form-group text-center">
-                                <div class="offset-1 col-lg-10">
+                                <div class="offset-1">
                                     <button type="submit" class="btn btn-success">
                                         {{ __('Login') }}
                                     </button>

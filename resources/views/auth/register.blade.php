@@ -40,6 +40,19 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
+                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
+
+                                @error('last_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group inputlg">
+                            <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
 
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
@@ -52,7 +65,7 @@
 
                             </div>
                         </div>
-
+                        
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-3" for="Middelname1">Middle Name:</label>
@@ -65,19 +78,9 @@
                                 @enderror
                             </div>
                         </div>
+                        
 
-                        <div class="form-group inputlg">
-                            <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
-                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
-
-                                @error('last_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
+                        
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">

@@ -4,10 +4,22 @@
     box-shadow: border-box;
 }
 
+
+
+
+
+
 .rowjonel{
     border-radius: 30px;
     box-shadow: 5px 10px 20px rgba(0,0,0,0.15);
 }
+
+.rowjonel2{
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+
+
 @media (max-width: 991px) {
   .inputlg {
     margin-right: 50px;
@@ -33,7 +45,7 @@ h2{
 }
 
 .homeloginpage{
-    background: #fcfcfc;
+    background: #ffffff;
     display: flex;
     justify-content: center;
     height: 100vh;
