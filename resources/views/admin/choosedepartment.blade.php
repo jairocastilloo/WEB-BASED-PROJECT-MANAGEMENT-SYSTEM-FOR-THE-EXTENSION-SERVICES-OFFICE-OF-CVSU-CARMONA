@@ -18,8 +18,6 @@
                         
                         <div class="col-lg-6">
                             <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Industrial and Information Technology</a>
-
-
                         </div>
                     </div>
                     
