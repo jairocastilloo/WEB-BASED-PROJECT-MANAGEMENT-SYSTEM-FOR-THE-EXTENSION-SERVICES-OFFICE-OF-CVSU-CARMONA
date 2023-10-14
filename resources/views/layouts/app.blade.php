@@ -25,9 +25,13 @@
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
     @if(in_array(Route::currentRouteName(), ['login', 'register']))
     <link href="{{ asset('css/homelogin.css') }}" type="text/css" rel="stylesheet">
-    @endif
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    @endif
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.default.css') }}" rel="stylesheet">-->
@@ -152,11 +156,13 @@
             <!--<script src="{{ asset('vendor/livewire/livewire.js') }}"></script>-->
             <!--<script src="{{ asset('js/main.js') }}"></script>-->
 
-            <!--<script src="{{ asset('js/bootstrap.bundle.min.js.map') }}"></script>
--->     
+            <!--<script src="{{ asset('js/bootstrap.bundle.min.js.map') }}"></script>-->
+            @if(in_array(Route::currentRouteName(), ['login', 'register']))
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            @endif
+
+
 
 
             @yield('scripts')
