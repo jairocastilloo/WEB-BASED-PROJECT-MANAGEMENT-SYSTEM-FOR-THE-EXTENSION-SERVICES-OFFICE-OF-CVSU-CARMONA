@@ -25,8 +25,8 @@
                         <div class="carousel-item ">
                             <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
                             <div class="carousel-caption">
-                                <h3>Slide 2</h3>
-                                <p>Description for slide 2.</p>
+                                <p class="hover-text1">Mission</p>
+                                <p class="hover-text2">Vision</p>
                             </div>
                         </div>
                         <div class="carousel-item ">

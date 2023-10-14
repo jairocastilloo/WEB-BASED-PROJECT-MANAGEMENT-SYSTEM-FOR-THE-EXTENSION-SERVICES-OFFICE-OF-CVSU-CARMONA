@@ -6,19 +6,48 @@
 
 
 
+.hover-text1::after {
+  content: " To engage in the improvement of the quality of life of farmers/fishermen, women, out-of-school youths, local government employees, and other clients through the conduct of relevant education and training; farm and business advisory services; demonstration services; and information, communication and technology services.";
+  display: none;
+}
 
+.hover-text1:hover::after {
+  display: inline;
+}
 
+.hover-text2::after {
+  content: " Alleviating the standard of living of the economically and socially disadvantaged sectors of society.";
+  display: none;
+}
+
+.hover-text2:hover::after {
+  display: inline;
+}
 
 .rowjonel{
     border-radius: 30px;
     box-shadow: 5px 10px 20px rgba(0,0,0,0.15);
 }
 
-.rowjonel2{
+
+.rowjonel2 {
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
 }
 
+@media (max-width: 998px) {
+  .rowjonel2 {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 0px;
+  }
+}
+
+@media (min-width: 999px) {
+  .rowjonel2 {
+    border-top-left-radius: 30px;
+  }
+}
 
 @media (max-width: 991px) {
   .inputlg {
