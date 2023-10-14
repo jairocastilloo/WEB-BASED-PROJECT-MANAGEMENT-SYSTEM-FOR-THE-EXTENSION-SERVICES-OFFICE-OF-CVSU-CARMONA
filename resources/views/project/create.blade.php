@@ -41,56 +41,136 @@
                     @endif
                 </div>
 
-                @php
 
-                $sortedProjects= $currentproject->sortBy('projectstartdate');
-
-                @endphp
-                <label class="ms-2 small form-label text-secondary fw-bold">Upcoming and Ongoing Projects</label>
+                <label class="ms-3 small form-label text-secondary fw-bold">Upcoming and Ongoing Projects</label>
                 @if($currentproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($currentproject) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
 
                     </div>
                     <div class="toggle-container subtoggle">
                         <div class="text-center p-4">
-                            <h4><em>No Projects Yet.</em></h4>
+                            <h4><em>No Other Projects Yet.</em></h4>
                         </div>
                     </div>
                 </div>
                 @else
+                @php
+                $sortedProjects= $currentproject->sortBy('projectstartdate');
+                $InProgressProjects = $sortedProjects->filter(function ($proj) {
+                return $proj->projectstatus === 'Incomplete' &&
+                $proj->projectstartdate <= now() && $proj->projectenddate >= now();
+                    })->map(function ($project) {
+                    $project->projectremark = 'In Progress';
+                    return $project;
+                    });
 
-                @livewire('other-projects', ['currentproject' => $sortedProjects])
-                @endif
+                    $UpcomingProjects = $sortedProjects->filter(function ($proj) {
+                    $projStartDate = \Carbon\Carbon::parse($proj->projectstartdate);
+                    $weekBeforeAct = $projStartDate->copy()->subDays(7);
 
+                    return $proj->projectstatus === 'Incomplete' &&
+                    $weekBeforeAct <= now() && $projStartDate> now();
+                        })->map(function ($project) {
+                        $project->projectremark = 'Upcoming';
+                        return $project;
+                        });
 
+                        $ScheduledProjects = $sortedProjects->filter(function ($proj) {
+                        return $proj->projectstatus === 'Incomplete' && $proj->projectstartdate > now();
+                        })->map(function ($project) {
+                        $project->projectremark = 'Scheduled';
+                        return $project;
+                        });
+                        @endphp
+                        <div class="input-container mb-2">
+                            <input type="text" class="form-control border-success" id="searchInputProject" placeholder="Search projects...">
+                            <button type="button" class="btn btn-sm btn-success" id="searchBtnProject"> <i class="bi bi-search fs-6"></i> </button>
+                        </div>
+                        <div class="basiccont word-wrap shadow">
+                            <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                                <h6 class="fw-bold small" style="color:darkgreen;">
+                                    <i class="bi bi-kanban"></i>
+                                    Projects
+                                    <span class="bggold text-dark badge countProjects">
+                                        {{ count($sortedProjects) }}
+                                    </span>
+                                    <i class="bi bi-caret-down-fill text-end"></i>
+
+                                </h6>
+                            </div>
+                            <div class="toggle-container subtoggle allprojectdiv">
+                                @foreach ($InProgressProjects as $project)
+                                <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+
+                                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
+
+                                    @php
+                                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                                    $endDate = date('M d', strtotime($project['projectenddate']));
+
+                                    @endphp
+
+                                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+
+                                    <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
+
+                                </div>
+                                @endforeach
+                                @foreach ($UpcomingProjects as $project)
+                                <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+
+                                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
+
+                                    @php
+                                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                                    $endDate = date('M d', strtotime($project['projectenddate']));
+
+                                    @endphp
+
+                                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+
+                                    <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
+
+                                </div>
+                                @endforeach
+                                @foreach ($ScheduledProjects as $project)
+                                <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+
+                                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
+
+                                    @php
+                                    $startDate = date('M d', strtotime($project['projectstartdate']));
+                                    $endDate = date('M d', strtotime($project['projectenddate']));
+
+                                    @endphp
+
+                                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+
+                                    <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
+
+                                </div>
+                                @endforeach
+
+                            </div>
+                        </div>
+
+                        @endif
 
             </div>
 
             <div class="col-lg-2">
 
-                @php
 
-                $pastProjects= $pastproject->sortBy('projectstartdate');
-
-                @endphp
-                <label class="ms-2 small form-label text-secondary fw-bold">Past Projects</label>
+                <label class="ms-3 small form-label text-secondary fw-bold">Past Projects</label>
                 @if($pastproject->isEmpty())
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
                         <h6 class="fw-bold small" style="color:darkgreen;">
                             Projects
-                            <span class="badge bggold text-dark">
-                                {{ count($pastproject) }}
-                            </span>
-                            <i class="bi bi-caret-down-fill text-end"></i>
                         </h6>
 
                     </div>
@@ -101,9 +181,75 @@
                     </div>
                 </div>
                 @else
+                @php
+                $sortedPastProjects= $pastproject->sortBy('projectstartdate');
 
-                @livewire('other-projects', ['currentproject' => $pastProjects])
-                @endif
+                $CompletedPastProjects = $sortedPastProjects->filter(function ($proj) {
+                return $proj->projectstatus === 'Completed';
+                });
+
+                $IncompletePastProjects = $sortedPastProjects->filter(function ($proj) {
+                return $proj->projectstatus === 'Incomplete' && $proj->projectenddate < now(); })->map(function ($project) {
+                    $project->projectremark = 'Incomplete';
+                    return $project;
+                    });
+                    @endphp
+                    <div class="input-container mb-2">
+                        <input type="text" class="form-control border-success" id="searchInputPastProject" placeholder="Search projects...">
+                        <button type="button" class="btn btn-sm btn-success" id="searchBtnPastProject"> <i class="bi bi-search fs-6"></i> </button>
+                    </div>
+                    <div class="basiccont word-wrap shadow">
+                        <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
+                            <h6 class="fw-bold small" style="color:darkgreen;">
+                                <i class="bi bi-kanban"></i>
+                                Projects
+                                <span class="bggold text-dark badge countPastProjects">
+                                    {{ count($sortedPastProjects) }}
+                                </span>
+                                <i class="bi bi-caret-down-fill text-end"></i>
+
+                            </h6>
+                        </div>
+                        <div class="toggle-container subtoggle allpastprojectdiv">
+
+                            @foreach ($CompletedPastProjects as $project)
+                            <div class="border-bottom ps-3 p-2 pb-0 divhover pastprojectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+
+                                <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
+
+                                @php
+                                $startDate = date('M d', strtotime($project['projectstartdate']));
+                                $endDate = date('M d', strtotime($project['projectenddate']));
+
+                                @endphp
+
+                                <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+
+                                <h6 class="small text-success fw-bold text-end">{{ $project['projectstatus'] }}</h6>
+
+                            </div>
+                            @endforeach
+                            @foreach ($IncompletePastProjects as $project)
+                            <div class="border-bottom ps-3 p-2 pb-0 divhover pastprojectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+
+                                <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
+
+                                @php
+                                $startDate = date('M d', strtotime($project['projectstartdate']));
+                                $endDate = date('M d', strtotime($project['projectenddate']));
+
+                                @endphp
+
+                                <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+
+                                <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
+
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    @endif
 
 
             </div>
@@ -294,6 +440,75 @@
 
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");
+        });
+
+
+        $('#searchBtnPastProject').on('click', function() {
+            var inputData = $('#searchInputPastProject').val().toLowerCase();
+            var x = 0;
+            $('.pastprojectdiv').each(function() {
+                var projectName = $(this).attr('data-name').toLowerCase();
+
+                if (projectName.includes(inputData)) {
+                    $(this).show();
+                    x++;
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('.countPastProjects').text(x);
+        });
+
+        $('#searchInputPastProject').on('keydown', function(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputData = $('#searchInputPastProject').val().toLowerCase();
+                var x = 0;
+                $('.pastprojectdiv').each(function() {
+                    var projectName = $(this).attr('data-name').toLowerCase();
+
+                    if (projectName.includes(inputData)) {
+                        $(this).show();
+                        x++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $('.countPastProjects').text(x);
+            }
+        });
+
+        $('#searchBtnProject').on('click', function() {
+            var inputData = $('#searchInputProject').val().toLowerCase();
+            var x = 0;
+            $('.projectdiv').each(function() {
+                var projectName = $(this).attr('data-name').toLowerCase();
+
+                if (projectName.includes(inputData)) {
+                    $(this).show();
+                    x++;
+                } else {
+                    $(this).hide();
+                }
+            });
+            $('.countProjects').text(x);
+        });
+
+        $('#searchInputProject').on('keydown', function(e) {
+            if (e.key === 'Enter' || e.keyCode === 13) {
+                var inputData = $('#searchInputProject').val().toLowerCase();
+                var x = 0;
+                $('.projectdiv').each(function() {
+                    var projectName = $(this).attr('data-name').toLowerCase();
+
+                    if (projectName.includes(inputData)) {
+                        $(this).show();
+                        x++;
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $('.countProjects').text(x);
+            }
         });
 
         $(document).on('click', '.projectdiv', function(event) {
