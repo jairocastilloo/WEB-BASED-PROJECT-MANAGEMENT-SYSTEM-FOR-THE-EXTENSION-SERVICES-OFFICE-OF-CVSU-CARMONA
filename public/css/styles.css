@@ -228,6 +228,41 @@ body {
       max-width: 240px;
     }
 
+    .approvalcontainer {
+      overflow-x: scroll;
+      display: flex; /* Add flexbox */
+      flex-wrap: nowrap; /* Prevent wrapping */
+    }
+    
+
+    .approvaltable, .approvaltable th, .approvaltable td {
+      border: 1px solid #bababa;
+      min-width: 222px;
+      max-width: 222px;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      
+    }
+    .approvaltable .name{
+      min-width: 220px;
+      max-width: 220px;
+    }
+    .approvaltable .email{
+      min-width: 280px;
+      max-width: 280px;
+    }
+    .approvaltable .department{
+      min-width: 420px;
+      max-width: 420px;
+    }
+    .approvaltable .datecreated{
+      min-width: 200px;
+      max-width: 200px;
+    }
+    .approvaltable .cancel{
+      min-width: 80px;
+      max-width: 80px;
+    }
     .btn-gold {
       color: black;
       background-color: gold;
@@ -278,7 +313,7 @@ body {
 }
 
 .divhover:hover{
- 
+  background-color: #f2f2f2;
   cursor: pointer;
 }
 .containerhover:hover{
@@ -634,14 +669,14 @@ div {
 }
 .pagination .page-item.active .page-link {
   background-color: darkgreen; /* Change to your preferred active page color */
-  color: gold;
+  color: white;
 }
 /* Hover effect for page links */
 .pagination .page-item:not(.disabled) .page-link:hover {
-  background-color: gold /* Change to your preferred hover background color */
+  background-color: rgb(214, 239, 255); /* Change to your preferred hover background color */
  /* Change to match the background color */
 }
 .pagination .page-item.active .page-link:hover {
-  background-color: gold; /* Change to your preferred active page color */
+  background-color: rgb(214, 239, 255); /* Change to your preferred active page color */
   color: black;
 }
