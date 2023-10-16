@@ -613,4 +613,35 @@ div {
     margin-right: 10px; /* Add some spacing between the input and button */
 }
 
+.pagination {
+  margin-top: 20px;
+}
 
+/* Pagination items */
+.pagination .page-item {
+  cursor: pointer;
+}
+
+/* Disabled items */
+.pagination .page-item.disabled .page-link {
+  background-color: #f0f0f0; /* Change to your preferred disabled color */
+  border-color: #f0f0f0; /* Change to match the background color */
+}
+
+/* Previous and Next page links */
+.pagination .page-item:not(.disabled) .page-link {
+  color: darkgreen; /* Change to your preferred link color */
+}
+.pagination .page-item.active .page-link {
+  background-color: darkgreen; /* Change to your preferred active page color */
+  color: gold;
+}
+/* Hover effect for page links */
+.pagination .page-item:not(.disabled) .page-link:hover {
+  background-color: gold /* Change to your preferred hover background color */
+ /* Change to match the background color */
+}
+.pagination .page-item.active .page-link:hover {
+  background-color: gold; /* Change to your preferred active page color */
+  color: black;
+}

@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-center align-items-center border small">
 
                 <div class="tablecontainer pb-2">
-                    @livewire('account-approval', [ 'pendingusers' => $pendingusers ])
+                    @livewire('account-approval')
 
                 </div>
             </div>
@@ -44,8 +44,40 @@
             $('.dropdown-menu').toggleClass('shows');
         });
 
+
         $('#editAccounts').click(function() {
             window.location.href = "{{ route('admin.editaccount') }}";
+        });
+
+        $('#searchAccount').on('keyup', function(e) {
+            var inputData = $(this).val().toLowerCase();
+
+            $('.accountRow').each(function() {
+                var accountName = $(this).attr('data-name').toLowerCase();
+
+                if (accountName.includes(inputData)) {
+                    $(this).show();
+
+                } else {
+                    $(this).hide();
+                }
+            });
+
+        });
+        $('#searchEmail').on('keyup', function(e) {
+            var inputData = $(this).val().toLowerCase();
+
+            $('.accountRow').each(function() {
+                var accountEmail = $(this).attr('data-email').toLowerCase();
+
+                if (accountEmail.includes(inputData)) {
+                    $(this).show();
+
+                } else {
+                    $(this).hide();
+                }
+            });
+
         });
     });
 </script>

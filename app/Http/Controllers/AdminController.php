@@ -23,9 +23,8 @@ class AdminController extends Controller
     }
     public function manageaccount()
     {
-        $pendingusers = User::where('approval', 0)
-            ->get();
-        return view('admin.accountmanagement', ['pendingusers' => $pendingusers]);
+
+        return view('admin.accountmanagement');
     }
 
     public function editaccount()
