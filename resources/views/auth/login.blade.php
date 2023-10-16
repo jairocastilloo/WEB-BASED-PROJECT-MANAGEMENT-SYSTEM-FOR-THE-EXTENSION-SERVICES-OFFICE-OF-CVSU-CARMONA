@@ -16,17 +16,19 @@
                     <!-- Slides -->
                     <div class="carousel-inner d-flex w-100 h-100 rowjonel2">
                         <div class="carousel-item active">
-                            <img class="w-100 h-100" src="{{ asset('images/Slider1.png')}}" alt="Slide 1">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider4.png')}}" alt="Slide 1">
                             <div class="carousel-caption">
-                                <h3>Slide 1</h3>
-                                <p>Description for slide 1.</p>
+                                <h3></h3>
+                                <p></p>
                             </div>
                         </div>
                         <div class="carousel-item ">
                             <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
                             <div class="carousel-caption">
-                                <p class="hover-text1">Mission</p>
-                                <p class="hover-text2">Vision</p>
+                                <div class="container-fluid miss-viss">
+                                    <h3 class="hover-text1">Mission</h3>
+                                    <h3 class="hover-text1">Vission</h3>
+                                </div>
                             </div>
                         </div>
                         <div class="carousel-item ">
@@ -51,15 +53,14 @@
             </div>
             
             <div class="col-lg-6">
-                <h1 class="text-center p-5">Welcome Back!</h1>
+                <h1 class="text-center p-5">Login</h1>
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="container">
-
                         <div class="form-group inputlg">
-                            <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-4" for="Username1">Username:</label>
+                            <div class="offset-1 col-lg-10 main-slider">
+                                <label class="bold-label fw-bold py-2" for="Username1">Username:</label>
                                 <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">
@@ -71,7 +72,7 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-4" for="Password1">Password:</label>
+                                <label class="bold-label fw-bold py-2" for="Password1">Password:</label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
@@ -95,7 +96,7 @@
                         <div class="container p-3 ">
                             <div class="form-group text-center">
                                 <div class="offset-1">
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="loginbutton1">
                                         {{ __('Login') }}
                                     </button>
                                     @if (Route::has('password.request'))
@@ -122,11 +123,8 @@
                     </div>
                 </form>
                 <div class="form-group text-center mb-5 registerdiv">
-                    <div class="offset-1 col-lg-10">
-                        <a href="{{ route('register') }}" class="btn btn-secondary text-white text-decoration-none">Register</a>
-
-
-
+                    <div class="offset-1 col-lg-10 registerclass">
+                        <a href="{{ route('register') }}" class="registerbutton1">Register</a>
                     </div>
                 </div>
 
