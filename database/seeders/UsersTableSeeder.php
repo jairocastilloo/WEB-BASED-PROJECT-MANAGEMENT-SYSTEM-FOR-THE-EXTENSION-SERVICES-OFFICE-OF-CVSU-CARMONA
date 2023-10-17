@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
         //
         $faker = FakerFactory::create();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             User::create([
                 'username' => $faker->userName,
                 'name' => $faker->firstName,
@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
                     'Department of Teacher Education',
                     'Department of Arts and Science'
                 ]),
-                'approval' => 0,
+                'approval' => 1,
             ]);
         }
     }

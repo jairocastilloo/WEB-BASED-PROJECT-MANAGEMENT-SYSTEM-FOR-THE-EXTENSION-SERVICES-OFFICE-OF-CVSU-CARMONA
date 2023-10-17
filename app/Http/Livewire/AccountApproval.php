@@ -21,6 +21,7 @@ class AccountApproval extends Component
     {
         $this->inputSearch = $inputSearch;
         $this->x = $x;
+        $this->currentPage = 1;
     }
 
     public function handleFindAccount($inputSearch, $x)
@@ -45,6 +46,10 @@ class AccountApproval extends Component
         /* $this->pendingusers = User::where('approval', 0)
             ->get();*/
     }
+    public function refreshData()
+    {
+        $this->x = 0;
+    }
     public function decline($id)
     {
         $user = User::findorFail($id);
@@ -63,10 +68,28 @@ class AccountApproval extends Component
                     ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
                 break;
             case 1:
+                $pendingusers = User::query()
+                    ->where('approval', 0)
+                    ->where('name', 'like', "%$this->inputSearch%")
+                    ->orWhere('middle_name', 'like', "%$this->inputSearch%")
+                    ->orWhere('last_name', 'like', "%$this->inputSearch%")
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
                 break;
             case 2:
+                $pendingusers = User::query()
+                    ->where('approval', 0)
+                    ->where('email', 'like', "%$this->inputSearch%")
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
                 break;
             case 3:
+                $pendingusers = User::query()
+                    ->where('approval', 0)
+                    ->where('department', 'like', "%$this->inputSearch%")
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
                 break;
             default:
 
