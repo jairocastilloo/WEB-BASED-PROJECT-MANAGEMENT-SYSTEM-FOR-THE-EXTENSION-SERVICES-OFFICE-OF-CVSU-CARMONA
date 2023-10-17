@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid p-0">
     <div class="mainnav border-bottom mb-3 shadow-sm px-2">
         <div class="border-2 border-start border-end p-2 currentdiv">
             Account Approval
@@ -51,36 +51,6 @@
             window.location.href = "{{ route('admin.editaccount') }}";
         });
 
-        $('#searchAccount').on('keyup', function(e) {
-            var inputData = $(this).val().toLowerCase();
-
-            $('.accountRow').each(function() {
-                var accountName = $(this).attr('data-name').toLowerCase();
-
-                if (accountName.includes(inputData)) {
-                    $(this).show();
-
-                } else {
-                    $(this).hide();
-                }
-            });
-
-        });
-        $('#searchEmail').on('keyup', function(e) {
-            var inputData = $(this).val().toLowerCase();
-
-            $('.accountRow').each(function() {
-                var accountEmail = $(this).attr('data-email').toLowerCase();
-
-                if (accountEmail.includes(inputData)) {
-                    $(this).show();
-
-                } else {
-                    $(this).hide();
-                }
-            });
-
-        });
     });
 </script>
 
