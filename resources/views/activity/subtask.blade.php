@@ -24,7 +24,7 @@
 
 
         </div>
-        <div class="step-wrapper">
+        <div class="step-wrapper divhover">
             <div class="step highlight">
                 <span class="fw-bold">Subtask: {{ $subtask['subtask_name'] }}</span>
                 <div class="message-box">
