@@ -27,7 +27,7 @@
                     <div class="container p-3">
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Username1">Username:</label>
+                                <label class="bold-label fw-bold py-1" for="Username1">Username:</label>
                                 <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
                                 @error('username')
@@ -40,7 +40,7 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Lastname1">Last Name:</label>
+                                <label class="bold-label fw-bold py-1" for="Lastname1">Last Name:</label>
                                 <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
 
                                 @error('last_name')
@@ -53,7 +53,7 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Firstname1">First Name:</label>
+                                <label class="bold-label fw-bold py-1" for="Firstname1">First Name:</label>
 
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
@@ -68,7 +68,7 @@
                         
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Middelname1">Middle Name:</label>
+                                <label class="bold-label fw-bold py-1" for="Middelname1">Middle Name:</label>
                                 <input id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
 
                                 @error('middle_name')
@@ -84,7 +84,7 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Emailaddress1">Email Address:</label>
+                                <label class="bold-label fw-bold py-1" for="Emailaddress1">Email Address:</label>
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
 
                                 @error('email')
@@ -97,7 +97,7 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Password1">Password:</label>
+                                <label class="bold-label fw-bold py-1" for="Password1">Password:</label>
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                                 @error('password')
@@ -110,7 +110,7 @@
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="ConfirmPassword1">Confirm Password:</label>
+                                <label class="bold-label fw-bold py-1" for="ConfirmPassword1">Confirm Password:</label>
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
@@ -119,7 +119,7 @@
 
 
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-3" for="Department1">Department:</label>
+                                <label class="bold-label fw-bold py-1" for="Department1">Department:</label>
                                 <select name="department" id="department" class="form-select @error('department') is-invalid @enderror" value="{{ old('department') }}" required autocomplete="department" autofocus>
                                     <option value="" disabled selected>Select your Department</option>
                                     <option value="Department of Management">Department of Management</option>
@@ -140,7 +140,7 @@
                     <div class="container p-3 btn-block mb-3">
                         <div class="form-group text-center">
                             <div class="offset-1 col-lg-10 registerdiv2">
-                                <button type="register" class="btn btn-success">Register</button>
+                                <button type="register" class="loginbutton1">Register</button>
                             </div>
                         </div>
                     </div>
