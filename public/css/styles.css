@@ -279,7 +279,13 @@ body {
     background-color: transparent;
     border-color: #0dcaf0;
   }
-  
+  .card-design{
+    display: flex;
+    columns: flex ;
+    height: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis ;
+  }
   
   .btn.btn-success:hover {
     background-color: transparent;

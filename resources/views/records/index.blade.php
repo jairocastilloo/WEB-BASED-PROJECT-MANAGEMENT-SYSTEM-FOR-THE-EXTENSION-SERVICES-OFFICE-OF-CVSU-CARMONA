@@ -62,10 +62,10 @@
 
                 <div class="col m-2 me-0">
 
-                    <div class="card">
-                        <div class="row g-0">
+                    <div class="card card-design">
+                        <div class="row">
                             <div class="col-md-4">
-                                <img src="image.jpg" alt="Image" class="img-fluid">
+                                <img src="{{ asset('images/default-user-image.png')}}" alt="Image" class="img-fluid p-1">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -84,10 +84,10 @@
 
                 <div class="col m-2 ms-0 me-0">
 
-                    <div class="card">
-                        <div class="row g-0">
+                    <div class="card card-design">
+                        <div class="row">
                             <div class="col-md-4">
-                                <img src="image.jpg" alt="Image" class="img-fluid">
+                                <img src="{{ asset('images/total-hours-image.png')}}" alt="Image" class="img-fluid p-1">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
@@ -105,10 +105,10 @@
                 </div>
                 <div class="col m-2 ms-0">
 
-                    <div class="card">
-                        <div class="row g-0">
+                    <div class="card card-design">
+                        <div class="row">
                             <div class="col-md-4">
-                                <img src="image.jpg" alt="Image" class="img-fluid">
+                                <img src="{{ asset('images/total-activity-image.png')}}" alt="Image" class="img-fluid p-1">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">

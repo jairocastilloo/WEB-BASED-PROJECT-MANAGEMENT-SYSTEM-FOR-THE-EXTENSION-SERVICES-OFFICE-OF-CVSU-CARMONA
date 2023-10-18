@@ -4,6 +4,12 @@
     box-shadow: border-box;
 }
 
+.my-records-images{
+  padding: 10px;
+}
+
+
+
 .miss-viss{
   border: 2px solid black;
   padding: 100px;
