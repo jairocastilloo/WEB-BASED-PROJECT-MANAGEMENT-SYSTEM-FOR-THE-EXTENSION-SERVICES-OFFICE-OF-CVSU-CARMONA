@@ -90,7 +90,7 @@
                     <td class="p-2 name">{{ $pendinguser->middle_name }}</td>
                     <td class="p-2 email">{{ $pendinguser->email }}</td>
                     <td class="p-2 department">{{ $pendinguser->department }}</td>
-                    <td class="p-2 datecreated">{{ $pendinguser->created_at->diffForHumans() }}</td>
+                    <td class="p-2 datecreated">{{ $pendinguser->created_at->format('F j, Y') }}</td>
                     <td class="p-2 actions">
                         <div class="text-center">
                             <div class="mb-1">Approve as:</div>

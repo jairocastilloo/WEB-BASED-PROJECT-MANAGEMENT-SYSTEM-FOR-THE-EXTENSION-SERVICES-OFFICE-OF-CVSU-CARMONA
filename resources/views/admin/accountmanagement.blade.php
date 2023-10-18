@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid p-0">
+<div class="admincontainer p-0 border border-start border-end border-bottom border-top-0">
     <div class="mainnav border-bottom mb-3 shadow-sm px-2">
         <div class="border-2 border-start border-end p-2 currentdiv">
             Account Approval
@@ -9,18 +9,17 @@
         <div class="border-2 border-end p-2 divhover" id="editAccounts">
             Account Management
         </div>
+        <!--
+        <div class="border-2 border-end p-2 divhover" id="editAccounts">
+            Account Management
+        </div>-->
         <div class="border-2 border-end p-2 divhover" id="editAccounts">
             Submission Management
         </div>
         <div class="border-2 border-end p-2 divhover" id="editAccounts">
             Edit Accounts
         </div>
-        <div class="border-2 border-end p-2 divhover" id="editAccounts">
-            Edit Accounts
-        </div>
-        <div class="border-2 border-end p-2 divhover" id="editAccounts">
-            Edit Accounts
-        </div>
+
 
 
 

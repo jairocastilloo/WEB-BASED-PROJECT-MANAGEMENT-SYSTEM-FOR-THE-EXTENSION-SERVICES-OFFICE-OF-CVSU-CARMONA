@@ -49,6 +49,7 @@ class AccountApproval extends Component
     public function refreshData()
     {
         $this->x = 0;
+        $this->currentPage = 1;
     }
     public function decline($id)
     {

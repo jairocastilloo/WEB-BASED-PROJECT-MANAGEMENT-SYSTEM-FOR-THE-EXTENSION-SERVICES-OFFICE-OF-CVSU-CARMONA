@@ -248,8 +248,8 @@ body {
       max-width: 220px;
     }
     .approvaltable .email{
-      min-width: 280px;
-      max-width: 280px;
+      min-width: 305px;
+      max-width: 305px;
     }
     .approvaltable .department{
       min-width: 420px;
@@ -262,6 +262,18 @@ body {
     .approvaltable .cancel{
       min-width: 80px;
       max-width: 80px;
+    }
+    .approvaltable .editname{
+      min-width: 210px;
+      max-width: 210px;
+    }
+    .approvaltable .editactions{
+      min-width: 120px;
+      max-width: 120px;
+    }
+    .approvaltable .editrole{
+      min-width: 112px;
+      max-width: 112px;
     }
     .btn-gold {
       color: black;
@@ -401,7 +413,38 @@ body {
     max-width: 1140px;
   }
 }
+.admincontainer {
+  min-width: 1920px;
+  max-width: 1920px;
+  background-color: #f9f9f9;
+  margin-right: auto;
+  margin-left: auto;
+  min-height: 1080px;
+}
 
+@media (min-width: 576px) {
+  .admincontainer {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .admincontainer {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .admincontainer {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .admincontainer {
+    max-width: 1140px;
+  }
+}
 .mainnav{
   display: flex;
   flex-wrap: wrap;
