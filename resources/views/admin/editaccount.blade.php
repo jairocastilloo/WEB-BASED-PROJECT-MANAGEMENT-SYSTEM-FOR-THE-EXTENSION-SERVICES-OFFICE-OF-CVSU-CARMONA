@@ -1,39 +1,40 @@
 @extends('layouts.app')
 
+
 @section('content')
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="admincontainer p-0 border border-start border-end border-bottom border-top-0">
     <div class="mainnav border-bottom mb-3 shadow-sm px-2">
-        <div class="border-2 border-start divhover border-end p-2" id="accountapproval">
+        <div class="border-2 border-start border-end p-2 divhover" id="accountapproval">
             Account Approval
         </div>
         <div class="border-2 border-end p-2 currentdiv">
+            Account Management
+        </div>
+        <!--
+        <div class="border-2 border-end p-2 divhover" id="editAccounts">
+            Account Management
+        </div>-->
+        <div class="border-2 border-end p-2 divhover" id="editAccounts">
+            Submission Management
+        </div>
+        <div class="border-2 border-end p-2 divhover" id="editAccounts">
             Edit Accounts
         </div>
 
 
 
+
     </div>
     @if(Auth::user()->role === 'Admin')
-    <div class="container">
 
-        <div class="basiccont rounded shadow">
+    @livewire('edit-account')
 
-            <div class="d-flex justify-content-center align-items-center border small">
 
-                <div class="tablecontainer pb-2">
-                    @livewire('edit-account', [ 'allusers' => $allusers ])
-
-                </div>
-            </div>
-        </div>
-
-    </div>
     @else
-    <div class="container p-4 text-center">
-        <h1>Sorry, this is exclusive for admin. <a href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}">Go back</a></h1>
-    </div>
-    @endif
 
+    <h1>Sorry, this is exclusive for admin. <a href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}">Go back</a></h1>
+
+    @endif
 </div>
 @endsection
 @section('scripts')
@@ -54,6 +55,7 @@
             var middlename = parentdiv.find('.middlename').text();
             var lastname = parentdiv.find('.lastname').text();
             var username = parentdiv.find('.username').text();
+            var email = parentdiv.find('.email').text();
             var department = parentdiv.find('.dept').text();
             var role = parentdiv.find('.role').text();
             $('#userid').val(parentdiv.attr('data-value'));
@@ -61,6 +63,7 @@
             $('#middlename').val(middlename);
             $('#lastname').val(lastname);
             $('#username').val(username);
+            $('#email').val(email);
             $('#department').val(department);
             $('#role').val(role);
             $('#registrationModal').modal('show');
