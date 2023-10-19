@@ -68,7 +68,7 @@
                         
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-1" for="Middelname1">Middle Name:</label>
+                                <label class="bold-label fw-bold py-1" for="Middelname1">Middle Name: <span class="optional">(Optional)</span></label>
                                 <input id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
 
                                 @error('middle_name')
