@@ -17,6 +17,10 @@ body {
   text-overflow: ellipsis ;
 }
 
+.optional{
+  opacity: 0.5;
+
+}
 
 
 
