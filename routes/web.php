@@ -18,6 +18,7 @@ use App\Http\Controllers\HoursController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Livewire\AccountApproval;
+use App\Http\Controllers\MailController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 use App\Http\Livewire\Notifications;
@@ -158,3 +159,4 @@ Route::view('/choosedepartment', 'admin.choosedepartment')->name('admin.choosede
 Route::view('/choosedepartmentreport', 'admin.choosedepartmentreport')->name('admin.choosedepartmentreport');
 Route::get('/adminindex/{department}', [AdminController::class, 'index'])->name('admin.index');
 Route::post('/approve-account', AccountApproval::class);
+Route::get('/send-email', [MailController::class, 'sendEmail']);

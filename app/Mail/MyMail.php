@@ -42,8 +42,7 @@ class MyMail extends Mailable
     public function build()
     {
 
-        return $this->from('sender@example.com', 'Sender Name')
-            ->subject($this->message)
+        return $this->subject($this->message)
             ->view('emails.notification')
             ->with([
                 'subject' => $this->message,
