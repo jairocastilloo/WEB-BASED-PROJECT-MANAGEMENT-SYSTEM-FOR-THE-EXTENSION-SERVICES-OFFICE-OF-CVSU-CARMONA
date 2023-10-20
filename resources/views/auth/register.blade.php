@@ -41,7 +41,7 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-1" for="Lastname1">Last Name:</label>
-                                <input id="last_name" type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
+                                <input id="last_name" type="text" class="form-control autocapital @error('last_name') is-invalid @enderror" name="last_name" value="{{ old('last_name') }}" required autocomplete="name" autofocus>
 
                                 @error('last_name')
                                 <span class="invalid-feedback" role="alert">
@@ -55,7 +55,7 @@
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-1" for="Firstname1">First Name:</label>
 
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control autocapital @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -65,11 +65,11 @@
 
                             </div>
                         </div>
-                        
+
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
                                 <label class="bold-label fw-bold py-1" for="Middelname1">Middle Name: <span class="optional">(Optional)</span></label>
-                                <input id="middle_name" type="text" class="form-control @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" required autocomplete="name" autofocus>
+                                <input id="middle_name" type="text" class="form-control autocapital @error('middle_name') is-invalid @enderror" name="middle_name" value="{{ old('middle_name') }}" autocomplete="name" autofocus>
 
                                 @error('middle_name')
                                 <span class="invalid-feedback" role="alert">
@@ -78,9 +78,9 @@
                                 @enderror
                             </div>
                         </div>
-                        
 
-                        
+
+
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">
@@ -293,4 +293,17 @@
     </div>
 </div>
 -->
+@endsection
+@section ('scripts')
+<script>
+    $(document).ready(function() {
+        $(document).on('input', '.autocapital', function() {
+            var inputValue = $(this).val();
+            if (inputValue.length > 0) {
+                $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+            }
+        });
+    });
+</script>
+
 @endsection
