@@ -29,6 +29,7 @@
     @endif
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato&family=Pacifico&display=swap" rel="stylesheet">
 
 
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">

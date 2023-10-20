@@ -21,7 +21,28 @@ body {
   opacity: 0.5;
 }
 
+.bg-carmona{
+  display: flex;
+  position: absolute;
+  background-size: cover;
+  width: 100%;
+  height: 975px;
+  background-attachment: fixed;
+}
 
+.login-page{
+  background-color: white;
+  border: 1px solid black;
+  position: relative;
+}
+
+.background-image-element {
+  background-image: url('public\images\cvsu-carmona.jpg');
+  background-size: cover;
+  width: 100%;
+  height: 300px;
+  text-align: center; /* Center content within the element */
+}
 
 .dep-choose-container{
   padding: 5px 20px;

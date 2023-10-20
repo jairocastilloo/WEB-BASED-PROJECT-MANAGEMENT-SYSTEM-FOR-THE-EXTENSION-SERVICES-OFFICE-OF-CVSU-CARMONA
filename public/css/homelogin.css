@@ -72,7 +72,7 @@
 }
 
 h1{
-    font-family: 'Borel', cursive;
+  font-family: 'Lato', sans-serif;
 }
 h2{
     color: rgb(0, 0, 0);
@@ -81,6 +81,7 @@ h2{
 
 .bold-label {
   font-weight: bold;
+  
 }
 
 .homeloginpage{
