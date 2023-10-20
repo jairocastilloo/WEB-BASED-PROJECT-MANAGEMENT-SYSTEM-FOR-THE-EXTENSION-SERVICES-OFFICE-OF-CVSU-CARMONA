@@ -12,8 +12,14 @@
             {{ session('status') }}
         </div>
         @endif
+        @if(Auth::user()->email_verified_at == null)
+        {{ __('Good day,') }}
+        {{ Auth::user()->name }}{{ __('! Please verify your email address before the administrator can approve your account. ') }}
+        @elseif (Auth::user()->approval == 0)
+        {{ __('Good day,') }}
+        {{ Auth::user()->name }}{{ __('! Contact the administrator for the approval of your account.') }}
 
-        {{ __('Good day,') }} {{ Auth::user()->name }}{{ __('! Contact the administrator for the approval of your account.') }}
+        @endif
     </h3>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
         @csrf

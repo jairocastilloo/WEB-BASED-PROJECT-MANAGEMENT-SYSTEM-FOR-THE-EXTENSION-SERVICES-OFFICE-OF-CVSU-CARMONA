@@ -36,7 +36,9 @@ use App\Http\Livewire\Notifications;
 
 
 
-Auth::routes();
+Auth::routes([
+    "verify" => true,
+]);
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');

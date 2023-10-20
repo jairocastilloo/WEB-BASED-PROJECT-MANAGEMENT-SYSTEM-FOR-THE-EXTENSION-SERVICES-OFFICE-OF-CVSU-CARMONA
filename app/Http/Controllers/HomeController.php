@@ -29,10 +29,12 @@ class HomeController extends Controller
         $approval = $user->approval;
         $username = $user->username;
 
-        if ($approval == 1) {
-            return redirect()->route('tasks.show', ["username" => $username]);
-        } else {
+        if ($user->email_verified_at == null) {
             return view('home');
+        } elseif ($approval == 0) {
+            return view('home');
+        } else {
+            return redirect()->route('tasks.show', ["username" => $username]);
         }
     }
 }

@@ -8,72 +8,63 @@
 <body>
     @if($tasktype === 'activity')
     <p>
-        Dear {{ $name }}, </br>
-        We are pleased to inform you that you have been assigned to a new activity on our platform. Here are the details:
-        </br></br>
-        Activity Name: {{ $taskname }} </br>
-        Assigned By: {{ $sendername }} </br>
-        Deadline: {{ $taskdeadline }}</br>
-        </br></br>
-        You can access the activity by logging into your account on our platform. Once logged in, you will find the activity on your home page.
-        </br></br>
-        This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.
-        </br></br>
-        Thank you for your commitment to our projects. We appreciate your contributions to our team's success.
-        </br></br>
-        Best regards,
-        </br></br>
-        {{ $sendername }} </br>
-        Cavite State University-Carmona Extension Services Office </br>
-        {{ $senderemail }}
+        Dear {{ $name }}, </p>
+    <p>We are pleased to inform you that you have been assigned to a new activity on our platform. Here are the details:</p>
 
-    </p>
+    <p>Activity Name: {{ $taskname }}</p>
+    <p>Assigned By: {{ $sendername }}</p>
+    <p>Deadline: {{ $taskdeadline }}</p>
+
+    <p>You can access the activity by logging into your account on our platform. Once logged in, you will find the activity on your home page.</p>
+
+    <p>This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.</p>
+
+    <p>Thank you for your commitment to our projects. We appreciate your contributions to our team's success.</p>
+
+    <p>Best regards,</p>
+
+    <p>{{ $sendername }}</p>
+    <p>Cavite State University-Carmona Extension Services Office</p>
+    <p>{{ $senderemail }}</p>
+
+
     @elseif ($tasktype === 'project')
-    <p>Dear {{ $name }},</br>
-
+    <p>Dear {{ $name }},</p>
+    <p>
         We are pleased to inform you that you have been assigned to a new project on our platform. Here are the details:
-        </br></br>
-
-        Project Name: {{ $taskname }}</br>
-        Assigned By: {{ $sendername }}</br>
-        Deadline: {{ $taskdeadline }}
-
-        </br></br>
-        You can access the project by logging into your account on our platform. Once logged in, you will find the project on your home page.
-        </br></br>
-        This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.
-        </br></br>
-        Thank you for your commitment to our projects. We appreciate your contributions to our team's success.
-        </br></br>
-        Best regards,
-        </br></br>
-        {{ $sendername }}</br>
-        Cavite State University-Carmona Extension Services Office</br>
-        {{ $senderemail }}
     </p>
+
+    <p>Project Name: {{ $taskname }}</p>
+    <p>Assigned By: {{ $sendername }}</p>
+    <p>Deadline: {{ $taskdeadline }}</p>
+    <p>You can access the project by logging into your account on our platform. Once logged in, you will find the project on your home page.</p>
+    <p>This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.</p>
+
+    <p>Thank you for your commitment to our projects. We appreciate your contributions to our team's success. </p>
+    <p>Best regards,</p>
+
+    <p>{{ $sendername }}</p>
+    <p>Cavite State University-Carmona Extension Services Office</p>
+    <p>{{ $senderemail }}</p>
+
     @elseif ($tasktype === 'subtask')
-    <p>Dear {{ $name }},</br>
+    <p>Dear {{ $name }},</p>
 
-        We are pleased to inform you that you have been assigned to a new task on our platform. Here are the details:
-        </br></br>
-
-        Activity Name: {{ $taskname }}</br>
-        Assigned By: {{ $sendername }}</br>
-        Deadline: {{ $taskdeadline }}
-
-        </br></br>
-        You can access the subtask by logging into your account on our platform. Once logged in, you will find the subtask on your home page.
-        </br></br>
-        This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.
-        </br></br>
-        Thank you for your commitment to our projects. We appreciate your contributions to our team's success.
-        </br></br>
-        Best regards,
-        </br></br>
-        {{ $sendername }}</br>
-        Cavite State University-Carmona Extension Services Office</br>
-        {{ $senderemail }}
+    <p>We are pleased to inform you that you have been assigned to a new task on our platform. Here are the details:
     </p>
+
+    <p>Activity Name: {{ $taskname }}</p>
+    <p>Assigned By: {{ $sendername }}</p>
+    <p>Deadline: {{ $taskdeadline }}</p>
+    <p>You can access the subtask by logging into your account on our platform. Once logged in, you will find the subtask on your home page.</p>
+    <p>This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.</p>
+    <p>Thank you for your commitment to our projects. We appreciate your contributions to our team's success.</p>
+
+    <p>Best regards,</p>
+
+    <p>{{ $sendername }}</p>
+    <p>Cavite State University-Carmona Extension Services Office</p>
+    <p>{{ $senderemail }}</p>
     @endif
 </body>
 
