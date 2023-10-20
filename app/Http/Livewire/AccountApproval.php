@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Mail\ApproveAccount;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -15,7 +17,7 @@ class AccountApproval extends Component
     public $currentPage = 1; // The current page number
     public $perPage = 10;
     public $data;
-    protected $listeners = ['findAccount' => 'handleFindAccount'];
+    protected $listeners = ['findAccount' => 'handleFindAccount', 'sendEmail' => 'handlesendEmail'];
 
     public function findAccount($inputSearch, $x)
     {
@@ -35,16 +37,34 @@ class AccountApproval extends Component
     public function approveAsCoordinator($id)
     {
         $user = User::findorFail($id);
-        $user->update(['approval' => 1, 'role' => 'Coordinator']);
-        /*$this->pendingusers = User::where('approval', 0)
-            ->get();*/
+
+        $user->update(['role' => 'Coordinator']);
+        $this->emit('updateElements', $id);
     }
     public function approveAsImplementer($id)
     {
         $user = User::findorFail($id);
-        $user->update(['approval' => 1, 'role' => 'Implementer']);
-        /* $this->pendingusers = User::where('approval', 0)
-            ->get();*/
+        $user->update(['role' => 'Implementer']);
+        $this->emit('updateElements', $id);
+    }
+    public function sendEmail($id)
+    {
+        try {
+            $user = User::findorFail($id);
+            $email = $user->email;
+            $name = $user->name . ' ' . $user->last_name;
+            $role = $user->role;
+            $username = $user->username;
+            $user->update(['approval' => 1]);
+            Mail::to($email)->send(new ApproveAccount($name, $role, $username, $email));
+            $this->emit('updateLoading', $id);
+        } catch (\Exception $e) {
+            $this->emit('updateLoadingFailed', $id, $e);
+        }
+    }
+    public function handlesendEmail($id)
+    {
+        $this->sendEmail($id);
     }
     public function refreshData()
     {

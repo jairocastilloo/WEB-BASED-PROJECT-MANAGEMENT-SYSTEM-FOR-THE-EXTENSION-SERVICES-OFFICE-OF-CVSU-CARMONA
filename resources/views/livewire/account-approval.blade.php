@@ -100,7 +100,14 @@
                             <button type="button" class="btn btn-sm btn-outline-success border shadow-sm" wire:click="approveAsImplementer('{{ $pendinguser->id }}')">
                                 <b class="small">Implementer</b>
                             </button>
+                            <span class="ms-2 small" id="loadingSpan[{{ $pendinguser->id}}]" style="display: none;">Sending Email..</span>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="emailError[{{ $pendinguser->id}}]" style="display: none;">
+                                <!-- Your error message goes here -->
+                                <strong>Error:</strong><span id="errorMessage[{{ $pendinguser->id}}]"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                         </div>
+
                     </td>
                     <td class="p-2 cancel text-center">
                         <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="decline('{{ $pendinguser->id }}')">
@@ -116,6 +123,22 @@
         document.addEventListener('livewire:load', function() {
             const btnSearch = document.getElementById('btnSearch');
             const inputSearch = document.getElementById('inputSearch');
+
+            Livewire.on('updateElements', function(id) {
+
+                document.getElementById('loadingSpan[' + id + ']').style.display = "inline-block";
+                Livewire.emit('sendEmail', id);
+            });
+            Livewire.on('updateLoading', function(id) {
+                document.getElementById('loadingSpan[' + id + ']').style.display = "none";
+            });
+            Livewire.on('updateLoadingFailed', function(id, e) {
+                document.getElementById('loadingSpan[' + id + ']').style.display = "none";
+                document.getElementById('errorMessage[' + id + ']').textContent = e;
+                document.getElementById('emailError[' + id + ']').style.display = "inline-block";
+
+            });
+
 
             btnSearch.addEventListener('click', function() {
                 const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
