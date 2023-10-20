@@ -77,7 +77,7 @@
                         </li>
                         @endif
                         @else
-                        @if (Auth::user()->approval === 1)
+                        @if (Auth::user()->approval === 1 && Auth::user()->email_verified_at != null)
 
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['tasks.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Home
