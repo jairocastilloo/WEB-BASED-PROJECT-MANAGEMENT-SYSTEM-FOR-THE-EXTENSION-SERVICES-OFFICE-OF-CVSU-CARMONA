@@ -1,43 +1,45 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="maincontainer homeloginpage full-page-container py-5">
+<main class="container-fluid p-0">
+    <img class="bg-carmona" src="{{ asset('images/cvsu-carmona-japanese.jpg')}}" alt="Extension service">
+<section class="">
     
     <div class="container p-0">
         <div class="row g-0 border rowjonel">
             <div class="col-lg-6 text-center d-flex align-items-center justify-content-center p-0">
-            <div id="myCarousel" class="carousel slide d-flex w-100 h-100 rowjonel2" data-ride="carousel">
-                    
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel" data-slide-to="1"></li>
-                        <li data-target="#myCarousel" data-slide-to="2"></li>
-                    </ol>
+                <div id="myCarousel" class="carousel slide d-flex w-100 h-100 rowjonel2" data-ride="carousel">
+                        
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>
 
-                    <div class="carousel-inner d-flex w-100 h-100 rowjonel2">
-                        <div class="carousel-item active">
-                            <img class="w-100 h-100" src="{{ asset('images/Slider4.png')}}" alt="Slide 1">
+                        <div class="carousel-inner d-flex w-100 h-100 rowjonel2">
+                            <div class="carousel-item active">
+                                <img class="w-100 h-100" src="{{ asset('images/Slider4.png')}}" alt="Slide 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img class="w-100 h-100" src="{{ asset('images/Slider3.png')}}" alt="Slide 3">
+                            </div>
                         </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img class="w-100 h-100" src="{{ asset('images/Slider3.png')}}" alt="Slide 3">
-                        </div>
-                    </div>
 
-                        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
+                            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
                 </div>
             </div>
             
-            <div class="col-lg-6">
+            <div class="col-lg-6 rowjonel3 bg-white">
                 <h1 class="text-center p-5">Login</h1>
 
                 <form method="POST" action="{{ route('login') }}">
@@ -122,4 +124,5 @@
         </div>
     </div>
 </section>
+</main>
 @endsection

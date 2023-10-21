@@ -4,6 +4,8 @@
     box-shadow: border-box;
 }
 
+
+
 .my-records-images{
   padding: 10px;
 }
@@ -56,8 +58,34 @@
 @media (min-width: 999px) {
   .rowjonel2 {
     border-top-left-radius: 30px;
+    
   }
 }
+
+.rowjonel3 {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+@media (max-width: 998px) {
+  .rowjonel3 {
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 0px;
+  }
+}
+
+@media (min-width: 999px) {
+  .rowjonel {
+    border-top-left-radius: 30px;
+    
+  }
+}
+
+
+
+
+
+
 
 @media (max-width: 991px) {
   .inputlg {
