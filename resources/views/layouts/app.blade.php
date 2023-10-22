@@ -41,7 +41,7 @@
 
 </head>
 
-<body>
+<body @if(in_array(Route::currentRouteName(), ['login', 'register'])) class="login-register-bg" @endif>
     <div id="app">
         <nav class="navbar navbar-expand-md shadow p-1" style="background-color:#1b651b;">
 

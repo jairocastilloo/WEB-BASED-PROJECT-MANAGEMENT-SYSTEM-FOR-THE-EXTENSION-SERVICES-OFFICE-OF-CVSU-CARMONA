@@ -63,6 +63,33 @@
   }
 }
 
+.borderRadius-3 {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  margin-top: 50px;
+}
+
+
+@media (max-width: 998px) {
+  .borderRadius-3 {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 0px;
+  }
+}
+
+@media (min-width: 999px) {
+  .borderRadius-3 {
+    border-top-left-radius: 30px;
+    
+  }
+}
+
+
+
+
+
+
 .forMarginTop-1{
   margin-top: 50px;
 }

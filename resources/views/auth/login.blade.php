@@ -1,12 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="container-fluid p-0">
-    <img class="bg-carmona" src="{{ asset('images/cvsu-carmona-japanese.jpg')}}" alt="Extension service">
-<section class="">
-    
+<section>
     <div class="container">
-        <div class="row g-0 border rowjonel">
+        <div class="row">
             <div class="col-lg-6 forMarginTop-1 p-0">
                 <div id="myCarousel" class="carousel slide d-flex w-100 h-100 borderRadius-1" data-ride="carousel">
                         

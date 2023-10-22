@@ -2,11 +2,11 @@
 
 @section('content')
 
-<section class="maincontainer homeloginpage full-page-container py-5">
+<section class="">
     <div class="container">
-        <div class="row g-0 border rowjonel pt-4">
+        <div class="row">
 
-            <div class="col-lg-6 text-center d-flex align-items-center justify-content-center">
+            <div class="col-lg-6 borderRadius-3 bg-white text-center d-flex align-items-center justify-content-center">
 
                 <div class="d-flex flex-column gap-4 align-items-center justify-content-center">
                     <div class="logos"><img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" width="350px"></div>
@@ -19,7 +19,7 @@
 
 
 
-            <div class="col-lg-6">
+            <div class="col-lg-6 borderRadius-2 bg-white">
                 <h1 class="text-center p-5">Register</h1>
 
                 <form method="POST" action="{{ route('register') }}">
