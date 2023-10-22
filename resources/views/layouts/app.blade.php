@@ -20,7 +20,7 @@
 
     <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">
-
+    <link href="{{ asset('css/bootstrap-select.min.css') }}" type="text/css" rel="stylesheet">
     <!--<link href="{{ asset('css/bootstrap.css.map') }}" type="text/css" rel="stylesheet">-->
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
     @if(in_array(Route::currentRouteName(), ['login', 'register']))
@@ -151,7 +151,7 @@
             <script src="{{ asset('js/jquery.min.js') }}"></script>
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-
+            <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
             <!--<script src="{{ asset('vendor/livewire/livewire.js') }}"></script>-->
             <!--<script src="{{ asset('js/main.js') }}"></script>-->
 

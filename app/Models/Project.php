@@ -36,4 +36,12 @@ class Project extends Model
     {
         return $this->hasMany(Project::class);
     }
+    public function projectleaders()
+    {
+        return $this->belongsToMany(User::class, 'project_leaders');
+    }
+    public function programleaders()
+    {
+        return $this->belongsToMany(User::class, 'program_leaders');
+    }
 }

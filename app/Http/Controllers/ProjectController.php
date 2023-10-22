@@ -7,6 +7,8 @@ use App\Models\ActivityUser;
 use App\Models\Notification;
 use App\Models\Objective;
 use App\Models\Output;
+use App\Models\ProgramLeader;
+use App\Models\ProjectLeader;
 use App\Models\SubtaskContributor;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -307,16 +309,22 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
+        $isMailSendable = 1;
+
 
         $projecttitle = $request->input('projecttitle');
         $projectleaderid = $request->input('projectleader');
         $projectstartdate = $request->input('projectstartdate');
         $projectenddate = $request->input('projectenddate');
+
+        $projectleaders = $request->input('projectleader');
+
+        $programleaders = $request->input('programleader');
         $project = new Project([
             'projecttitle' => $projecttitle,
-            'projectleader' => $request->input('projectleader'),
+            //'projectleader' => $request->input('projectleader'),
             'programtitle' => $request->input('programtitle'),
-            'programleader' => $request->input('programleader'),
+            //'programleader' => $request->input('programleader'),
             'projectstartdate' => $request->input('projectstartdate'),
             'projectenddate' => $request->input('projectenddate'),
             'department' => $request->input('department'),
@@ -325,7 +333,95 @@ class ProjectController extends Controller
 
         $project->save();
         $newProjectId = $project->id;
+        /**if (!is_array($projectleaders)) {
+            // Convert a string to an array if needed, assuming it's a comma-separated list
+            $projectleaders = explode(',', $projectleaders);
+        }*/
+        foreach ($projectleaders as $userId) {
+            ProjectLeader::create([
+                'project_id' => $newProjectId,
+                'leader_id' => $userId,
+            ]);
+            $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
+            $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
 
+            $notification = new Notification([
+                'user_id' => $userId,
+                'task_id' => $newProjectId,
+                'task_type' => "project",
+                'task_name' => $projecttitle,
+                'message' => $message,
+            ]);
+            $notification->save();
+            if ($isMailSendable === 1) {
+                try {
+                    $projectleader = User::findOrFail($userId);
+                    $email = $projectleader->email;
+                    $name = $projectleader->name . ' ' . $projectleader->last_name;
+                    $taskname = $projecttitle;
+                    $tasktype = "project";
+                    $startDate = date('F d, Y', strtotime($projectstartdate));
+                    $endDate = date('F d, Y', strtotime($projectenddate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $isMailSendable = 0;
+                }
+            }
+        }
+
+        if (count($programleaders) > 0) {
+            foreach ($programleaders as $userId) {
+                ProgramLeader::create([
+                    'project_id' => $newProjectId,
+                    'leader_id' => $userId,
+                ]);
+            }
+
+            $notification = new Notification([
+                'user_id' => $userId,
+                'task_id' => $newProjectId,
+                'task_type' => "project",
+                'task_name' => $projecttitle,
+                'message' => $message,
+            ]);
+            $notification->save();
+            if ($isMailSendable === 1) {
+                try {
+                    $programleader = User::findorFail($userId);
+                    $email =  $programleader->email;
+                    $name =  $programleader->name . ' ' . $projectleader->last_name;
+                    $taskname = $projecttitle;
+                    $tasktype = "project";
+                    $startDate = date('F d, Y', strtotime($projectstartdate));
+                    $endDate = date('F d, Y', strtotime($projectenddate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $isMailSendable = 0;
+                }
+            }
+        }
+
+        $validatedData = $request->validate([
+            'projectobjective.*' => 'required',
+            'objectiveindex' => 'required|integer',
+            'objectivesetid.*' => 'required|integer',
+        ]);
+
+        for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
+            $projectobjective = new Objective;
+            $projectobjective->name = $validatedData['projectobjective'][$i];
+            $projectobjective->project_id = $newProjectId;
+            $projectobjective->objectiveset_id = $validatedData['objectivesetid'][$i];
+            $projectobjective->save();
+        }
+        /*
         $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
         $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
 
@@ -365,9 +461,10 @@ class ProjectController extends Controller
             $projectobjective->objectiveset_id = $validatedData['objectivesetid'][$i];
             $projectobjective->save();
         }
-
+*/
         return response()->json([
             'projectid' => $newProjectId,
+            'isMailSent' => $isMailSendable,
         ]);
     }
     public function displayMembers($projectid, $department)

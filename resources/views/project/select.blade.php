@@ -473,46 +473,44 @@
                                     <strong></strong>
                                 </span>
                             </div>
-
-                            <div class="mb-3">
+                            <div class="container mb-3 p-0">
                                 <label for="projectleader" class="form-label">Project Leader</label>
-                                <select class="form-select" name="projectleader" id="projectleader">
-                                    <option value="0" selected disabled>Select Project Leader</option>
+                                <select class="selectpicker w-100 border projectleader" name="projectleader[]" id="projectleader" multiple aria-label="Select Project Leaders" data-live-search="true">
+                                    <option value="0" disabled>Select Project Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
                                     <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
                                     @endif
                                     @endforeach
                                 </select>
-                                <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
-
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
                             </div>
+
                             <div class="mb-3">
-                                <label for="programtitle" class="form-label">Program Title</label>
+                                <label for="programtitle" class="form-label">Program Title <span class="text-secondary">( if applicable )</span></label>
                                 <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
                             </div>
-                            <div class="mb-3">
-                                <label for="programleader" class="form-label">Project Leader</label>
-                                <select class="form-select" name="programleader" id="programleader">
-                                    <option value="0" selected disabled>Select Program Leader</option>
+                            <div class="container mb-3 p-0 programleaderdiv" style="display:none;">
+                                <label for="programleader" class="form-label">Program Leader</label>
+                                <select class="selectpicker w-100 border programleader" name="programleader[]" id="programleader" multiple aria-label="Select Program Leaders" data-live-search="true">
+                                    <option value="0" disabled>Select Program Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
                                     <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
                                     @endif
                                     @endforeach
                                 </select>
-
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
                                 <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
@@ -572,6 +570,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <span class="text-danger" id="createprojectError">
+                    <strong></strong>
+                </span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
                     <b class="small">Previous</b>
@@ -586,7 +587,17 @@
     </div>
 </div>
 
-
+<div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+                <h4>Project Created, but Email Not Sent Due to Internet Issue!</h4>
+                <p>Redirecting in <span id="countdown">5</span> seconds...</p>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -610,12 +621,23 @@
         var currentstep = 0;
         var setcount = 0;
 
+
         $('.projectobjective-error strong').hide();
 
         $('#navbarDropdown').click(function() {
             // Add your function here
             $('#account .dropdown-menu').toggleClass('shows');
         });
+
+
+        $('#programtitle').on('keyup', function(e) {
+            if ($('#programtitle').val() === "") {
+                $('.programleaderdiv').css('display', 'none');
+            } else {
+                $('.programleaderdiv').css('display', 'inline-block');
+            }
+        });
+
         $('#searchInputProject').on('keyup', function(e) {
 
             var inputData = $('#searchInputProject').val().toLowerCase();
@@ -895,12 +917,11 @@
 
             if (!hasError) {
                 var department = $('#department').val();
-                var projectname = $('#projecttitle').val();
+
 
                 var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
 
                 projecturl = projecturl.replace(':department', department);
-                projecturl = projecturl.replace(':projectname', projectname);
 
                 var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -930,16 +951,42 @@
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-
                         var projectId = response.projectid;
                         projecturl = projecturl.replace(':projectid', projectId);
-                        window.location.href = projecturl;
+                        if (response.isMailSent == 0) {
+                            $('#newproject').modal('hide');
+                            $('#mailNotSent').modal('show');
 
+                            // Set the initial countdown value
+                            let countdownValue = 5;
+
+                            // Function to update the countdown value and redirect
+                            function updateCountdown() {
+                                countdownValue -= 1;
+                                $('#countdown').text(countdownValue);
+
+                                if (countdownValue <= 0) {
+                                    // Redirect to your desired URL
+                                    window.location.href = projecturl; // Replace with your URL
+                                } else {
+                                    // Call the function recursively after 1 second (1000 milliseconds)
+                                    setTimeout(updateCountdown, 1000);
+                                }
+                            }
+
+                            // Start the countdown
+                            updateCountdown();
+                        } else {
+
+                            window.location.href = projecturl;
+                        }
                     },
                     error: function(xhr, status, error) {
+                        $('#createprojectError').text("There is a problem with server. Contact Administrator!");
+                        /** 
                         console.log(xhr.responseText);
                         console.log(status);
-                        console.log(error);
+                        console.log(error); */
                     }
                 });
             }
@@ -956,12 +1003,11 @@
 
                 var projectTitle = $('#projecttitle').val();
 
-                var selectprojlead = $('#projectleader').find(':selected');
-                var projectLeader = selectprojlead.val();
+                var projectLeader = $('#projectleader').val();
+
                 var programTitle = $('#programtitle').val();
 
-                var selectproglead = $('#programleader').find(':selected');
-                var programLeader = selectproglead.val();
+                var programLeader = $('#programleader').val();
 
                 var projectStartDate = new Date($('#projectstartdate').val());
                 var projectEndDate = new Date($('#projectenddate').val());
@@ -976,23 +1022,23 @@
                 }
 
                 // Validation for Project Leader
-                if (projectLeader == 0) {
-                    $('#projectleader').addClass('is-invalid');
-                    $('#projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
+                if (projectLeader.length === 0) {
+                    $('.projectleader').addClass('is-invalid');
+                    $('.projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
                     hasErrors = true;
                 }
-
-                // Validation for Program Title
-                if (programTitle.trim() === '') {
-                    $('#programtitle').addClass('is-invalid');
-                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
-                    hasErrors = true;
-                }
-
+                /** 
+                                // Validation for Program Title
+                                if (programTitle.trim() === '') {
+                                    $('#programtitle').addClass('is-invalid');
+                                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
+                                    hasErrors = true;
+                                }
+                */
                 // Validation for Program Leader
-                if (programLeader == 0) {
-                    $('#programleader').addClass('is-invalid');
-                    $('#programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
+                if (programLeader.length === 0) {
+                    $('.programleader').addClass('is-invalid');
+                    $('.programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
                     hasErrors = true;
                 }
 

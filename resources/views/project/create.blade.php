@@ -299,7 +299,7 @@
 
                             <div class="mb-3">
                                 <label for="projectleader" class="form-label">Project Leader</label>
-                                <select class="form-select" name="projectleader" id="projectleader">
+                                <select class="form-select" name="projectleader" id="projectleader" multiple>
                                     <option value="0" selected disabled>Select Project Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
