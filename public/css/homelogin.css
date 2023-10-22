@@ -42,13 +42,14 @@
 }
 
 
-.rowjonel2 {
+.borderRadius-1 {
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
 }
 
+
 @media (max-width: 998px) {
-  .rowjonel2 {
+  .borderRadius-1 {
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
     border-bottom-left-radius: 0px;
@@ -56,27 +57,36 @@
 }
 
 @media (min-width: 999px) {
-  .rowjonel2 {
+  .borderRadius-1 {
     border-top-left-radius: 30px;
     
   }
 }
 
-.rowjonel3 {
+.forMarginTop-1{
+  margin-top: 50px;
+}
+
+
+
+
+.borderRadius-2 {
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
+  margin-top: 50px;
 }
 
 @media (max-width: 998px) {
-  .rowjonel3 {
+  .borderRadius-2 {
     border-bottom-left-radius: 30px;
     border-top-right-radius: 0px;
+    margin-top: 0px;
   }
 }
 
 @media (min-width: 999px) {
-  .rowjonel {
-    border-top-left-radius: 30px;
+  .borderRadius-2 {
+    border-top-left-radius: 0px;
     
   }
 }
