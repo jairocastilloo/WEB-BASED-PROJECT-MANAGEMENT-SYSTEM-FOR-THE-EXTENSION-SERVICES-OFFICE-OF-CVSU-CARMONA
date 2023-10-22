@@ -4,6 +4,8 @@
     box-shadow: border-box;
 }
 
+
+
 .my-records-images{
   padding: 10px;
 }
@@ -40,13 +42,14 @@
 }
 
 
-.rowjonel2 {
+.borderRadius-1 {
   border-top-left-radius: 30px;
   border-bottom-left-radius: 30px;
 }
 
+
 @media (max-width: 998px) {
-  .rowjonel2 {
+  .borderRadius-1 {
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
     border-bottom-left-radius: 0px;
@@ -54,10 +57,72 @@
 }
 
 @media (min-width: 999px) {
-  .rowjonel2 {
+  .borderRadius-1 {
     border-top-left-radius: 30px;
+    
   }
 }
+
+.borderRadius-3 {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  margin-top: 50px;
+}
+
+
+@media (max-width: 998px) {
+  .borderRadius-3 {
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 0px;
+  }
+}
+
+@media (min-width: 999px) {
+  .borderRadius-3 {
+    border-top-left-radius: 30px;
+    
+  }
+}
+
+
+
+
+
+
+.forMarginTop-1{
+  margin-top: 50px;
+}
+
+
+
+
+.borderRadius-2 {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+  margin-top: 50px;
+}
+
+@media (max-width: 998px) {
+  .borderRadius-2 {
+    border-bottom-left-radius: 30px;
+    border-top-right-radius: 0px;
+    margin-top: 0px;
+  }
+}
+
+@media (min-width: 999px) {
+  .borderRadius-2 {
+    border-top-left-radius: 0px;
+    
+  }
+}
+
+
+
+
+
+
 
 @media (max-width: 991px) {
   .inputlg {
@@ -72,7 +137,7 @@
 }
 
 h1{
-    font-family: 'Borel', cursive;
+  font-family: 'Lato', sans-serif;
 }
 h2{
     color: rgb(0, 0, 0);
@@ -81,6 +146,7 @@ h2{
 
 .bold-label {
   font-weight: bold;
+  
 }
 
 .homeloginpage{
