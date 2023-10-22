@@ -2,12 +2,10 @@
 
 @section('content')
 
-<section class="">
+<section>
     <div class="container">
         <div class="row">
-
             <div class="col-lg-6 borderRadius-3 bg-white text-center d-flex align-items-center justify-content-center">
-
                 <div class="d-flex flex-column gap-4 align-items-center justify-content-center">
                     <div class="logos"><img src="{{ asset('images/Picture1.png')}}" alt="Extension Service Office" width="350px"></div>
                     <div>
