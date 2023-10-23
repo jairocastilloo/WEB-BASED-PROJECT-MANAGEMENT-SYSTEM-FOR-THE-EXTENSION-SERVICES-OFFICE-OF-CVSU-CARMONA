@@ -28,7 +28,6 @@ body {
   object-fit: cover;
 }
 
-
 .card-design{
   display: flex;
   columns: flex ;
@@ -36,6 +35,17 @@ body {
   overflow: hidden;
   text-overflow: ellipsis ;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 .optional{
   opacity: 0.5;
