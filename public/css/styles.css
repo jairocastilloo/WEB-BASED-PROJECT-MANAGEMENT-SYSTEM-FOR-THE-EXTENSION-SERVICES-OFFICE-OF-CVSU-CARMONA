@@ -323,6 +323,10 @@ body {
       min-width: 112px;
       max-width: 112px;
     }
+    .approvaltable .acadname{
+      min-width: 241px;
+      max-width: 241px;
+    }
     .btn-gold {
       color: black;
       background-color: gold;

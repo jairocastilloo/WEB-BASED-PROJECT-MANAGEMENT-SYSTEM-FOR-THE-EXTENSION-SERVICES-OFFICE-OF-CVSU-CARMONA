@@ -32,6 +32,28 @@
             // Add your function here
             $('#account .dropdown-menu').toggleClass('shows');
         });
+
+        $('.datepicker').datepicker();
+        $(document).on('click', '.editdates', function() {
+            var parentdiv = $(this).closest('tr');
+
+            var academicyear = parentdiv.find('.academicyear').text();
+            var academicyearstartdate = parentdiv.find('.academicyearstartdate').text();
+            var academicyearenddate = parentdiv.find('.academicyearenddate').text();
+            var firstsemstartdate = parentdiv.find('.firstsemstartdate').text();
+            var firstsemenddate = parentdiv.find('.firstsemenddate').text();
+            var secondsemstartdate = parentdiv.find('.secondsemstartdate').text();
+            var secondsemenddate = parentdiv.find('.secondsemenddate').text();
+            $('#academicyearid').val(parentdiv.attr('data-id'));
+            $('#academicyear').text(academicyear);
+            $('#aystartdate').val(academicyearstartdate);
+            $('#ayenddate').val(academicyearenddate);
+            $('#firstsemstartdate').val(firstsemstartdate);
+            $('#firstsemenddate').val(firstsemenddate);
+            $('#secondsemstartdate').val(secondsemstartdate);
+            $('#secondsemenddate').val(secondsemenddate);
+            $('#AYModal').modal('show');
+        });
         $('#acadyear-btn').click(function() {
             var dataurl = $('#acadyearform').attr('data-url');
             var data1 = $('#acadyearform').serialize();

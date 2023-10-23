@@ -6,9 +6,30 @@
                 Refresh
             </button>
         </div>
-        <label class="ms-2 small form-label text-secondary fw-bold">Find Academic Year</label>
+        <div class="ms-2 small form-label text-secondary fw-bold">
+            <label>Find Academic Year</label>
+        </div>
+        <label class="form-label">Start Date</label>
+        <div class="input-group date datepicker mb-2">
 
-        <input type="text" class="form-control border-success" id="inputSearch">
+            <input type="text" class="form-control" id="startdate" name="startdate" placeholder="mm/dd/yyyy" />
+            <span class="input-group-append">
+                <span class="input-group-text bg-light d-block">
+                    <i class="bi bi-calendar-event-fill"></i>
+                </span>
+            </span>
+        </div>
+
+        <label class="form-label">End Date</label>
+        <div class="input-group date datepicker">
+
+            <input type="text" class="form-control" id="enddate" name="enddate" placeholder="mm/dd/yyyy" />
+            <span class="input-group-append">
+                <span class="input-group-text bg-light d-block">
+                    <i class="bi bi-calendar-event-fill"></i>
+                </span>
+            </span>
+        </div>
         <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
             Please enter a search term to find academic year.
         </span>
@@ -71,20 +92,130 @@
         <table class="approvaltable">
             <thead>
                 <tr>
-                    <th class="p-2 text-center bg-light name">ACADEMIC YEAR START DATE</th>
-                    <th class="p-2 text-center bg-light name">ACADEMIC YEAR END DATE</th>
-                    <th class="p-2 text-center bg-light name">FIRST SEMESTER START DATE</th>
-                    <th class="p-2 text-center bg-light email">FIRST SEMESTER END DATE</th>
-                    <th class="p-2 text-center bg-light department">SECOND SEMESTER START DATE</th>
-                    <th class="p-2 text-center bg-light datecreated">SECOND SEMESTER END DATE</th>
-                    <th class="p-2 text-center bg-light actions">ACTIONS</th>
+                    <th class="p-2 text-center bg-light acadname">ACADEMIC YEAR</th>
+                    <th class="p-2 text-center bg-light acadname">ACADEMIC YEAR START DATE</th>
+                    <th class="p-2 text-center bg-light acadname">ACADEMIC YEAR END DATE</th>
+                    <th class="p-2 text-center bg-light acadname">FIRST SEMESTER START DATE</th>
+                    <th class="p-2 text-center bg-light acadname">FIRST SEMESTER END DATE</th>
+                    <th class="p-2 text-center bg-light acadname">SECOND SEMESTER START DATE</th>
+                    <th class="p-2 text-center bg-light acadname">SECOND SEMESTER END DATE</th>
+                    <th class="p-2 text-center bg-light editactions">ACTIONS</th>
                     <th class="p-2 text-center bg-light cancel"></th>
                 </tr>
             </thead>
 
             <tbody>
+                @foreach($academicyears as $academicyear)
+                <tr data-id="{{ $academicyear->id }}">
 
+                    <td class="p-2 acadname academicyear">{{ date('Y', strtotime($academicyear->acadstartdate)) . ' - ' . date('Y', strtotime($academicyear->acadenddate)) }}</td>
+                    <td class="p-2 acadname academicyearstartdate">{{ date('m/d/Y', strtotime($academicyear->acadstartdate)) }}</td>
+                    <td class="p-2 acadname academicyearenddate">{{ date('m/d/Y', strtotime($academicyear->acadenddate)) }}</td>
+                    <td class="p-2 acadname firstsemstartdate">{{ date('m/d/Y', strtotime($academicyear->firstsem_startdate)) }}</td>
+                    <td class="p-2 acadname firstsemenddate">{{ date('m/d/Y', strtotime($academicyear->firstsem_enddate)) }}</td>
+                    <td class="p-2 acadname secondsemstartdate">{{ date('m/d/Y', strtotime($academicyear->secondsem_startdate)) }}</td>
+                    <td class="p-2 acadname secondsemenddate">{{ date('m/d/Y', strtotime($academicyear->secondsem_enddate)) }}</td>
+                    <td class="p-2 editactions">
+
+                        <div class="text-center">
+
+                            <button type="button" class="btn btn-sm btn-outline-primary border editdates">
+                                <b class="small">Edit Dates</b>
+                            </button>
+
+                        </div>
+                    </td>
+                    <td class="p-2 cancel text-center">
+                        <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="decline('{{ $academicyear->id }}')">
+                            <i class="bi bi-trash fs-5"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="AYModal" tabindex="-1" aria-labelledby="AYModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AYModalLabel">Edit Dates for <span id="academicyear"></span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <input type="hidden" id="academicyearid" name="academicyearid">
+
+                    <label class="form-label">Academic Year Start Date</label>
+                    <div class="input-group date datepicker mb-2">
+
+                        <input type="text" class="form-control" id="aystartdate" name="aystartdate" placeholder="mm/dd/yyyy" />
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </span>
+                        </span>
+                    </div>
+
+                    <label class="form-label">Academic Year End Date</label>
+                    <div class="input-group date datepicker mb-2">
+
+                        <input type="text" class="form-control" id="ayenddate" name="ayenddate" placeholder="mm/dd/yyyy" />
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </span>
+                        </span>
+                    </div>
+
+                    <label class="form-label">First Semester Start Date</label>
+                    <div class="input-group date datepicker mb-2">
+
+                        <input type="text" class="form-control" id="firstsemstartdate" name="firstsemstartdate" placeholder="mm/dd/yyyy" />
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </span>
+                        </span>
+                    </div>
+
+                    <label class="form-label">First Semester End Date</label>
+                    <div class="input-group date datepicker mb-2">
+
+                        <input type="text" class="form-control" id="firstsemenddate" name="firstsemenddate" placeholder="mm/dd/yyyy" />
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </span>
+                        </span>
+                    </div>
+                    <label class="form-label">Second Semester Start Date</label>
+                    <div class="input-group date datepicker mb-2">
+
+                        <input type="text" class="form-control" id="secondsemstartdate" name="secondsemstartdate" placeholder="mm/dd/yyyy" />
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </span>
+                        </span>
+                    </div>
+                    <label class="form-label">Second Semester End Date</label>
+                    <div class="input-group date datepicker mb-2">
+
+                        <input type="text" class="form-control" id="secondsemenddate" name="secondsemenddate" placeholder="mm/dd/yyyy" />
+                        <span class="input-group-append">
+                            <span class="input-group-text bg-light d-block">
+                                <i class="bi bi-calendar-event-fill"></i>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEdit">Close</button>
+                    <button type="submit" class="btn btn-primary" id="confirmEdit">Confirm</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
