@@ -45,13 +45,29 @@
             var secondsemstartdate = parentdiv.find('.secondsemstartdate').text();
             var secondsemenddate = parentdiv.find('.secondsemenddate').text();
             $('#academicyearid').val(parentdiv.attr('data-id'));
-            $('#academicyear').text(academicyear);
+            $('#AYModalLabel').text("Edit Dates");
+            $('#academicyear').text("( " + academicyear + " )");
+
             $('#aystartdate').val(academicyearstartdate);
             $('#ayenddate').val(academicyearenddate);
             $('#firstsemstartdate').val(firstsemstartdate);
             $('#firstsemenddate').val(firstsemenddate);
             $('#secondsemstartdate').val(secondsemstartdate);
             $('#secondsemenddate').val(secondsemenddate);
+            $('#editOrAdd').val("edit");
+            $('#AYModal').modal('show');
+        });
+        $('#addDates').click(function() {
+            $('#academicyearid').val("");
+            $('#academicyear').text("");
+            $('#AYModalLabel').text("Add Academic Year");
+            $('#aystartdate').val("");
+            $('#ayenddate').val("");
+            $('#firstsemstartdate').val("");
+            $('#firstsemenddate').val("");
+            $('#secondsemstartdate').val("");
+            $('#secondsemenddate').val("");
+            $('#editOrAdd').val("add");
             $('#AYModal').modal('show');
         });
         $('#acadyear-btn').click(function() {

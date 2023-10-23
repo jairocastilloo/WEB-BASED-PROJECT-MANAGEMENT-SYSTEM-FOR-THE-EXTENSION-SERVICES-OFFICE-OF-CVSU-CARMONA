@@ -9,21 +9,10 @@
         <div class="ms-2 small form-label text-secondary fw-bold">
             <label>Find Academic Year</label>
         </div>
-        <label class="form-label">Start Date</label>
+        <label class="form-label">Search Date</label>
         <div class="input-group date datepicker mb-2">
 
-            <input type="text" class="form-control" id="startdate" name="startdate" placeholder="mm/dd/yyyy" />
-            <span class="input-group-append">
-                <span class="input-group-text bg-light d-block">
-                    <i class="bi bi-calendar-event-fill"></i>
-                </span>
-            </span>
-        </div>
-
-        <label class="form-label">End Date</label>
-        <div class="input-group date datepicker">
-
-            <input type="text" class="form-control" id="enddate" name="enddate" placeholder="mm/dd/yyyy" />
+            <input type="text" class="form-control" id="searchDate" name="searchDate" placeholder="mm/dd/yyyy" />
             <span class="input-group-append">
                 <span class="input-group-text bg-light d-block">
                     <i class="bi bi-calendar-event-fill"></i>
@@ -52,6 +41,13 @@
         </div>
 
     </div>
+
+
+    <div class="text-center">
+        <button type="button" class="btn btn-success" id="addDates">Set a New Dates</button>
+    </div>
+    <input type="hidden" id="editOrAdd">
+
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item">
@@ -139,7 +135,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="AYModalLabel">Edit Dates for <span id="academicyear"></span></h5>
+                    <h5 class="modal-title" id="AYModalLabel">Edit Dates for </h5><span class="fs-4" id="academicyear"></span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -213,9 +209,156 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEdit">Close</button>
-                    <button type="submit" class="btn btn-primary" id="confirmEdit">Confirm</button>
+                    <button type="submit" class="btn btn-primary" id="confirmEditDates">Confirm</button>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('livewire:load', function() {
+
+            const confirmEditDates = document.getElementById('confirmEditDates');
+            const searchDate = document.getElementById('searchDate');
+            const btnSearch = document.getElementById('btnSearch');
+            confirmEditDates.addEventListener('click', function() {
+                var editOrAdd = document.getElementById('editOrAdd').value;
+                switch (editOrAdd) {
+                    case 'edit':
+                        var ayStartDateInput = document.getElementById('aystartdate');
+                        var ayStartDateValue = ayStartDateInput.value;
+                        var ayStartDate = formatDate(ayStartDateValue);
+
+                        var ayEndDateInput = document.getElementById('ayenddate');
+                        var ayEndDateValue = ayEndDateInput.value;
+                        var ayEndDate = formatDate(ayEndDateValue);
+
+                        var firstSemStartDateInput = document.getElementById('firstsemstartdate');
+                        var firstSemStartDateValue = firstSemStartDateInput.value;
+                        var firstSemStartDate = formatDate(firstSemStartDateValue);
+
+                        var firstSemEndDateInput = document.getElementById('firstsemenddate');
+                        var firstSemEndDateValue = firstSemEndDateInput.value;
+                        var firstSemEndDate = formatDate(firstSemEndDateValue);
+
+                        var secondSemStartDateInput = document.getElementById('secondsemstartdate');
+                        var secondSemStartDateValue = secondSemStartDateInput.value;
+                        var secondSemStartDate = formatDate(secondSemStartDateValue);
+
+                        var secondSemEndDateInput = document.getElementById('secondsemenddate');
+                        var secondSemEndDateValue = secondSemEndDateInput.value;
+                        var secondSemEndDate = formatDate(secondSemEndDateValue);
+
+                        var data = {
+                            'id': document.getElementById('academicyearid').value,
+                            'aystartdate': ayStartDate,
+                            'ayenddate': ayEndDate,
+                            'firstsemstartdate': firstSemStartDate,
+                            'firstsemenddate': firstSemEndDate,
+                            'secondsemstartdate': secondSemStartDate,
+                            'secondsemenddate': secondSemEndDate,
+                        };
+                        Livewire.emit('updateData', data, editOrAdd);
+                        break;
+                    case 'add':
+                        var ayStartDateInput = document.getElementById('aystartdate');
+                        var ayStartDateValue = ayStartDateInput.value;
+                        var ayStartDate = formatDate(ayStartDateValue);
+
+                        var ayEndDateInput = document.getElementById('ayenddate');
+                        var ayEndDateValue = ayEndDateInput.value;
+                        var ayEndDate = formatDate(ayEndDateValue);
+
+                        var firstSemStartDateInput = document.getElementById('firstsemstartdate');
+                        var firstSemStartDateValue = firstSemStartDateInput.value;
+                        var firstSemStartDate = formatDate(firstSemStartDateValue);
+
+                        var firstSemEndDateInput = document.getElementById('firstsemenddate');
+                        var firstSemEndDateValue = firstSemEndDateInput.value;
+                        var firstSemEndDate = formatDate(firstSemEndDateValue);
+
+                        var secondSemStartDateInput = document.getElementById('secondsemstartdate');
+                        var secondSemStartDateValue = secondSemStartDateInput.value;
+                        var secondSemStartDate = formatDate(secondSemStartDateValue);
+
+                        var secondSemEndDateInput = document.getElementById('secondsemenddate');
+                        var secondSemEndDateValue = secondSemEndDateInput.value;
+                        var secondSemEndDate = formatDate(secondSemEndDateValue);
+
+                        var data = {
+                            'aystartdate': ayStartDate,
+                            'ayenddate': ayEndDate,
+                            'firstsemstartdate': firstSemStartDate,
+                            'firstsemenddate': firstSemEndDate,
+                            'secondsemstartdate': secondSemStartDate,
+                            'secondsemenddate': secondSemEndDate,
+                        };
+                        Livewire.emit('updateData', data, editOrAdd);
+                        break;
+
+                }
+            });
+
+            function formatDate(inputDate) {
+                var parsedDate = new Date(inputDate);
+                var formattedDate = parsedDate.toISOString().slice(0, 10);
+                return formattedDate;
+            }
+            Livewire.on('afterUpdateData', function() {
+                document.getElementById('closeEdit').click();
+            });
+
+            btnSearch.addEventListener('click', function() {
+                const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
+
+                var searchDateData = formatDate(searchDate.value);
+
+                if (searchDateData != "") {
+                    searchDate.classList.remove('is-invalid');
+                    switch (searchCriteria) {
+                        case 'academic-year':
+                            Livewire.emit('findAccount', searchDateData, 1)
+                            break;
+                        case 'first-semester':
+                            Livewire.emit('findAccount', searchDateData, 2)
+                            break;
+                        case 'second-semester':
+                            Livewire.emit('findAccount', searchDateData, 3)
+                            break;
+                        default:
+                            // Handle the default case or show an error message
+                            break;
+                    }
+                } else {
+                    searchDate.classList.add('is-invalid');
+                }
+            });
+            searchDate.addEventListener('keydown', function(event) {
+                // Check if the pressed key is "Enter" (key code 13)
+                if (event.keyCode === 13) {
+                    const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
+                    var searchDateData = formatDate(searchDate.value);
+
+                    if (searchDateData != "") {
+                        searchDate.classList.remove('is-invalid');
+                        switch (searchCriteria) {
+                            case 'academic-year':
+                                Livewire.emit('findAccount', searchDateData, 1)
+                                break;
+                            case 'first-semester':
+                                Livewire.emit('findAccount', searchDateData, 2)
+                                break;
+                            case 'second-semester':
+                                Livewire.emit('findAccount', searchDateData, 3)
+                                break;
+                            default:
+                                // Handle the default case or show an error message
+                                break;
+                        }
+                    } else {
+                        searchDate.classList.add('is-invalid');
+                    }
+                }
+            });
+        });
+    </script>
 </div>
