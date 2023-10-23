@@ -58,10 +58,8 @@
                     EXTENSION SERVICES RECORDS FOR THE FIRST SEMESTER, AY 2022-2023
                 </h5>
             </div>
-            <div class="row ps-3 pe-3 pt-2 pb-2">
-
-                <div class="col m-2 me-0">
-
+            <div class="row m-1">
+                <div class="col-lg-4">
                     <div class="card card-design">
                         <div class="row">
                             <div class="col-md-4">
@@ -79,11 +77,9 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <div class="col m-2 ms-0 me-0">
-
+                <div class="col-lg-4">
                     <div class="card card-design">
                         <div class="row">
                             <div class="col-md-4">
@@ -101,10 +97,9 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <div class="col m-2 ms-0">
 
+                <div class="col-lg-4">
                     <div class="card card-design">
                         <div class="row">
                             <div class="col-md-4">
@@ -122,7 +117,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 

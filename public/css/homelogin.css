@@ -4,18 +4,8 @@
     box-shadow: border-box;
 }
 
-
-
 .my-records-images{
   padding: 10px;
-}
-
-
-
-.miss-viss{
-  border: 2px solid black;
-  padding: 100px;
-
 }
 
 .hover-text1::after {
@@ -35,12 +25,6 @@
 .hover-text2:hover::after {
   display: inline;
 }
-
-.rowjonel{
-    border-radius: 30px;
-    box-shadow: 5px 10px 20px rgba(0,0,0,0.15);
-}
-
 
 .borderRadius-1 {
   border-top-left-radius: 30px;
