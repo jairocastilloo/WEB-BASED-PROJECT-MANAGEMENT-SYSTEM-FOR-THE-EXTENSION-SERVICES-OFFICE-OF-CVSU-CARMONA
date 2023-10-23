@@ -513,20 +513,44 @@
 
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
-                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+
+                                <div class="input-group date" id="datepicker">
+                                    <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
+                                    <span class="input-group-append">
+                                        <span class="input-group-text bg-light d-block">
+                                            <i class="bi bi-calendar-event-fill"></i>
+                                        </span>
+                                    </span>
+                                </div>
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
+
+                                <!--<input type="date" class="form-control" id="projectstartdate" name="projectstartdate">-->
+
+
                             </div>
 
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
-                                <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+
+                                <div class="input-group date" id="datepicker">
+                                    <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
+                                    <span class="input-group-append">
+                                        <span class="input-group-text bg-light d-block">
+                                            <i class="bi bi-calendar-event-fill"></i>
+                                        </span>
+                                    </span>
+                                </div>
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
+
+                                <!--<input type="date" class="form-control" id="projectenddate" name="projectenddate">-->
+
+
                             </div>
                         </form>
 
@@ -620,6 +644,8 @@
 
         var currentstep = 0;
         var setcount = 0;
+
+        $('#datepicker').datepicker();
 
 
         $('.projectobjective-error strong').hide();

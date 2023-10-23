@@ -9,7 +9,9 @@ body {
   color: #333333; /* Set a default text color */
   
 }
-
+.input-group-append {
+  cursor: pointer;
+}
 .login-register-bg{
   background-image: url("/images/cvsu-carmona-japanese.jpg");
   background-size: 100% 100%;
@@ -768,4 +770,14 @@ div {
 .pagination .page-item.active .page-link:hover {
   background-color: rgb(214, 239, 255); /* Change to your preferred active page color */
   color: black;
+}
+.imbentobg {
+  background-color:#1b651b;
+}
+.walangbg {
+  background-color: transparent;
+}
+.logincurrenthover {
+  position: relative;
+  border-bottom: 3px solid rgb(255, 255, 255);
 }

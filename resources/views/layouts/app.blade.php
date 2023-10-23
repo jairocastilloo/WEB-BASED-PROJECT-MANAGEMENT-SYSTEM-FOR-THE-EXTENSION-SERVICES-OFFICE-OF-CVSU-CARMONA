@@ -30,7 +30,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato&family=Pacifico&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
     <link href="{{ asset('css/selectize.css') }}" rel="stylesheet">
@@ -41,9 +42,9 @@
 
 </head>
 
-<body @if(in_array(Route::currentRouteName(), ['login', 'register'])) class="login-register-bg" @endif>
+<body @if(in_array(Route::currentRouteName(), ['login', 'register' ])) class="login-register-bg" @endif>
     <div id="app">
-        <nav class="navbar navbar-expand-md shadow p-1" style="background-color:#1b651b;">
+        <nav class="navbar navbar-expand-md p-1 @if(in_array(Route::currentRouteName(), ['login', 'register' ])) walangbg @else shadow imbentobg @endif">
 
             <div class="container">
 
@@ -68,13 +69,13 @@
                         @guest
                         @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="nav-link navtohover text-white mx-2" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link @if(in_array(Route::currentRouteName(), ['login'])) logincurrenthover @endif text-white mx-2" href="{{ route('login') }}">{{ __('Login') }}</a>
                         </li>
                         @endif
 
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link navtohover text-white mx-2" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            <a class="nav-link @if(in_array(Route::currentRouteName(), ['register'])) logincurrenthover @endif text-white mx-2" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
                         @endif
                         @else
@@ -121,9 +122,10 @@
 
                                     <li>
                                         <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">
-                                            Set an Academic Year
+                                            Set School Time Periods
                                         </a>
                                     </li>
+
                                     @endif
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="event.preventDefault();
@@ -153,6 +155,7 @@
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
             <!--<script src="{{ asset('vendor/livewire/livewire.js') }}"></script>-->
             <!--<script src="{{ asset('js/main.js') }}"></script>-->
 
