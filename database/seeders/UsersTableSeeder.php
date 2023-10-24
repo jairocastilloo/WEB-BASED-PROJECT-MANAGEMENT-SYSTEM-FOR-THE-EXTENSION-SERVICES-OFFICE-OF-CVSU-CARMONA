@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Objective;
+use App\Models\ProgramLeader;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -25,24 +26,31 @@ class UsersTableSeeder extends Seeder
         $faker = FakerFactory::create();
 
         for ($i = 1; $i <= 500; $i++) {
-            $x =  $faker->numberBetween(1, 3);
+            $excludeList = [
+                10, 12, 18, 21, 24, 33, 35, 38, 57, 63, 64, 79, 80, 92, 93, 96, 99, 115, 116, 120, 125, 126, 132, 136, 141
+            ];
 
-            $yOptions = [645, 647, 649, 1, 2, 3, 4, 7, 9];
+            if (!in_array($i, $excludeList)) {
+                $x =  $faker->numberBetween(1, 3);
 
-            for ($xx = 1; $xx <= $x; $xx++) {
-                // Choose a random element from the array
-                $key = array_rand($yOptions);
-                $y = $yOptions[$key];
+                $yOptions = [645, 647, 649, 1, 2, 3, 4, 7, 9];
 
-                // Remove the chosen element from the array
-                array_splice($yOptions, $key, 1);
+                for ($xx = 1; $xx <= $x; $xx++) {
+                    // Choose a random element from the array
+                    $key = array_rand($yOptions);
+                    $y = $yOptions[$key];
 
-                ProjectLeader::create([
-                    'project_id' => $i,
-                    'user_id' => $y,
-                ]);
+                    // Remove the chosen element from the array
+                    array_splice($yOptions, $key, 1);
+
+                    ProgramLeader::create([
+                        'project_id' => $i,
+                        'user_id' => $y,
+                    ]);
+                }
             }
         }
+
         /*
         for ($i = 1; $i <= 500; $i++) {
             $x =  $faker->numberBetween(1, 4);

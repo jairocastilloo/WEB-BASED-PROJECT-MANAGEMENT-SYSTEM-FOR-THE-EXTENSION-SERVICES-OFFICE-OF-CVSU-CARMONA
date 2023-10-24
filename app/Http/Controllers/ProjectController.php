@@ -185,7 +185,7 @@ class ProjectController extends Controller
             $currentyear = $indexproject->fiscalyear;
 
             $projectleaders = $indexproject->projectleaders;
-            $projectleaders = $indexproject->projectleaders;
+            $programleaders = $indexproject->programleaders;
 
             $currentproject = Project::where('department', $department)
                 ->whereNotIn('id', [$projectid])
@@ -215,6 +215,7 @@ class ProjectController extends Controller
                 'currentproject' => $currentproject,
                 'indexproject' => $indexproject,
                 'projectleaders' => $projectleaders,
+                'programleaders' => $programleaders,
                 'calendaryears' => $calendaryears,
                 'inCurrentYear' => $inCurrentYear,
                 'currentyear' => $currentyear,

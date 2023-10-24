@@ -68,18 +68,23 @@
                     <div class="flex-container">
                         <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                         <div class="underline-space inline-div ps-2">
-                            @php
-                            use App\Models\User;
-                            $programleader = User::where('id', $indexproject['programleader'])->first(['name', 'middle_name', 'last_name']);
-                            $projectleader = User::where('id', $indexproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
-                            @endphp
+                            @if ($programleaders)
+                            @foreach ($programleaders as $programleader)
 
-                            @if ($programleader)
-                            {{ $programleader->name }}
+                            {{ ucfirst($programleader->name) }}
+
                             @if ($programleader->middle_name)
                             {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
                             @endif
-                            {{ ucfirst($programleader->last_name) }}
+
+
+                            @if (!$loop->last)
+                            {{ ucfirst($programleader->last_name) . ', ' }}
+                            @else
+                            {{ ucfirst($programleader->last_name)}}
+                            @endif
+
+                            @endforeach
                             @endif
                         </div>
 

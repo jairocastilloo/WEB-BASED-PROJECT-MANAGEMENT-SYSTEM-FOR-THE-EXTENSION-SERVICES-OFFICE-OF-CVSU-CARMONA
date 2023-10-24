@@ -11,7 +11,7 @@ class ProgramLeader extends Model
     protected $table = 'program_leaders'; // Specify the table name if it's different from the default naming convention
     protected $fillable = [
         'project_id',
-        'leader_id',
+        'user_id',
     ];
     // Define relationships
 
