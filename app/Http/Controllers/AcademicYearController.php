@@ -15,6 +15,10 @@ class AcademicYearController extends Controller
     {
         return view('academicyear.set');
     }
+    public function setFiscalYear()
+    {
+        return view('academicyear.setFiscal');
+    }
 
     public function saveacadyear(Request $request)
     {

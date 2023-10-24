@@ -663,7 +663,12 @@
                 $('.programleaderdiv').css('display', 'inline-block');
             }
         });
-
+        $('#projectstartdate').datepicker().on('change', function(e) {
+            $('#projectstartdate').datepicker('hide');
+        });
+        $('#projectenddate').datepicker().on('change', function(e) {
+            $('#projectenddate').datepicker('hide');
+        });
         $('#searchInputProject').on('keyup', function(e) {
 
             var inputData = $('#searchInputProject').val().toLowerCase();

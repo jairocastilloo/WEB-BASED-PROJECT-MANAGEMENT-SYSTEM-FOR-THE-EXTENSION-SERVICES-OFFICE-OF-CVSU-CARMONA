@@ -290,7 +290,13 @@ body {
       display: flex; /* Add flexbox */
       flex-wrap: nowrap; /* Prevent wrapping */
     }
-    
+    .fiscalcontainer {
+      overflow-x: scroll;
+      display: flex; /* Add flexbox */
+      flex-wrap: nowrap; /* Prevent wrapping */
+      min-width: 950px;
+      max-width: 950px;
+    }
 
     .approvaltable, .approvaltable th, .approvaltable td {
       border: 1px solid #bababa;
@@ -331,6 +337,10 @@ body {
     .approvaltable .editrole{
       min-width: 112px;
       max-width: 112px;
+    }
+    .approvaltable .acadname{
+      min-width: 241px;
+      max-width: 241px;
     }
     .btn-gold {
       color: black;
