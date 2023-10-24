@@ -53,7 +53,7 @@
 
         </div>
         <div class="basiccont shadow">
-            <div class="text-center shadow text-white p-2 pt-3" style="background-color:#8BC34A;">
+            <div class="text-center shadow text-white p-2 pt-3 imbentobg">
                 <h5 class="fw-bold">
                     EXTENSION SERVICES RECORDS FOR THE FIRST SEMESTER, AY 2022-2023
                 </h5>
