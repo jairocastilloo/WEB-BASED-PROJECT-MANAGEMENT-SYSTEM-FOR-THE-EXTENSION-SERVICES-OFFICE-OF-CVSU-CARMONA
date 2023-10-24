@@ -20,7 +20,7 @@
             </span>
         </div>
         <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
-            Please enter a search term to find academic year.
+            Please enter a date to find its academic year.
         </span>
         <div class="mt-2 text-center">
             <div class="form-check form-check-inline">

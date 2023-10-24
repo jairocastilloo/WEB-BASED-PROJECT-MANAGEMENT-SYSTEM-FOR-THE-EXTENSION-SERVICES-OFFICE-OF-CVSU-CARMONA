@@ -4,16 +4,16 @@
 @section('content')
 <div class="admincontainer p-0 border border-start border-end border-bottom border-top-0">
     <div class="mainnav border-bottom mb-3 shadow-sm px-2">
-        <div class="border-2 border-start border-end p-2 divhover" id="redirectFiscal">
+        <div class="border-2 border-start border-end p-2 currentdiv">
             Fiscal Years
         </div>
-        <div class="border-2 border-end p-2 currentdiv">
+        <div class="border-2 border-end p-2 divhover" id="redirectAcademic">
             Academic Years
         </div>
     </div>
     @if(Auth::user()->role === 'Admin')
 
-    @livewire('set-academic-year')
+    @livewire('set-fiscal-year')
 
 
     @else
@@ -33,15 +33,16 @@
             $('#account .dropdown-menu').toggleClass('shows');
         });
 
-        $('#redirectFiscal').click(function() {
-            window.location.href = "{{ route('fiscalYear.set') }}"
+        $('#redirectAcademic').click(function() {
+            window.location.href = "{{ route('acadyear.set') }}"
         });
         $('.datepicker').datepicker();
-
         $('#searchDate').datepicker().on('change', function(e) {
             $('#searchDate').datepicker('hide');
         });
+        /*
         $(document).on('click', '.editdates', function() {
+            
             var parentdiv = $(this).closest('tr');
 
             var academicyear = parentdiv.find('.academicyear').text();
@@ -63,6 +64,7 @@
             $('#secondsemenddate').val(secondsemenddate);
             $('#editOrAdd').val("edit");
             $('#AYModal').modal('show');
+            
         });
         $('#addDates').click(function() {
             $('#academicyearid').val("");
@@ -77,7 +79,7 @@
             $('#editOrAdd').val("add");
             $('#AYModal').modal('show');
         });
-
+*/
     });
 </script>
 @endsection

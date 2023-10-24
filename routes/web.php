@@ -147,7 +147,7 @@ Route::prefix('/output')->group(function () {
 
 
 Route::get('/setacademicyear', [AcademicYearController::class, 'setacadyear'])->name('acadyear.set');
-Route::post('/saveacademicyear', [AcademicYearController::class, 'saveacadyear'])->name('acadyear.save');
+Route::get('/setfiscalyear', [AcademicYearController::class, 'setFiscalYear'])->name('fiscalYear.set');
 
 Route::prefix('/submission')->group(function () {
     Route::get('/{submissionid}/{submissionname}', [SubmissionController::class, 'displaysubmission'])->name('submission.display');

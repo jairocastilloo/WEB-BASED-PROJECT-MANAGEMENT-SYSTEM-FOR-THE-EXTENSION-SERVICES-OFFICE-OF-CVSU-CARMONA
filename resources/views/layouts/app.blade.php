@@ -121,7 +121,7 @@
                                     </li>
 
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('acadyear.set', ['department' => Auth::user()->department]) }}">
+                                        <a class="dropdown-item" href="{{ route('fiscalYear.set') }}">
                                             Set School Time Periods
                                         </a>
                                     </li>
