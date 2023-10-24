@@ -19,6 +19,10 @@ body {
   background-repeat: no-repeat;
 }
 
+.navbar{
+  font-family: 'Lato', sans-serif;
+}
+
 .bg-carmona{
   display: flex;
   position: absolute;
@@ -28,24 +32,23 @@ body {
   object-fit: cover;
 }
 
-.card-design{
+.card-image{
   display: flex;
-  columns: flex ;
-  height: 150px;
+  height: 100%;
   overflow: hidden;
   text-overflow: ellipsis ;
+  justify-content: center;
+  align-items: center;
+ 
 }
 
-
-
-
-
-
-
-
-
-
-
+.card-size {
+  max-width: 450px;
+  height: 150px;
+  margin: 0 auto;
+  max-height: 100%;
+  overflow-y: auto;
+}
 
 .optional{
   opacity: 0.5;

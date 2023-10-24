@@ -53,20 +53,20 @@
 
         </div>
         <div class="basiccont shadow">
-            <div class="text-center shadow text-white p-2 pt-3" style="background-color:#8BC34A;">
+            <div class="text-center shadow text-white p-2 pt-3 imbentobg">
                 <h5 class="fw-bold">
                     EXTENSION SERVICES RECORDS FOR THE FIRST SEMESTER, AY 2022-2023
                 </h5>
             </div>
             <div class="row m-1">
                 <div class="col-lg-4">
-                    <div class="card card-design">
+                    <div class="card card-size">
                         <div class="row">
-                            <div class="col-md-4">
-                                <img src="{{ asset('images/default-user-image.png')}}" alt="Image" class="img-fluid p-1">
+                            <div class="col-md-4 card-image">
+                                <img src="{{ asset('images/default-user-image.png')}}" alt="Image" class="img-fluid p-1" width="100">
                             </div>
                             <div class="col-md-8">
-                                <div class="card-body">
+                                <div class="card-body d-flex flex-column align-items-center justify-content-center">
                                     <h6 class="card-title fw-bold">
                                         {{ ucfirst(Auth::user()->name) . ' ' . (Auth::user()->middle_name ? ucfirst(Auth::user()->middle_name[0]) . '.' : '') . ' ' . ucfirst(Auth::user()->last_name) }}
                                     </h6>
@@ -80,13 +80,13 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card card-design">
+                    <div class="card card-size">
                         <div class="row">
-                            <div class="col-md-4">
-                                <img src="{{ asset('images/total-hours-image.png')}}" alt="Image" class="img-fluid p-1">
+                            <div class="col-md-4 card-image">
+                                <img src="{{ asset('images/total-hours-image.png')}}" alt="Image" class="img-fluid p-1" width="100">
                             </div>
                             <div class="col-md-8">
-                                <div class="card-body">
+                                <div class="card-body d-flex flex-column align-items-center justify-content-center">
                                     <h6 class="card-title fw-bold">
                                         Total Hours Rendered:
                                     </h6>
@@ -100,13 +100,13 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <div class="card card-design">
+                    <div class="card card-size">
                         <div class="row">
-                            <div class="col-md-4">
-                                <img src="{{ asset('images/total-activity-image.png')}}" alt="Image" class="img-fluid p-1">
+                            <div class="col-md-4 card-image">
+                                <img src="{{ asset('images/total-activity-image.png')}}" alt="Image" class="img-fluid p-1" width="100">
                             </div>
                             <div class="col-md-8">
-                                <div class="card-body">
+                                <div class="card-body d-flex flex-column align-items-center justify-content-center">
                                     <h6 class="card-title fw-bold">
                                         Total Number of Activities Conducted:
                                     </h6>
