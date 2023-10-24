@@ -59,10 +59,12 @@
 
                     <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
                     <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
+                    @if ($indexproject['programtitle'] != "")
                     <div class="flex-container">
                         <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                         <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
                     </div>
+                    @endif
                     <div class="flex-container">
                         <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                         <div class="underline-space inline-div ps-2">
@@ -83,6 +85,7 @@
 
 
                     </div>
+
                     <div class="flex-container">
                         <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                         <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
@@ -90,14 +93,23 @@
                     <div class="flex-container">
                         <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                         <div class="underline-space inline-div ps-2">
+                            @foreach ($projectleaders as $projectleader)
 
-                            @if ($projectleader)
-                            {{ $projectleader->name }}
+                            {{ ucfirst($projectleader->name) }}
+
                             @if ($projectleader->middle_name)
                             {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
                             @endif
-                            {{ ucfirst($projectleader->last_name) }}
+
+
+                            @if (!$loop->last)
+                            {{ ucfirst($projectleader->last_name) . ', ' }}
+                            @else
+                            {{ ucfirst($projectleader->last_name)}}
                             @endif
+
+                            @endforeach
+
                         </div>
                     </div>
                     <div class="flex-container">

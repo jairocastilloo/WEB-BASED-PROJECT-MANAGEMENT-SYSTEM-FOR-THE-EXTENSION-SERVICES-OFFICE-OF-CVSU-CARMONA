@@ -37,7 +37,7 @@ class EditAccount extends Component
         $this->x = 0;
         $this->currentPage = 1;
     }
-    public function delete($id)
+    public function decline($id)
     {
         $user = User::findorFail($id);
         $user->delete();

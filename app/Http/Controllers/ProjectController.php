@@ -42,7 +42,7 @@ class ProjectController extends Controller
             $currentyear = $currentDate->year;
 
             $currentproject = Project::where('department', $department)
-                ->where('calendaryear', $currentyear)
+                ->where('fiscalyear', 4)
                 ->where('projectenddate', '>=', $currentDate)
                 ->get();
 
@@ -182,10 +182,14 @@ class ProjectController extends Controller
     {
         if (Auth::user()->role === 'Admin') {
             $indexproject = Project::findOrFail($projectid);
-            $currentyear = $indexproject->calendaryear;
+            $currentyear = $indexproject->fiscalyear;
+
+            $projectleaders = $indexproject->projectleaders;
+            $projectleaders = $indexproject->projectleaders;
+
             $currentproject = Project::where('department', $department)
                 ->whereNotIn('id', [$projectid])
-                ->where('calendaryear', $currentyear)
+                ->where('fiscalyear', $currentyear)
                 ->get();
             $currentDate = Carbon::now();
             $otheryear = $currentDate->year;
@@ -210,6 +214,7 @@ class ProjectController extends Controller
                 'members' => $users,
                 'currentproject' => $currentproject,
                 'indexproject' => $indexproject,
+                'projectleaders' => $projectleaders,
                 'calendaryears' => $calendaryears,
                 'inCurrentYear' => $inCurrentYear,
                 'currentyear' => $currentyear,

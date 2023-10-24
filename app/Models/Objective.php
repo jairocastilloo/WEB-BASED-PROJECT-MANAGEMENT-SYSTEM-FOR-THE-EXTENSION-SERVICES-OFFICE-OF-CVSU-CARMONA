@@ -11,6 +11,7 @@ class Objective extends Model
     protected $fillable = [
         'name',
         'project_id',
+        'objectiveset_id'
     ];
 
     public function project()
