@@ -10,7 +10,7 @@
             <label>Find Academic Year</label>
         </div>
         <label class="form-label">Search Date</label>
-        <div class="input-group date datepicker mb-2">
+        <div class="input-group date datepicker mb-2" id="searchDatePicker">
 
             <input type="text" class="form-control" id="searchDate" name="searchDate" placeholder="mm/dd/yyyy" />
             <span class="input-group-append">
@@ -144,7 +144,7 @@
                     <input type="hidden" id="academicyearid" name="academicyearid">
 
                     <label class="form-label">Academic Year Start Date</label>
-                    <div class="input-group date datepicker mb-2">
+                    <div class="input-group date datepicker mb-2" id="ayStartDatePicker">
 
                         <input type="text" class="form-control" id="aystartdate" name="aystartdate" placeholder="mm/dd/yyyy" />
                         <span class="input-group-append">
@@ -155,7 +155,7 @@
                     </div>
 
                     <label class="form-label">Academic Year End Date</label>
-                    <div class="input-group date datepicker mb-2">
+                    <div class="input-group date datepicker mb-2" id="ayEndDatePicker">
 
                         <input type="text" class="form-control" id="ayenddate" name="ayenddate" placeholder="mm/dd/yyyy" />
                         <span class="input-group-append">
@@ -166,7 +166,7 @@
                     </div>
 
                     <label class="form-label">First Semester Start Date</label>
-                    <div class="input-group date datepicker mb-2">
+                    <div class="input-group date datepicker mb-2" id="firstSemStartDatePicker">
 
                         <input type="text" class="form-control" id="firstsemstartdate" name="firstsemstartdate" placeholder="mm/dd/yyyy" />
                         <span class="input-group-append">
@@ -177,7 +177,7 @@
                     </div>
 
                     <label class="form-label">First Semester End Date</label>
-                    <div class="input-group date datepicker mb-2">
+                    <div class="input-group date datepicker mb-2" id="firstSemEndDatePicker">
 
                         <input type="text" class="form-control" id="firstsemenddate" name="firstsemenddate" placeholder="mm/dd/yyyy" />
                         <span class="input-group-append">
@@ -187,7 +187,7 @@
                         </span>
                     </div>
                     <label class="form-label">Second Semester Start Date</label>
-                    <div class="input-group date datepicker mb-2">
+                    <div class="input-group date datepicker mb-2" id="secondSemStartDatePicker">
 
                         <input type="text" class="form-control" id="secondsemstartdate" name="secondsemstartdate" placeholder="mm/dd/yyyy" />
                         <span class="input-group-append">
@@ -197,7 +197,7 @@
                         </span>
                     </div>
                     <label class="form-label">Second Semester End Date</label>
-                    <div class="input-group date datepicker mb-2">
+                    <div class="input-group date datepicker mb-2" id="secondSemEndDatePicker">
 
                         <input type="text" class="form-control" id="secondsemenddate" name="secondsemenddate" placeholder="mm/dd/yyyy" />
                         <span class="input-group-append">

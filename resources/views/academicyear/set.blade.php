@@ -36,10 +36,46 @@
         $('#redirectFiscal').click(function() {
             window.location.href = "{{ route('fiscalYear.set') }}"
         });
-        $('.datepicker').datepicker();
+        $('#searchDatePicker').datepicker();
 
-        $('#searchDate').datepicker().on('change', function(e) {
-            $('#searchDate').datepicker('hide');
+        $('#searchDatePicker').datepicker().on('change', function(e) {
+            $('#searchDatePicker').datepicker('hide');
+        });
+
+        $('#ayStartDatePicker').datepicker();
+
+        $('#ayStartDatePicker').datepicker().on('change', function(e) {
+            $('#ayStartDatePicker').datepicker('hide');
+        });
+
+        $('#ayEndDatePicker').datepicker();
+
+        $('#ayEndDatePicker').datepicker().on('change', function(e) {
+            $('#ayEndDatePicker').datepicker('hide');
+        });
+
+        $('#firstSemStartDatePicker').datepicker();
+
+        $('#firstSemStartDatePicker').datepicker().on('change', function(e) {
+            $('#firstSemStartDatePicker').datepicker('hide');
+        });
+
+        $('#firstSemEndDatePicker').datepicker();
+
+        $('#firstSemEndDatePicker').datepicker().on('change', function(e) {
+            $('#firstSemEndDatePicker').datepicker('hide');
+        });
+
+        $('#secondSemStartDatePicker').datepicker();
+
+        $('#secondSemStartDatePicker').datepicker().on('change', function(e) {
+            $('#secondSemStartDatePicker').datepicker('hide');
+        });
+
+        $('#secondSemEndDatePicker').datepicker();
+
+        $('#secondSemEndDatePicker').datepicker().on('change', function(e) {
+            $('#secondSemEndDatePicker').datepicker('hide');
         });
         $(document).on('click', '.editdates', function() {
             var parentdiv = $(this).closest('tr');
