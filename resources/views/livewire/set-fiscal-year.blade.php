@@ -11,7 +11,7 @@
                 <label>Find Fiscal Year</label>
             </div>
             <label class="form-label">Search Date</label>
-            <div class="input-group date datepicker mb-2">
+            <div class="input-group date datepicker mb-2" id="searchDatePicker">
 
                 <input type="text" class="form-control" id="searchDate" name="searchDate" placeholder="mm/dd/yyyy" />
                 <span class="input-group-append">
@@ -72,7 +72,7 @@
         </nav>
 
 
-        <div class="container-fluid approvalcontainer">
+        <div class="container-fluid fiscalcontainer border">
             <table class="approvaltable">
                 <thead>
                     <tr>
@@ -86,7 +86,7 @@
 
                 <tbody>
                     @foreach($fiscalyears as $fiscalyear)
-                    <tr data-id="{{ $academicyear->id }}">
+                    <tr data-id="{{ $fiscalyear->id }}">
 
                         <td class="p-2 acadname fiscalyear">{{ date('Y', strtotime($fiscalyear->startdate)) . ' - ' . date('Y', strtotime($fiscalyear->enddate)) }}</td>
                         <td class="p-2 acadname fiscalyearstartdate">{{ date('m/d/Y', strtotime($fiscalyear->startdate)) }}</td>
@@ -112,22 +112,22 @@
                 </tbody>
             </table>
         </div>
-        <div class="modal fade" id="AYModal" tabindex="-1" aria-labelledby="AYModalLabel" aria-hidden="true">
+        <div class="modal fade" id="fiscalModal" tabindex="-1" aria-labelledby="fiscalModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="AYModalLabel">Edit Dates for </h5><span class="fs-4" id="academicyear"></span>
+                        <h5 class="modal-title" id="fiscalModalLabel">Edit Dates for </h5><span class="fs-4" id="fiscalyear"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
 
 
-                        <input type="hidden" id="academicyearid" name="academicyearid">
+                        <input type="hidden" id="fiscalyearid" name="fiscalyearid">
 
-                        <label class="form-label">Academic Year Start Date</label>
-                        <div class="input-group date datepicker mb-2">
+                        <label class="form-label">Fiscal Year Start Date</label>
+                        <div class="input-group date datepicker mb-2" id="fiscalStartDatePicker">
 
-                            <input type="text" class="form-control" id="aystartdate" name="aystartdate" placeholder="mm/dd/yyyy" />
+                            <input type="text" class="form-control" id="fiscalstartdate" name="fiscalstartdate" placeholder="mm/dd/yyyy" />
                             <span class="input-group-append">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="bi bi-calendar-event-fill"></i>
@@ -135,10 +135,10 @@
                             </span>
                         </div>
 
-                        <label class="form-label">Academic Year End Date</label>
-                        <div class="input-group date datepicker mb-2">
+                        <label class="form-label">Fiscal Year End Date</label>
+                        <div class="input-group date datepicker mb-2" id="fiscalEndDatePicker">
 
-                            <input type="text" class="form-control" id="ayenddate" name="ayenddate" placeholder="mm/dd/yyyy" />
+                            <input type="text" class="form-control" id="fiscalenddate" name="fiscalenddate" placeholder="mm/dd/yyyy" />
                             <span class="input-group-append">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="bi bi-calendar-event-fill"></i>
@@ -146,47 +146,6 @@
                             </span>
                         </div>
 
-                        <label class="form-label">First Semester Start Date</label>
-                        <div class="input-group date datepicker mb-2">
-
-                            <input type="text" class="form-control" id="firstsemstartdate" name="firstsemstartdate" placeholder="mm/dd/yyyy" />
-                            <span class="input-group-append">
-                                <span class="input-group-text bg-light d-block">
-                                    <i class="bi bi-calendar-event-fill"></i>
-                                </span>
-                            </span>
-                        </div>
-
-                        <label class="form-label">First Semester End Date</label>
-                        <div class="input-group date datepicker mb-2">
-
-                            <input type="text" class="form-control" id="firstsemenddate" name="firstsemenddate" placeholder="mm/dd/yyyy" />
-                            <span class="input-group-append">
-                                <span class="input-group-text bg-light d-block">
-                                    <i class="bi bi-calendar-event-fill"></i>
-                                </span>
-                            </span>
-                        </div>
-                        <label class="form-label">Second Semester Start Date</label>
-                        <div class="input-group date datepicker mb-2">
-
-                            <input type="text" class="form-control" id="secondsemstartdate" name="secondsemstartdate" placeholder="mm/dd/yyyy" />
-                            <span class="input-group-append">
-                                <span class="input-group-text bg-light d-block">
-                                    <i class="bi bi-calendar-event-fill"></i>
-                                </span>
-                            </span>
-                        </div>
-                        <label class="form-label">Second Semester End Date</label>
-                        <div class="input-group date datepicker mb-2">
-
-                            <input type="text" class="form-control" id="secondsemenddate" name="secondsemenddate" placeholder="mm/dd/yyyy" />
-                            <span class="input-group-append">
-                                <span class="input-group-text bg-light d-block">
-                                    <i class="bi bi-calendar-event-fill"></i>
-                                </span>
-                            </span>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEdit">Close</button>
@@ -205,73 +164,38 @@
                     var editOrAdd = document.getElementById('editOrAdd').value;
                     switch (editOrAdd) {
                         case 'edit':
-                            var ayStartDateInput = document.getElementById('aystartdate');
-                            var ayStartDateValue = ayStartDateInput.value;
-                            var ayStartDate = formatDate(ayStartDateValue);
+                            var fiscalStartDateInput = document.getElementById('fiscalstartdate');
+                            var fiscalStartDateValue = fiscalStartDateInput.value;
+                            var fiscalStartDate = formatDate(fiscalStartDateValue);
 
-                            var ayEndDateInput = document.getElementById('ayenddate');
-                            var ayEndDateValue = ayEndDateInput.value;
-                            var ayEndDate = formatDate(ayEndDateValue);
+                            var fiscalEndDateInput = document.getElementById('fiscalenddate');
+                            var fiscalEndDateValue = fiscalEndDateInput.value;
+                            var fiscalEndDate = formatDate(fiscalEndDateValue);
 
-                            var firstSemStartDateInput = document.getElementById('firstsemstartdate');
-                            var firstSemStartDateValue = firstSemStartDateInput.value;
-                            var firstSemStartDate = formatDate(firstSemStartDateValue);
 
-                            var firstSemEndDateInput = document.getElementById('firstsemenddate');
-                            var firstSemEndDateValue = firstSemEndDateInput.value;
-                            var firstSemEndDate = formatDate(firstSemEndDateValue);
-
-                            var secondSemStartDateInput = document.getElementById('secondsemstartdate');
-                            var secondSemStartDateValue = secondSemStartDateInput.value;
-                            var secondSemStartDate = formatDate(secondSemStartDateValue);
-
-                            var secondSemEndDateInput = document.getElementById('secondsemenddate');
-                            var secondSemEndDateValue = secondSemEndDateInput.value;
-                            var secondSemEndDate = formatDate(secondSemEndDateValue);
 
                             var data = {
-                                'id': document.getElementById('academicyearid').value,
-                                'aystartdate': ayStartDate,
-                                'ayenddate': ayEndDate,
-                                'firstsemstartdate': firstSemStartDate,
-                                'firstsemenddate': firstSemEndDate,
-                                'secondsemstartdate': secondSemStartDate,
-                                'secondsemenddate': secondSemEndDate,
+                                'id': document.getElementById('fiscalyearid').value,
+                                'fiscalstartdate': fiscalStartDate,
+                                'fiscalenddate': fiscalEndDate,
+
                             };
                             Livewire.emit('updateData', data, editOrAdd);
                             break;
                         case 'add':
-                            var ayStartDateInput = document.getElementById('aystartdate');
-                            var ayStartDateValue = ayStartDateInput.value;
-                            var ayStartDate = formatDate(ayStartDateValue);
+                            var fiscalStartDateInput = document.getElementById('fiscalstartdate');
+                            var fiscalStartDateValue = fiscalStartDateInput.value;
+                            var fiscalStartDate = formatDate(fiscalStartDateValue);
 
-                            var ayEndDateInput = document.getElementById('ayenddate');
-                            var ayEndDateValue = ayEndDateInput.value;
-                            var ayEndDate = formatDate(ayEndDateValue);
+                            var fiscalEndDateInput = document.getElementById('fiscalenddate');
+                            var fiscalEndDateValue = fiscalEndDateInput.value;
+                            var fiscalEndDate = formatDate(fiscalEndDateValue);
 
-                            var firstSemStartDateInput = document.getElementById('firstsemstartdate');
-                            var firstSemStartDateValue = firstSemStartDateInput.value;
-                            var firstSemStartDate = formatDate(firstSemStartDateValue);
-
-                            var firstSemEndDateInput = document.getElementById('firstsemenddate');
-                            var firstSemEndDateValue = firstSemEndDateInput.value;
-                            var firstSemEndDate = formatDate(firstSemEndDateValue);
-
-                            var secondSemStartDateInput = document.getElementById('secondsemstartdate');
-                            var secondSemStartDateValue = secondSemStartDateInput.value;
-                            var secondSemStartDate = formatDate(secondSemStartDateValue);
-
-                            var secondSemEndDateInput = document.getElementById('secondsemenddate');
-                            var secondSemEndDateValue = secondSemEndDateInput.value;
-                            var secondSemEndDate = formatDate(secondSemEndDateValue);
 
                             var data = {
-                                'aystartdate': ayStartDate,
-                                'ayenddate': ayEndDate,
-                                'firstsemstartdate': firstSemStartDate,
-                                'firstsemenddate': firstSemEndDate,
-                                'secondsemstartdate': secondSemStartDate,
-                                'secondsemenddate': secondSemEndDate,
+                                'fiscalstartdate': fiscalStartDate,
+                                'fiscalenddate': fiscalEndDate,
+
                             };
                             Livewire.emit('updateData', data, editOrAdd);
                             break;
@@ -289,26 +213,15 @@
                 });
 
                 btnSearch.addEventListener('click', function() {
-                    const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
+
 
                     var searchDateData = formatDate(searchDate.value);
 
                     if (searchDateData != "") {
                         searchDate.classList.remove('is-invalid');
-                        switch (searchCriteria) {
-                            case 'academic-year':
-                                Livewire.emit('findAccount', searchDateData, 1)
-                                break;
-                            case 'first-semester':
-                                Livewire.emit('findAccount', searchDateData, 2)
-                                break;
-                            case 'second-semester':
-                                Livewire.emit('findAccount', searchDateData, 3)
-                                break;
-                            default:
-                                // Handle the default case or show an error message
-                                break;
-                        }
+
+                        Livewire.emit('findAccount', searchDateData, 1)
+
                     } else {
                         searchDate.classList.add('is-invalid');
                     }
@@ -316,25 +229,14 @@
                 searchDate.addEventListener('keydown', function(event) {
                     // Check if the pressed key is "Enter" (key code 13)
                     if (event.keyCode === 13) {
-                        const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
+
                         var searchDateData = formatDate(searchDate.value);
 
                         if (searchDateData != "") {
                             searchDate.classList.remove('is-invalid');
-                            switch (searchCriteria) {
-                                case 'academic-year':
-                                    Livewire.emit('findAccount', searchDateData, 1)
-                                    break;
-                                case 'first-semester':
-                                    Livewire.emit('findAccount', searchDateData, 2)
-                                    break;
-                                case 'second-semester':
-                                    Livewire.emit('findAccount', searchDateData, 3)
-                                    break;
-                                default:
-                                    // Handle the default case or show an error message
-                                    break;
-                            }
+
+                            Livewire.emit('findAccount', searchDateData, 1)
+
                         } else {
                             searchDate.classList.add('is-invalid');
                         }

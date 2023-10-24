@@ -36,50 +36,52 @@
         $('#redirectAcademic').click(function() {
             window.location.href = "{{ route('acadyear.set') }}"
         });
-        $('.datepicker').datepicker();
-        $('#searchDate').datepicker().on('change', function(e) {
-            $('#searchDate').datepicker('hide');
+        $('#searchDatePicker').datepicker();
+
+        $('#searchDatePicker').datepicker().on('change', function(e) {
+            $('#searchDatePicker').datepicker('hide');
         });
-        /*
+        $('#fiscalStartDatePicker').datepicker();
+
+        $('#fiscalStartDatePicker').datepicker().on('change', function(e) {
+            $('#fiscalStartDatePicker').datepicker('hide');
+        });
+        $('#fiscalEndDatePicker').datepicker();
+
+        $('#fiscalEndDatePicker').datepicker().on('change', function(e) {
+            $('#fiscalEndDatePicker').datepicker('hide');
+        });
+
+
         $(document).on('click', '.editdates', function() {
-            
+
             var parentdiv = $(this).closest('tr');
 
-            var academicyear = parentdiv.find('.academicyear').text();
-            var academicyearstartdate = parentdiv.find('.academicyearstartdate').text();
-            var academicyearenddate = parentdiv.find('.academicyearenddate').text();
-            var firstsemstartdate = parentdiv.find('.firstsemstartdate').text();
-            var firstsemenddate = parentdiv.find('.firstsemenddate').text();
-            var secondsemstartdate = parentdiv.find('.secondsemstartdate').text();
-            var secondsemenddate = parentdiv.find('.secondsemenddate').text();
-            $('#academicyearid').val(parentdiv.attr('data-id'));
-            $('#AYModalLabel').text("Edit Dates");
-            $('#academicyear').text("( " + academicyear + " )");
+            var fiscalyear = parentdiv.find('.fiscalyear').text();
+            var fiscalyearstartdate = parentdiv.find('.fiscalyearstartdate').text();
+            var fiscalyearenddate = parentdiv.find('.fiscalyearenddate').text();
 
-            $('#aystartdate').val(academicyearstartdate);
-            $('#ayenddate').val(academicyearenddate);
-            $('#firstsemstartdate').val(firstsemstartdate);
-            $('#firstsemenddate').val(firstsemenddate);
-            $('#secondsemstartdate').val(secondsemstartdate);
-            $('#secondsemenddate').val(secondsemenddate);
+            $('#fiscalyearid').val(parentdiv.attr('data-id'));
+            $('#fiscalModalLabel').text("Edit Dates");
+            $('#fiscalyear').text("( " + fiscalyear + " )");
+
+            $('#fiscalstartdate').val(fiscalyearstartdate);
+            $('#fiscalenddate').val(fiscalyearenddate);
+
             $('#editOrAdd').val("edit");
-            $('#AYModal').modal('show');
-            
+            $('#fiscalModal').modal('show');
+
         });
         $('#addDates').click(function() {
-            $('#academicyearid').val("");
-            $('#academicyear').text("");
-            $('#AYModalLabel').text("Add Academic Year");
-            $('#aystartdate').val("");
-            $('#ayenddate').val("");
-            $('#firstsemstartdate').val("");
-            $('#firstsemenddate').val("");
-            $('#secondsemstartdate').val("");
-            $('#secondsemenddate').val("");
+            $('#fiscalyearid').val("");
+            $('#fiscalyear').text("");
+            $('#fiscalModalLabel').text("Add Fiscal Year");
+            $('#fiscalstartdate').val("");
+            $('#fiscalenddate').val("");
             $('#editOrAdd').val("add");
-            $('#AYModal').modal('show');
+            $('#fiscalModal').modal('show');
         });
-*/
+
     });
 </script>
 @endsection

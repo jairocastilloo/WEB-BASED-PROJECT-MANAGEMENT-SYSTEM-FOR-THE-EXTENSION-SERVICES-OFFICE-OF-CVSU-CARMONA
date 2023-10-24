@@ -291,7 +291,13 @@ body {
       display: flex; /* Add flexbox */
       flex-wrap: nowrap; /* Prevent wrapping */
     }
-    
+    .fiscalcontainer {
+      overflow-x: scroll;
+      display: flex; /* Add flexbox */
+      flex-wrap: nowrap; /* Prevent wrapping */
+      min-width: 950px;
+      max-width: 950px;
+    }
 
     .approvaltable, .approvaltable th, .approvaltable td {
       border: 1px solid #bababa;
