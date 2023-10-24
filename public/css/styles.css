@@ -28,24 +28,23 @@ body {
   object-fit: cover;
 }
 
-.card-design{
+.card-image{
   display: flex;
-  columns: flex ;
-  height: 150px;
+  height: 100%;
   overflow: hidden;
   text-overflow: ellipsis ;
+  justify-content: center;
+  align-items: center;
+ 
 }
 
-
-
-
-
-
-
-
-
-
-
+.card-size {
+  max-width: 450px; /* Set the maximum width of the card */
+  height: 150px; /* Set the fixed height of the card */
+  margin: 0 auto; /* Center the card horizontally on the page */
+  max-height: 100%; /* Set the maximum height to allow scrolling */
+  overflow-y: auto; /* Enable vertical scrollbar if content overflows */
+}
 
 .optional{
   opacity: 0.5;
