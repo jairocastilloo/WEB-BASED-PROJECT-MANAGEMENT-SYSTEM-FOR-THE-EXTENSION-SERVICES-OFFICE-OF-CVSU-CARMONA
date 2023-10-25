@@ -10,25 +10,40 @@
                 <h5 class="fw-bold" style="color:darkgreen;">Select Department for Project Viewing</h5>
             </div>
             <div class="container-fluid dep-choose-container">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Management</a>
-                        </div>
-                        
-                        <div class="col-lg-6">
-                            <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Industrial and Information Technology</a>
-                        </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a href="{{ route('project.show', ['department' => 'Department of Management']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Management</a>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <a href="{{ route('project.show', ['department' => 'Department of Teacher Education']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Teacher Education</a>
-                        </div>
-                        <div class="col-lg-6">
-                            <a href="{{ route('project.show', ['department' => 'Department of Arts and Science']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Arts and Science</a>
-                        </div>
+
+                    <div class="col-lg-6">
+                        <a href="{{ route('project.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Industrial and Information Technology</a>
                     </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a href="{{ route('project.show', ['department' => 'Department of Teacher Education']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Teacher Education</a>
+                    </div>
+                    <div class="col-lg-6">
+                        <a href="{{ route('project.show', ['department' => 'Department of Arts and Science']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> Department of Arts and Science</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+
+                    </div>
+                    <div class="col-lg-6">
+                        <a href="{{ route('project.show', ['department' => 'All']) }}" class="dep-choose-button"><i class="bi bi-kanban fs-2"></i> All</a>
+                    </div>
+                    <div class="col-lg-3">
+
+                    </div>
+                </div>
+
             </div>
+
+
+
         </div>
         @else
         <div class="container p-4 text-center">

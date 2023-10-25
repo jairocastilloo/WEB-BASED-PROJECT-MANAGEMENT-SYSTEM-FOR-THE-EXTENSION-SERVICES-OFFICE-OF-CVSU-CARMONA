@@ -33,17 +33,17 @@
                     @endif
                     <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 19px;" aria-label="Select an calendar year">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select an fiscal year">
 
-                            @foreach ($calendaryears as $calendaryear)
-                            <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+                            @foreach ($fiscalyears as $fiscalyear)
+                            <option value="{{ $fiscalyear->id }}" {{ $fiscalyear->id == $currentfiscalyear->id ? 'selected' : '' }}>
+                                &nbsp;&nbsp;&nbsp;{{ date('F Y', strtotime($fiscalyear->startdate)) . ' - ' . date('F Y', strtotime($fiscalyear->enddate)) }}
                             </option>
                             @endforeach
 
                         </select>
                         <label for="year-select" style="color:darkgreen;">
-                            <h5><strong>Calendar Year:</strong></h5>
+                            <h6><strong>Fiscal Year:</strong></h6>
                         </label>
                     </div>
                     @if (Auth::user()->role === 'Admin')
@@ -65,10 +65,11 @@
                         <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
                     </div>
                     @endif
+                    @if ($programleaders->isNotEmpty())
                     <div class="flex-container">
                         <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                         <div class="underline-space inline-div ps-2">
-                            @if ($programleaders)
+
                             @foreach ($programleaders as $programleader)
 
                             {{ ucfirst($programleader->name) }}
@@ -85,11 +86,12 @@
                             @endif
 
                             @endforeach
-                            @endif
+
                         </div>
 
 
                     </div>
+                    @endif
 
                     <div class="flex-container">
                         <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
@@ -285,167 +287,7 @@
 
 
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
-                @if($currentproject->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Projects
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle">
-                        <div class="text-center p-4">
-                            <h4><em>No Other Projects Yet.</em></h4>
-                        </div>
-                    </div>
-                </div>
-                @else
-                @php
-                $sortedProjects= $currentproject->sortBy('projectstartdate');
-                $InProgressProjects = $sortedProjects->filter(function ($proj) {
-                return $proj->projectstatus === 'Incomplete' &&
-                $proj->projectstartdate <= now() && $proj->projectenddate >= now();
-                    })->map(function ($project) {
-                    $project->projectremark = 'In Progress';
-                    return $project;
-                    });
-
-                    $CompletedProjects = $sortedProjects->filter(function ($proj) {
-                    return $proj->projectstatus === 'Completed';
-                    });
-
-                    $UpcomingProjects = $sortedProjects->filter(function ($proj) {
-                    $projStartDate = \Carbon\Carbon::parse($proj->projectstartdate);
-                    $weekBeforeAct = $projStartDate->copy()->subDays(7);
-
-                    return $proj->projectstatus === 'Incomplete' &&
-                    $weekBeforeAct <= now() && $projStartDate> now();
-                        })->map(function ($project) {
-                        $project->projectremark = 'Upcoming';
-                        return $project;
-                        });
-
-                        $ScheduledProjects = $sortedProjects->filter(function ($proj) {
-                        return $proj->projectstatus === 'Incomplete' && $proj->projectstartdate > now();
-                        })->map(function ($project) {
-                        $project->projectremark = 'Scheduled';
-                        return $project;
-                        });
-
-                        $IncompleteProjects = $sortedProjects->filter(function ($proj) {
-                        return $proj->projectstatus === 'Incomplete' && $proj->projectenddate < now(); })->map(function ($project) {
-                            $project->projectremark = 'Incomplete';
-                            return $project;
-                            });
-                            @endphp
-                            <div class="mb-2">
-                                <input type="text" class="form-control border-success" id="searchInputProject" placeholder="Search projects...">
-
-                            </div>
-                            <div class="basiccont word-wrap shadow">
-                                <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">
-                                        <i class="bi bi-kanban"></i>
-                                        Projects
-                                        <span class="bggold text-dark badge countProjects">
-                                            {{ count($sortedProjects) }}
-                                        </span>
-                                        <i class="bi bi-caret-down-fill text-end"></i>
-
-                                    </h6>
-                                </div>
-                                <div class="toggle-container subtoggle allprojectdiv">
-                                    @foreach ($InProgressProjects as $project)
-                                    <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                        @php
-                                        $startDate = date('M d', strtotime($project['projectstartdate']));
-                                        $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                        @endphp
-
-                                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                        <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                    </div>
-                                    @endforeach
-                                    @foreach ($UpcomingProjects as $project)
-                                    <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                        @php
-                                        $startDate = date('M d', strtotime($project['projectstartdate']));
-                                        $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                        @endphp
-
-                                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                        <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                    </div>
-                                    @endforeach
-                                    @foreach ($ScheduledProjects as $project)
-                                    <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                        @php
-                                        $startDate = date('M d', strtotime($project['projectstartdate']));
-                                        $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                        @endphp
-
-                                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                        <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                    </div>
-                                    @endforeach
-                                    @foreach ($CompletedProjects as $project)
-                                    <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                        @php
-                                        $startDate = date('M d', strtotime($project['projectstartdate']));
-                                        $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                        @endphp
-
-                                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                        <h6 class="small text-success fw-bold text-end">{{ $project['projectstatus'] }}</h6>
-
-                                    </div>
-                                    @endforeach
-                                    @foreach ($IncompleteProjects as $project)
-                                    <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                        <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                        @php
-                                        $startDate = date('M d', strtotime($project['projectstartdate']));
-                                        $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                        @endphp
-
-                                        <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                        <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            @endif
-
-
+                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'status' => 'In Progress', 'x' => 0])
             </div>
 
         </div>
@@ -453,7 +295,7 @@
 </div>
 
 <!-- New Project -->
-
+@if (Auth::user()->role === 'Admin')
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -478,7 +320,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
-                            <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
+                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $fiscalyear->id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -627,7 +469,7 @@
         </div>
     </div>
 </div>
-
+@endif
 <div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">

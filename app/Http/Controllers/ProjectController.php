@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Events\NewNotificationEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MyMail;
+use App\Models\FiscalYear;
 
 class ProjectController extends Controller
 {
@@ -180,89 +181,54 @@ class ProjectController extends Controller
 
     public function displayproject($projectid, $department)
     {
-        if (Auth::user()->role === 'Admin') {
-            $indexproject = Project::findOrFail($projectid);
-            $currentyear = $indexproject->fiscalyear;
 
-            $projectleaders = $indexproject->projectleaders;
-            $programleaders = $indexproject->programleaders;
+        $indexproject = Project::findOrFail($projectid);
+        $currentfiscalyearid = $indexproject->fiscalyear;
+        $currentfiscalyear = FiscalYear::findorFail($currentfiscalyearid);
+        $projectleaders = $indexproject->projectleaders;
+        $programleaders = $indexproject->programleaders;
 
-            $currentproject = Project::where('department', $department)
-                ->whereNotIn('id', [$projectid])
-                ->where('fiscalyear', $currentyear)
-                ->get();
-            $currentDate = Carbon::now();
-            $otheryear = $currentDate->year;
-
-            if ($otheryear == $currentyear) {
-                $inCurrentYear = true;
-            } else {
-                $inCurrentYear = false;
-            }
-
-            $calendaryears = CalendarYear::pluck('year');
-
-            $users = User::where('department', $department)
-                ->where('role', '!=', 'FOR APPROVAL')
-                ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-
-
-            $objectives = $indexproject->objectives;
-            $activities = $indexproject->activities;
-
-            return view('project.select', [
-                'members' => $users,
-                'currentproject' => $currentproject,
-                'indexproject' => $indexproject,
-                'projectleaders' => $projectleaders,
-                'programleaders' => $programleaders,
-                'calendaryears' => $calendaryears,
-                'inCurrentYear' => $inCurrentYear,
-                'currentyear' => $currentyear,
-                'objectives' => $objectives,
-                'activities' => $activities,
-                'department' => $department
-            ]);
+        $currentDate = Carbon::now();
+        if ($currentDate >= $currentfiscalyear->startdate && $currentDate <= $currentfiscalyear->enddate) {
+            $inCurrentYear = true;
         } else {
-            $indexproject = Project::findOrFail($projectid);
-            $currentyear = $indexproject->calendaryear;
-            $user = User::findorFail(Auth::user()->id);
-            $currentproject = $user->projects()
-                ->where('department', $department)
-                ->whereNotIn('projects.id', [$projectid])
-                ->where('calendaryear', $currentyear)
-                ->get();
-            $currentDate = Carbon::now();
-            $otheryear = $currentDate->year;
-
-            if ($otheryear == $currentyear) {
-                $inCurrentYear = true;
-            } else {
-                $inCurrentYear = false;
-            }
-
-            $calendaryears = CalendarYear::pluck('year');
-
-            $users = User::where('department', $department)
-                ->where('role', '!=', 'FOR APPROVAL')
-                ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-
-
-            $objectives = $indexproject->objectives;
-            $activities = $indexproject->activities;
-
-            return view('project.select', [
-                'members' => $users,
-                'currentproject' => $currentproject,
-                'indexproject' => $indexproject,
-                'calendaryears' => $calendaryears,
-                'inCurrentYear' => $inCurrentYear,
-                'currentyear' => $currentyear,
-                'objectives' => $objectives,
-                'activities' => $activities,
-                'department' => $department
-            ]);
+            $inCurrentYear = false;
         }
+
+        $fiscalyears = FiscalYear::all();
+        if (Auth::user()->role == 'Admin') {
+            if ($department != 'All') {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
+
+        $objectives = $indexproject->objectives;
+        $activities = $indexproject->activities;
+
+        return view('project.select', [
+            'members' => $users,
+            'indexproject' => $indexproject,
+            'projectleaders' => $projectleaders,
+            'programleaders' => $programleaders,
+            'fiscalyears' => $fiscalyears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentfiscalyear' => $currentfiscalyear,
+            'objectives' => $objectives,
+            'activities' => $activities,
+            'department' => $department
+        ]);
     }
 
     public function displayActivityCalendar($projectid, $department)
