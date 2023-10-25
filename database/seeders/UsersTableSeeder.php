@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Objective;
 use App\Models\ProgramLeader;
+use App\Models\ProjectUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,11 +25,34 @@ class UsersTableSeeder extends Seeder
         //
 
         $faker = FakerFactory::create();
+        /*
         for ($i = 1; $i <= 500; $i++) {
 
             $x = $faker->numberBetween(1, 3);
 
-            $yOptions = [645, 647, 649, 1, 2, 3, 4, 7, 9];
+            $yOptions = [645, 647, 649];
+
+            for ($xx = 1; $xx <= $x; $xx++) {
+                // Choose a random element from the array
+                $key = array_rand($yOptions);
+                $y = $yOptions[$key];
+
+                // Remove the chosen element from the array
+                array_splice($yOptions, $key, 1);
+
+                ProjectUser::create([
+                    'project_id' => $i,
+                    'user_id' => $y,
+                ]);
+            }
+        }
+*/
+        /*
+        for ($i = 1; $i <= 500; $i++) {
+
+            $x = $faker->numberBetween(1, 3);
+
+            $yOptions = [1, 2, 3, 4, 7, 9];
 
             for ($xx = 1; $xx <= $x; $xx++) {
                 // Choose a random element from the array
@@ -42,8 +66,13 @@ class UsersTableSeeder extends Seeder
                     'project_id' => $i,
                     'user_id' => $y,
                 ]);
+                ProjectUser::create([
+                    'project_id' => $i,
+                    'user_id' => $y,
+                ]);
             }
         }
+        */
         /*
         $excludeIds = [
             10, 12, 18, 21, 24, 33, 35, 38, 57, 63, 64, 79, 80, 92, 93, 96, 99, 115, 116, 120, 125, 126, 132, 136, 141, 154, 156, 164, 166, 169, 178, 181, 187, 192, 195, 200, 207, 208, 209, 216, 223, 225, 233, 243, 244, 245, 248, 258, 260, 266, 267, 270, 276, 283, 284, 287, 288, 296, 297, 308, 309, 314, 319, 322, 335, 341, 345, 358, 365, 367, 379, 381, 382, 392, 393, 394, 397, 402, 406, 418, 421, 434, 435, 436, 438, 442, 447, 448, 449, 454, 455, 456, 458, 459, 460, 467, 470, 473, 476, 479, 480, 482, 491, 496
@@ -53,7 +82,7 @@ class UsersTableSeeder extends Seeder
             if (!in_array($i, $excludeIds)) {
                 $x = $faker->numberBetween(1, 3);
 
-                $yOptions = [645, 647, 649, 1, 2, 3, 4, 7, 9];
+                $yOptions = [1, 2, 3, 4, 7, 9];
 
                 for ($xx = 1; $xx <= $x; $xx++) {
                     // Choose a random element from the array
@@ -70,8 +99,8 @@ class UsersTableSeeder extends Seeder
                 }
             }
         }
-
 */
+
         /*
         for ($i = 1; $i <= 500; $i++) {
             $x =  $faker->numberBetween(1, 4);

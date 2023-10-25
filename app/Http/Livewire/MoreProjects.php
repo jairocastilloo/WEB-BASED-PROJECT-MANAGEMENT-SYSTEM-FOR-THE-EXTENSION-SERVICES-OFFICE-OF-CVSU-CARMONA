@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,14 +15,14 @@ class MoreProjects extends Component
     public $department;
     public $projectid;
     public $fiscalyearid;
-    public $status;
     public $x;
     public $inputSearch = '';
     public $currentPage = 1; // The current page number
     public $perPage = 5;
     public $currentdate;
+    protected $listeners = ['findProject' => 'handleFindProject'];
 
-    public function mount($department, $projectid, $fiscalyearid, $status, $x)
+    public function mount($department, $projectid, $fiscalyearid, $x)
 
     {
         $this->currentdate = now();
@@ -29,15 +30,34 @@ class MoreProjects extends Component
         $this->department = str_replace('+', ' ', $department);
         $this->projectid = $projectid;
         $this->fiscalyearid = $fiscalyearid;
-        $this->status = $status;
     }
     public function show($x)
     {
         $this->x = $x;
     }
+    public function refreshData()
+    {
+        $this->x = 1;
+        $this->currentPage = 1;
+    }
+    public function changePage($page)
+    {
+        $this->currentPage = $page;
+    }
+    public function findProject($inputSearch, $x)
+    {
+        $this->inputSearch = $inputSearch;
+        $this->x = $x;
+        $this->currentPage = 1;
+    }
+    public function handleFindProject($inputSearch, $x)
+    {
+        $this->findProject($inputSearch, $x);
+    }
     public function render()
     {
-        if (Auth::user()->role === "Admin") {
+        $user = User::findOrFail(Auth::user()->id);
+        if ($user->role === "Admin") {
 
             switch ($this->x) {
 
@@ -46,21 +66,75 @@ class MoreProjects extends Component
                     $lastpage = null;
                     break;
                 case 1:
-                    switch ($this->status) {
-                        case "In Progress":
-                            $moreprojects = Project::query()
-                                ->where('department', $this->department)
-                                ->whereNotIn('id', [$this->projectid])
-                                ->where('fiscalyear', $this->fiscalyearid)
-                                ->where('projectstatus', 'Incomplete')
-                                ->where('projectstartdate', '<=', $this->currentdate)
-                                ->where('projectenddate', '>=', $this->currentdate)
-                                ->orderBy('created_at', 'desc')
-                                ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                            $lastpage = $moreprojects->lastPage();
-                            break;
-                    }
+                    $moreprojects = Project::query()
+                        ->where('department', $this->department)
+                        ->whereNotIn('id', [$this->projectid])
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '<=', $this->currentdate)
+                        ->where('projectenddate', '>=', $this->currentdate)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                    $lastpage = $moreprojects->lastPage();
+
+                    break;
+                case 2:
+
+                    $moreprojects = Project::query()
+                        ->where('department', $this->department)
+                        ->whereNotIn('id', [$this->projectid])
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '<=', $this->currentdate)
+                        ->where('projectenddate', '>=', $this->currentdate)
+                        ->where('projecttitle', 'like', "%$this->inputSearch%")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                    $lastpage = $moreprojects->lastPage();
+
+                    break;
+            }
+        } else {
+            switch ($this->x) {
+
+                case 0:
+                    $moreprojects = null;
+                    $lastpage = null;
+                    break;
+                case 1:
+
+                    $moreprojects = $user->projects()
+                        ->where('department', $this->department)
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '<=', $this->currentdate)
+                        ->where('projectenddate', '>=', $this->currentdate)
+                        ->whereNotIn('id', [$this->projectid])
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                    $lastpage = $moreprojects->lastPage();
+
+
+                    break;
+                case 2:
+
+                    $moreprojects = $user->projects()
+                        ->where('department', $this->department)
+                        ->whereNotIn('id', [$this->projectid])
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '<=', $this->currentdate)
+                        ->where('projectenddate', '>=', $this->currentdate)
+                        ->where('projecttitle', 'like', "%$this->inputSearch%")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                    $lastpage = $moreprojects->lastPage();
+
                     break;
             }
         }

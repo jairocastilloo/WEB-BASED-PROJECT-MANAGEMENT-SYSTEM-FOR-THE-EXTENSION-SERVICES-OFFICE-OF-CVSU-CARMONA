@@ -35,72 +35,41 @@ class ProjectController extends Controller
 
     public function showproject($department)
     {
-        if (Auth::user()->role === 'Admin') {
-            $users = User::where('department', $department)
-                ->where('role', '!=', 'FOR APPROVAL')
-                ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-            $currentDate = Carbon::now();
-            $currentyear = $currentDate->year;
-
-            $currentproject = Project::where('department', $department)
-                ->where('fiscalyear', 4)
-                ->where('projectenddate', '>=', $currentDate)
-                ->get();
-
-            $pastproject = Project::where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '<', $currentDate)
-                ->get();
-
-            $inCurrentYear = true;
-
-            $calendaryears = CalendarYear::pluck('year');
 
 
-            return view('project.create', [
-                'members' => $users,
-                'calendaryears' => $calendaryears,
-                'currentproject' => $currentproject,
-                'pastproject' => $pastproject,
-                'inCurrentYear' => $inCurrentYear,
-                'currentyear' => $currentyear,
-                'department' => $department
-            ]);
+        $currentDate = Carbon::now();
+        $currentfiscalyear = FiscalYear::where('startdate', '<=', $currentDate)
+            ->where('enddate', '>=', $currentDate)
+            ->get();
+        $inCurrentYear = true;
+        $fiscalyears = FiscalYear::all();
+
+        if (Auth::user()->role == 'Admin') {
+            if ($department != 'All') {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
         } else {
-            $users = User::where('department', $department)
-                ->where('role', '!=', 'FOR APPROVAL')
-                ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-            $currentDate = Carbon::now();
-            $currentyear = $currentDate->year;
-            $user = User::findorFail(Auth::user()->id);
-
-            $currentproject = $user->projects()
-                ->where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '>=', $currentDate)
-                ->get();
-
-            $pastproject = $user->projects()
-                ->where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '<', $currentDate)
-                ->get();
-
-            $inCurrentYear = true;
-
-            $calendaryears = CalendarYear::pluck('year');
-
-
-            return view('project.create', [
-                'members' => $users,
-                'calendaryears' => $calendaryears,
-                'currentproject' => $currentproject,
-                'pastproject' => $pastproject,
-                'inCurrentYear' => $inCurrentYear,
-                'currentyear' => $currentyear,
-                'department' => $department
-            ]);
+            $users = null;
         }
+
+
+        return view('project.create', [
+            'members' => $users,
+            'fiscalyears' => $fiscalyears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentfiscalyear' => $currentfiscalyear,
+            'department' => $department
+        ]);
     }
 
     public function showyearproject($department, $currentyear)

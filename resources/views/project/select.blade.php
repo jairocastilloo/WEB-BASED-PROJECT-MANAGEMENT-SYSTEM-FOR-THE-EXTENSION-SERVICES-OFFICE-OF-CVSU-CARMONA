@@ -287,7 +287,9 @@
 
 
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
-                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'status' => 'In Progress', 'x' => 0])
+                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 0])
+                @livewire('not-started-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 0])
+                @livewire('past-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'z' => 0])
             </div>
 
         </div>
