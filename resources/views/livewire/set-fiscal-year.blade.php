@@ -204,8 +204,12 @@
                 });
 
                 function formatDate(inputDate) {
-                    var parsedDate = new Date(inputDate);
-                    var formattedDate = parsedDate.toISOString().slice(0, 10);
+                    // Split the inputDate by the '/' character
+                    var parts = inputDate.split('/');
+
+                    // Rearrange the parts into the "YYYY-MM-DD" format
+                    var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+
                     return formattedDate;
                 }
                 Livewire.on('afterUpdateData', function() {
@@ -216,6 +220,7 @@
 
 
                     var searchDateData = formatDate(searchDate.value);
+
 
                     if (searchDateData != "") {
                         searchDate.classList.remove('is-invalid');

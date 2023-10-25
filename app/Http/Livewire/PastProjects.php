@@ -44,15 +44,15 @@ class PastProjects extends Component
     {
         $this->pastcurrentPage = $pastpage;
     }
-    public function findProject($pastinputSearch, $z)
+    public function pastfindProject($pastinputSearch, $z)
     {
         $this->pastinputSearch = $pastinputSearch;
         $this->z = $z;
         $this->pastcurrentPage = 1;
     }
-    public function handleFindProject($pastinputSearch, $z)
+    public function pasthandleFindProject($pastinputSearch, $z)
     {
-        $this->findProject($pastinputSearch, $z);
+        $this->pastfindProject($pastinputSearch, $z);
     }
     public function render()
     {
@@ -87,7 +87,7 @@ class PastProjects extends Component
                         ->whereNotIn('id', [$this->projectid])
                         ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->pastcurrentdate)
+                        ->where('projectenddate', '<', $this->currentdate)
                         ->where('projecttitle', 'like', "%$this->pastinputSearch%")
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
@@ -125,7 +125,7 @@ class PastProjects extends Component
                         ->whereNotIn('id', [$this->projectid])
                         ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->pastcurrentdate)
+                        ->where('projectenddate', '<', $this->currentdate)
                         ->where('projecttitle', 'like', "%$this->pastinputSearch%")
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);

@@ -165,17 +165,18 @@ class ProjectController extends Controller
         }
 
         $fiscalyears = FiscalYear::all();
+        $department = $indexproject->department;
         if (Auth::user()->role == 'Admin') {
-            if ($department != 'All') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
                 $users = User::where(function ($query) use ($department) {
                     $query->where('department', $department)
                         ->orWhere('department', 'All');
                 })
                     ->where('approval', 1)
-                    ->where('role', '!=', 'Implementer')
-                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-            } else {
-                $users = User::where('approval', 1)
                     ->where('role', '!=', 'Implementer')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
             }
@@ -255,21 +256,22 @@ class ProjectController extends Controller
 
         $projecttitle = $request->input('projecttitle');
         $projectleaderid = $request->input('projectleader');
-        $projectstartdate = $request->input('projectstartdate');
-        $projectenddate = $request->input('projectenddate');
+        $projectstartdate = date("Y-m-d", strtotime($request->input('projectstartdate')));
+        $projectenddate = date("Y-m-d", strtotime($request->input('projectenddate')));
 
         $projectleaders = $request->input('projectleader');
 
         $programleaders = $request->input('programleader');
+
         $project = new Project([
             'projecttitle' => $projecttitle,
             //'projectleader' => $request->input('projectleader'),
             'programtitle' => $request->input('programtitle'),
             //'programleader' => $request->input('programleader'),
-            'projectstartdate' => $request->input('projectstartdate'),
-            'projectenddate' => $request->input('projectenddate'),
+            'projectstartdate' => $projectstartdate,
+            'projectenddate' => $projectenddate,
             'department' => $request->input('department'),
-            'calendaryear' => $request->input('currentyear'),
+            'fiscalyear' => $request->input('fiscalyear'),
         ]);
 
         $project->save();
@@ -281,7 +283,11 @@ class ProjectController extends Controller
         foreach ($projectleaders as $userId) {
             ProjectLeader::create([
                 'project_id' => $newProjectId,
-                'leader_id' => $userId,
+                'user_id' => $userId,
+            ]);
+            ProjectUser::create([
+                'project_id' => $newProjectId,
+                'user_id' => $userId,
             ]);
             $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
             $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
@@ -318,7 +324,7 @@ class ProjectController extends Controller
             foreach ($programleaders as $userId) {
                 ProgramLeader::create([
                     'project_id' => $newProjectId,
-                    'leader_id' => $userId,
+                    'user_id' => $userId,
                 ]);
             }
 

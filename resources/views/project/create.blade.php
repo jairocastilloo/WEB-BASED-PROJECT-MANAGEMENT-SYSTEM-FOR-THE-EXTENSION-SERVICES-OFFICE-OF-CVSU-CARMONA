@@ -19,17 +19,17 @@
                     @endif
                     <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 19px;" aria-label="Select an calendar year">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select an fiscal year">
 
-                            @foreach ($calendaryears as $calendaryear)
-                            <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+                            @foreach ($fiscalyears as $fiscalyear)
+                            <option value="{{ $fiscalyear->id }}" {{ $fiscalyear->id == $currentfiscalyear->id ? 'selected' : '' }}>
+                                &nbsp;&nbsp;&nbsp;{{ date('F Y', strtotime($fiscalyear->startdate)) . ' - ' . date('F Y', strtotime($fiscalyear->enddate)) }}
                             </option>
                             @endforeach
 
                         </select>
                         <label for="year-select" style="color:darkgreen;">
-                            <h5><strong>Calendar Year:</strong></h5>
+                            <h6><strong>Fiscal Year:</strong></h6>
                         </label>
                     </div>
                     @if (Auth::user()->role === 'Admin')
@@ -165,92 +165,6 @@
             <div class="col-lg-2">
 
 
-                <label class="ms-3 small form-label text-secondary fw-bold">Past Projects</label>
-                @if($pastproject->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Projects
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle">
-                        <div class="text-center p-4">
-                            <h4><em>No Past Projects.</em></h4>
-                        </div>
-                    </div>
-                </div>
-                @else
-                @php
-                $sortedPastProjects= $pastproject->sortBy('projectstartdate');
-
-                $CompletedPastProjects = $sortedPastProjects->filter(function ($proj) {
-                return $proj->projectstatus === 'Completed';
-                });
-
-                $IncompletePastProjects = $sortedPastProjects->filter(function ($proj) {
-                return $proj->projectstatus === 'Incomplete' && $proj->projectenddate < now(); })->map(function ($project) {
-                    $project->projectremark = 'Incomplete';
-                    return $project;
-                    });
-                    @endphp
-                    <div class="mb-2">
-                        <input type="text" class="form-control border-success" id="searchInputPastProject" placeholder="Search projects...">
-
-                    </div>
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                            <h6 class="fw-bold small" style="color:darkgreen;">
-                                <i class="bi bi-kanban"></i>
-                                Projects
-                                <span class="bggold text-dark badge countPastProjects">
-                                    {{ count($sortedPastProjects) }}
-                                </span>
-                                <i class="bi bi-caret-down-fill text-end"></i>
-
-                            </h6>
-                        </div>
-                        <div class="toggle-container subtoggle allpastprojectdiv">
-
-                            @foreach ($CompletedPastProjects as $project)
-                            <div class="border-bottom ps-3 p-2 pb-0 divhover pastprojectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                @php
-                                $startDate = date('M d', strtotime($project['projectstartdate']));
-                                $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                @endphp
-
-                                <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                <h6 class="small text-success fw-bold text-end">{{ $project['projectstatus'] }}</h6>
-
-                            </div>
-                            @endforeach
-                            @foreach ($IncompletePastProjects as $project)
-                            <div class="border-bottom ps-3 p-2 pb-0 divhover pastprojectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                @php
-                                $startDate = date('M d', strtotime($project['projectstartdate']));
-                                $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                @endphp
-
-                                <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    @endif
-
 
             </div>
 
@@ -259,7 +173,7 @@
 </div>
 
 <!-- New Project -->
-
+@if (Auth::user()->role === 'Admin')
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -274,7 +188,7 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Objectives</button>
-                    </li>.
+                    </li>
 
                 </ul>
                 <div class="tab-content">
@@ -284,7 +198,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
-                            <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
+                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $fiscalyear->id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -296,62 +210,84 @@
                                     <strong></strong>
                                 </span>
                             </div>
-
-                            <div class="mb-3">
+                            <div class="container mb-3 p-0">
                                 <label for="projectleader" class="form-label">Project Leader</label>
-                                <select class="form-select" name="projectleader" id="projectleader" multiple>
-                                    <option value="0" selected disabled>Select Project Leader</option>
+                                <select class="selectpicker w-100 border projectleader" name="projectleader[]" id="projectleader" multiple aria-label="Select Project Leaders" data-live-search="true">
+                                    <option value="0" disabled>Select Project Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
                                     <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
                                     @endif
                                     @endforeach
                                 </select>
-                                <!--<input type="text" class="form-control" id="projectleader" name="projectleader">-->
-
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
                             </div>
+
                             <div class="mb-3">
-                                <label for="programtitle" class="form-label">Program Title</label>
+                                <label for="programtitle" class="form-label">Program Title <span class="text-secondary">( if applicable )</span></label>
                                 <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
                             </div>
-                            <div class="mb-3">
-                                <label for="programleader" class="form-label">Project Leader</label>
-                                <select class="form-select" name="programleader" id="programleader">
-                                    <option value="0" selected disabled>Select Program Leader</option>
+                            <div class="container mb-3 p-0 programleaderdiv" style="display:none;">
+                                <label for="programleader" class="form-label">Program Leader</label>
+                                <select class="selectpicker w-100 border programleader" name="programleader[]" id="programleader" multiple aria-label="Select Program Leaders" data-live-search="true">
+                                    <option value="0" disabled>Select Program Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
                                     <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
                                     @endif
                                     @endforeach
                                 </select>
-
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
                             </div>
+
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
-                                <input type="date" class="form-control" id="projectstartdate" name="projectstartdate">
+
+                                <div class="input-group date" id="datepicker">
+                                    <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
+                                    <span class="input-group-append">
+                                        <span class="input-group-text bg-light d-block">
+                                            <i class="bi bi-calendar-event-fill"></i>
+                                        </span>
+                                    </span>
+                                </div>
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
+
+                                <!--<input type="date" class="form-control" id="projectstartdate" name="projectstartdate">-->
+
+
                             </div>
 
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
-                                <input type="date" class="form-control" id="projectenddate" name="projectenddate">
+
+                                <div class="input-group date" id="datepicker">
+                                    <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
+                                    <span class="input-group-append">
+                                        <span class="input-group-text bg-light d-block">
+                                            <i class="bi bi-calendar-event-fill"></i>
+                                        </span>
+                                    </span>
+                                </div>
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
                                 </span>
+
+                                <!--<input type="date" class="form-control" id="projectenddate" name="projectenddate">-->
+
+
                             </div>
                         </form>
 
@@ -395,6 +331,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <span class="text-danger" id="createprojectError">
+                    <strong></strong>
+                </span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
                     <b class="small">Previous</b>
@@ -408,7 +347,18 @@
         </div>
     </div>
 </div>
-
+@endif
+<div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+                <h4>Project Created, but Email Not Sent Due to Internet Issue!</h4>
+                <p>Redirecting in <span id="countdown">5</span> seconds...</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 

@@ -287,8 +287,8 @@
 
 
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
-                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 0])
-                @livewire('not-started-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 0])
+                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 1])
+                @livewire('not-started-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 1])
                 @livewire('past-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'z' => 0])
             </div>
 
@@ -375,7 +375,7 @@
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
 
-                                <div class="input-group date" id="datepicker">
+                                <div class="input-group date" id="startDatePicker">
                                     <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
@@ -396,7 +396,7 @@
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
 
-                                <div class="input-group date" id="datepicker">
+                                <div class="input-group date" id="endDatePicker">
                                     <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
@@ -484,12 +484,26 @@
     </div>
 </div>
 @endsection
+@php
+$fiscalstartdate = $fiscalyear->startdate;
+$fiscalenddate = $fiscalyear->enddate;
+$formattedfiscalstartdate = date('m/d/Y', strtotime($fiscalstartdate));
+$formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
+@endphp
 @section('scripts')
 <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
     var objectives = <?php echo json_encode($objectives);
                         ?>;
+    var fiscalstartdate = <?php echo json_encode($fiscalstartdate);
+                            ?>;
+    var fiscalenddate = <?php echo json_encode($fiscalenddate);
+                        ?>;
+    var formattedfiscalstartdate = <?php echo json_encode($formattedfiscalstartdate);
+                                    ?>;
+    var formattedfiscalenddate = <?php echo json_encode($formattedfiscalenddate);
+                                    ?>;
 
     var selectElement = $('#year-select');
     var url = "";
@@ -506,7 +520,7 @@
         var currentstep = 0;
         var setcount = 0;
 
-        $('#datepicker').datepicker();
+
 
 
         $('.projectobjective-error strong').hide();
@@ -524,12 +538,17 @@
                 $('.programleaderdiv').css('display', 'inline-block');
             }
         });
-        $('#projectstartdate').datepicker().on('change', function(e) {
-            $('#projectstartdate').datepicker('hide');
+        $('#startDatePicker').datepicker();
+
+        $('#startDatePicker').datepicker().on('change', function(e) {
+            $('#startDatePicker').datepicker('hide');
         });
-        $('#projectenddate').datepicker().on('change', function(e) {
-            $('#projectenddate').datepicker('hide');
+        $('#endDatePicker').datepicker();
+
+        $('#endDatePicker').datepicker().on('change', function(e) {
+            $('#endDatePicker').datepicker('hide');
         });
+        /*
         $('#searchInputProject').on('keyup', function(e) {
 
             var inputData = $('#searchInputProject').val().toLowerCase();
@@ -547,7 +566,7 @@
             $('.countProjects').text(x);
 
         });
-
+*/
 
         $('.step span').each(function() {
             var $span = $(this);
@@ -813,7 +832,7 @@
 
                 var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
 
-                projecturl = projecturl.replace(':department', department);
+                projecturl = projecturl.replace(':department', encodeURIComponent(department));
 
                 var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -875,14 +894,25 @@
                     },
                     error: function(xhr, status, error) {
                         $('#createprojectError').text("There is a problem with server. Contact Administrator!");
-                        /** 
-                        console.log(xhr.responseText);
-                        console.log(status);
-                        console.log(error); */
+                        /*
+                                                console.log(xhr.responseText);
+                                                console.log(status);
+                                                console.log(error);
+                                                */
                     }
                 });
             }
         });
+
+        function formatDate(inputDate) {
+            // Split the inputDate by the '/' character
+            var parts = inputDate.split('/');
+
+            // Rearrange the parts into the "YYYY-MM-DD" format
+            var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+
+            return formattedDate;
+        }
 
         function handleError() {
 
@@ -901,11 +931,11 @@
 
                 var programLeader = $('#programleader').val();
 
-                var projectStartDate = new Date($('#projectstartdate').val());
-                var projectEndDate = new Date($('#projectenddate').val());
+                var projectStartDate = formatDate($('#projectstartdate').val());
+                var projectEndDate = formatDate($('#projectenddate').val());
 
-                var targetYear = parseInt($('#currentyear').val(), 10);
-
+                console.log(projectStartDate);
+                console.log(projectEndDate);
                 // Validation for Project Title
                 if (projectTitle.trim() === '') {
                     $('#projecttitle').addClass('is-invalid');
@@ -933,21 +963,42 @@
                     $('.programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
                     hasErrors = true;
                 }
-
-                // Validation for Project Start Date
-                if (projectStartDate.getFullYear() !== targetYear) {
-                    $('#projectstartdate').addClass('is-invalid');
-                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                if ($('#projectstartdate').val() == "") {
+                    $('#projectstartdate').parent().addClass('is-invalid');
+                    $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text('Project Start Date is required.');
+                    hasErrors = true;
+                }
+                if ($('#projectenddate').val() == "") {
+                    $('#projectenddate').parent().addClass('is-invalid');
+                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text('Project End Date is required.');
                     hasErrors = true;
                 }
 
-                // Validation for Project End Date
-                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
-                    $('#projectenddate').addClass('is-invalid');
-                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+                if (!(projectStartDate >= fiscalstartdate && projectStartDate <= fiscalenddate)) {
+                    $('#projectstartdate').parent().addClass('is-invalid');
+                    $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text('Project Start Date must be in between ' + formattedfiscalstartdate + ' and ' + formattedfiscalenddate + '.');
                     hasErrors = true;
                 }
+                if (projectEndDate <= projectStartDate) {
+                    $('#projectenddate').parent().addClass('is-invalid');
+                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text('Project End Date must be after the Start Date.');
+                    hasErrors = true;
+                }
+                /*
+                                // Validation for Project Start Date
+                                if (projectStartDate.getFullYear() !== targetYear) {
+                                    $('#projectstartdate').addClass('is-invalid');
+                                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                                    hasErrors = true;
+                                }
 
+                                // Validation for Project End Date
+                                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
+                                    $('#projectenddate').addClass('is-invalid');
+                                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+                                    hasErrors = true;
+                                }
+                */
                 return hasErrors;
 
             } else if (currentstep === 1) {
