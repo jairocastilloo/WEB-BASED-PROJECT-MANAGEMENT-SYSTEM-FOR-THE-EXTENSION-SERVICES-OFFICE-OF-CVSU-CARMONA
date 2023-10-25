@@ -76,78 +76,46 @@ class ProjectController extends Controller
 
     public function showyearproject($department, $currentyear)
     {
-        if (Auth::user()->role === 'Admin') {
-            $users = User::where('department', $department)
-                ->where('role', '!=', 'Admin')
-                ->where('role', '!=', 'FOR APPROVAL')
-                ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-            $currentDate = Carbon::now();
-            $otheryear = $currentDate->year;
 
-            if ($otheryear == $currentyear) {
-                $inCurrentYear = true;
-            } else {
-                $inCurrentYear = false;
-            }
+        $currentfiscalyear = FiscalYear::findorFail($currentyear);
+        $currentfiscalyearid = $currentfiscalyear->id;
 
-            $currentproject = Project::where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '>=', $currentDate)
-                ->get();
-            $pastproject = Project::where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '<', $currentDate)
-                ->get();
-            $calendaryears = CalendarYear::pluck('year');
+        $currentDate = Carbon::now();
 
-
-            return view('project.create', [
-                'members' => $users,
-                'calendaryears' => $calendaryears,
-                'currentproject' => $currentproject,
-                'pastproject' => $pastproject,
-                'inCurrentYear' => $inCurrentYear,
-                'currentyear' => $currentyear,
-                'department' => $department
-            ]);
+        if ($currentDate >= $currentfiscalyear->startdate && $currentDate <= $currentfiscalyear->enddate) {
+            $inCurrentYear = true;
         } else {
-            $users = User::where('department', $department)
-                ->where('role', '!=', 'Admin')
-                ->where('role', '!=', 'FOR APPROVAL')
-                ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-            $currentDate = Carbon::now();
-            $otheryear = $currentDate->year;
-
-            if ($otheryear == $currentyear) {
-                $inCurrentYear = true;
-            } else {
-                $inCurrentYear = false;
-            }
-            $user = User::findorFail(Auth::user()->id);
-
-            $currentproject = $user->projects()
-                ->where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '>=', $currentDate)
-                ->get();
-            $pastproject = $user->projects()
-                ->where('department', $department)
-                ->where('calendaryear', $currentyear)
-                ->where('projectenddate', '<', $currentDate)
-                ->get();
-            $calendaryears = CalendarYear::pluck('year');
-
-
-            return view('project.create', [
-                'members' => $users,
-                'calendaryears' => $calendaryears,
-                'currentproject' => $currentproject,
-                'pastproject' => $pastproject,
-                'inCurrentYear' => $inCurrentYear,
-                'currentyear' => $currentyear,
-                'department' => $department
-            ]);
+            $inCurrentYear = false;
         }
+
+        $fiscalyears = FiscalYear::all();
+
+
+        if (Auth::user()->role == 'Admin') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
+        return view('project.create', [
+            'members' => $users,
+            'fiscalyears' => $fiscalyears,
+            'inCurrentYear' => $inCurrentYear,
+            'currentfiscalyear' => $currentfiscalyear,
+            'currentfiscalyearid' => $currentfiscalyearid,
+            'department' => $department
+        ]);
     }
 
     public function displayproject($projectid, $department)

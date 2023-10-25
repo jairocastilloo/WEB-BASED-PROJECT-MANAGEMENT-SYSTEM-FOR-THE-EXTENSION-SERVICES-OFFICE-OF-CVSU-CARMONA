@@ -58,7 +58,42 @@ class NotStartedProjects extends Component
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($user->role === "Admin") {
+        if ($this->department == null) {
+
+            switch ($this->y) {
+
+                case 0:
+                    $notstartedprojects = null;
+                    $notstartedlastpage = null;
+                    break;
+                case 1:
+
+                    $notstartedprojects = $user->projects()
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '>', $this->currentdate)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                    $notstartedlastpage = $notstartedprojects->lastPage();
+
+                    break;
+
+                case 2:
+
+                    $notstartedprojects = $user->projects()
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '>', $this->currentdate)
+                        ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                    $notstartedlastpage = $notstartedprojects->lastPage();
+
+                    break;
+            }
+        } else if ($user->role === "Admin") {
 
             switch ($this->y) {
 

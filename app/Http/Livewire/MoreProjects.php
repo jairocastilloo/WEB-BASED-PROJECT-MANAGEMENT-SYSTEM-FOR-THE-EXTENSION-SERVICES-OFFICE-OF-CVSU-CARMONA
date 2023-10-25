@@ -57,7 +57,44 @@ class MoreProjects extends Component
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($user->role === "Admin") {
+        if ($this->department == null) {
+            switch ($this->x) {
+
+                case 0:
+                    $moreprojects = null;
+                    $lastpage = null;
+                    break;
+                case 1:
+
+                    $moreprojects = $user->projects()
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '<=', $this->currentdate)
+                        ->where('projectenddate', '>=', $this->currentdate)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                    $lastpage = $moreprojects->lastPage();
+
+
+                    break;
+
+                case 2:
+
+                    $moreprojects = $user->projects()
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectstartdate', '<=', $this->currentdate)
+                        ->where('projectenddate', '>=', $this->currentdate)
+                        ->where('projecttitle', 'like', "%$this->inputSearch%")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                    $lastpage = $moreprojects->lastPage();
+
+                    break;
+            }
+        } else if ($user->role === "Admin") {
 
             switch ($this->x) {
 

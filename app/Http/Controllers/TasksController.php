@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FiscalYear;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Project;
@@ -20,61 +21,20 @@ class TasksController extends Controller
 
     public function showtasks($username)
     {
-        $user = User::where('username', $username)->firstOrFail();
-
-        $userid = $user->id;
-
-        $currentDate = Carbon::today();
-
-
-        $currentYear = $currentDate->year;
-
-
-        $currentproject = $user->projects()
-            ->where('calendaryear', $currentYear)
-            ->get();
-
-
-
-
+        $currentDate = Carbon::now();
+        $currentfiscalyear = FiscalYear::where('startdate', '<=', $currentDate)
+            ->where('enddate', '>=', $currentDate)
+            ->first();
+        $currentfiscalyearid = $currentfiscalyear->id;
         $inCurrentYear = true;
+        $fiscalyears = FiscalYear::all();
 
-        $projectIds = $currentproject->pluck('id')->toArray();
-
-
-        $activities = $user->activities()
-            ->whereIn('project_id', $projectIds)
-            ->get();
-
-        $activityIds = $activities->pluck('id')->toArray();
-
-        $subtasks = $user->subtasks()
-            ->whereIn('activity_id', $activityIds)
-            ->where('status', 'Incomplete')
-            ->where('subduedate', '>=', $currentDate)
-            ->get();
-        $overduesubtasks = $user->subtasks()
-            ->whereIn('activity_id', $activityIds)
-            ->where('status', 'Incomplete')
-            ->where('subduedate', '<', $currentDate)
-            ->get();
-        $completedsubtasks = $user->subtasks()
-            ->whereIn('activity_id', $activityIds)
-            ->where('status', 'Completed')
-            ->get();
-
-        $calendaryears = CalendarYear::pluck('year');
 
         return view('implementer.index', [
-            'currentproject' => $currentproject,
-            'activities' => $activities,
-            'subtasks' => $subtasks,
-            'overduesubtasks' => $overduesubtasks,
-            'completedsubtasks' => $completedsubtasks,
-            'calendaryears' => $calendaryears,
+            'fiscalyears' => $fiscalyears,
             'inCurrentYear' => $inCurrentYear,
-            'currentYear' => $currentYear,
-
+            'currentfiscalyear' => $currentfiscalyear,
+            'currentfiscalyearid' => $currentfiscalyearid,
         ]);
     }
 

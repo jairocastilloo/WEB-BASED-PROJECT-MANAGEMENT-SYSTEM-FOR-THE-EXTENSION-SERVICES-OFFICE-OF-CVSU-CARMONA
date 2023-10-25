@@ -57,7 +57,42 @@ class PastProjects extends Component
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($user->role === "Admin") {
+        if ($this->department == null) {
+            switch ($this->z) {
+
+                case 0:
+                    $pastmoreprojects = null;
+                    $pastlastpage = null;
+                    break;
+                case 1:
+
+                    $pastmoreprojects = $user->projects()
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectenddate', '<', $this->currentdate)
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+
+                    $pastlastpage = $pastmoreprojects->lastPage();
+
+                    break;
+
+                case 2:
+
+
+                    $pastmoreprojects = $user->projects()
+                        ->where('fiscalyear', $this->fiscalyearid)
+                        ->where('projectstatus', 'Incomplete')
+                        ->where('projectenddate', '<', $this->currentdate)
+                        ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+
+                    $pastlastpage = $pastmoreprojects->lastPage();
+
+                    break;
+            }
+        } else if ($user->role === "Admin") {
 
             switch ($this->z) {
 
