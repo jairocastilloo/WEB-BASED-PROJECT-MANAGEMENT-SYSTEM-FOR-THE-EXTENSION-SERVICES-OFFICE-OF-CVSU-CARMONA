@@ -66,36 +66,65 @@ class MoreProjects extends Component
                     $lastpage = null;
                     break;
                 case 1:
+                    if ($this->projectid == null) {
+                        $moreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    $moreprojects = Project::query()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '<=', $this->currentdate)
-                        ->where('projectenddate', '>=', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+                        $lastpage = $moreprojects->lastPage();
+                        break;
+                    } else if ($this->projectid != null) {
+                        $moreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    $lastpage = $moreprojects->lastPage();
+                        $lastpage = $moreprojects->lastPage();
+                        break;
+                    }
 
-                    break;
+
                 case 2:
+                    if ($this->projectid == null) {
+                        $moreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    $moreprojects = Project::query()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '<=', $this->currentdate)
-                        ->where('projectenddate', '>=', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->inputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+                        $lastpage = $moreprojects->lastPage();
 
-                    $lastpage = $moreprojects->lastPage();
+                        break;
+                    } else if ($this->projectid != null) {
+                        $moreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    break;
+                        $lastpage = $moreprojects->lastPage();
+
+                        break;
+                    }
             }
         } else {
             switch ($this->x) {
@@ -105,37 +134,67 @@ class MoreProjects extends Component
                     $lastpage = null;
                     break;
                 case 1:
+                    if ($this->projectid == null) {
+                        $moreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    $moreprojects = $user->projects()
-                        ->where('department', $this->department)
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '<=', $this->currentdate)
-                        ->where('projectenddate', '>=', $this->currentdate)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
-
-                    $lastpage = $moreprojects->lastPage();
+                        $lastpage = $moreprojects->lastPage();
 
 
-                    break;
+                        break;
+                    } else if ($this->projectid != null) {
+                        $moreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                        $lastpage = $moreprojects->lastPage();
+
+
+                        break;
+                    }
                 case 2:
+                    if ($this->projectid == null) {
+                        $moreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    $moreprojects = $user->projects()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '<=', $this->currentdate)
-                        ->where('projectenddate', '>=', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->inputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+                        $lastpage = $moreprojects->lastPage();
 
-                    $lastpage = $moreprojects->lastPage();
+                        break;
+                    } else if ($this->projectid != null) {
+                        $moreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    break;
+                        $lastpage = $moreprojects->lastPage();
+
+                        break;
+                    }
             }
         }
 

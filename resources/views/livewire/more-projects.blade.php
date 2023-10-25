@@ -11,7 +11,7 @@
         </div>
 
         <div class="m-2 mb-0 text-center" @if ($x==0)style="display: none;" @endif>
-            <input type="text" class="form-control border border-2 mb-1" id="inputSearch" placeholder="Enter title...">
+            <input type="text" class="form-control border border-2 mb-2" id="inputSearch" placeholder="Enter title...">
             <button type="button" class="btn btn-sm btn-outline-success w-100" id="btnSearch">Search Project</button>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
                 Please enter a project title.

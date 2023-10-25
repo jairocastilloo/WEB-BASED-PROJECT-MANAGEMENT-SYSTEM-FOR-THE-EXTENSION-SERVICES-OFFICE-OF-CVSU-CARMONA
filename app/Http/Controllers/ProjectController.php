@@ -40,21 +40,22 @@ class ProjectController extends Controller
         $currentDate = Carbon::now();
         $currentfiscalyear = FiscalYear::where('startdate', '<=', $currentDate)
             ->where('enddate', '>=', $currentDate)
-            ->get();
+            ->first();
+        $currentfiscalyearid = $currentfiscalyear->id;
         $inCurrentYear = true;
         $fiscalyears = FiscalYear::all();
 
         if (Auth::user()->role == 'Admin') {
-            if ($department != 'All') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
                 $users = User::where(function ($query) use ($department) {
                     $query->where('department', $department)
                         ->orWhere('department', 'All');
                 })
                     ->where('approval', 1)
-                    ->where('role', '!=', 'Implementer')
-                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-            } else {
-                $users = User::where('approval', 1)
                     ->where('role', '!=', 'Implementer')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
             }
@@ -68,6 +69,7 @@ class ProjectController extends Controller
             'fiscalyears' => $fiscalyears,
             'inCurrentYear' => $inCurrentYear,
             'currentfiscalyear' => $currentfiscalyear,
+            'currentfiscalyearid' => $currentfiscalyearid,
             'department' => $department
         ]);
     }

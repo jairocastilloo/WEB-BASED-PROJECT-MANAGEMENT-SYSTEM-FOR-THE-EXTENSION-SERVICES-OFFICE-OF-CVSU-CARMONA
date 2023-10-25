@@ -40,131 +40,15 @@
                     </div>
                     @endif
                 </div>
+                @livewire('more-projects', ['department' => $department, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 1])
 
-
-                <label class="ms-3 small form-label text-secondary fw-bold">Upcoming and Ongoing Projects</label>
-                @if($currentproject->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                        <h6 class="fw-bold small" style="color:darkgreen;">
-                            Projects
-                        </h6>
-
-                    </div>
-                    <div class="toggle-container subtoggle">
-                        <div class="text-center p-4">
-                            <h4><em>No Other Projects Yet.</em></h4>
-                        </div>
-                    </div>
-                </div>
-                @else
-                @php
-                $sortedProjects= $currentproject->sortBy('projectstartdate');
-                $InProgressProjects = $sortedProjects->filter(function ($proj) {
-                return $proj->projectstatus === 'Incomplete' &&
-                $proj->projectstartdate <= now() && $proj->projectenddate >= now();
-                    })->map(function ($project) {
-                    $project->projectremark = 'In Progress';
-                    return $project;
-                    });
-
-                    $UpcomingProjects = $sortedProjects->filter(function ($proj) {
-                    $projStartDate = \Carbon\Carbon::parse($proj->projectstartdate);
-                    $weekBeforeAct = $projStartDate->copy()->subDays(7);
-
-                    return $proj->projectstatus === 'Incomplete' &&
-                    $weekBeforeAct <= now() && $projStartDate> now();
-                        })->map(function ($project) {
-                        $project->projectremark = 'Upcoming';
-                        return $project;
-                        });
-
-                        $ScheduledProjects = $sortedProjects->filter(function ($proj) {
-                        return $proj->projectstatus === 'Incomplete' && $proj->projectstartdate > now();
-                        })->map(function ($project) {
-                        $project->projectremark = 'Scheduled';
-                        return $project;
-                        });
-                        @endphp
-                        <div class="mb-2">
-                            <input type="text" class="form-control border-success" id="searchInputProject" placeholder="Search projects...">
-
-                        </div>
-                        <div class="basiccont word-wrap shadow">
-                            <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover" id="toggleButton">
-                                <h6 class="fw-bold small" style="color:darkgreen;">
-                                    <i class="bi bi-kanban"></i>
-                                    Projects
-                                    <span class="bggold text-dark badge countProjects">
-                                        {{ count($sortedProjects) }}
-                                    </span>
-                                    <i class="bi bi-caret-down-fill text-end"></i>
-
-                                </h6>
-                            </div>
-                            <div class="toggle-container subtoggle allprojectdiv">
-                                @foreach ($InProgressProjects as $project)
-                                <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                    @php
-                                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                                    $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                    @endphp
-
-                                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                    <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                </div>
-                                @endforeach
-                                @foreach ($UpcomingProjects as $project)
-                                <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                    @php
-                                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                                    $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                    @endphp
-
-                                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                    <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                </div>
-                                @endforeach
-                                @foreach ($ScheduledProjects as $project)
-                                <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
-
-                                    <h6 class="fw-bold small">{{ $project['projecttitle'] }}</h6>
-
-                                    @php
-                                    $startDate = date('M d', strtotime($project['projectstartdate']));
-                                    $endDate = date('M d', strtotime($project['projectenddate']));
-
-                                    @endphp
-
-                                    <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
-
-                                    <h6 class="small text-success fw-bold text-end">{{ $project['projectremark'] }}</h6>
-
-                                </div>
-                                @endforeach
-
-                            </div>
-                        </div>
-
-                        @endif
 
             </div>
 
             <div class="col-lg-2">
 
-
+                @livewire('not-started-projects', ['department' => $department, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 1])
+                @livewire('past-projects', ['department' => $department, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'z' => 0])
 
             </div>
 
@@ -198,7 +82,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
-                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $fiscalyear->id }}">
+                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $currentfiscalyear->id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -362,8 +246,8 @@
 
 @endsection
 @php
-$fiscalstartdate = $fiscalyear->startdate;
-$fiscalenddate = $fiscalyear->enddate;
+$fiscalstartdate = $currentfiscalyear->startdate;
+$fiscalenddate = $currentfiscalyear->enddate;
 $formattedfiscalstartdate = date('m/d/Y', strtotime($fiscalstartdate));
 $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 

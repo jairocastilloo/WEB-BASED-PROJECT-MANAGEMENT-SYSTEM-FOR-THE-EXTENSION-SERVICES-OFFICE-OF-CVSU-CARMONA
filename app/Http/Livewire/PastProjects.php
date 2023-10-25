@@ -66,35 +66,62 @@ class PastProjects extends Component
                     $pastlastpage = null;
                     break;
                 case 1:
+                    if ($this->projectid == null) {
+                        $pastmoreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    $pastmoreprojects = Project::query()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+                        $pastlastpage = $pastmoreprojects->lastPage();
 
-                    $pastlastpage = $pastmoreprojects->lastPage();
+                        break;
+                    } else if ($this->projectid != null) {
+                        $pastmoreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    break;
+                        $pastlastpage = $pastmoreprojects->lastPage();
+
+                        break;
+                    }
                 case 2:
 
+                    if ($this->projectid == null) {
+                        $pastmoreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    $pastmoreprojects = Project::query()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->pastinputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+                        $pastlastpage = $pastmoreprojects->lastPage();
 
-                    $pastlastpage = $pastmoreprojects->lastPage();
+                        break;
+                    } else if ($this->projectid != null) {
+                        $pastmoreprojects = Project::query()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    break;
+                        $pastlastpage = $pastmoreprojects->lastPage();
+
+                        break;
+                    }
             }
         } else {
             switch ($this->z) {
@@ -104,35 +131,62 @@ class PastProjects extends Component
                     $pastlastpage = null;
                     break;
                 case 1:
+                    if ($this->projectid == null) {
+                        $pastmoreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    $pastmoreprojects = $user->projects()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+                        $pastlastpage = $pastmoreprojects->lastPage();
 
-                    $pastlastpage = $pastmoreprojects->lastPage();
+                        break;
+                    } else  if ($this->projectid != null) {
+                        $pastmoreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    break;
+                        $pastlastpage = $pastmoreprojects->lastPage();
+
+                        break;
+                    }
                 case 2:
+                    if ($this->projectid == null) {
 
+                        $pastmoreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    $pastmoreprojects = $user->projects()
-                        ->where('department', $this->department)
-                        ->whereNotIn('id', [$this->projectid])
-                        ->where('fiscalyear', $this->fiscalyearid)
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->pastinputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+                        $pastlastpage = $pastmoreprojects->lastPage();
 
-                    $pastlastpage = $pastmoreprojects->lastPage();
+                        break;
+                    } else if ($this->projectid != null) {
+                        $pastmoreprojects = $user->projects()
+                            ->where('department', $this->department)
+                            ->whereNotIn('id', [$this->projectid])
+                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    break;
+                        $pastlastpage = $pastmoreprojects->lastPage();
+
+                        break;
+                    }
             }
         }
 
