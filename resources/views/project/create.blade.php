@@ -361,13 +361,26 @@
 </div>
 
 @endsection
+@php
+$fiscalstartdate = $fiscalyear->startdate;
+$fiscalenddate = $fiscalyear->enddate;
+$formattedfiscalstartdate = date('m/d/Y', strtotime($fiscalstartdate));
+$formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
+@endphp
 @section('scripts')
 <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
     var selectElement = $('#year-select');
     var url = "";
-
+    var fiscalstartdate = <?php echo json_encode($fiscalstartdate);
+                            ?>;
+    var fiscalenddate = <?php echo json_encode($fiscalenddate);
+                        ?>;
+    var formattedfiscalstartdate = <?php echo json_encode($formattedfiscalstartdate);
+                                    ?>;
+    var formattedfiscalenddate = <?php echo json_encode($formattedfiscalenddate);
+                                    ?>;
 
     $(document).ready(function() {
 

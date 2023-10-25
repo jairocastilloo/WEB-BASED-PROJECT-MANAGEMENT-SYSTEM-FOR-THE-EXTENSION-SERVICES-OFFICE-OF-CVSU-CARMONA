@@ -322,7 +322,7 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
-                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $fiscalyear->id }}">
+                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $currentfiscalyear->id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -458,6 +458,7 @@
                 <span class="text-danger" id="createprojectError">
                     <strong></strong>
                 </span>
+                <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
                     <b class="small">Previous</b>
@@ -485,8 +486,8 @@
 </div>
 @endsection
 @php
-$fiscalstartdate = $fiscalyear->startdate;
-$fiscalenddate = $fiscalyear->enddate;
+$fiscalstartdate = $currentfiscalyear->startdate;
+$fiscalenddate = $currentfiscalyear->enddate;
 $formattedfiscalstartdate = date('m/d/Y', strtotime($fiscalstartdate));
 $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
@@ -855,6 +856,7 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
                 // concatenate serialized data into a single string
                 var formData = data1 + '&' + data2;
+                $('#loadingSpan').css('display', 'block');
 
                 // send data via AJAX
                 $.ajax({
@@ -864,6 +866,7 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                     success: function(response) {
                         var projectId = response.projectid;
                         projecturl = projecturl.replace(':projectid', projectId);
+                        $('#loadingSpan').css('display', 'none');
                         if (response.isMailSent == 0) {
                             $('#newproject').modal('hide');
                             $('#mailNotSent').modal('show');
@@ -894,6 +897,7 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                     },
                     error: function(xhr, status, error) {
                         $('#createprojectError').text("There is a problem with server. Contact Administrator!");
+                        $('#loadingSpan').css('display', 'none');
                         /*
                                                 console.log(xhr.responseText);
                                                 console.log(status);
