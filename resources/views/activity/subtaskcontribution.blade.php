@@ -56,8 +56,8 @@
                     <div class="p-2">
                         <p class="ps-4 lh-1 pt-2"><b>Subtask Name: {{ $subtask['subtask_name'] }}</b></p>
                         <p class="lh-1 ps-4"> <b>Submitted Hours Rendered: {{ $contribution->hours_rendered }}</b></p>
-                        <p class="lh-1 ps-5"> Rendered Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>
-
+                        <p class="lh-1 ps-5"> Rendered Start Date: {{ \Carbon\Carbon::parse($contribution->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-5"> Rendered End Date: {{ \Carbon\Carbon::parse($contribution->enddate)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-5"> Contributors:
                             @foreach($contributors as $contributor)
                             {{ $contributor->name . ' ' . $contributor->last_name . ' | ' }}
@@ -126,6 +126,7 @@
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
                         <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Rendered End Date: {{ \Carbon\Carbon::parse($contribution->enddate)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
                     </div>
@@ -144,6 +145,7 @@
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
                         <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Rendered End Date: {{ \Carbon\Carbon::parse($contribution->enddate)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
                     </div>
@@ -161,6 +163,7 @@
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
                         <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Rendered End Date: {{ \Carbon\Carbon::parse($contribution->enddate)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
                     </div>
