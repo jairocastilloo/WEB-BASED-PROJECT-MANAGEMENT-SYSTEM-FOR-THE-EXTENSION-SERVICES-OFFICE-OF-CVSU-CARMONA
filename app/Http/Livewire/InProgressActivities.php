@@ -28,7 +28,7 @@ class InProgressActivities extends Component
     {
         $this->xInProgressActivities = $xInProgressActivities;
     }
-    public function refreshData()
+    public function refreshDataInProgressActivities()
     {
         $this->xInProgressActivities = 1;
         $this->currentPageInProgressActivities = 1;
@@ -37,15 +37,15 @@ class InProgressActivities extends Component
     {
         $this->currentPageInProgressActivities = $page;
     }
-    public function findProject($inputSearchInProgressActivities, $xInProgressActivities)
+    public function findInProgressActivities($inputSearchInProgressActivities, $xInProgressActivities)
     {
         $this->inputSearchInProgressActivities = $inputSearchInProgressActivities;
         $this->xInProgressActivities = $xInProgressActivities;
         $this->currentPageInProgressActivities = 1;
     }
-    public function handleFindProject($inputSearchInProgressActivities, $xInProgressActivities)
+    public function handleFindInProgressActivities($inputSearchInProgressActivities, $xInProgressActivities)
     {
-        $this->findProject($inputSearchInProgressActivities, $xInProgressActivities);
+        $this->findInProgressActivities($inputSearchInProgressActivities, $xInProgressActivities);
     }
     public function render()
     {

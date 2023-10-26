@@ -39,7 +39,8 @@
             <div class="col-lg-3 p-2 pt-0">
                 <label class="ms-3 small form-label text-secondary fw-bold">Activities</label>
                 @livewire('in-progress-activities', ['projectid' => null, 'xInProgressActivities' => 1])
-
+                @livewire('not-started-activities', ['projectid' => null, 'xNotStartedActivities' => 1])
+                @livewire('past-activities', ['projectid' => null, 'xPastActivities' => 0])
 
             </div>
             <div class="col-lg-3 p-2 pt-0">

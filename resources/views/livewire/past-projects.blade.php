@@ -12,7 +12,7 @@
 
         <div class="m-2 mb-0 text-center" @if ($z==0)style="display: none;" @endif>
             <input type="text" class="form-control border border-2 mb-1" id="pastinputSearch" placeholder="Enter title...">
-            <button type="button" class="btn btn-sm btn-outline-success w-100" id="pastbtnSearch">Search Project</button>
+            <button type="button" class="btn btn-sm btn-outline-success px-3" id="pastbtnSearch">Search Project</button>
             <span class="invalid-feedback small fw-bold text-end" id="pasterrorAccount">
                 Please enter a project title.
             </span>
