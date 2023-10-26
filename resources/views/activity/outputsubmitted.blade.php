@@ -175,6 +175,7 @@
                     <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Rejected-Submission">
                         <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
 
+
                         @foreach ($group as $index => $item)
                         <p class="lh-1 ps-4"> {{ 'Submitted ' . $outputs[$index]->output_name . ': ' . $item['output_submitted'] }}</p>
                         <!-- Display other attributes as needed -->

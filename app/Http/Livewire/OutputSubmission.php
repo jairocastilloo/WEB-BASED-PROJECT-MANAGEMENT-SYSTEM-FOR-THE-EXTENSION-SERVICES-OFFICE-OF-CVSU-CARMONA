@@ -12,6 +12,7 @@ class OutputSubmission extends Component
     public $acceptids;
     public $activityindex;
     public $typeofoutput;
+    protected $listeners = ['reject' => 'rejecthandle'];
     public function mount($acceptids, $activityindex, $typeofoutput)
     {
         $this->acceptids = $acceptids;
@@ -39,10 +40,18 @@ class OutputSubmission extends Component
         $url = URL::route('get.output', ['activityid' => $this->activityindex, 'outputtype' => $this->typeofoutput]);
         return redirect($url);
     }
-    public function reject()
+    public function rejecthandle($notes)
     {
 
-        OutputUser::where('created_at', $this->acceptids)->update(['approval' => 0]);
+        $this->reject($notes);
+    }
+    public function reject($notes)
+    {
+
+        OutputUser::where('created_at', $this->acceptids)->update([
+            'approval' => 0,
+            'notes' => $notes
+        ]);
 
         $url = URL::route('get.output', ['activityid' => $this->activityindex, 'outputtype' => $this->typeofoutput]);
         return redirect($url);
