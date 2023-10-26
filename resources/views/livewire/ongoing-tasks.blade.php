@@ -1,5 +1,8 @@
 <div>
-
+    @php
+    $currentDate = strtotime('today');
+    $formattedCurrentDate = date('Y-m-d', $currentDate);
+    @endphp
 
     <div class="basiccont word-wrap shadow">
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover">
@@ -53,22 +56,22 @@
                 <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
 
                 @if ($formattedSubcreatedat === $formattedCurrentDate)
-                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Today, ' . date('M d', $subcreatedat) }}</h6>
+                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Today, ' . date('M d Y', $subcreatedat) }}</h6>
                 @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Yesterday, ' . date('M d', $subcreatedat) }}</h6>
+                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Yesterday, ' . date('M d Y', $subcreatedat) }}</h6>
                 @else
-                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created ' . date('D, M d', $subcreatedat) }}</h6>
+                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created ' . date('D, M d Y', $subcreatedat) }}</h6>
                 @endif
 
 
 
 
                 @if ($formattedSubduedate === $formattedCurrentDate)
-                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Today, ' . date('M d', $subduedate) }}</h6>
+                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Today, ' . date('M d Y', $subduedate) }}</h6>
                 @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
-                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Tomorrow, ' . date('M d', $subduedate) }}</h6>
+                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Tomorrow, ' . date('M d Y', $subduedate) }}</h6>
                 @else
-                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d', $subduedate) }}</h6>
+                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d Y', $subduedate) }}</h6>
                 @endif
 
             </div>

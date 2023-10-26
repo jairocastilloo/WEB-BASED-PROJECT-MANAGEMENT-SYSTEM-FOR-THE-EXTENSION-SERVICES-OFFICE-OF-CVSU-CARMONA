@@ -7,6 +7,8 @@ use App\Models\ActivityUser;
 use App\Models\Objective;
 use App\Models\ProgramLeader;
 use App\Models\ProjectUser;
+use App\Models\Subtask;
+use App\Models\SubtaskUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -27,6 +29,41 @@ class UsersTableSeeder extends Seeder
         //
 
         $faker = FakerFactory::create();
+
+        for ($i = 1; $i <= 498; $i++) {
+
+            $x = $faker->numberBetween(1, 3);
+
+            $yOptions = [1, 2, 3, 4, 7, 9, 645, 647, 649];
+
+
+            for ($xx = 1; $xx <= $x; $xx++) {
+                // Choose a random element from the array
+                $key = array_rand($yOptions);
+                $y = $yOptions[$key];
+
+                // Remove the chosen element from the array
+                array_splice($yOptions, $key, 1);
+
+                SubtaskUser::create([
+                    'subtask_id' => $i,
+                    'user_id' => $y,
+                ]);
+            }
+        }
+        /*
+        for ($i = 2; $i < 500; $i++) {
+            $subtasks = new Subtask();
+            $subtasks->subtask_name = $faker->sentence(3);
+            $subtasks->activity_id = $i;
+            $startDate = strtotime('2022-01-01');
+            $endDate = strtotime('2024-12-31');
+            $randomStartTimestamp = mt_rand($startDate, $endDate);
+            $subtasks->subduedate = date('Y-m-d', $randomStartTimestamp);
+            $subtasks->status = $faker->randomElement(['Incomplete', 'Completed']);
+            $subtasks->save();
+        } */
+        /*
         for ($i = 2; $i <= 500; $i++) {
 
             $x = $faker->numberBetween(1, 3);
@@ -47,7 +84,7 @@ class UsersTableSeeder extends Seeder
                     'user_id' => $y,
                 ]);
             }
-        }
+        }*/
         /*
         for ($i = 1; $i < 500; $i++) {
             $activity = new Activity();

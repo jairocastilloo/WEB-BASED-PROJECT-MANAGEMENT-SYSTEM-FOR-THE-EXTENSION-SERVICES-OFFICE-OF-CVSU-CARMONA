@@ -1,6 +1,6 @@
 <div class="basiccont word-wrap shadow mt-2">
     <div class="border-bottom ps-3 pt-2 bggreen">
-        <h6 class="fw-bold small" style="color:darkgreen;">Assignees</h6>
+        <h6 class="fw-bold small" style="color:darkgreen;">Assigned Implementer</h6>
     </div>
     <div class="container">
         @php $count = 0; @endphp
@@ -35,7 +35,7 @@
 
     <div class="btn-group ms-3 mt-2 mb-3 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnAddAssignee" data-bs-toggle="modal" data-bs-target="#addActivityAssigneeModal">
-            <b class="small">Add Assignees</b>
+            <b class="small">Add Implementer</b>
         </button>
 
     </div>

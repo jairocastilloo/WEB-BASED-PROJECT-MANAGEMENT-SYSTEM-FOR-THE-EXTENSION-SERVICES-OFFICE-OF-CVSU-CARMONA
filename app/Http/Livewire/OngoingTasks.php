@@ -65,8 +65,11 @@ class OngoingTasks extends Component
                         ->where('status', 'Incomplete')
                         ->where('subduedate', '>=', $this->fiscalyear->startdate)
                         ->where('subduedate', '<=', $this->fiscalyear->enddate)
-                        ->orderBy('subduedate', 'desc')
+                        ->where('subduedate', '>=', now())  // Add this line
+                        ->orderBy('subduedate', 'asc') // Sort in ascending order
                         ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
+
+
 
                     $lastpageOngoingTasks = $OngoingTasks->lastPage();
 
@@ -74,12 +77,14 @@ class OngoingTasks extends Component
                     break;
 
                 case 2:
+
                     $OngoingTasks = $user->subtasks()
                         ->where('status', 'Incomplete')
                         ->where('subduedate', '>=', $this->fiscalyear->startdate)
                         ->where('subduedate', '<=', $this->fiscalyear->enddate)
+                        ->where('subduedate', '>=', now())  // Add this line
                         ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
-                        ->orderBy('subduedate', 'desc')
+                        ->orderBy('subduedate', 'asc') // Sort in ascending order
                         ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
 
                     $lastpageOngoingTasks = $OngoingTasks->lastPage();

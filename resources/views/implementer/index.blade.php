@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="maincontainer border border-start border-end border-top-0">
     <div class="container pt-3">
 
