@@ -123,7 +123,7 @@
                 if (event.keyCode === 13) {
                     var searchInputNotStartedActivities = inputSearchNotStartedActivities.value;
                     if (searchInputNotStartedActivities != "") {
-                        inputSearch.classList.remove('is-invalid');
+                        inputSearchNotStartedActivities.classList.remove('is-invalid');
 
                         Livewire.emit('findNotStartedActivities', searchNotStartedActivities, 2);
 

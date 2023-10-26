@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Activity;
+use App\Models\ActivityUser;
 use App\Models\Objective;
 use App\Models\ProgramLeader;
 use App\Models\ProjectUser;
@@ -25,6 +27,50 @@ class UsersTableSeeder extends Seeder
         //
 
         $faker = FakerFactory::create();
+        for ($i = 2; $i <= 500; $i++) {
+
+            $x = $faker->numberBetween(1, 3);
+
+            $yOptions = [1, 2, 3, 4, 7, 9, 645, 647, 649];
+
+
+            for ($xx = 1; $xx <= $x; $xx++) {
+                // Choose a random element from the array
+                $key = array_rand($yOptions);
+                $y = $yOptions[$key];
+
+                // Remove the chosen element from the array
+                array_splice($yOptions, $key, 1);
+
+                ActivityUser::create([
+                    'activity_id' => $i,
+                    'user_id' => $y,
+                ]);
+            }
+        }
+        /*
+        for ($i = 1; $i < 500; $i++) {
+            $activity = new Activity();
+            $activity->actname = $faker->sentence(3);
+            $activity->actobjectives = $faker->randomElement([0, 1]);
+            $activity->actoutput = $faker->sentence(2);
+            $startDate = strtotime('2022-01-01');
+            $endDate = strtotime('2024-12-31');
+            $randomStartTimestamp = mt_rand($startDate, $endDate);
+
+            // Generate a random end timestamp after the start date
+            $randomEndTimestamp = mt_rand($randomStartTimestamp, $endDate);
+
+            $activity->actstartdate = date('Y-m-d', $randomStartTimestamp);
+            $activity->actenddate = date('Y-m-d', $randomEndTimestamp);
+            $activity->actbudget = $faker->numberBetween($min = 1000, $max = 10000); // Adjust the range as needed
+            $activity->actsource = $faker->sentence(2);
+            $activity->project_id = $i;
+            $activity->subtask = $faker->randomElement([0, 1]);
+            $activity->actremark = $faker->randomElement(['Incomplete', 'Completed']);
+            $activity->save();
+        }
+         */
         /*
         for ($i = 1; $i <= 500; $i++) {
 
