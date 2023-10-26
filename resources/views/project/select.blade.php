@@ -58,7 +58,14 @@
                 <div class="basiccont p-3 rounded shadow">
 
                     <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-                    <div class="flexmid">CY&nbsp;<u>{{ date('Y', strtotime($indexproject['projectenddate'])) }}</u></div>
+                    <div class="flexmid">FY&nbsp;<u>
+                            @php
+                            $startYearFiscal = date('Y', strtotime($currentfiscalyear['startdate']));
+                            $endYearFiscal = date('Y', strtotime($currentfiscalyear['enddate']));
+                            @endphp
+
+                            {{ $startYearFiscal === $endYearFiscal ? $startYearFiscal : $startYearFiscal . ' - ' . $endYearFiscal }}
+                        </u></div>
                     @if ($indexproject['programtitle'] != "")
                     <div class="flex-container">
                         <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>

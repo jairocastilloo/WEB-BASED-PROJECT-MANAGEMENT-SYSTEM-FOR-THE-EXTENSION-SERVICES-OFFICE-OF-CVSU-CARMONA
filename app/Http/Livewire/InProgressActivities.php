@@ -77,7 +77,7 @@ class InProgressActivities extends Component
                         ->where('actremark', 'Incomplete')
                         ->where('actstartdate', '<=', $this->currentdate)
                         ->where('actenddate', '>=', $this->currentdate)
-                        ->where('actname', 'like', "%$this->inputSearch%")
+                        ->where('actname', 'like', "%$this->inputSearchInProgressActivities%")
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
 

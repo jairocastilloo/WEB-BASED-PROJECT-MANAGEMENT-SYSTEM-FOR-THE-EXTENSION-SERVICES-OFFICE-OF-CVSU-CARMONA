@@ -77,7 +77,7 @@ class NotStartedActivities extends Component
                         ->where('actremark', 'Incomplete')
                         ->where('actstartdate', '<=', $this->currentdate)
                         ->where('actenddate', '>=', $this->currentdate)
-                        ->where('actname', 'like', "%$this->inputSearch%")
+                        ->where('actname', 'like', "%$this->inputSearchNotStartedActivities%")
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
 

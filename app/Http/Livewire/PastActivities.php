@@ -45,7 +45,7 @@ class PastActivities extends Component
     }
     public function handleFindPastActivities($inputSearchPastActivities, $xPastActivities)
     {
-        $this->findNotStartedActivities($inputSearchPastActivities, $xPastActivities);
+        $this->findPastActivities($inputSearchPastActivities, $xPastActivities);
     }
     public function render()
     {
@@ -77,7 +77,7 @@ class PastActivities extends Component
                         ->where('actremark', 'Incomplete')
                         ->where('actstartdate', '<=', $this->currentdate)
                         ->where('actenddate', '>=', $this->currentdate)
-                        ->where('actname', 'like', "%$this->inputSearch%")
+                        ->where('actname', 'like', "%$this->inputSearchPastActivities%")
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
 
