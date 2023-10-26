@@ -11,6 +11,7 @@ class SubtaskHoursSubmission extends Component
     public $contributionid;
     public $subtaskid;
     public $subtaskname;
+    protected $listeners = ['reject' => 'rejecthandle'];
     public function mount($contributionid, $subtaskid, $subtaskname)
     {
         $this->contributionid = $contributionid;
@@ -30,10 +31,18 @@ class SubtaskHoursSubmission extends Component
             ->delete();
         return redirect()->route("subtasks.display", ["subtaskid" => $this->subtaskid, "subtaskname" => $this->subtaskname]);
     }
-    public function reject()
+    public function rejecthandle($notes)
+    {
+
+        $this->reject($notes);
+    }
+    public function reject($notes)
     {
         $contribution = Contribution::findorFail($this->contributionid);
-        $contribution->update(['approval' => 0]);
+        $contribution->update([
+            'approval' => 0,
+            'notes' => $notes
+        ]);
         return redirect()->route("subtasks.display", ["subtaskid" => $this->subtaskid, "subtaskname" => $this->subtaskname]);
     }
     public function render()
