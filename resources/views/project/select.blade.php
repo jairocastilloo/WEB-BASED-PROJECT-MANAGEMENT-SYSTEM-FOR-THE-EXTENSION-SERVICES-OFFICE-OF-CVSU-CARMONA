@@ -467,7 +467,7 @@
                 </span>
                 <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
-                <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
+                <button type="button" class="btn shadow rounded btn-outline-primary try" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
                 <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
