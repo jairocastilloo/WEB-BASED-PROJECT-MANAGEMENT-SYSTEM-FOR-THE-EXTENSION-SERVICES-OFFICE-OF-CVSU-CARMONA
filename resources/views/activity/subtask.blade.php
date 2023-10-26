@@ -120,12 +120,13 @@
 
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Rejected Submission</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">For Revision</h6>
                     </div>
                     @foreach ($rejectedSubmission as $submission)
                     <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
                         <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
+                        <p class="lh-1 fw-bold"> Notes: {{ $submission->notes }}</p>
                         <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
                         <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 

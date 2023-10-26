@@ -139,12 +139,12 @@
 
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkred;">Rejected Submission</h6>
+                        <h6 class="fw-bold small" style="color:darkred;">For Revision</h6>
                     </div>
                     @foreach ($groupedRejectedSubmittedOutput as $date => $group)
                     <div class="p-2 pb-1 ps-4 divhover small border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Rejected-Submission">
                         <p class="lh-1 fw-bold">Submitted In: {{ \Carbon\Carbon::parse($date)->format('F d, Y') }}</p>
-
+                        <p class="lh-1 fw-bold">Notes: {{ $group[0]->notes }}</p>
                         @foreach ($group as $index => $item)
                         <p class="lh-1 ps-4"> {{ $outputNames[$index] . ': ' . $item['output_submitted'] }}</p>
                         <!-- Display other attributes as needed -->

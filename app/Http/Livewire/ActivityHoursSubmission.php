@@ -11,6 +11,7 @@ class ActivityHoursSubmission extends Component
     public $actcontributionid;
     public $activityid;
     public $activityname;
+    protected $listeners = ['reject' => 'rejecthandle'];
     public function mount($actcontributionid, $activityid, $activityname)
     {
         $this->actcontributionid = $actcontributionid;
@@ -33,11 +34,19 @@ class ActivityHoursSubmission extends Component
 
         return redirect()->route('hours.display', ['activityid' => $this->activityid, 'activityname' => $this->activityname]);
     }
-    public function reject()
+    public function rejecthandle($notes)
+    {
+
+        $this->reject($notes);
+    }
+    public function reject($notes)
     {
 
         $actcontribution = activityContribution::findorFail($this->actcontributionid);
-        $actcontribution->update(['approval' => 0]);
+        $actcontribution->update([
+            'approval' => 0,
+            'notes' => $notes
+        ]);
 
         return redirect()->route('hours.display', ['activityid' => $this->activityid, 'activityname' => $this->activityname]);
     }

@@ -125,12 +125,14 @@ class SubtaskController extends Controller
             'contributornumber' => 'required|integer',
             'hours-rendered' => 'required|integer',
             'subtask-date' => 'required|date',
+            'subtask-enddate' => 'required|date',
         ]);
 
         $subtaskcontributor = new Contribution();
         $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
         $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
         $subtaskcontributor->date = $validatedData['subtask-date'];
+        $subtaskcontributor->enddate = $validatedData['subtask-enddate'];
         $subtaskcontributor->submitter_id = Auth::user()->id;
         $subtaskcontributor->save();
         $newsubtaskcontributor = $subtaskcontributor->id;
