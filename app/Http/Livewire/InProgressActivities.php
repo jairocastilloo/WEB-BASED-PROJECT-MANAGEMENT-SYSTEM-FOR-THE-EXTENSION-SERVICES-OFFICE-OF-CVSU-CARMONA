@@ -14,13 +14,14 @@ class InProgressActivities extends Component
     public $currentPageInProgressActivities = 1; // The current page number
     public $perPageInProgressActivities = 5;
     public $currentdate;
-
+    public $activityid;
     protected $listeners = ['findInProgressActivities' => 'handleFindInProgressActivities'];
 
-    public function mount($projectid, $xInProgressActivities)
+    public function mount($projectid, $activityid, $xInProgressActivities)
 
     {
         $this->currentdate = now();
+        $this->activityid = $activityid;
         $this->xInProgressActivities = $xInProgressActivities;
         $this->projectid = $projectid;
     }

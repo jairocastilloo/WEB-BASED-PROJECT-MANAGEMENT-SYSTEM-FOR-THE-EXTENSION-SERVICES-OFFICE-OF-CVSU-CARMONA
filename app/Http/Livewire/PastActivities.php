@@ -14,13 +14,14 @@ class PastActivities extends Component
     public $currentPagePastActivities = 1; // The current page number
     public $perPagePastActivities = 5;
     public $currentdate;
-
+    public $activityid;
     protected $listeners = ['findPastActivities' => 'handleFindPastActivities'];
 
-    public function mount($projectid, $xPastActivities)
+    public function mount($projectid, $activityid, $xPastActivities)
 
     {
         $this->currentdate = now();
+        $this->activityid = $activityid;
         $this->xPastActivities = $xPastActivities;
         $this->projectid = $projectid;
     }

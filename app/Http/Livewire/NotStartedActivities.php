@@ -14,13 +14,14 @@ class NotStartedActivities extends Component
     public $currentPageNotStartedActivities = 1; // The current page number
     public $perPageNotStartedActivities = 5;
     public $currentdate;
-
+    public $activityid;
     protected $listeners = ['findNotStartedActivities' => 'handleFindNotStartedActivities'];
 
-    public function mount($projectid, $xNotStartedActivities)
+    public function mount($projectid, $activityid, $xNotStartedActivities)
 
     {
         $this->currentdate = now();
+        $this->activityid = $activityid;
         $this->xNotStartedActivities = $xNotStartedActivities;
         $this->projectid = $projectid;
     }
