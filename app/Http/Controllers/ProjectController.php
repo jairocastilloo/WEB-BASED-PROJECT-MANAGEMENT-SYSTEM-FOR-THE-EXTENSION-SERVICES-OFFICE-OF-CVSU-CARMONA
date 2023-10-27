@@ -533,4 +533,49 @@ class ProjectController extends Controller
             'department' => $department
         ]);
     }
+    public function submitTerminal (Request $request){
+        $validatedData = $request->validate([
+            'subtask-id' => 'required|integer',
+            'subtask-contributor.*' => 'required|integer',
+            'contributornumber' => 'required|integer',
+            'hours-rendered' => 'required|integer',
+            'subtask-date' => 'required|date',
+            'subtask-enddate' => 'required|date',
+        ]);
+
+        $subtaskcontributor = new Contribution();
+        $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
+        $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
+        $subtaskcontributor->date = $validatedData['subtask-date'];
+        $subtaskcontributor->enddate = $validatedData['subtask-enddate'];
+        $subtaskcontributor->submitter_id = Auth::user()->id;
+        $subtaskcontributor->save();
+        $newsubtaskcontributor = $subtaskcontributor->id;
+
+        for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
+
+
+            $subtaskcontributor = new SubtaskcontributionsUser();
+            $subtaskcontributor->user_id = $validatedData['subtask-contributor'][$i];
+            $subtaskcontributor->contribution_id = $newsubtaskcontributor;
+            $subtaskcontributor->save();
+        }
+
+        $request->validate([
+            'subtaskdocs' => 'required|mimes:docx|max:2048',
+        ]);
+
+
+        $file = $request->file('subtaskdocs');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('subtaskdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+
+        return 'File uploaded successfully.';
+    }
 }

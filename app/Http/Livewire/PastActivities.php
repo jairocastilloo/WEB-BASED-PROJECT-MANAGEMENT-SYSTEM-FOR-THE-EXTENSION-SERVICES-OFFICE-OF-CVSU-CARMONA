@@ -65,6 +65,7 @@ class PastActivities extends Component
                         ->where('actstartdate', '<=', $this->currentdate)
                         ->where('actenddate', '>=', $this->currentdate)
                         ->orderBy('created_at', 'desc')
+                        ->get(['id', 'actname', 'actstartdate', 'actenddate'])
                         ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
 
                     $lastpagePastActivities = $PastActivities->lastPage();
