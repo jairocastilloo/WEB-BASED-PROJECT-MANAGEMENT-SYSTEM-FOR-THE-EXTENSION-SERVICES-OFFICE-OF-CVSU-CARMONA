@@ -173,9 +173,9 @@
                     <div class="border-bottom ps-3 pt-2 bggreen mb-1">
                         <h6 class="fw-bold small" style="color:darkgreen;">Table</h6>
                     </div>
-                   
 
-                    
+
+
                 </div>
 
 
@@ -377,7 +377,7 @@
 @section('scripts')
 <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
-    
+
 
 </script>
 @endsection
