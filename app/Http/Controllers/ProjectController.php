@@ -578,4 +578,41 @@ class ProjectController extends Controller
 
         return 'File uploaded successfully.';
     }
+    public function closeProject($projectid, $department){
+        
+        $project = Project::findorFail($projectid);
+        $currentDate = Carbon::now();
+
+        $allActivities = Activity::where('project_id', $projectid)->count();
+
+$notStartedActivities = Activity::where('project_id', $projectid)
+    ->where('actremark', 'Incomplete')
+    ->where('actstartdate', '>', $currentDate)
+    ->count();
+
+$inProgressActivities = Activity::where('project_id', $projectid)
+    ->where('actremark', 'Incomplete')
+    ->where('actstartdate', '<=', $currentDate)
+    ->where('actenddate', '>=', $currentDate)
+    ->count();
+
+$completedActivities = Activity::where('project_id', $projectid)
+    ->where('actremark', 'Completed')
+    ->count();
+
+$overdueActivities = Activity::where('project_id', $projectid)
+    ->where('actremark', 'Incomplete')
+    ->where('actenddate', '<', $currentDate)
+    ->count();
+
+    return view('projects.terminalreport', [
+        'project' => $project,
+        'allActivities' => $allActivities,
+        'notStartedActivities' => $notStartedActivities,
+        'inProgressActivities' => $inProgressActivities,
+        'completedActivities' => $completedActivities,
+        'overdueActivities' => $overdueActivities
+    ]);
+
+    }
 }
