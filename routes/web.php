@@ -72,6 +72,7 @@ Route::post('/addsubtask', [SubtaskController::class, 'addsubtask'])->name('add.
 Route::get('download/{contributionid}/{filename}', [FileController::class, 'download'])->name('download.file');
 Route::get('downloadactivity/{actcontributionid}/{filename}', [FileController::class, 'downloadactivity'])->name('downloadactivity.file');
 Route::get('downloadoutput/{submittedoutputid}/{filename}', [FileController::class, 'downloadoutput'])->name('downloadoutput.file');
+Route::get('downloadterminal/{projcontributionid}/{filename}', [FileController::class, 'downloadterminal'])->name('downloadterminal.file');
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
@@ -132,7 +133,8 @@ Route::get('/objectives/{projectid}/{department}', [ProjectController::class, 'd
     ->name('projects.objectives');
 Route::get('/activitieslist/{projectid}/{department}', [ProjectController::class, 'displayActivities'])
     ->name('projects.activities');
-
+Route::get('/close/{projectid}/{department}', [ProjectController::class, 'closeProject'])
+    ->name('projects.close');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
@@ -156,6 +158,9 @@ Route::prefix('/submission')->group(function () {
 Route::prefix('/actsubmission')->group(function () {
     Route::get('/{actsubmissionid}/{actsubmissionname}', [SubmissionController::class, 'displayactsubmission'])->name('actsubmission.display');
 });
+Route::prefix('/projsubmission')->group(function () {
+    Route::get('/{projsubmissionid}/{projsubmissionname}', [SubmissionController::class, 'displayprojsubmission'])->name('projsubmission.display');
+});
 Route::get('submittedoutput/{submittedoutputid}/{outputtype}/{submissionname}', [SubmissionController::class, 'displaysubmittedoutput'])->name('submittedoutput.display');
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notification.index');
 Route::view('/choosedepartment', 'admin.choosedepartment')->name('admin.choosedepartment');
@@ -163,3 +168,4 @@ Route::view('/choosedepartmentreport', 'admin.choosedepartmentreport')->name('ad
 Route::get('/adminindex/{department}', [AdminController::class, 'index'])->name('admin.index');
 Route::post('/approve-account', AccountApproval::class);
 Route::get('/send-email', [MailController::class, 'sendEmail']);
+Route::post('/uploadterminalreport', [ProjectController::class, 'uploadTerminalReport'])->name('projects.uploadterminal');

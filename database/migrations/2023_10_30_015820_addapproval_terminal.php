@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TerminalReport extends Migration
+class AddapprovalTerminal extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,9 @@ class TerminalReport extends Migration
     public function up()
     {
         //
-        Schema::create('project_terminal', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id');
-            $table->date('startdate');
-            $table->date('enddate');
-            $table->foreignId('submitter_id');
+        Schema::table('project_terminal', function (Blueprint $table) {
 
-            $table->timestamps();
+            $table->tinyInteger('approval')->nullable();
         });
     }
 

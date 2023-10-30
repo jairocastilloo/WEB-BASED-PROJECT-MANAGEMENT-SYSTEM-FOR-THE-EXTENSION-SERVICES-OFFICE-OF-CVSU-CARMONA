@@ -9,6 +9,7 @@ use App\Models\Objective;
 use App\Models\Output;
 use App\Models\ProgramLeader;
 use App\Models\ProjectLeader;
+use App\Models\ProjectTerminal;
 use App\Models\SubtaskContributor;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -17,6 +18,7 @@ use App\Models\Project;
 use App\Models\ProjectUser;
 use App\Models\Subtask;
 use App\Models\Activity;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +30,7 @@ use App\Events\NewNotificationEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MyMail;
 use App\Models\FiscalYear;
+use Illuminate\Support\Facades\Redirect;
 
 class ProjectController extends Controller
 {
@@ -533,86 +536,84 @@ class ProjectController extends Controller
             'department' => $department
         ]);
     }
-    public function submitTerminal (Request $request){
-        $validatedData = $request->validate([
-            'subtask-id' => 'required|integer',
-            'subtask-contributor.*' => 'required|integer',
-            'contributornumber' => 'required|integer',
-            'hours-rendered' => 'required|integer',
-            'subtask-date' => 'required|date',
-            'subtask-enddate' => 'required|date',
-        ]);
 
-        $subtaskcontributor = new Contribution();
-        $subtaskcontributor->subtask_id = $validatedData['subtask-id'];
-        $subtaskcontributor->hours_rendered = $validatedData['hours-rendered'];
-        $subtaskcontributor->date = $validatedData['subtask-date'];
-        $subtaskcontributor->enddate = $validatedData['subtask-enddate'];
-        $subtaskcontributor->submitter_id = Auth::user()->id;
-        $subtaskcontributor->save();
-        $newsubtaskcontributor = $subtaskcontributor->id;
+    public function closeProject($projectid, $department)
+    {
 
-        for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
-
-
-            $subtaskcontributor = new SubtaskcontributionsUser();
-            $subtaskcontributor->user_id = $validatedData['subtask-contributor'][$i];
-            $subtaskcontributor->contribution_id = $newsubtaskcontributor;
-            $subtaskcontributor->save();
-        }
-
-        $request->validate([
-            'subtaskdocs' => 'required|mimes:docx|max:2048',
-        ]);
-
-
-        $file = $request->file('subtaskdocs');
-        $originalName = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();
-        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
-        $currentDateTime = date('Y-m-d_H-i-s');
-        // Store the file
-        $path = $request->file('subtaskdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
-        // Save the file path to the database or perform any other necessary actions
-        // ...
-
-        return 'File uploaded successfully.';
-    }
-    public function closeProject($projectid, $department){
-        
         $project = Project::findorFail($projectid);
         $currentDate = Carbon::now();
 
         $allActivities = Activity::where('project_id', $projectid)->count();
 
-$notStartedActivities = Activity::where('project_id', $projectid)
-    ->where('actremark', 'Incomplete')
-    ->where('actstartdate', '>', $currentDate)
-    ->count();
+        $notStartedActivities = Activity::where('project_id', $projectid)
+            ->where('actremark', 'Incomplete')
+            ->where('actstartdate', '>', $currentDate)
+            ->count();
 
-$inProgressActivities = Activity::where('project_id', $projectid)
-    ->where('actremark', 'Incomplete')
-    ->where('actstartdate', '<=', $currentDate)
-    ->where('actenddate', '>=', $currentDate)
-    ->count();
+        $inProgressActivities = Activity::where('project_id', $projectid)
+            ->where('actremark', 'Incomplete')
+            ->where('actstartdate', '<=', $currentDate)
+            ->where('actenddate', '>=', $currentDate)
+            ->count();
 
-$completedActivities = Activity::where('project_id', $projectid)
-    ->where('actremark', 'Completed')
-    ->count();
+        $completedActivities = Activity::where('project_id', $projectid)
+            ->where('actremark', 'Completed')
+            ->count();
 
-$overdueActivities = Activity::where('project_id', $projectid)
-    ->where('actremark', 'Incomplete')
-    ->where('actenddate', '<', $currentDate)
-    ->count();
+        $overdueActivities = Activity::where('project_id', $projectid)
+            ->where('actremark', 'Incomplete')
+            ->where('actenddate', '<', $currentDate)
+            ->count();
+        $projectTerminal = ProjectTerminal::where('project_id', $projectid)
+            ->get();
 
-    return view('projects.terminalreport', [
-        'project' => $project,
-        'allActivities' => $allActivities,
-        'notStartedActivities' => $notStartedActivities,
-        'inProgressActivities' => $inProgressActivities,
-        'completedActivities' => $completedActivities,
-        'overdueActivities' => $overdueActivities
-    ]);
+        return view('project.close', [
+            'project' => $project,
+            'allActivities' => $allActivities,
+            'notStartedActivities' => $notStartedActivities,
+            'inProgressActivities' => $inProgressActivities,
+            'completedActivities' => $completedActivities,
+            'overdueActivities' => $overdueActivities,
+            'projectTerminal' => $projectTerminal
+        ]);
+    }
+    public function uploadTerminalReport(Request $request)
+    {
+        /*
+        $request->validate([
+            'projectstartdate' => 'required|date_format:m/d/Y|before_or_equal:projectenddate',
+            'projectenddate' => 'required|date_format:m/d/Y|after_or_equal:projectstartdate',
+            'terminal_file' => 'required|mimes:docx|max:4096',
+        ]);
+        */
+        $projectstartdate = date("Y-m-d", strtotime($request->input('projectstartdate')));
+        $projectenddate = date("Y-m-d", strtotime($request->input('projectenddate')));
 
+        $projectterminal = new ProjectTerminal([
+            'project_id' => $request->input('project-id'),
+            'startdate' => $projectstartdate,
+            'enddate' => $projectenddate,
+            'submitter_id' => $request->input('submitter-id'),
+        ]);
+        $projectterminal->save();
+
+        $request->validate([
+            'terminal_file' => 'required|mimes:docx|max:2048',
+        ]);
+        $file = $request->file('terminal_file');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('terminal_file')->storeAs('uploads/' . $currentDateTime, $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+        /*
+        $url = URL::route('projsubmission.display', ['projsubmissionid' => $projectterminal->id, 'projsubmissionname' => "Unevaluated-Submission"]);
+        return redirect($url);*/
+        return response()->json([
+            'projsubmissionid' => $projectterminal->id,
+        ]);
     }
 }

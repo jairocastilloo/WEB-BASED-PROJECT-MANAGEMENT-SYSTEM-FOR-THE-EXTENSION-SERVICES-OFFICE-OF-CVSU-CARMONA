@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-bottom">
-    <div class="mainnav shadow mb-3 shadow-sm">
+    <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
             <div class="step divhover" id="projectdiv" data-value="{{ $project->id }}" data-dept="{{ $project->department }}">
                 <span class="fw-bold">Project: {{ $project->projecttitle }}</span>
@@ -14,73 +14,195 @@
 
 
         </div>
+
         <div class="step-wrapper">
-            <div class="step highlight">
-                <span class="fw-bold">Closing {{ $project->projecttitle }}</span>
+            <div class="step divhover">
+                <span class="fw-bold">Close Project: {{ $project->projecttitle }}</span>
                 <div class="message-box text-white">
-                    Closing {{ $project->projecttitle }}
+                    Close Project: {{ $project->projecttitle }}
                 </div>
             </div>
-
-
         </div>
+
+        <div class="step-wrapper">
+            <div class="step highlight">
+                <span class="fw-bold">Terminal Report: {{ $project->projecttitle }}</span>
+                <div class="message-box text-white">
+                    Terminal Report: {{ $project->projecttitle }}
+                </div>
+            </div>
+        </div>
+
 
     </div>
     <div class="container">
+        <div class="row">
 
-        @php
+            <div class="col-8">
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofprojsubmission }}</h6>
+                    </div>
 
-        $unevaluatedSubmission = $activitycontributions->filter(function ($contri) {
-        return $contri['approval'] === null;
-        });
-        $acceptedSubmission = $activitycontributions->filter(function ($contri) {
-        return $contri['approval'] === 1;
-        });
-        $rejectedSubmission = $activitycontributions->filter(function ($contri) {
-        return $contri['approval'] === 0;
-        });
+                    <div class="p-2 pb-0 border-bottom">
+                        <p class="lh-1 ps-4">{{ $project->projecttitle }}</p>
+                        <p class="lh-1 ps-5">Rendered Date: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $projcontribution->startdate)->format('F d') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $projcontribution->enddate)->format('F d') }}</p>
+                        <p class="lh-1 ps-5">Submitted In: {{ \Carbon\Carbon::parse($projcontribution->created_at)->format('F d, Y') }}</p>
+                        <p class="lh-1 ps-5">Submitted By: {{ $submitter[0]->name . ' ' . $submitter[0]->last_name }}</p>
 
-        @endphp
+                        <p class="lh-1 ps-5">Submission Attachment:</p>
+                        <div class="mb-2 text-center">
+                            <a href="{{ route('downloadterminal.file', ['projcontributionid' => $projcontribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded w-50">
+                                <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
 
-        <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">Close {{ $project->projecttitle }}</h6>
+                            </a>
+
+                        </div>
+
+                        @if( $projcontribution['approval'] != 1)
+                        <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
+                            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <b class="small">Evaluate Submission</b>
+                            </button>
+                            @livewire('project-terminal-submission', [ 'projcontributionid' => $projcontribution->id, 'project' => $project ])
+
+                        </div>
+                        @endif
+                    </div>
+
+                </div>
             </div>
+            <div class="col-4">
+                @php
 
-            <div class="p-2 pb-0 ps-5 border-bottom">
-                <p class="lh-1">Project Title: {{ $project->projecttitle }}</p>
-                <p class="lh-1">Project Duration: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectstartdate)->format('F d') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectenddate)->format('F d') }}</p>
-                <p class="lh-1">Activities in this project: {{ $allActivities }}</p>
-                <p class="lh-1">In Progress: {{ $inProgressActivities }} </p>
-                <p class="lh-1">Not Started: {{ $notStartedActivities }} </p>
-                <p class="lh-1">Completed: {{ $completedActivities }} </p>
-                <p class="lh-1">Overdue: {{ $overdueActivities }}</p>
+                $unevaluatedSubmission = $otherprojcontribution->filter(function ($contri) {
+                return $contri['approval'] === null;
+                });
+                $acceptedSubmission = $otherprojcontribution->filter(function ($contri) {
+                return $contri['approval'] === 1;
+                });
+                $rejectedSubmission = $otherprojcontribution->filter(function ($contri) {
+                return $contri['approval'] === 0;
+                });
+
+                @endphp
+                @if($otherprojcontribution->isEmpty())
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Other Submission</h6>
+                    </div>
+                    <div class="text-center p-4">
+                        <h4><em>No Other Submission Yet.</em></h4>
+                    </div>
+                </div>
+                @endif
+
+                @if (count($unevaluatedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                    </div>
+                    @foreach ($unevaluatedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom projsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+
+                    @endforeach
+                </div>
+                @endif
+                @if (count($acceptedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
+                    </div>
+                    @foreach ($acceptedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom projsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+                @if (count($rejectedSubmission) > 0)
+
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">For Revision</h6>
+                    </div>
+                    @foreach ($rejectedSubmission as $submission)
+                    <div class="p-2 pb-1 ps-4 small divhover border-bottom projsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+
+
+
+                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
+                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+
+                    </div>
+                    @endforeach
+                </div>
+                @endif
+
+
             </div>
-
         </div>
-
     </div>
 </div>
+
 @endsection
-
 @section('scripts')
-
 <script>
-    var url = "";
-
     $(document).ready(function() {
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            }
+        });
+        $('.steps span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            }
+        });
 
-        $(document).on('click', '.submithours-btn', function() {
-            var activityid = $('#activitydiv').attr("data-value");
-            var activityname = $('#activitydiv').attr("data-name");
 
-            var url = '{{ route("comply.activity", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
-            url = url.replace(':activityid', activityid);
-            url = url.replace(':activityname', activityname);
+        $('#projectdiv').click(function(event) {
+            event.preventDefault();
+            var projectid = $(this).attr('data-value');
+            var department = $(this).attr('data-dept');
 
+
+
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
             window.location.href = url;
         });
 
+        $('#activitydiv').click(function(event) {
+
+            event.preventDefault();
+            var actid = $(this).attr('data-value');
+            var activityname = $(this).attr('data-name');
+
+            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', actid);
+            url = url.replace(':activityname', activityname);
+            window.location.href = url;
+        });
 
         $('.acceptacthours-btn').click(function(event) {
             event.preventDefault();
@@ -104,64 +226,69 @@
                 }
             });
         });
-
-        $(document).on('click', '.actsubmission-div', function() {
+        $(document).on('click', '.projsubmission-div', function() {
             event.preventDefault();
 
-            var actsubmissionid = $(this).attr("data-id");
-            var actapproval = $(this).attr("data-approval");
-            var actsubmission;
+            var projsubmissionid = $(this).attr("data-id");
+            var projapproval = $(this).attr("data-approval");
+            var projsubmission;
 
-            if (actapproval === "") {
-                actsubmission = "Unevaluated-Submission";
+            if (projapproval === "") {
+                projsubmission = "Unevaluated-Submission";
             } else if (actapproval == 0) {
-                actsubmission = "Rejected-Submission";
+                projsubmission = "Rejected-Submission";
             } else if (actapproval == 1) {
-                actsubmission = "Accepted-Submission";
+                projsubmission = "Accepted-Submission";
             }
 
 
-            var url = '{{ route("actsubmission.display", ["actsubmissionid" => ":actsubmissionid", "actsubmissionname" => ":actsubmissionname"]) }}';
-            url = url.replace(':actsubmissionid', actsubmissionid);
-            url = url.replace(':actsubmissionname', actsubmission);
+            var url = '{{ route("projsubmission.display", ["projsubmissionid" => ":projsubmissionid", "projsubmissionname" => ":projsubmissionname"]) }}';
+            url = url.replace(':projsubmissionid', projsubmissionid);
+            url = url.replace(':projsubmissionname', projsubmission);
             window.location.href = url;
         });
 
-        $('.step span').each(function() {
-            var $span = $(this);
-            if ($span.text().length > 16) { // Adjust the character limit as needed
-                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
-            }
+        $('.accept-link').on('click', function(event) {
+            event.preventDefault();
+            $('#isApprove').val('true'); // Set the value for "isApprove" input
+            submitForm();
         });
 
-        $('#projectdiv').click(function(event) {
+        // Event listener for the "Reject" link
+        $('.reject-link').on('click', function(event) {
             event.preventDefault();
-            var projectid = $(this).attr('data-value');
-            var department = $(this).attr('data-dept');
-
-
-
-            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department"]) }}';
-            url = url.replace(':projectid', projectid);
-            url = url.replace(':department', encodeURIComponent(department));
-            window.location.href = url;
+            $('#isApprove').val('false'); // Set the value for "isApprove" input
+            submitForm();
         });
 
-        $('#activitydiv').click(function(event) {
+        function submitForm() {
+            var formData = $('#accepthoursform').serialize(); // Serialize form data
+            var dataurl = $('#accepthoursform').data('url'); // Get the form data-url attribute
 
-            event.preventDefault();
-            var actid = $(this).attr('data-value');
-            var activityname = $(this).attr('data-name');
+            var activityid = $('.activitydata').attr("data-value");
+            var activityname = $('.activitydata').attr("data-name");
 
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
-            url = url.replace(':activityid', actid);
+
+            var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            url = url.replace(':activityid', activityid);
             url = url.replace(':activityname', activityname);
-            window.location.href = url;
-        });
-        $('#navbarDropdown').click(function() {
-            // Add your function here
-            $('#account .dropdown-menu').toggleClass('shows');
-        });
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: dataurl,
+                data: formData,
+                success: function(response) {
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error('Error:', error);
+                }
+            });
+        }
+
     });
 </script>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectTerminal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -53,6 +54,15 @@ class FileController extends Controller
     {
         $output = activityContribution::findorFail($actcontributionid);
         $dateTime = $output->created_at;
+        $currentDateTime = str_replace(' ', '_', $dateTime);
+        $currentDateTime = str_replace(':', '-', $currentDateTime);
+        $file = 'uploads/' . $currentDateTime . '/' . str_replace('/', DIRECTORY_SEPARATOR, $filename);
+        return Storage::download($file);
+    }
+    public function downloadterminal($projcontributionid, $filename)
+    {
+        $terminal = ProjectTerminal::findorFail($projcontributionid);
+        $dateTime = $terminal->created_at;
         $currentDateTime = str_replace(' ', '_', $dateTime);
         $currentDateTime = str_replace(':', '-', $currentDateTime);
         $file = 'uploads/' . $currentDateTime . '/' . str_replace('/', DIRECTORY_SEPARATOR, $filename);

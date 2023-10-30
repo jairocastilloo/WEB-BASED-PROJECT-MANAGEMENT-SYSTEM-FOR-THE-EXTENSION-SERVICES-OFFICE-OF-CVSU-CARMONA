@@ -7,6 +7,7 @@ use App\Models\Notification;
 use App\Models\Output;
 use App\Models\OutputUser;
 use App\Models\Project;
+use App\Models\ProjectTerminal;
 use Illuminate\Http\Request;
 use App\Models\Contribution;
 use App\Models\Subtask;
@@ -151,6 +152,39 @@ class SubmissionController extends Controller
             'currentDateTime' => $currentDateTime,
             'otheractcontribution' => $otheractcontribution,
             'actcontributors' => $actcontributors,
+            'submitter' => $submitter,
+        ]);
+    }
+
+    public function displayprojsubmission($projsubmissionid, $projsubmissionname)
+    {
+        $nameofprojsubmission = str_replace('-', ' ', $projsubmissionname);
+        $projcontribution = ProjectTerminal::findorFail($projsubmissionid);
+
+        $submitterid = $projcontribution->submitter_id;
+        $submitter = User::where('id', $submitterid)->get(['name', 'last_name']);
+
+
+        $projectId = $projcontribution->project_id;
+        $project = Project::findorFail($projectId);
+
+
+        $dateTime = $projcontribution->created_at;
+        $currentDateTime = str_replace(' ', '_', $dateTime);
+        $currentDateTime = str_replace(':', '-', $currentDateTime);
+        $uploadedFiles = Storage::files('uploads/' . $currentDateTime);
+
+        $otherprojcontribution = ProjectTerminal::where('project_id', $projectId)
+            ->whereNotIn('id', [$projsubmissionid])
+            ->get();
+
+        return view('project.terminalreport', [
+            'projcontribution' => $projcontribution,
+            'project' => $project,
+            'nameofprojsubmission' => $nameofprojsubmission,
+            'uploadedFiles' => $uploadedFiles,
+            'currentDateTime' => $currentDateTime,
+            'otherprojcontribution' => $otherprojcontribution,
             'submitter' => $submitter,
         ]);
     }

@@ -151,7 +151,7 @@
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Edit Details</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.terminalreport',['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Close Project</b>
                             </a>
 
