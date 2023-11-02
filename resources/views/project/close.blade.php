@@ -24,34 +24,41 @@
     </div>
     <div class="container">
         @php
+        $countAccepted = 0;
 
-        $unevaluatedSubmission = $projectTerminal->filter(function ($contri) {
-        return $contri['approval'] === null;
-        });
-        $acceptedSubmission = $projectTerminal->filter(function ($contri) {
-        return $contri['approval'] === 1;
-        });
-        $rejectedSubmission = $projectTerminal->filter(function ($contri) {
-        return $contri['approval'] === 0;
-        });
+        $projectTerminal = $projectTerminal->map(function ($contri) use (&$countAccepted) {
+        if ($contri['approval'] === null) {
+        $contri['submission_remark'] = 'For Evaluation';
+        } elseif ($contri['approval'] === 1) {
+        $countAccepted++;
+        $contri['submission_remark'] = 'Accepted';
+        } elseif ($contri['approval'] === 0) {
+        $contri['submission_remark'] = 'For Revision';
+        } else {
+        $contri['submission_remark'] = 'Unknown'; // Handle other cases if needed
+        }
 
+        return $contri;
+        });
         @endphp
+
+
         <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
+            <div class="border-bottom p-2 pb-0 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Close Project: {{ $project->projecttitle }}</h6>
             </div>
 
-            <div class="p-2 pb-0 ps-5 border-bottom">
-                <p class="lh-1">Project Title: {{ $project->projecttitle }}</p>
-                <p class="lh-1">Project Duration: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectstartdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectenddate)->format('F d, Y') }}</p>
-                <p class="lh-1">Activities in this project: {{ $allActivities }}</p>
-                <p class="lh-1">In Progress: {{ $inProgressActivities }} </p>
-                <p class="lh-1">Not Started: {{ $notStartedActivities }} </p>
-                <p class="lh-1">Completed: {{ $completedActivities }} </p>
-                <p class="lh-1">Overdue: {{ $overdueActivities }}</p>
+            <div class="p-2 pb-0 ps-3 border-bottom">
+                <p class="lh-1 fw-bold">{{ $project->projecttitle }}</p>
+                <p class="lh-1">&nbsp;&nbsp;&nbsp;Planned Duration: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectstartdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectenddate)->format('F d, Y') }}</p>
+                <p class="lh-1 mb-0">&nbsp;&nbsp;&nbsp;Activities in this project: {{ $allActivities }}</p>
+                <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>In Progress: {{ $inProgressActivities }}</em> </p>
+                <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Not Started: {{ $notStartedActivities }}</em> </p>
+                <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Completed: {{ $completedActivities }}</em> </p>
+                <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Overdue: {{ $overdueActivities }}</em></p>
             </div>
-            @if (count($acceptedSubmission) == 0)
-            <div class="btn-group ms-3 mb-3 mt-2 shadow">
+            @if ($countAccepted == 0)
+            <div class="btn-group m-2 mb-3 shadow">
                 <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#terminalReportModal">
                     <b class="small">Submit Terminal Report</b>
                 </button>
@@ -119,67 +126,36 @@
 
         @if($projectTerminal->isEmpty())
         <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
+            <div class="border-bottom p-2 pb-0 bggreen">
+                <h6 class="fw-bold small" style="color:darkgreen;">Terminal Report/s</h6>
             </div>
             <div class="text-center p-4">
-                <h4><em>No Submission Yet.</em></h4>
+                <h4><em>No Submitted Terminal Report/s Yet.</em></h4>
             </div>
         </div>
-        @endif
-
-        @if (count($unevaluatedSubmission) > 0)
-
+        @else
         <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+            <div class="border-bottom p-2 pb-0 bggreen">
+                <h6 class="fw-bold small" style="color:darkgreen;">Terminal Report/s</h6>
             </div>
-            @foreach ($unevaluatedSubmission as $submission)
-            <div class="p-2 pb-1 ps-4 small divhover border-bottom actsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+            @foreach ($projectTerminal as $submission)
 
+            <div class="p-2 pb-1 ps-3 divhover border-bottom projsubmission-div small" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
-                <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
-                <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
+                <p class="lh-1 fw-bold"><em>{{ $submission->submission_remark  }}</em></p>
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;Actual Duration: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                @if ( $submission->notes != null)
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;<em>Notes: {{ $submission->notes }} </em></p>
+                @endif
             </div>
 
             @endforeach
         </div>
         @endif
-        @if (count($acceptedSubmission) > 0)
-
-        <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
-            </div>
-            @foreach ($acceptedSubmission as $submission)
-            <div class="p-2 pb-1 ps-4 small divhover border-bottom actsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
 
-                <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
-                <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
 
-            </div>
-            @endforeach
-        </div>
-        @endif
-        @if (count($rejectedSubmission) > 0)
-
-        <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">For Revision</h6>
-            </div>
-            @foreach ($rejectedSubmission as $submission)
-            <div class="p-2 pb-1 ps-4 small divhover border-bottom actsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                <p class="lh-1 fw-bold"> Notes: {{ $submission->notes }}</p>
-                <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
-                <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-            </div>
-            @endforeach
-        </div>
-        @endif
 
     </div>
 </div>
@@ -203,16 +179,7 @@
             $('#endDatePicker').datepicker('hide');
         });
 
-        $(document).on('click', '.submithours-btn', function() {
-            var activityid = $('#activitydiv').attr("data-value");
-            var activityname = $('#activitydiv').attr("data-name");
 
-            var url = '{{ route("comply.activity", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
-            url = url.replace(':activityid', activityid);
-            url = url.replace(':activityname', activityname);
-
-            window.location.href = url;
-        });
 
 
         $('.submitTerminal').click(function(event) {
@@ -242,25 +209,25 @@
             });
         });
 
-        $(document).on('click', '.actsubmission-div', function() {
+        $(document).on('click', '.projsubmission-div', function() {
             event.preventDefault();
 
-            var actsubmissionid = $(this).attr("data-id");
-            var actapproval = $(this).attr("data-approval");
-            var actsubmission;
+            var projsubmissionid = $(this).attr("data-id");
+            var projapproval = $(this).attr("data-approval");
+            var projsubmission;
 
-            if (actapproval === "") {
-                actsubmission = "Unevaluated-Submission";
-            } else if (actapproval == 0) {
-                actsubmission = "Rejected-Submission";
-            } else if (actapproval == 1) {
-                actsubmission = "Accepted-Submission";
+            if (projapproval === "") {
+                projsubmission = "For Evaluation";
+            } else if (projapproval == 0) {
+                projsubmission = "For Revision";
+            } else if (projapproval == 1) {
+                projsubmission = "Accepted";
             }
 
 
-            var url = '{{ route("actsubmission.display", ["actsubmissionid" => ":actsubmissionid", "actsubmissionname" => ":actsubmissionname"]) }}';
-            url = url.replace(':actsubmissionid', actsubmissionid);
-            url = url.replace(':actsubmissionname', actsubmission);
+            var url = '{{ route("projsubmission.display", ["projsubmissionid" => ":projsubmissionid", "projsubmissionname" => ":projsubmissionname"]) }}';
+            url = url.replace(':projsubmissionid', projsubmissionid);
+            url = url.replace(':projsubmissionname', projsubmission);
             window.location.href = url;
         });
 
@@ -284,17 +251,6 @@
             window.location.href = url;
         });
 
-        $('#activitydiv').click(function(event) {
-
-            event.preventDefault();
-            var actid = $(this).attr('data-value');
-            var activityname = $(this).attr('data-name');
-
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
-            url = url.replace(':activityid', actid);
-            url = url.replace(':activityname', activityname);
-            window.location.href = url;
-        });
         $('#navbarDropdown').click(function() {
             // Add your function here
             $('#account .dropdown-menu').toggleClass('shows');

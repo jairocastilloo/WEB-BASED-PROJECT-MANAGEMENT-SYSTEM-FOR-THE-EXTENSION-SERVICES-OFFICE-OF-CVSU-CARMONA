@@ -162,7 +162,7 @@ class SubmissionController extends Controller
         $projcontribution = ProjectTerminal::findorFail($projsubmissionid);
 
         $submitterid = $projcontribution->submitter_id;
-        $submitter = User::where('id', $submitterid)->get(['name', 'last_name']);
+        $submitter = User::where('id', $submitterid)->first(['name', 'last_name']);
 
 
         $projectId = $projcontribution->project_id;
