@@ -181,7 +181,7 @@ class NotStartedProjects extends Component
                     } else if ($this->projectid != null) {
                         $notstartedprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
@@ -209,7 +209,7 @@ class NotStartedProjects extends Component
                     } else if ($this->projectid != null) {
                         $notstartedprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)

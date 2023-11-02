@@ -181,7 +181,7 @@ class PastProjects extends Component
                     } else  if ($this->projectid != null) {
                         $pastmoreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
@@ -210,7 +210,7 @@ class PastProjects extends Component
                     } else if ($this->projectid != null) {
                         $pastmoreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)

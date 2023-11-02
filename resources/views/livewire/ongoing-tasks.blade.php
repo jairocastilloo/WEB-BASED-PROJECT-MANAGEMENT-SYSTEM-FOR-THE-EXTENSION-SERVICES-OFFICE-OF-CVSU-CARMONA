@@ -8,7 +8,7 @@
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover">
             <h6 class="fw-bold small" style="color:darkgreen;">
                 <i class="bi bi-list-task"></i>
-                Ongoing
+                Active
 
             </h6>
         </div>

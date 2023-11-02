@@ -192,12 +192,11 @@ class MoreProjects extends Component
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
-                            ->whereNotIn('id', [$this->projectid])
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->orderBy('created_at', 'desc')
                             ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
                         $lastpage = $moreprojects->lastPage();
-
 
                         break;
                     }
@@ -219,12 +218,12 @@ class MoreProjects extends Component
                     } else if ($this->projectid != null) {
                         $moreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
                             ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->orderBy('created_at', 'desc')
                             ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
