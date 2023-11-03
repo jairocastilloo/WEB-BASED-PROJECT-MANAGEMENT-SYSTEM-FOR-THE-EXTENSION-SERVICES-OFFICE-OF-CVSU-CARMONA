@@ -38,15 +38,12 @@ class ProjectController extends Controller
 
     public function showproject($department)
     {
+        if (Auth::user()->role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [Auth::user()->department, 'All'];
+        }
 
-
-        $currentDate = Carbon::now();
-        $currentfiscalyear = FiscalYear::where('startdate', '<=', $currentDate)
-            ->where('enddate', '>=', $currentDate)
-            ->first();
-        $currentfiscalyearid = $currentfiscalyear->id;
-        $inCurrentYear = true;
-        $fiscalyears = FiscalYear::all();
 
         if (Auth::user()->role == 'Admin') {
             if ($department == 'All') {
@@ -69,11 +66,8 @@ class ProjectController extends Controller
 
         return view('project.create', [
             'members' => $users,
-            'fiscalyears' => $fiscalyears,
-            'inCurrentYear' => $inCurrentYear,
-            'currentfiscalyear' => $currentfiscalyear,
-            'currentfiscalyearid' => $currentfiscalyearid,
-            'department' => $department
+            'department' => $department,
+            'alldepartments' => $alldepartments,
         ]);
     }
 
@@ -125,20 +119,18 @@ class ProjectController extends Controller
     {
 
         $indexproject = Project::findOrFail($projectid);
-        $currentfiscalyearid = $indexproject->fiscalyear;
-        $currentfiscalyear = FiscalYear::findorFail($currentfiscalyearid);
+
         $projectleaders = $indexproject->projectleaders;
         $programleaders = $indexproject->programleaders;
-
-        $currentDate = Carbon::now();
-        if ($currentDate >= $currentfiscalyear->startdate && $currentDate <= $currentfiscalyear->enddate) {
-            $inCurrentYear = true;
+        if (Auth::user()->role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
         } else {
-            $inCurrentYear = false;
+            $alldepartments = [Auth::user()->department, 'All'];
         }
 
-        $fiscalyears = FiscalYear::all();
         $department = $indexproject->department;
+
+        $allfiscalyears = FiscalYear::all();
         if (Auth::user()->role == 'Admin') {
             if ($department == 'All') {
                 $users = User::where('approval', 1)
@@ -165,12 +157,11 @@ class ProjectController extends Controller
             'indexproject' => $indexproject,
             'projectleaders' => $projectleaders,
             'programleaders' => $programleaders,
-            'fiscalyears' => $fiscalyears,
-            'inCurrentYear' => $inCurrentYear,
-            'currentfiscalyear' => $currentfiscalyear,
+            'alldepartments' => $alldepartments,
             'objectives' => $objectives,
             'activities' => $activities,
-            'department' => $department
+            'department' => $department,
+            'allfiscalyears' => $allfiscalyears,
         ]);
     }
 
@@ -228,7 +219,7 @@ class ProjectController extends Controller
 
 
         $projecttitle = $request->input('projecttitle');
-        $projectleaderid = $request->input('projectleader');
+        //$projectleaderid = $request->input('projectleader');
         $projectstartdate = date("Y-m-d", strtotime($request->input('projectstartdate')));
         $projectenddate = date("Y-m-d", strtotime($request->input('projectenddate')));
 
@@ -244,7 +235,7 @@ class ProjectController extends Controller
             'projectstartdate' => $projectstartdate,
             'projectenddate' => $projectenddate,
             'department' => $request->input('department'),
-            'fiscalyear' => $request->input('fiscalyear'),
+            //'fiscalyear' => $request->input('fiscalyear'),
         ]);
 
         $project->save();

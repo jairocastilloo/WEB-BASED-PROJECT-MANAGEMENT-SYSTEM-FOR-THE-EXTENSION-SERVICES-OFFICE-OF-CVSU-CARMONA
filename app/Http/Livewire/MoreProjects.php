@@ -14,7 +14,6 @@ class MoreProjects extends Component
 
     public $department;
     public $projectid;
-    public $fiscalyearid;
     public $x;
     public $inputSearch = '';
     public $currentPage = 1; // The current page number
@@ -22,14 +21,13 @@ class MoreProjects extends Component
     public $currentdate;
     protected $listeners = ['findProject' => 'handleFindProject'];
 
-    public function mount($department, $projectid, $fiscalyearid, $x)
+    public function mount($department, $projectid, $x)
 
     {
         $this->currentdate = now();
         $this->x = $x;
         $this->department = str_replace('+', ' ', $department);
         $this->projectid = $projectid;
-        $this->fiscalyearid = $fiscalyearid;
     }
     public function show($x)
     {
@@ -67,7 +65,6 @@ class MoreProjects extends Component
                 case 1:
 
                     $moreprojects = $user->projects()
-                        ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
                         ->where('projectstartdate', '<=', $this->currentdate)
                         ->where('projectenddate', '>=', $this->currentdate)
@@ -82,7 +79,6 @@ class MoreProjects extends Component
                 case 2:
 
                     $moreprojects = $user->projects()
-                        ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
                         ->where('projectstartdate', '<=', $this->currentdate)
                         ->where('projectenddate', '>=', $this->currentdate)
@@ -106,7 +102,6 @@ class MoreProjects extends Component
                     if ($this->projectid == null) {
                         $moreprojects = Project::query()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -119,7 +114,6 @@ class MoreProjects extends Component
                         $moreprojects = Project::query()
                             ->where('department', $this->department)
                             ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -136,7 +130,6 @@ class MoreProjects extends Component
                         $moreprojects = Project::query()
                             ->where('department', $this->department)
                             ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -150,7 +143,6 @@ class MoreProjects extends Component
                     } else if ($this->projectid != null) {
                         $moreprojects = Project::query()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -174,7 +166,6 @@ class MoreProjects extends Component
                     if ($this->projectid == null) {
                         $moreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -188,7 +179,6 @@ class MoreProjects extends Component
                     } else if ($this->projectid != null) {
                         $moreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -204,7 +194,6 @@ class MoreProjects extends Component
                     if ($this->projectid == null) {
                         $moreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)
@@ -218,7 +207,6 @@ class MoreProjects extends Component
                     } else if ($this->projectid != null) {
                         $moreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '<=', $this->currentdate)
                             ->where('projectenddate', '>=', $this->currentdate)

@@ -8,49 +8,24 @@
         <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
         <div class="row">
             <div class="col-lg-6">
-                <div class="basiccont rounded shadow pb-2">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Duties</h6>
-                    </div>
-                    @if (!$inCurrentYear)
-                    <span class="small ms-2"><em>
-                            Note: Not the Current Year.
-                        </em></span>
-                    @endif
-                    <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select an fiscal year">
-
-                            @foreach ($fiscalyears as $fiscalyear)
-                            <option value="{{ $fiscalyear->id }}" {{ $fiscalyear->id == $currentfiscalyear->id ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ date('F Y', strtotime($fiscalyear->startdate)) . ' - ' . date('F Y', strtotime($fiscalyear->enddate)) }}
-                            </option>
-                            @endforeach
-
-                        </select>
-                        <label for="year-select" style="color:darkgreen;">
-                            <h6><strong>Fiscal Year:</strong></h6>
-                        </label>
-                    </div>
-
-                </div>
-                <label class="ms-3 small form-label text-secondary fw-bold">Tasks</label>
-                @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'fiscalyear' => $currentfiscalyear, 'xOngoingTasks' => 1])
+                <label class="ms-3 small form-label text-secondary fw-bold">My Tasks</label>
+                @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
 
             </div>
 
             <div class="col-lg-3 p-2 pt-0">
-                <label class="ms-3 small form-label text-secondary fw-bold">Activities</label>
+                <label class="ms-3 small form-label text-secondary fw-bold">My Activities</label>
                 @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
                 @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
 
             </div>
             <div class="col-lg-3 p-2 pt-0">
-                <label class="ms-3 small form-label text-secondary fw-bold">Projects</label>
-                @livewire('more-projects', ['department' => null, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 1])
-                @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 1])
-                @livewire('past-projects', ['department' => null, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'z' => 0])
+                <label class="ms-3 small form-label text-secondary fw-bold">My Projects</label>
+                @livewire('more-projects', ['department' => null, 'projectid' => null, 'x' => 1])
+                @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 1])
+                @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
             </div>
         </div>
 
@@ -65,19 +40,20 @@
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");
         });
+        /*
+                $('#year-select').change(function() {
+                    var selectedOption = $(this).find(':selected');
+                    var currentYear = selectedOption.val();
 
-        $('#year-select').change(function() {
-            var selectedOption = $(this).find(':selected');
-            var currentYear = selectedOption.val();
+                    var username = $('#username').val();
 
-            var username = $('#username').val();
+                    var baseUrl = "{{ route('acadtasks.show', ['username' => ':username', 'currentYear' => ':currentYear']) }}";
+                    var url = baseUrl.replace(':username', username)
+                        .replace(':currentYear', currentYear);
 
-            var baseUrl = "{{ route('acadtasks.show', ['username' => ':username', 'currentYear' => ':currentYear']) }}";
-            var url = baseUrl.replace(':username', username)
-                .replace(':currentYear', currentYear);
-
-            window.location.href = url;
-        });
+                    window.location.href = url;
+                });
+                */
         $('#navbarDropdown').click(function(event) {
             // Add your function here
             event.preventDefault();

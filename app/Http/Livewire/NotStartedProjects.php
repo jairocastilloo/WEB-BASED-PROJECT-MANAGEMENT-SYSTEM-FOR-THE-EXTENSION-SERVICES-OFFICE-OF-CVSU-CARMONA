@@ -14,7 +14,6 @@ class NotStartedProjects extends Component
 
     public $department;
     public $projectid;
-    public $fiscalyearid;
 
     public $y;
     public $notstartedinputSearch = '';
@@ -23,14 +22,13 @@ class NotStartedProjects extends Component
     public $currentdate;
     protected $listeners = ['notstartedfindProject' => 'notstartedhandleFindProject'];
 
-    public function mount($department, $projectid, $fiscalyearid, $y)
+    public function mount($department, $projectid, $y)
 
     {
         $this->currentdate = now();
         $this->y = $y;
         $this->department = str_replace('+', ' ', $department);
         $this->projectid = $projectid;
-        $this->fiscalyearid = $fiscalyearid;
     }
     public function notstartedshow($y)
     {
@@ -69,7 +67,6 @@ class NotStartedProjects extends Component
                 case 1:
 
                     $notstartedprojects = $user->projects()
-                        ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
                         ->where('projectstartdate', '>', $this->currentdate)
                         ->orderBy('created_at', 'desc')
@@ -82,7 +79,6 @@ class NotStartedProjects extends Component
                 case 2:
 
                     $notstartedprojects = $user->projects()
-                        ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
                         ->where('projectstartdate', '>', $this->currentdate)
                         ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
@@ -105,7 +101,6 @@ class NotStartedProjects extends Component
                     if ($this->projectid == null) {
                         $notstartedprojects = Project::query()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -118,7 +113,6 @@ class NotStartedProjects extends Component
                         $notstartedprojects = Project::query()
                             ->where('department', $this->department)
                             ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -132,7 +126,6 @@ class NotStartedProjects extends Component
                     if ($this->projectid == null) {
                         $notstartedprojects = Project::query()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
@@ -146,7 +139,6 @@ class NotStartedProjects extends Component
                         $notstartedprojects = Project::query()
                             ->where('department', $this->department)
                             ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
@@ -169,7 +161,6 @@ class NotStartedProjects extends Component
                     if ($this->projectid == null) {
                         $notstartedprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -182,7 +173,6 @@ class NotStartedProjects extends Component
                         $notstartedprojects = $user->projects()
                             ->where('department', $this->department)
                             ->whereNotIn('projects.id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -196,7 +186,6 @@ class NotStartedProjects extends Component
                     if ($this->projectid == null) {
                         $notstartedprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
@@ -210,7 +199,6 @@ class NotStartedProjects extends Component
                         $notstartedprojects = $user->projects()
                             ->where('department', $this->department)
                             ->whereNotIn('projects.id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectstartdate', '>', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")

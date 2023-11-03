@@ -21,13 +21,16 @@ class TasksController extends Controller
 
     public function showtasks($username)
     {
+        /*
         $currentDate = Carbon::now();
+       
         $currentfiscalyear = FiscalYear::where('startdate', '<=', $currentDate)
             ->where('enddate', '>=', $currentDate)
             ->first();
         $currentfiscalyearid = $currentfiscalyear->id;
         $inCurrentYear = true;
         $fiscalyears = FiscalYear::all();
+       
 
 
         return view('implementer.index', [
@@ -36,6 +39,9 @@ class TasksController extends Controller
             'currentfiscalyear' => $currentfiscalyear,
             'currentfiscalyearid' => $currentfiscalyearid,
         ]);
+         */
+
+        return view('implementer.index');
     }
 
     public function showacadtasks($username, $currentYear)

@@ -15,14 +15,12 @@ class OngoingTasks extends Component
     public $perPageOngoingTasks = 5;
     public $currentdate;
     public $subtaskid;
-    public $fiscalyear;
     protected $listeners = ['findOngoingTasks' => 'handleFindOngoingTasks'];
-    public function mount($activityid, $subtaskid, $fiscalyear, $xOngoingTasks)
+    public function mount($activityid, $subtaskid, $xOngoingTasks)
 
     {
         $this->currentdate = now();
         $this->activityid = $activityid;
-        $this->fiscalyear = $fiscalyear;
         $this->xOngoingTasks = $xOngoingTasks;
         $this->subtaskid = $subtaskid;
     }
@@ -63,8 +61,6 @@ class OngoingTasks extends Component
 
                     $OngoingTasks = $user->subtasks()
                         ->where('status', 'Incomplete')
-                        ->where('subduedate', '>=', $this->fiscalyear->startdate)
-                        ->where('subduedate', '<=', $this->fiscalyear->enddate)
                         ->where('subduedate', '>=', now())  // Add this line
                         ->orderBy('subduedate', 'asc') // Sort in ascending order
                         ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
@@ -80,8 +76,6 @@ class OngoingTasks extends Component
 
                     $OngoingTasks = $user->subtasks()
                         ->where('status', 'Incomplete')
-                        ->where('subduedate', '>=', $this->fiscalyear->startdate)
-                        ->where('subduedate', '<=', $this->fiscalyear->enddate)
                         ->where('subduedate', '>=', now())  // Add this line
                         ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
                         ->orderBy('subduedate', 'asc') // Sort in ascending order
