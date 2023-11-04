@@ -8,32 +8,32 @@
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover">
             <h6 class="fw-bold small" style="color:darkgreen;">
                 <i class="bi bi-list-task"></i>
-                Active
+                Missing
 
             </h6>
         </div>
 
-        <div class="m-2 mb-0 text-center" @if ($xOngoingTasks==0)style="display: none;" @endif>
-            <input type="text" class="form-control border border-2 mb-2" id="inputSearchOngoingTasks" placeholder="Enter name...">
-            <button type="button" class="btn btn-sm btn-outline-success px-3" id="btnSearchOngoingTasks">Search Task</button>
+        <div class="m-2 mb-0 text-center" @if ($xMissingTasks==0)style="display: none;" @endif>
+            <input type="text" class="form-control border border-2 mb-2" id="inputSearchMissingTasks" placeholder="Enter name...">
+            <button type="button" class="btn btn-sm btn-outline-success px-3" id="btnSearchMissingTasks">Search Task</button>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
                 Please enter a subtask name.
             </span>
         </div>
-        <div class="text-center m-1" @if ($xOngoingTasks==0)style="display: none;" @endif>
-            <button wire:click="refreshDataOngoingTasks" type="button" class="btn btn-sm btn-light border small">
+        <div class="text-center m-1" @if ($xMissingTasks==0)style="display: none;" @endif>
+            <button wire:click="refreshDataMissingTasks" type="button" class="btn btn-sm btn-light border small">
                 Refresh
             </button>
         </div>
-        @if ($xOngoingTasks == 0)
+        @if ($xMissingTasks == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showOngoingTasks(1)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showMissingTasks(1)">
                 <b class="small">Show Tasks</b>
             </button>
 
         </div>
         @else
-        @if ($OngoingTasks->isEmpty())
+        @if ($MissingTasks->isEmpty())
         <div class="p-2">
             <h6 class="fw-bold small">No Tasks found.</h6>
         </div>
@@ -42,7 +42,7 @@
 
 
         <div class="container p-0">
-            @foreach($OngoingTasks as $subtask)
+            @foreach($MissingTasks as $subtask)
 
             <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
                 @php
@@ -81,23 +81,23 @@
             <nav class="border-bottom">
                 <ul class="pagination justify-content-center m-1 mt-0">
 
-                    @if ($currentPageOngoingTasks === 1)
+                    @if ($currentPageMissingTasks === 1)
                     <li class="page-item disabled">
                         <span class="page-link small" aria-hidden="true"><i class="bi bi-caret-left-fill"></i></span>
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageOngoingTasks({{ $currentPageOngoingTasks - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
+                        <a class="page-link" wire:click="changePageMissingTasks({{ $currentPageMissingTasks - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
                     </li>
                     @endif
 
                     <li class="page-item text-center">
-                        <h6 class="fw-bold my-0 mt-2 small">{{ $currentPageOngoingTasks . ' of ' . $totalPagesOngoingTasks }}</h6>
+                        <h6 class="fw-bold my-0 mt-2 small">{{ $currentPageMissingTasks . ' of ' . $totalPagesMissingTasks }}</h6>
                         <span class="m-0 text-secondary fw-bold" style="font-size: 12px;">Pages</span>
                     </li>
 
 
-                    @if ($currentPageOngoingTasks === $totalPagesOngoingTasks)
+                    @if ($currentPageMissingTasks === $totalPagesMissingTasks)
                     <li class="page-item disabled">
                         <span class="page-link" aria-hidden="true">
                             <i class="bi bi-caret-right-fill"></i>
@@ -105,14 +105,14 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageOngoingTasks({{ $currentPageOngoingTasks + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
+                        <a class="page-link" wire:click="changePageMissingTasks({{ $currentPageMissingTasks + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
                     </li>
                     @endif
 
                 </ul>
             </nav>
             <div class="text-center p-2 border border-bottom-2">
-                <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showOngoingTasks(0)">
+                <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showMissingTasks(0)">
                     <b class="small">Hide Tasks</b>
                 </button>
 
@@ -127,32 +127,32 @@
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <script>
         document.addEventListener('livewire:load', function() {
-            const btnSearchOngoingTasks = document.getElementById('btnSearchOngoingTasks');
-            const inputSearchOngoingTasks = document.getElementById('inputSearchOngoingTasks');
-            btnSearchOngoingTasks.addEventListener('click', function() {
+            const btnSearchMissingTasks = document.getElementById('btnSearchMissingTasks');
+            const inputSearchMissingTasks = document.getElementById('inputSearchMissingTasks');
+            btnSearchMissingTasks.addEventListener('click', function() {
 
-                var searchInputOngoingTasks = inputSearchOngoingTasks.value;
-                if (searchInputOngoingTasks != "") {
-                    inputSearchOngoingTasks.classList.remove('is-invalid');
+                var searchInputMissingTasks = inputSearchMissingTasks.value;
+                if (searchInputMissingTasks != "") {
+                    inputSearchMissingTasks.classList.remove('is-invalid');
 
-                    Livewire.emit('findOngoingTasks', searchInputOngoingTasks, 2);
+                    Livewire.emit('findMissingTasks', searchInputMissingTasks, 2);
 
                 } else {
-                    inputSearchOngoingTasks.classList.add('is-invalid');
+                    inputSearchMissingTasks.classList.add('is-invalid');
                 }
             });
 
-            inputSearchOngoingTasks.addEventListener('keydown', function(event) {
+            inputSearchMissingTasks.addEventListener('keydown', function(event) {
                 // Check if the pressed key is "Enter" (key code 13)
                 if (event.keyCode === 13) {
-                    var searchInputOngoingTasks = inputSearchOngoingTasks.value;
-                    if (searchInputOngoingTasks != "") {
-                        inputSearchOngoingTasks.classList.remove('is-invalid');
+                    var searchInputMissingTasks = inputSearchMissingTasks.value;
+                    if (searchInputMissingTasks != "") {
+                        inputSearchMissingTasks.classList.remove('is-invalid');
 
-                        Livewire.emit('findOngoingTasks', searchInputOngoingTasks, 2);
+                        Livewire.emit('findMissingTasks', searchInputMissingTasks, 2);
 
                     } else {
-                        inputSearchOngoingTasks.classList.add('is-invalid');
+                        inputSearchMissingTasks.classList.add('is-invalid');
                     }
                 }
             });

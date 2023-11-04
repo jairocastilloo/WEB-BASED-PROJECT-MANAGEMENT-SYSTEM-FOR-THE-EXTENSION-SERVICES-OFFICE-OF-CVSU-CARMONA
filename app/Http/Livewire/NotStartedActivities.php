@@ -62,8 +62,7 @@ class NotStartedActivities extends Component
 
                     $NotStartedActivities = $user->activities()
                         ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '<=', $this->currentdate)
-                        ->where('actenddate', '>=', $this->currentdate)
+                        ->where('actstartdate', '>', $this->currentdate)
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
 
@@ -76,8 +75,7 @@ class NotStartedActivities extends Component
 
                     $NotStartedActivities = $user->activities()
                         ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '<=', $this->currentdate)
-                        ->where('actenddate', '>=', $this->currentdate)
+                        ->where('actstartdate', '>', $this->currentdate)
                         ->where('actname', 'like', "%$this->inputSearchNotStartedActivities%")
                         ->orderBy('created_at', 'desc')
                         ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);

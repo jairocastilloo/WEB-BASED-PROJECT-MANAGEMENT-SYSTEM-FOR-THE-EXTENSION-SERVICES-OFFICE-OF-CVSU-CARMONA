@@ -11,21 +11,24 @@
 
                 <label class="ms-3 small form-label text-secondary fw-bold">My Tasks</label>
                 @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
+                @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 1])
+                @livewire('completed-tasks', ['activityid' => null, 'subtaskid' => null, 'xCompletedTasks' => 0])
 
             </div>
 
-            <div class="col-lg-3 p-2 pt-0">
+            <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">My Activities</label>
                 @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
                 @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
 
             </div>
-            <div class="col-lg-3 p-2 pt-0">
+            <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">My Projects</label>
                 @livewire('more-projects', ['department' => null, 'projectid' => null, 'x' => 1])
                 @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 1])
                 @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
+                @livewire('completed-projects', ['department' => null, 'projectid' => null, 'xCompletedProjects' => 0])
             </div>
         </div>
 

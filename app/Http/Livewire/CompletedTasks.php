@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Component;
+
+class CompletedTasks extends Component
+{
+    public $activityid;
+    public $xCompletedTasks;
+    public $inputSearchCompletedTasks = '';
+    public $currentPageCompletedTasks = 1; // The current page number
+    public $perPageCompletedTasks = 5;
+    public $currentdate;
+    public $subtaskid;
+    protected $listeners = ['findCompletedTasks' => 'handleFindCompletedTasks'];
+
+    public function mount($activityid, $subtaskid, $xCompletedTasks)
+
+    {
+        $this->currentdate = now();
+        $this->activityid = $activityid;
+        $this->xCompletedTasks = $xCompletedTasks;
+        $this->subtaskid = $subtaskid;
+    }
+    public function showCompletedTasks($xCompletedTasks)
+    {
+        $this->xCompletedTasks = $xCompletedTasks;
+    }
+    public function refreshDataCompletedTasks()
+    {
+        $this->xCompletedTasks = 1;
+        $this->currentPageCompletedTasks = 1;
+    }
+    public function changePageCompletedTasks($page)
+    {
+        $this->currentPageCompletedTasks = $page;
+    }
+    public function findCompletedTasks($inputSearchCompletedTasks, $xCompletedTasks)
+    {
+        $this->inputSearchCompletedTasks = $inputSearchCompletedTasks;
+        $this->xCompletedTasks = $xCompletedTasks;
+        $this->currentPageCompletedTasks = 1;
+    }
+    public function handleFindCompletedTasks($inputSearchCompletedTasks, $xCompletedTasks)
+    {
+        $this->findCompletedTasks($inputSearchCompletedTasks, $xCompletedTasks);
+    }
+
+    public function render()
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        if ($this->activityid == null && $this->subtaskid == null) {
+            switch ($this->xCompletedTasks) {
+
+                case 0:
+                    $CompletedTasks = null;
+                    $lastpageCompletedTasks = null;
+                    break;
+                case 1:
+
+                    $CompletedTasks = $user->subtasks()
+                        ->where('status', 'Completed')
+                        ->orderBy('subduedate', 'desc') // Sort in ascending order
+                        ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
+
+
+
+                    $lastpageCompletedTasks = $CompletedTasks->lastPage();
+
+
+                    break;
+
+                case 2:
+
+                    $CompletedTasks = $user->subtasks()
+                        ->where('status', 'Completed')
+                        ->where('subduedate', '>=', now())  // Add this line
+                        ->where('actname', 'like', "%$this->inputSearchCompletedTasks%")
+                        ->orderBy('subduedate', 'desc') // Sort in ascending order
+                        ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
+
+                    $lastpageCompletedTasks = $CompletedTasks->lastPage();
+
+
+                    break;
+            }
+        }
+        return view('livewire.completed-tasks', [
+            'CompletedTasks' => $CompletedTasks,
+            'totalPagesCompletedTasks' => $lastpageCompletedTasks
+        ]);
+    }
+}

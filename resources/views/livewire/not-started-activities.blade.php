@@ -5,7 +5,7 @@
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover">
             <h6 class="fw-bold small" style="color:darkgreen;">
                 <i class="bi bi-activity"></i>
-                Not Started
+                Upcoming
 
             </h6>
         </div>
@@ -41,16 +41,16 @@
         <div class="container p-0">
 
             @foreach ($NotStartedActivities as $activity)
-            <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
+            <div class="border-bottom ps-3 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
-                <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                <h6 class="fw-bold small" style="color: #4A4A4A;">{{ $activity['actname'] }}</h6>
 
                 @php
-                $startDate = date('M d', strtotime($activity['actstartdate']));
-                $endDate = date('M d', strtotime($activity['actenddate']));
+                $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                $endDate = date('M d, Y', strtotime($activity['actenddate']));
                 @endphp
-
-                <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                <h6 class="text-secondary small">{{ 'Created ' . date('M d, Y', strtotime($activity['created_at'])) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
             </div>
 
             @endforeach
@@ -125,7 +125,7 @@
                     if (searchInputNotStartedActivities != "") {
                         inputSearchNotStartedActivities.classList.remove('is-invalid');
 
-                        Livewire.emit('findNotStartedActivities', searchNotStartedActivities, 2);
+                        Livewire.emit('findNotStartedActivities', searchInputNotStartedActivities, 2);
 
                     } else {
                         inputSearchNotStartedActivities.classList.add('is-invalid');

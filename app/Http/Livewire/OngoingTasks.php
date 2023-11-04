@@ -45,7 +45,7 @@ class OngoingTasks extends Component
     }
     public function handleFindOngoingTasks($inputSearchOngoingTasks, $xOngoingTasks)
     {
-        $this->findInProgressActivities($inputSearchOngoingTasks, $xOngoingTasks);
+        $this->findOngoingTasks($inputSearchOngoingTasks, $xOngoingTasks);
     }
     public function render()
     {

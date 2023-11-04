@@ -50,7 +50,7 @@
 
 
             @foreach ($notstartedprojects as $project)
-            <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+            <div class="border-bottom ps-3 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                 <h6 class="fw-bold small" style="color: #4A4A4A;">{{ $project['projecttitle'] }}</h6>
 
@@ -60,7 +60,7 @@
 
                 @endphp
                 <h6 class="text-secondary small">{{ 'Created ' . date('M d Y', strtotime($project['created_at'])) }}</h6>
-                <h6 class="ps-2 lh-1 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
+                <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
 
 
 
