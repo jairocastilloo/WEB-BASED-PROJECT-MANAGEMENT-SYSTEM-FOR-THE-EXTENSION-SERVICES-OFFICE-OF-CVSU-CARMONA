@@ -21,6 +21,7 @@
                 @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
                 @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
+                @livewire('completed-activities', ['projectid' => null, 'activityid' => null, 'xCompletedActivities' => 0])
 
             </div>
             <div class="col-lg-3">

@@ -37,7 +37,7 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-9">
                 @php
 
                 $unevaluatedSubmission = $contributions->filter(function ($contri) {
@@ -137,21 +137,15 @@
                 @livewire('subtask-assignees', ['subtask' => $subtask, 'activity' => $activity ])
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Subtasks</label>
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
-                    </div>
-                    @php
-                    // Sort the $activities array by actstartdate in ascending order
-                    $sortedSubtasks = $subtasks->sortBy('subduedate');
 
-                    @endphp
-                    @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
+                @livewire('ongoing-tasks', ['activityid' => $activity->id, 'subtaskid' => $subtask->id, 'xOngoingTasks' => 1])
+                @livewire('missing-tasks', ['activityid' => $activity->id, 'subtaskid' => $subtask->id, 'xMissingTasks' => 1])
+                @livewire('completed-tasks', ['activityid' => $activity->id, 'subtaskid' => $subtask->id, 'xCompletedTasks' => 0])
 
 
-                </div>
+
             </div>
         </div>
     </div>

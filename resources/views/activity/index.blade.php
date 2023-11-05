@@ -38,7 +38,7 @@
             @if ($activity['subtask'] == 1)
             <div class="col-lg-6">
                 @elseif ($activity['subtask'] == 0)
-                <div class="col-lg-10">
+                <div class="col-lg-9">
                     @endif
                     <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 bggreen">
@@ -55,7 +55,7 @@
                 </div>
                 @if ($activity['subtask'] == 1)
 
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="basiccont word-wrap shadow">
                         <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
                             <div class="row">
@@ -69,25 +69,9 @@
                                 @endif
                             </div>
                         </div>
-                        @php
-                        // Sort the $activities array by actstartdate in ascending order
-                        $sortedSubtasks = $subtasks->sortBy('subduedate');
-
-                        @endphp
-                        @if ($subtasks->count() == 0)
-
-
-
-                        <div class="text-center p-4 pb-2">
-                            <h4><em>No Added Subtask Yet.</em></h4>
-                        </div>
-
-                        @else
-
-                        @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
-
-
-                        @endif
+                        @livewire('ongoing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xOngoingTasks' => 1])
+                        @livewire('missing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xMissingTasks' => 1])
+                        @livewire('completed-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xCompletedTasks' => 0])
 
 
                         <div class="btn-group ms-3 mt-2 mb-3 shadow">
@@ -101,30 +85,13 @@
 
                 @endif
 
-                <div class="col-lg-2">
+                <div class="col-lg-3">
 
-
-                    @php
-                    // Sort the $activities array by actstartdate in ascending order
-                    $sortedActivities = $activities->sortBy('actstartdate');
-
-                    @endphp
                     <label class="ms-3 small form-label text-secondary fw-bold">Other Activities</label>
-                    @if($activities->isEmpty())
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
-                        </div>
-                        <div class="text-center p-4">
-                            <h4><em>No Other Activities Yet.</em></h4>
-                        </div>
-                    </div>
-                    @else
-                    @livewire('other-activities', ['activities' => $sortedActivities] )
-
-                    @endif
-
-
+                    @livewire('in-progress-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xInProgressActivities' => 1])
+                    @livewire('not-started-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xNotStartedActivities' => 1])
+                    @livewire('past-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xPastActivities' => 0])
+                    @livewire('completed-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xCompletedActivities' => 0])
                 </div>
             </div>
 
