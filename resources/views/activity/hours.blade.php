@@ -36,20 +36,25 @@
         </div>
     </div>
     <div class="container">
-
         @php
+        $countAccepted = 0;
 
-        $unevaluatedSubmission = $activitycontributions->filter(function ($contri) {
-        return $contri['approval'] === null;
-        });
-        $acceptedSubmission = $activitycontributions->filter(function ($contri) {
-        return $contri['approval'] === 1;
-        });
-        $rejectedSubmission = $activitycontributions->filter(function ($contri) {
-        return $contri['approval'] === 0;
-        });
+        $activitycontributions = $activitycontributions->map(function ($contri) use (&$countAccepted) {
+        if ($contri['approval'] === null) {
+        $contri['submission_remark'] = 'For Evaluation';
+        } elseif ($contri['approval'] === 1) {
+        $countAccepted++;
+        $contri['submission_remark'] = 'Accepted';
+        } elseif ($contri['approval'] === 0) {
+        $contri['submission_remark'] = 'For Revision';
+        } else {
+        $contri['submission_remark'] = 'Unknown'; // Handle other cases if needed
+        }
 
+        return $contri;
+        });
         @endphp
+
 
         <div class="basiccont word-wrap shadow">
             <div class="border-bottom p-2 ps-3 pb-0 bggreen">
@@ -77,7 +82,7 @@
 
             </div>
 
-            @if (count($acceptedSubmission) == 0)
+            @if ($countAccepted == 0)
             <div class="btn-group m-2 ms-3 mb-3 shadow">
                 <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal">
                     <b class="small">Submit Accomplishment Report</b>
@@ -96,6 +101,10 @@
                                 @csrf
                                 <input type="hidden" name="activity-id" value="{{ $activity->id }}">
                                 <input type="hidden" name="submitter-id" value="{{ Auth::user()->id }}">
+                                <div class="mb-3">
+                                    <label class="form-label">Activity Hours:</label>
+                                    <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" value="0" min="0" step="1">
+                                </div>
                                 <div class="mb-3">
                                     <label for="activitystartdate" class="form-label">Activity Start Date</label>
                                     <div class="input-group date" id="startDatePicker">
@@ -166,65 +175,28 @@
         </div>
     -->
 
-        @if($activitycontributions->isEmpty())
-
-        @endif
-
-        @if (count($unevaluatedSubmission) > 0)
+        @if(!$activitycontributions->isEmpty())
 
         <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+            <div class="border-bottom ps-3 p-2 pb-0 bggreen">
+                <h6 class="fw-bold small" style="color:darkgreen;">Accomplishment Report/s</h6>
             </div>
-            @foreach ($unevaluatedSubmission as $submission)
-            <div class="p-2 pb-1 ps-4 small divhover border-bottom actsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+            @foreach ($activitycontributions as $submission)
 
-                <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
-                <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+            <div class="p-2 pb-1 ps-3 divhover border-bottom actsubmission-div small" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
+                <p class="lh-1 fw-bold"><em>{{ $submission->submission_remark  }}</em></p>
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;Activity Hours: {{ $submission->hours_rendered }} </p>
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;Actual Duration: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                @if ( $submission->notes != null)
+                <p class="lh-1"> &nbsp;&nbsp;&nbsp;<em>Notes: {{ $submission->notes }} </em></p>
+                @endif
             </div>
 
             @endforeach
         </div>
         @endif
-        @if (count($acceptedSubmission) > 0)
-
-        <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
-            </div>
-            @foreach ($acceptedSubmission as $submission)
-            <div class="p-2 pb-1 ps-4 small divhover border-bottom actsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
-                <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-            </div>
-            @endforeach
-        </div>
-        @endif
-        @if (count($rejectedSubmission) > 0)
-
-        <div class="basiccont word-wrap shadow">
-            <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                <h6 class="fw-bold small" style="color:darkgreen;">For Revision</h6>
-            </div>
-            @foreach ($rejectedSubmission as $submission)
-            <div class="p-2 pb-1 ps-4 small divhover border-bottom actsubmission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                <p class="lh-1 fw-bold"> Notes: {{ $submission->notes }}</p>
-                <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
-                <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-            </div>
-            @endforeach
-        </div>
-        @endif
-
-
 
 
     </div>
@@ -316,11 +288,11 @@
             var actsubmission;
 
             if (actapproval === "") {
-                actsubmission = "Unevaluated-Submission";
+                actsubmission = "For Evaluation";
             } else if (actapproval == 0) {
-                actsubmission = "Rejected-Submission";
+                actsubmission = "For Revision";
             } else if (actapproval == 1) {
-                actsubmission = "Accepted-Submission";
+                actsubmission = "Accepted";
             }
 
 

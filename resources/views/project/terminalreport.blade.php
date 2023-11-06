@@ -48,12 +48,12 @@
                         </div>
 
                         <div class="p-2 pb-0 ps-3 border-bottom">
-                            <p class="lh-1">{{ $project->projecttitle }}</p>
-                            <p class="lh-1">&nbsp;&nbsp;&nbsp;Actual Duration: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $projcontribution->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $projcontribution->enddate)->format('F d, Y') }}</p>
-                            <p class="lh-1">&nbsp;&nbsp;&nbsp;Submitted In: {{ \Carbon\Carbon::parse($projcontribution->created_at)->format('F d, Y') }}</p>
-                            <p class="lh-1">&nbsp;&nbsp;&nbsp;Submitted By: {{ $submitter->name . ' ' . $submitter->last_name }}</p>
+                            <p class="lh-1"><b>{{ $project->projecttitle }}</b></p>
+                            <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Actual Duration:</b> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $projcontribution->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $projcontribution->enddate)->format('F d, Y') }}</p>
+                            <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Submitted In:</b> {{ \Carbon\Carbon::parse($projcontribution->created_at)->format('F d, Y') }}</p>
+                            <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Submitted By:</b> {{ $submitter->name . ' ' . $submitter->last_name }}</p>
 
-                            <p class="lh-1">&nbsp;&nbsp;&nbsp;Submission Attachment:</p>
+                            <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Submission Attachment:</b></p>
                             <div class="mb-2 text-center">
                                 <a href="{{ route('downloadterminal.file', ['projcontributionid' => $projcontribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded w-50">
                                     <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>

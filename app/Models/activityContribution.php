@@ -18,7 +18,8 @@ class activityContribution extends Model
         'enddate',
         'hours_rendered',
         'approval',
-        'submitter_id'
+        'submitter_id',
+        'notes'
     ];
 
     public function users()

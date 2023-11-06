@@ -357,6 +357,7 @@ class ActivityController extends Controller
             'startdate' => $activitystartdate,
             'enddate' => $activityenddate,
             'submitter_id' => $request->input('submitter-id'),
+            'hours_rendered' => $request->input('hours-rendered'),
         ]);
         $activitycontribution->save();
         $activityimplementers = $request->input('activityimplementers');

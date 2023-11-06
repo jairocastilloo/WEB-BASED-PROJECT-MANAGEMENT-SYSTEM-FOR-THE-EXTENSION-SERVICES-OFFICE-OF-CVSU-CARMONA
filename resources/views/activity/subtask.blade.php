@@ -38,18 +38,24 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9">
+
                 @php
+                $countAccepted = 0;
 
-                $unevaluatedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] === null;
-                });
-                $acceptedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] === 1;
-                });
-                $rejectedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] === 0;
-                });
+                $contributions = $contributions->map(function ($contri) use (&$countAccepted) {
+                if ($contri['approval'] === null) {
+                $contri['submission_remark'] = 'For Evaluation';
+                } elseif ($contri['approval'] === 1) {
+                $countAccepted++;
+                $contri['submission_remark'] = 'Accepted';
+                } elseif ($contri['approval'] === 0) {
+                $contri['submission_remark'] = 'For Revision';
+                } else {
+                $contri['submission_remark'] = 'Unknown'; // Handle other cases if needed
+                }
 
+                return $contri;
+                });
                 @endphp
 
                 <div class="basiccont word-wrap shadow pb-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
@@ -60,80 +66,17 @@
                     <p class="ps-4 lh-1"><b>Total Hours Rendered:</b> {{ $subtask['hours_rendered'] }}</p>
                     <p class="ps-4 lh-1"><b>Due Date:</b> {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
                     </p>
-                    @if (count($acceptedSubmission) == 0)
+                    @if ($countAccepted == 0)
                     <div class="btn-group ms-3 mb-1 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
-                            <b class="small">Submit Hours</b>
+                            <b class="small">Submit Accomplishment Report</b>
                         </button>
                     </div>
                     @endif
 
                 </div>
 
-                @if($contributions->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
-                    </div>
-                    <div class="text-center p-4">
-                        <h4><em>No Submission Yet.</em></h4>
-                    </div>
-                </div>
-                @endif
 
-                @if (count($unevaluatedSubmission) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
-                    </div>
-                    @foreach ($unevaluatedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-                    </div>
-
-                    @endforeach
-                </div>
-                @endif
-                @if (count($acceptedSubmission) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
-                    </div>
-                    @foreach ($acceptedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-                    </div>
-                    @endforeach
-                </div>
-                @endif
-                @if (count($rejectedSubmission) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">For Revision</h6>
-                    </div>
-                    @foreach ($rejectedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1 fw-bold"> Notes: {{ $submission->notes }}</p>
-                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-                    </div>
-                    @endforeach
-                </div>
-                @endif
                 @livewire('subtask-assignees', ['subtask' => $subtask, 'activity' => $activity ])
             </div>
 

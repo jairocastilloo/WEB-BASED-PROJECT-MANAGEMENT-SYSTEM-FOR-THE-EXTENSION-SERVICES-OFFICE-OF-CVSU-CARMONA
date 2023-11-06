@@ -1,7 +1,7 @@
 <div>
     <div class="dropdown-menu border-warning">
         <a class="dropdown-item small hrefnav accept-link" wire:click="accept"><b class="small">Accept</b></a>
-        <a class="dropdown-item small hrefnav reject-link" data-bs-toggle="modal" data-bs-target="#myModal"><b class="small">For Revision</b></a>
+        <a class="dropdown-item small hrefnav" data-bs-toggle="modal" data-bs-target="#myModal"><b class="small">For Revision</b></a>
     </div>
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
