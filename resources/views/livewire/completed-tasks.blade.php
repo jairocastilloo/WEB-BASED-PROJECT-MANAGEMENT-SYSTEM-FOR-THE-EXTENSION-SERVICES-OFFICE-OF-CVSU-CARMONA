@@ -34,8 +34,8 @@
         </div>
         @else
         @if ($CompletedTasks->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Tasks found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Finished Tasks</h6>
         </div>
         @else
 

@@ -43,7 +43,7 @@
                 <div class="col-lg-9">
                     @endif
                     <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom p-2 pb-0 bggreen">
+                        <div class="border-bottom p-2 ps-3 pb-0 bggreen">
                             <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofprojsubmission }}</h6>
                         </div>
 

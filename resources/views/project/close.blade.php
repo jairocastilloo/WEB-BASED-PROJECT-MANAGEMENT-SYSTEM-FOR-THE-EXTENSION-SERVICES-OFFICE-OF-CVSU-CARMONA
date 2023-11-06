@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="maincontainer border border-start border-end border-bottom border-top-0">
     <div class="mainnav shadow mb-3 shadow-sm">
         <div class="step-wrapper">
             <div class="step divhover" id="projectdiv" data-value="{{ $project->id }}" data-dept="{{ $project->department }}">
@@ -44,26 +44,26 @@
 
 
         <div class="basiccont word-wrap shadow">
-            <div class="border-bottom p-2 pb-0 bggreen">
+            <div class="border-bottom p-2 ps-3 pb-0 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Close Project: {{ $project->projecttitle }}</h6>
             </div>
 
             <div class="p-2 pb-0 ps-3 border-bottom">
                 <p class="lh-1 fw-bold">{{ $project->projecttitle }}</p>
-                <p class="lh-1">&nbsp;&nbsp;&nbsp;Planned Duration: {{ \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectstartdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectenddate)->format('F d, Y') }}</p>
-                <p class="lh-1 mb-0">&nbsp;&nbsp;&nbsp;Activities in this project: {{ $allActivities }}</p>
+                <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Planned Duration:</b> {{ \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectstartdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $project->projectenddate)->format('F d, Y') }}</p>
+                <p class="lh-1 mb-0">&nbsp;&nbsp;&nbsp;<b>Activities Completed:</b> {{ $completedActivities . ' out of ' . $allActivities }}</p>
                 <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>In Progress: {{ $inProgressActivities }}</em> </p>
                 <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Not Started: {{ $notStartedActivities }}</em> </p>
                 <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Completed: {{ $completedActivities }}</em> </p>
                 <p class="lh-1 m-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Overdue: {{ $overdueActivities }}</em></p>
             </div>
             @if ($countAccepted == 0)
-            <div class="btn-group m-2 mb-3 shadow">
+            <div class="btn-group m-2 ms-3 mb-3 shadow">
                 <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#terminalReportModal">
                     <b class="small">Submit Terminal Report</b>
                 </button>
             </div>
-            @endif
+
             <div class="modal fade" id="terminalReportModal" tabindex="-1" aria-labelledby="terminalReportModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -119,12 +119,12 @@
                     </div>
                 </div>
             </div>
+            @endif
 
         </div>
 
 
-
-        @if($projectTerminal->isEmpty())
+        <!--
         <div class="basiccont word-wrap shadow">
             <div class="border-bottom p-2 pb-0 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Terminal Report/s</h6>
@@ -133,7 +133,9 @@
                 <h4><em>No Submitted Terminal Report/s Yet.</em></h4>
             </div>
         </div>
-        @else
+    -->
+        @if(!$projectTerminal->isEmpty())
+
         <div class="basiccont word-wrap shadow">
             <div class="border-bottom p-2 pb-0 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">Terminal Report/s</h6>
@@ -187,7 +189,7 @@
             var dataurl = $('#terminalForm').attr('data-url');
             // Create a data object with the value you want to send
             var formData = new FormData($("#terminalForm")[0]);
-            var goToUrl = "{{ route('projsubmission.display', [ 'projsubmissionid' => ':projsubmissionid', 'projsubmissionname' => 'Unevaluated-Submission' ])}}"
+            var goToUrl = "{{ route('projsubmission.display', [ 'projsubmissionid' => ':projsubmissionid', 'projsubmissionname' => 'For Evaluation' ])}}"
 
 
             $.ajax({

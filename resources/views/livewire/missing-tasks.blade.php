@@ -34,8 +34,8 @@
         </div>
         @else
         @if ($MissingTasks->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Tasks found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Missing Tasks</h6>
         </div>
         @else
 

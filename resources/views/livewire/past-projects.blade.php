@@ -31,8 +31,8 @@
         </div>
         @else
         @if ($pastmoreprojects->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Projects found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Overdue Projects</h6>
         </div>
         @else
 

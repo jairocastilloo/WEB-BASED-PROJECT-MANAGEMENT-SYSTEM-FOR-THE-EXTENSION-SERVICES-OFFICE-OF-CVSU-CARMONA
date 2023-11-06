@@ -25,8 +25,8 @@
         </button>
         <div class="dropdown-menu border border-1 border-warning">
             <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Edit Details</b></a>
-            <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
-            <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Participation Hours</b></a>
+            <!--<a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>-->
+            <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Close Activity</b></a>
         </div>
     </div>
     <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">

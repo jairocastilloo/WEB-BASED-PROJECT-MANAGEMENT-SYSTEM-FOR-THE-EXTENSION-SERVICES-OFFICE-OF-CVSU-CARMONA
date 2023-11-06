@@ -31,8 +31,8 @@
         </div>
         @else
         @if ($CompletedProjects->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Projects found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Completed Projects</h6>
         </div>
         @else
 

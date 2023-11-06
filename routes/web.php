@@ -169,3 +169,4 @@ Route::get('/adminindex/{department}', [AdminController::class, 'index'])->name(
 Route::post('/approve-account', AccountApproval::class);
 Route::get('/send-email', [MailController::class, 'sendEmail']);
 Route::post('/uploadterminalreport', [ProjectController::class, 'uploadTerminalReport'])->name('projects.uploadterminal');
+Route::post('/uploadaccomplishmentreport', [ActivityController::class, 'uploadAccomplishmentReport'])->name('activities.uploadaccomplishment');

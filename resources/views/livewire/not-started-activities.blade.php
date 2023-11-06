@@ -31,8 +31,8 @@
         </div>
         @else
         @if ($NotStartedActivities->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Activities found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Upcoming Activities</h6>
         </div>
         @else
 
