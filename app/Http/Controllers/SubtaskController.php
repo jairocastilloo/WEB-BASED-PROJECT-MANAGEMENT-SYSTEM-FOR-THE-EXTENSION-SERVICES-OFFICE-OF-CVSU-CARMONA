@@ -180,6 +180,13 @@ class SubtaskController extends Controller
 
         $contributions = Contribution::where('subtask_id', $subtaskid)
             ->get();
+        $assigneesIds = SubtaskUser::where('subtask_id', $subtaskid)
+            ->pluck('user_id')
+            ->toArray();
+
+        $assignees = User::whereIn('id', $assigneesIds)
+            ->get(['id', 'name', 'last_name']);
+
 
         return view('activity.subtask', [
             'activity' => $activity,
@@ -187,6 +194,7 @@ class SubtaskController extends Controller
             'subtasks' => $subtasks,
             'project' => $project,
             'contributions' => $contributions,
+            'assignees' => $assignees
         ]);
     }
 
@@ -213,5 +221,52 @@ class SubtaskController extends Controller
                 ->delete();
         }
         return 'File uploaded successfully.';
+    }
+    public function uploadAccomplishmentReport(Request $request)
+    {
+        /*
+        $request->validate([
+            'projectstartdate' => 'required|date_format:m/d/Y|before_or_equal:projectenddate',
+            'projectenddate' => 'required|date_format:m/d/Y|after_or_equal:projectstartdate',
+            'terminal_file' => 'required|mimes:docx|max:4096',
+        ]);
+        */
+        $subtaskstartdate = date("Y-m-d", strtotime($request->input('subtaskstartdate')));
+        $subtaskenddate = date("Y-m-d", strtotime($request->input('subtaskenddate')));
+
+        $subtaskcontribution = new Contribution([
+            'subtask_id' => $request->input('subtask-id'),
+            'date' => $subtaskstartdate,
+            'enddate' => $subtaskenddate,
+            'submitter_id' => $request->input('submitter-id'),
+            'hours_rendered' => $request->input('hours-rendered'),
+        ]);
+        $subtaskcontribution->save();
+        $subtaskcontributors = $request->input('subtaskcontributors');
+
+        foreach ($subtaskcontributors as $subtaskcontributors) {
+            SubtaskcontributionsUser::create([
+                'contribution_id' => $subtaskcontribution->id,
+                'user_id' => $subtaskcontributors,
+            ]);
+        }
+        $request->validate([
+            'accomplishment_file' => 'required|mimes:docx|max:2048',
+        ]);
+        $file = $request->file('accomplishment_file');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('accomplishment_file')->storeAs('uploads/' . $currentDateTime, $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+        /*  
+        $url = URL::route('projsubmission.display', ['projsubmissionid' => $projectterminal->id, 'projsubmissionname' => "Unevaluated-Submission"]);
+        return redirect($url);*/
+        return response()->json([
+            'submissionid' => $subtaskcontribution->id,
+        ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Mail\ApproveAccount;
+use App\Mail\DeclineAccount;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -17,7 +18,9 @@ class AccountApproval extends Component
     public $currentPage = 1; // The current page number
     public $perPage = 10;
     public $data;
-    protected $listeners = ['findAccount' => 'handleFindAccount', 'sendEmail' => 'handlesendEmail'];
+    public $declineEmail;
+    public $declineName;
+    protected $listeners = ['sendEmailDecline' => 'handlesendEmailDecline', 'decline' => 'handleDecline', 'findAccount' => 'handleFindAccount', 'sendEmail' => 'handlesendEmail'];
 
     public function findAccount($inputSearch, $x)
     {
@@ -39,6 +42,7 @@ class AccountApproval extends Component
         $user = User::findorFail($id);
 
         $user->update(['role' => 'Coordinator']);
+
         $this->emit('updateElements', $id);
     }
     public function approveAsImplementer($id)
@@ -74,9 +78,33 @@ class AccountApproval extends Component
     public function decline($id)
     {
         $user = User::findorFail($id);
+        $this->declineEmail = $user->email;
+        $this->declineName = $user->name . ' ' . $user->last_name;
         $user->delete();
+        $this->emit('updateElementsDecline', $id);
         /* $this->pendingusers = User::where('approval', 0)
             ->get();*/
+    }
+    public function handleDecline($id)
+    {
+        $this->decline($id);
+    }
+    public function sendEmailDecline($id, $declineReason)
+    {
+        try {
+            $user = User::findorFail($id);
+            $declineEmail = $user->email;
+            $declineName = $user->name . ' ' . $user->last_name;
+            $user->delete();
+            Mail::to($declineEmail)->send(new DeclineAccount($declineName, $declineReason));
+            $this->emit('updateLoadingDecline', $id);
+        } catch (\Exception $e) {
+            $this->emit('updateLoadingFailedDecline', $id, $e);
+        }
+    }
+    public function handlesendEmailDecline($id, $declineReason)
+    {
+        $this->sendEmailDecline($id, $declineReason);
     }
     public function render()
     {

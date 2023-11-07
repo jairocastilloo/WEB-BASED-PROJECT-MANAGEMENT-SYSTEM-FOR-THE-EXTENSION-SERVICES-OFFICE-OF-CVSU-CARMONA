@@ -15,10 +15,12 @@ class Contribution extends Model
     protected $fillable = [
         'subtask_id',
         'date',
+        'enddate',
         'hours_rendered',
         'approval',
         'contributor_id',
         'submitter_id',
+        'notes',
 
     ];
 
