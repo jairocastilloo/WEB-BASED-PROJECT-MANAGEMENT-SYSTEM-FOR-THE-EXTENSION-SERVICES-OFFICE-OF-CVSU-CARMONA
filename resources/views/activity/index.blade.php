@@ -5,7 +5,7 @@
 <input class="d-none" type="date" value="{{ $activity['actstartdate'] }}" id="actsavestartdate">
 <input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
 
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="maincontainer border border-start border-end border-bottom border-top-0">
 
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
@@ -244,7 +244,16 @@
                 $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
             }
         });
+        $('#activitystartDatePicker').datepicker();
 
+        $('#activitystartDatePicker').datepicker().on('change', function(e) {
+            $('#activitystartDatePicker').datepicker('hide');
+        });
+        $('#activityendDatePicker').datepicker();
+
+        $('#activityendDatePicker').datepicker().on('change', function(e) {
+            $('#activityendDatePicker').datepicker('hide');
+        });
         $('#editOutput').click(function(event) {
             event.preventDefault();
             $('.numberInput').attr('type', 'number');

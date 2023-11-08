@@ -86,19 +86,47 @@
                         </span>
                     </div>
                     <div class="mb-3">
-                        <label for="startdate" class="form-label">Activity Start Date</label>
-                        <input type="date" class="form-control" id="activitystartdate" name="activitystartdate" value="{{ $activity->actstartdate }}">
+                        <label for="activitystartdate" class="form-label">Activity Start Date</label>
+
+                        <div class="input-group date" id="activitystartDatePicker">
+                            <input type="text" class="form-control" id="activitystartdate" name="activitystartdate" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y', strtotime($activity['actstartdate'])) }}" />
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                            </span>
+                        </div>
+
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
+
+
+
+
                     </div>
+
                     <div class="mb-3">
-                        <label for="enddate" class="form-label">Activity End Date</label>
-                        <input type="date" class="form-control" id="activityenddate" name="activityenddate" value="{{ $activity->actenddate }}">
+                        <label for="activityenddate" class="form-label">Activity End Date</label>
+
+                        <div class="input-group date" id="activityendDatePicker">
+                            <input type="text" class="form-control" id="activityenddate" name="activityenddate" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y', strtotime($activity['actenddate'])) }}" />
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                            </span>
+                        </div>
+
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
+
+
+
+
                     </div>
+
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>
                         <input type="number" class="form-control" id="budget" name="budget" value="{{ $activity->actbudget }}">

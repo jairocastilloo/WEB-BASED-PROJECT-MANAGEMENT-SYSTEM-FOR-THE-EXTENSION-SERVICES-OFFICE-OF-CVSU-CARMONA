@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="maincontainer border border-start border-end border-bottom border-top-0">
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
             <div class="step highlight">

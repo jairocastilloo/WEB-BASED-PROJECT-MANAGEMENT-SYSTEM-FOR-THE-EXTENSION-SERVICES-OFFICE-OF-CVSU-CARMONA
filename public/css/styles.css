@@ -639,6 +639,7 @@ div {
   border-top: none;
   list-style: none;
   padding: 0;
+  z-index: 1000;
 }
 
 /* Default styles for larger screens */
