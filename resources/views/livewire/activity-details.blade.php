@@ -120,14 +120,14 @@
                         <b class="small">Close</b>
                     </button>
                     <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
-                        <b class="small">Add activity</b>
+                        <b class="small">Edit activity</b>
                     </button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        const objectiveset_id = <?php echo $currentobjectives[0]->objectiveset_id ?>;
+        var objectiveset_id = <?php echo $currentobjectives[0]->objectiveset_id ?>;
         let selectedOptionId = null;
         var actname;
         var objectivevalue;
@@ -161,8 +161,13 @@
                     });
                 }
             });
-            Livewire.on('closeActivity', function() {
+            Livewire.on('closeActivity', function(objNumber) {
+                selectOption(objNumber + 1);
+                var dropdown = document.getElementById("dropdown-options");
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
                 document.getElementById('closeActivity').click();
+
+                /*
                 document.getElementById('activityname').value = "";
                 selectedOptionId = null;
                 document.getElementById('expectedoutput').value = "";
@@ -177,11 +182,12 @@
                 actenddate = "";
                 actbudget = "";
                 actsource = "";
+                */
             });
         });
 
         function toggleDropdown() {
-            const dropdown = document.getElementById("dropdown-options");
+            var dropdown = document.getElementById("dropdown-options");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
 
