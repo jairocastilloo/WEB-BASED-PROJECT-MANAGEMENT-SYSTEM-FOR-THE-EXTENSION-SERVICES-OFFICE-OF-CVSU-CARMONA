@@ -358,6 +358,16 @@
             $('#currentendDatePicker').datepicker('hide');
         });
 
+        $('#activitystartDatePicker').datepicker();
+
+        $('#activitystartDatePicker').datepicker().on('change', function(e) {
+            $('#activitystartDatePicker').datepicker('hide');
+        });
+        $('#activityendDatePicker').datepicker();
+
+        $('#activityendDatePicker').datepicker().on('change', function(e) {
+            $('#activityendDatePicker').datepicker('hide');
+        });
         $('#editIndexproject').click(function() {
             $('#editProjectModal').modal('show');
         });

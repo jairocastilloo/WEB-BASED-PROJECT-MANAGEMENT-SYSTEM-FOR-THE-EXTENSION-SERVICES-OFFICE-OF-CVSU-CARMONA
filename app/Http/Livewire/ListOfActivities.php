@@ -25,12 +25,13 @@ class ListOfActivities extends Component
     }
     public function saveActivity($arguments)
     {
+
         $activity = new Activity();
         $activity->actname = $arguments['actname'];
         $activity->actobjectives = $arguments['objectivevalue'];
         $activity->actoutput = $arguments['expectedoutput'];
-        $activity->actstartdate = $arguments['actstartdate'];
-        $activity->actenddate = $arguments['actenddate'];
+        $activity->actstartdate = date("Y-m-d", strtotime($arguments['actstartdate']));
+        $activity->actenddate = date("Y-m-d", strtotime($arguments['actenddate']));
         $activity->actbudget = $arguments['actbudget'];
         $activity->actsource = $arguments['actsource'];
         $activity->project_id = $this->indexproject->id;
