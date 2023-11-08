@@ -8,7 +8,7 @@
 
     @foreach ($sortedActivities as $activity)
 
-    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}">
+    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
         <h6 class="fw-bold small">{{ $activity['actname'] }} - <span class="text-success">{{ $activity['actremark'] }}</span></h6>
 
