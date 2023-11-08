@@ -70,8 +70,9 @@ class ProjectMembers extends Component
     }
     public function sendNotification($selectedMembers)
     {
+        $isMailSendable = 1;
         $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
-
+        $error = null;
         $message =  $sendername . ' added you as a team member to a project: "' . $this->project->projecttitle . '".';
         foreach ($selectedMembers as $selectedMember) {
             $notification = new Notification([
@@ -82,18 +83,29 @@ class ProjectMembers extends Component
                 'message' => $message,
             ]);
             $notification->save();
-            $assignee = User::findorFail($selectedMember);
-            $email = $assignee->email;
-            $name = $assignee->name . ' ' . $assignee->last_name;
-            $taskname = $this->project->projecttitle;
-            $tasktype = "project";
-            $startDate = date('F d, Y', strtotime($this->project->projectstartdate));
-            $endDate = date('F d, Y', strtotime($this->project->projectenddate));
+            if ($isMailSendable === 1) {
+                try {
+                    $assignee = User::findorFail($selectedMember);
+                    $email = $assignee->email;
+                    $name = $assignee->name . ' ' . $assignee->last_name;
+                    $taskname = $this->project->projecttitle;
+                    $tasktype = "project";
+                    $startDate = date('F d, Y', strtotime($this->project->projectstartdate));
+                    $endDate = date('F d, Y', strtotime($this->project->projectenddate));
 
-            $taskdeadline = $startDate . ' - ' . $endDate;
-            $senderemail = Auth::user()->email;
-            Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $isMailSendable = 0;
+                    $error = $e;
+                }
+            }
+        }
+        if ($isMailSendable === 1) {
             $this->emit('updateLoading');
+        } else {
+            $this->emit('updateLoadingFailed', $error);
         }
     }
     public function handleSaveMembers($selectedMembers)

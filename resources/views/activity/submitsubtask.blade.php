@@ -68,11 +68,11 @@
                     </div>
 
                     <div class="m-2 ms-4 me-4">
-                        <label class="form-label">Date:</label>
+                        <label class="form-label">Start Date:</label>
                         <input type="date" class="form-control" id="subtask-date" name="subtask-date">
                     </div>
                     <div class="m-2 ms-4 me-4">
-                        <label class="form-label">Date:</label>
+                        <label class="form-label">End Date:</label>
                         <input type="date" class="form-control" id="subtask-enddate" name="subtask-enddate">
                     </div>
                 </div>

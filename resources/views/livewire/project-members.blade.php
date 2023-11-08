@@ -40,7 +40,11 @@
     </div>
     @endif
     <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
-
+    <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="emailError" style="display: none;">
+        <!-- Your error message goes here -->
+        <strong>Error:</strong><span id="errorMessage">The email has not been sent due to internet issue.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <div class="modal fade" id="addAssigneeModal" tabindex="-1" aria-labelledby="addAssigneeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -102,6 +106,12 @@
             Livewire.on('updateLoading', function() {
                 document.getElementById('loadingSpan').style.display = "none";
                 document.getElementById('btnAddMember').disabled = false;
+            });
+            Livewire.on('updateLoadingFailed', function(e) {
+                document.getElementById('loadingSpan').style.display = "none";
+                document.getElementById('btnAddMember').disabled = false;
+                document.getElementById('emailError').style.display = "inline-block";
+
             });
             Livewire.on('updateUnassignElements', function() {
                 selectAllMembers = document.getElementById('selectAllMembers');
