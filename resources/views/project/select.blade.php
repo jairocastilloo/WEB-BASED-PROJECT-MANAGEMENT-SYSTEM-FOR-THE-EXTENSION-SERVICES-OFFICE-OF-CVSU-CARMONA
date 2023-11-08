@@ -54,82 +54,7 @@
                 <div class="basiccont p-3 rounded shadow">
 
                     <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-                    <div class="text-center">
-                        @foreach ($allfiscalyears as $allfiscalyear)
-                        @if (($indexproject->projectstartdate >= $allfiscalyear['startdate'] && $indexproject->projectstartdate <= $allfiscalyear['enddate']) || ($indexproject->projectenddate >= $allfiscalyear['startdate'] && $indexproject->projectenddate <= $allfiscalyear['enddate']) || ($indexproject->projectstartdate <=$allfiscalyear['startdate'] && $indexproject->projectenddate>= $allfiscalyear['enddate']))
-                                    <p class="m-0">FY&nbsp;<u>{{ date('Y', strtotime($allfiscalyear['startdate'])) . '-' . date('Y', strtotime($allfiscalyear['enddate'])) }}
-                                        </u></p>
-
-                                    @endif
-
-                                    @endforeach
-
-
-                    </div>
-                    @if ($indexproject['programtitle'] != "")
-                    <div class="flex-container">
-                        <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
-                    </div>
-                    @endif
-                    @if ($programleaders->isNotEmpty())
-                    <div class="flex-container">
-                        <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">
-
-                            @foreach ($programleaders as $programleader)
-
-                            {{ ucfirst($programleader->name) }}
-
-                            @if ($programleader->middle_name)
-                            {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
-                            @endif
-
-
-                            @if (!$loop->last)
-                            {{ ucfirst($programleader->last_name) . ', ' }}
-                            @else
-                            {{ ucfirst($programleader->last_name)}}
-                            @endif
-
-                            @endforeach
-
-                        </div>
-
-
-                    </div>
-                    @endif
-
-                    <div class="flex-container">
-                        <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
-                    </div>
-                    <div class="flex-container">
-                        <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">
-                            @foreach ($projectleaders as $projectleader)
-
-                            {{ ucfirst($projectleader->name) }}
-
-                            @if ($projectleader->middle_name)
-                            {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
-                            @endif
-
-
-                            @if (!$loop->last)
-                            {{ ucfirst($projectleader->last_name) . ', ' }}
-                            @else
-                            {{ ucfirst($projectleader->last_name)}}
-                            @endif
-
-                            @endforeach
-
-                        </div>
-                    </div>
-                    <div class="flex-container">
-                        <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
-                    </div>
+                    @livewire('project-details', [ 'indexproject' => $indexproject, 'members' => $members ])
 
                     <div class="btn-group dropdown mt-3 shadow">
                         <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -139,16 +64,16 @@
                             <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Table</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
-                                <b class="small">Team Members</b>
-                            </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Activities</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                                <b class="small">Team Members</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" id="editIndexproject">
                                 <b class="small">Edit Details</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
@@ -514,10 +439,11 @@
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
 
+
+
+
         var currentstep = 0;
         var setcount = 0;
-
-
 
 
         $('.projectobjective-error strong').hide();
@@ -544,6 +470,18 @@
 
         $('#endDatePicker').datepicker().on('change', function(e) {
             $('#endDatePicker').datepicker('hide');
+        });
+
+
+        $('#currentstartDatePicker').datepicker();
+
+        $('#currentstartDatePicker').datepicker().on('change', function(e) {
+            $('#currentstartDatePicker').datepicker('hide');
+        });
+        $('#currentendDatePicker').datepicker();
+
+        $('#currentendDatePicker').datepicker().on('change', function(e) {
+            $('#currentendDatePicker').datepicker('hide');
         });
         /*
         $('#searchInputProject').on('keyup', function(e) {
@@ -572,6 +510,9 @@
             }
         });
 
+        $('#editIndexproject').click(function() {
+            $('#editProjectModal').modal('show');
+        });
         $(document).on('input', '.autocapital', function() {
             var inputValue = $(this).val();
             if (inputValue.length > 0) {

@@ -120,17 +120,16 @@ class ProjectController extends Controller
 
         $indexproject = Project::findOrFail($projectid);
 
-        $projectleaders = $indexproject->projectleaders;
-        $programleaders = $indexproject->programleaders;
         if (Auth::user()->role == "Admin") {
             $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
         } else {
             $alldepartments = [Auth::user()->department, 'All'];
         }
 
+        $objectives = $indexproject->objectives;
+        $activities = $indexproject->activities;
         $department = $indexproject->department;
 
-        $allfiscalyears = FiscalYear::all();
         if (Auth::user()->role == 'Admin') {
             if ($department == 'All') {
                 $users = User::where('approval', 1)
@@ -149,19 +148,99 @@ class ProjectController extends Controller
             $users = null;
         }
 
-        $objectives = $indexproject->objectives;
-        $activities = $indexproject->activities;
 
+        /*
+        $projectleaders = $indexproject->projectleaders;
+        $programleaders = $indexproject->programleaders;
+        
+
+        $allfiscalyears = FiscalYear::all();
+        */
         return view('project.select', [
             'members' => $users,
             'indexproject' => $indexproject,
-            'projectleaders' => $projectleaders,
-            'programleaders' => $programleaders,
             'alldepartments' => $alldepartments,
             'objectives' => $objectives,
             'activities' => $activities,
             'department' => $department,
-            'allfiscalyears' => $allfiscalyears,
+        ]);
+    }
+    public function displayActivities($projectid, $department)
+    {
+
+        $indexproject = Project::findOrFail($projectid);
+
+        if (Auth::user()->role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [Auth::user()->department, 'All'];
+        }
+
+        $department = $indexproject->department;
+        if (Auth::user()->role == 'Admin') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
+
+        $activities = $indexproject->activities;
+
+        return view('project.activities', [
+            'members' => $users,
+            'indexproject' => $indexproject,
+            'alldepartments' => $alldepartments,
+            'activities' => $activities,
+            'department' => $department
+        ]);
+    }
+    public function displayMembers($projectid, $department)
+    {
+
+        $indexproject = Project::findOrFail($projectid);
+
+        if (Auth::user()->role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [Auth::user()->department, 'All'];
+        }
+
+        $department = $indexproject->department;
+        if (Auth::user()->role == 'Admin') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
+
+
+        return view('project.members', [
+            'members' => $users,
+            'indexproject' => $indexproject,
+            'alldepartments' => $alldepartments,
+            'department' => $department
         ]);
     }
 
@@ -169,26 +248,30 @@ class ProjectController extends Controller
     {
 
         $indexproject = Project::findOrFail($projectid);
-        $currentyear = $indexproject->calendaryear;
-        $currentproject = Project::where('department', $department)
-            ->whereNotIn('id', [$projectid])
-            ->where('calendaryear', $currentyear)
-            ->get();
-        $currentDate = Carbon::now();
-        $otheryear = $currentDate->year;
-
-        if ($otheryear == $currentyear) {
-            $inCurrentYear = true;
+        if (Auth::user()->role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
         } else {
-            $inCurrentYear = false;
+            $alldepartments = [Auth::user()->department, 'All'];
         }
 
-        $calendaryears = CalendarYear::pluck('year');
-
-        $users = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
-            ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+        $department = $indexproject->department;
+        if (Auth::user()->role == 'Admin') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
 
         $activities = $indexproject->activities;
         $activityArray = $activities->map(function ($activity) {
@@ -201,14 +284,12 @@ class ProjectController extends Controller
 
         return view('project.calendar', [
             'members' => $users,
-            'currentproject' => $currentproject,
             'indexproject' => $indexproject,
-            'calendaryears' => $calendaryears,
-            'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear,
+            'alldepartments' => $alldepartments,
+            'department' => $department,
             'activities' => $activities,
             'activityArray' => $activityArray,
-            'department' => $department
+
         ]);
     }
 
@@ -378,44 +459,8 @@ class ProjectController extends Controller
             'isMailSent' => $isMailSendable,
         ]);
     }
-    public function displayMembers($projectid, $department)
-    {
 
-        $indexproject = Project::findOrFail($projectid);
-        $currentyear = $indexproject->calendaryear;
-        $currentproject = Project::where('department', $department)
-            ->whereNotIn('id', [$projectid])
-            ->where('calendaryear', $currentyear)
-            ->get();
-        $currentDate = Carbon::now();
-        $otheryear = $currentDate->year;
-
-        if ($otheryear == $currentyear) {
-            $inCurrentYear = true;
-        } else {
-            $inCurrentYear = false;
-        }
-
-        $calendaryears = CalendarYear::pluck('year');
-
-        $users = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
-            ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-
-        $activities = $indexproject->activities;
-
-        return view('project.members', [
-            'members' => $users,
-            'currentproject' => $currentproject,
-            'indexproject' => $indexproject,
-            'calendaryears' => $calendaryears,
-            'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear,
-            'activities' => $activities,
-            'department' => $department
-        ]);
-    }
+    /*
     public function displayDetails($projectid, $department)
     {
 
@@ -453,6 +498,7 @@ class ProjectController extends Controller
             'department' => $department
         ]);
     }
+    */
     public function displayObjectives($projectid, $department)
     {
 
@@ -489,44 +535,7 @@ class ProjectController extends Controller
             'department' => $department
         ]);
     }
-    public function displayActivities($projectid, $department)
-    {
 
-        $indexproject = Project::findOrFail($projectid);
-        $currentyear = $indexproject->calendaryear;
-        $currentproject = Project::where('department', $department)
-            ->whereNotIn('id', [$projectid])
-            ->where('calendaryear', $currentyear)
-            ->get();
-        $currentDate = Carbon::now();
-        $otheryear = $currentDate->year;
-
-        if ($otheryear == $currentyear) {
-            $inCurrentYear = true;
-        } else {
-            $inCurrentYear = false;
-        }
-
-        $calendaryears = CalendarYear::pluck('year');
-
-        $users = User::where('department', $department)
-            ->where('role', '!=', 'Admin')
-            ->where('role', '!=', 'FOR APPROVAL')
-            ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
-
-        $activities = $indexproject->activities;;
-
-        return view('project.activities', [
-            'members' => $users,
-            'currentproject' => $currentproject,
-            'indexproject' => $indexproject,
-            'calendaryears' => $calendaryears,
-            'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear,
-            'activities' => $activities,
-            'department' => $department
-        ]);
-    }
 
     public function closeProject($projectid, $department)
     {
