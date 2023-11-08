@@ -15,6 +15,7 @@ class SubtaskAssignees extends Component
 
 
 {
+    public $selectedContributors = [];
     public $subtask;
     public $activity;
     public $assignees;

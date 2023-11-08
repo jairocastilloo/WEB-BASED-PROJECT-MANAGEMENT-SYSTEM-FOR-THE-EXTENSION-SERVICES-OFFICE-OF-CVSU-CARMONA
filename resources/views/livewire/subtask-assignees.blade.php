@@ -103,6 +103,7 @@
             Livewire.on('updateLoading', function() {
                 document.getElementById('loadingSpan').style.display = "none";
                 document.getElementById('btnAddAssignee').disabled = false;
+                window.location.href = "";
             });
 
             Livewire.on('updateUnassignElements', function() {
