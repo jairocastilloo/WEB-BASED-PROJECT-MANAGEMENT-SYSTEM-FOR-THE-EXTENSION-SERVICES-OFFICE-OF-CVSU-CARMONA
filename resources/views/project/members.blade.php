@@ -427,9 +427,8 @@
         });
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
+            var department = $(this).attr('data-dept');
             var projectid = $(this).attr('data-value');
-            var projectname = $(this).attr('data-name');
-            var department = $('#department').val();
 
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
@@ -442,13 +441,10 @@
         // Add an event listener to the select element
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var currentyear = selectedOption.val();
+            var department = selectedOption.val();
 
-            var department = $('#department').val();
-
-            var baseUrl = "{{ route('yearproject.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
-            var url = baseUrl.replace(':department', department)
-                .replace(':currentyear', currentyear);
+            var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
+            var url = baseUrl.replace(':department', encodeURIComponent(department))
 
             window.location.href = url;
         });

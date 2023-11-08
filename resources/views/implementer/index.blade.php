@@ -118,13 +118,12 @@
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
 
-            var projectname = $(this).attr("data-name");
             var projectid = $(this).attr("data-value");
             var department = $(this).attr("data-dept");
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department"]) }}';
             url = url.replace(':projectid', projectid)
-            url = url.replace(':department', department);
+            url = url.replace(':department', encodeURIComponent(department));
             window.location.href = url;
         });
 

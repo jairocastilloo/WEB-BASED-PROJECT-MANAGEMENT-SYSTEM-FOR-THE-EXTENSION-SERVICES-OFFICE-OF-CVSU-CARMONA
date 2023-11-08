@@ -130,7 +130,7 @@
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
 
-                                <div class="input-group date" id="datepicker">
+                                <div class="input-group date" id="startDatePicker">
                                     <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
@@ -151,7 +151,7 @@
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
 
-                                <div class="input-group date" id="datepicker">
+                                <div class="input-group date" id="endDatePicker">
                                     <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
@@ -213,8 +213,9 @@
                 <span class="text-danger" id="createprojectError">
                     <strong></strong>
                 </span>
+                <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
-                <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
+                <button type="button" class="btn shadow rounded btn-outline-primary try" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
                 <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
@@ -253,12 +254,23 @@
         var setcount = 0;
 
         $('.projectobjective-error strong').hide();
-
-        $('#navbarDropdown').click(function() {
-            // Add your function here
-            $('#account .dropdown-menu').toggleClass('shows');
+        $('#programtitle').on('keyup', function(e) {
+            if ($('#programtitle').val() === "") {
+                $('.programleaderdiv').css('display', 'none');
+            } else {
+                $('.programleaderdiv').css('display', 'inline-block');
+            }
         });
+        $('#startDatePicker').datepicker();
 
+        $('#startDatePicker').datepicker().on('change', function(e) {
+            $('#startDatePicker').datepicker('hide');
+        });
+        $('#endDatePicker').datepicker();
+
+        $('#endDatePicker').datepicker().on('change', function(e) {
+            $('#endDatePicker').datepicker('hide');
+        });
         $(document).on('input', '.autocapital', function() {
             var inputValue = $(this).val();
             if (inputValue.length > 0) {
@@ -311,9 +323,8 @@
 
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
+            var department = $(this).attr('data-dept');
             var projectid = $(this).attr('data-value');
-            var projectname = $(this).attr('data-name');
-            var department = $('#department').val();
 
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
@@ -329,7 +340,7 @@
             var department = selectedOption.val();
 
             var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
-            var url = baseUrl.replace(':department', department)
+            var url = baseUrl.replace(':department', encodeURIComponent(department))
 
             window.location.href = url;
         });
@@ -339,16 +350,29 @@
                 $('#prevproject').hide();
                 $('#nextproject').show();
                 $('#createproject').hide();
+                $('#tab1-tab').attr('disabled', true);
                 $('#tab1-tab').tab('show');
             } else if (currentstep == 1) {
                 $('#prevproject').show();
                 $('#nextproject').hide();
                 $('#createproject').show();
+                $('#tab1-tab').removeAttr('disabled');
                 $('#tab2-tab').tab('show');
             }
 
         }
+        $('#tab1-tab').click((event) => {
 
+            event.preventDefault();
+
+
+
+            currentstep--;
+            updateButtons();
+
+
+
+        });
         $('#nextproject').click((event) => {
 
             event.preventDefault();
@@ -430,12 +454,11 @@
 
             if (!hasError) {
                 var department = $('#department').val();
-                var projectname = $('#projecttitle').val();
+
 
                 var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
 
-                projecturl = projecturl.replace(':department', department);
-                projecturl = projecturl.replace(':projectname', projectname);
+                projecturl = projecturl.replace(':department', encodeURIComponent(department));
 
                 var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -458,6 +481,7 @@
 
                 // concatenate serialized data into a single string
                 var formData = data1 + '&' + data2;
+                $('#loadingSpan').css('display', 'block');
 
                 // send data via AJAX
                 $.ajax({
@@ -465,20 +489,59 @@
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-
                         var projectId = response.projectid;
                         projecturl = projecturl.replace(':projectid', projectId);
-                        window.location.href = projecturl;
+                        $('#loadingSpan').css('display', 'none');
+                        if (response.isMailSent == 0) {
+                            $('#newproject').modal('hide');
+                            $('#mailNotSent').modal('show');
 
+                            // Set the initial countdown value
+                            let countdownValue = 5;
+
+                            // Function to update the countdown value and redirect
+                            function updateCountdown() {
+                                countdownValue -= 1;
+                                $('#countdown').text(countdownValue);
+
+                                if (countdownValue <= 0) {
+                                    // Redirect to your desired URL
+                                    window.location.href = projecturl; // Replace with your URL
+                                } else {
+                                    // Call the function recursively after 1 second (1000 milliseconds)
+                                    setTimeout(updateCountdown, 1000);
+                                }
+                            }
+
+                            // Start the countdown
+                            updateCountdown();
+                        } else {
+
+                            window.location.href = projecturl;
+                        }
                     },
                     error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
-                        console.log(status);
-                        console.log(error);
+                        $('#createprojectError').text("There is a problem with server. Contact Administrator!");
+                        $('#loadingSpan').css('display', 'none');
+                        /*
+                                                console.log(xhr.responseText);
+                                                console.log(status);
+                                                console.log(error);
+                                                */
                     }
                 });
             }
         });
+
+        function formatDate(inputDate) {
+            // Split the inputDate by the '/' character
+            var parts = inputDate.split('/');
+
+            // Rearrange the parts into the "YYYY-MM-DD" format
+            var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+
+            return formattedDate;
+        }
 
         function handleError() {
 
