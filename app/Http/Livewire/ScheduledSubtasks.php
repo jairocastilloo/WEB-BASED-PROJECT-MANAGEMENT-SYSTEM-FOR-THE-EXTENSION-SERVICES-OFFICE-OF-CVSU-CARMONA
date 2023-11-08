@@ -77,7 +77,10 @@ class ScheduledSubtasks extends Component
 
                 $ScheduledTasks = $user->scheduledSubtasks()
                     ->join('subtasks as st1', 'scheduled_tasks.subtask_id', '=', 'st1.id')
+                    ->where('st1.status', 'Incomplete')
+                    ->where('st1.subduedate', '>=', now())
                     ->orderBy('scheduled_tasks.scheduledDate', 'asc')
+                    ->select('st1.subtask_name', 'st1.subduedate', 'st1.created_at', 'scheduled_tasks.scheduledDate')
                     ->paginate($this->perPageScheduledTasks, ['*'], 'page', $this->currentPageScheduledTasks);
 
 
@@ -91,8 +94,11 @@ class ScheduledSubtasks extends Component
 
                 $ScheduledTasks = $user->scheduledSubtasks()
                     ->join('subtasks as st1', 'scheduled_tasks.subtask_id', '=', 'st1.id')
+                    ->where('st1.status', 'Incomplete')
+                    ->where('st1.subduedate', '>=', now())
                     ->where('st1.subtask_name', 'like', "%$this->inputSearchScheduledTasks%")
                     ->orderBy('scheduled_tasks.scheduledDate', 'asc')
+                    ->select('st1.subtask_name', 'st1.subduedate', 'st1.created_at', 'scheduled_tasks.scheduledDate')
                     ->paginate($this->perPageScheduledTasks, ['*'], 'page', $this->currentPageScheduledTasks);
 
 

@@ -54,30 +54,30 @@
                 $formattedtoDoSchedule = date('Y-m-d', $toDoSchedule);
                 @endphp
 
-                <h6 class="small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}{{ $subtask['scheduledDate'] }}</b></h6>
+                <h6 class="small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
 
                 @if ($formattedSubcreatedat === $formattedCurrentDate)
-                <h6 class="text-secondary small">{{ 'Created Today, ' . date('M d, Y', $subcreatedat) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created Today, ' . date('M d Y', $subcreatedat) }}</h6>
                 @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                <h6 class="text-secondary small">{{ 'Created Yesterday, ' . date('M d, Y', $subcreatedat) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created Yesterday, ' . date('M d Y', $subcreatedat) }}</h6>
                 @else
                 <h6 class="text-secondary small">{{ 'Created ' . date('D, M d, Y', $subcreatedat) }}</h6>
                 @endif
 
                 @if ($formattedSubduedate === $formattedCurrentDate)
-                <h6 class="ps-2 text-success fw-bold small">{{ 'Due Today, ' . date('M d, Y', $subduedate) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small">{{ 'Due Today, ' . date('M d Y', $subduedate) }}</h6>
                 @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
-                <h6 class="ps-2 text-success fw-bold small">{{ 'Due Tomorrow, ' . date('M d, Y', $subduedate) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small">{{ 'Due Tomorrow, ' . date('M d Y', $subduedate) }}</h6>
                 @else
-                <h6 class="ps-2 text-success fw-bold small">{{ 'Due ' . date('D, M d, Y', $subduedate) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small">{{ 'Due ' . date('D, M d Y', $subduedate) }}</h6>
                 @endif
 
-                @if ($formattedtoDoSchedule === $formattedtoDoSchedule)
-                <h6 class="ps-3 text-primary fw-bold small">{{ 'To Do Today, ' . date('M d, Y', $toDoSchedule) }}</h6>
+                @if ($formattedtoDoSchedule === $formattedCurrentDate)
+                <h6 class="ps-3 text-primary fw-bold small">{{ 'To Do Today, ' . date('M d Y', $toDoSchedule) }}</h6>
                 @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedtoDoSchedule)
-                <h6 class="ps-3 text-primary fw-bold small">{{ 'To Do Tomorrow, ' . date('M d, Y', $toDoSchedule) }}</h6>
+                <h6 class="ps-3 text-primary fw-bold small">{{ 'To Do Tomorrow, ' . date('M d Y', $toDoSchedule) }}</h6>
                 @else
-                <h6 class="ps-3 text-primary fw-bold small">{{ 'To Do ' . date('D, M d, Y', $toDoSchedule) }}</h6>
+                <h6 class="ps-3 text-primary fw-bold small">{{ 'To Do ' . date('D, M d Y', $toDoSchedule) }}</h6>
                 @endif
 
             </div>
