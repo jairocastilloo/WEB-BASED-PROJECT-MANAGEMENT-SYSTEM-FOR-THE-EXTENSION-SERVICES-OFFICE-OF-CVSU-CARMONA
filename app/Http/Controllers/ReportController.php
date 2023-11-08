@@ -19,42 +19,38 @@ class ReportController extends Controller
 
     public function showinsights($department)
     {
+        if (Auth::user()->role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [Auth::user()->department, 'All'];
+        }
 
-
-        $currentDate = Carbon::now();
-        $currentyear = $currentDate->year;
 
         // Retrieve projects based on department and calendar year
         $projects = Project::where('department', $department)
-            ->where('calendaryear', $currentyear)
-            ->get();
-        $inCurrentYear = true;
+            ->get(['id', 'projecttitle', 'projectstartdate', 'projectenddate', 'projectstatus']);
 
-        $calendaryears = CalendarYear::pluck('year');
 
         // Extract project IDs and convert them to an array
         $projectIds = $projects->pluck('id')->toArray();
         $activities = Activity::whereIn('project_id', $projectIds)
-            ->get();
+            ->get(['id', 'project_id', 'actremark', 'totalhours_rendered']);
 
         $activityHoursRendered = $activities->sum('totalhours_rendered');
 
         $completedActivities = $activities->where('actremark', 'Completed')->count();
-        $incompleteActivities = $activities->whereIn('actremark', ['Incomplete', 'Pending'])->count();
+        $incompleteActivities = $activities->whereIn('actremark', ['Incomplete'])->count();
         $activityIds = $activities->pluck('id')->toArray();
         $subtaskHoursRendered = Subtask::whereIn('activity_id', $activityIds)->sum('hours_rendered');
 
         $outputs = Output::whereIn('activity_id', $activityIds)
-            ->get();
-
-
+            ->get(['activity_id', 'expectedoutput', 'totaloutput_submitted']);
 
 
         return view('report.selectinsights', [
-            'calendaryears' => $calendaryears,
+            'department' => $department,
+            'alldepartments' => $alldepartments,
             'projects' => $projects,
-            'inCurrentYear' => $inCurrentYear,
-            'currentyear' => $currentyear,
             'activityHoursRendered' => $activityHoursRendered,
             'completedActivities' => $completedActivities,
             'incompleteActivities' => $incompleteActivities,
