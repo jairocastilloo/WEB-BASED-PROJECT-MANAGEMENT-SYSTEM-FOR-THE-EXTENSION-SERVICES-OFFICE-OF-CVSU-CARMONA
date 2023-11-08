@@ -111,16 +111,17 @@
 
                 </ul>
             </nav>
-            <div class="text-center p-2 border border-bottom-2">
-                <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showMissingTasks(0)">
-                    <b class="small">Hide Tasks</b>
-                </button>
 
-            </div>
 
         </div>
 
         @endif
+        <div class="text-center p-2 border border-bottom-2">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showMissingTasks(0)">
+                <b class="small">Hide Tasks</b>
+            </button>
+
+        </div>
         @endif
 
     </div>
