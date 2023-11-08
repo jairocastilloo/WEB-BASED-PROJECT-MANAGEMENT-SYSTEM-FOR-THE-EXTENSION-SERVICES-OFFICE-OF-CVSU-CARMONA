@@ -35,7 +35,7 @@
     </div>
     @endforeach
     <div class="py-2 text-center">
-        <button wire:click="showMore({{ $notificationcount }})" type="button" class="btn btn-outline-secondary">Show 10 more notifications</button>
+        <button wire:click="showMore({{ $notificationcount }})" type="button" class="btn btn-outline-secondary">Load more</button>
     </div>
     <script>
         document.addEventListener('livewire:load', function() {

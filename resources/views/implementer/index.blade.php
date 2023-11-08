@@ -10,8 +10,9 @@
             <div class="col-lg-6">
 
                 <label class="ms-3 small form-label text-secondary fw-bold">My Tasks</label>
+                @livewire('scheduled-subtasks', ['xScheduledTasks' => 1])
                 @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
-                @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 1])
+                @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 0])
                 @livewire('completed-tasks', ['activityid' => null, 'subtaskid' => null, 'xCompletedTasks' => 0])
 
             </div>
@@ -44,6 +45,12 @@
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");
         });
+
+        $('#scheduleDatePicker').datepicker();
+
+        $('#scheduleDatePicker').datepicker().on('change', function(e) {
+            $('#scheduleDatePicker').datepicker('hide');
+        });
         /*
                 $('#year-select').change(function() {
                     var selectedOption = $(this).find(':selected');
@@ -75,6 +82,26 @@
             url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
         });
+
+        $(document).on('click', '.subtaskdiv button', function(event) {
+            event.stopPropagation(); // Prevent the click event from propagating to the parent .subtaskdiv
+            // Add your button click logic here
+        });
+
+        $(document).on('click', '.subtaskdiv .dropdown-menu', function(event) {
+            event.stopPropagation();
+        });
+        $(document).on('click', '.setSchedule', function(event) {
+            var subtaskName = $(this).attr('data-name');
+            var subtaskId = $(this).attr('data-id');
+
+            $('#scheduleSubtaskName').text(subtaskName);
+            $('#scheduleSubtaskId').val(subtaskId);
+
+            // Show the modal with the ID 'scheduleModal'
+            $('#scheduleModal').modal('show');
+        });
+
 
         $(document).on('click', '.activitydiv', function(event) {
             event.preventDefault();

@@ -43,8 +43,7 @@
 
         <div class="container p-0">
             @foreach($OngoingTasks as $subtask)
-
-            <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
+            <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}" style="position: relative;">
                 @php
                 $subduedate = strtotime($subtask['subduedate']);
                 $subcreatedat = strtotime($subtask['created_at']);
@@ -63,9 +62,6 @@
                 <h6 class="text-secondary small">{{ 'Created ' . date('D, M d Y', $subcreatedat) }}</h6>
                 @endif
 
-
-
-
                 @if ($formattedSubduedate === $formattedCurrentDate)
                 <h6 class="ps-2 text-success fw-bold small">{{ 'Due Today, ' . date('M d Y', $subduedate) }}</h6>
                 @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
@@ -73,9 +69,17 @@
                 @else
                 <h6 class="ps-2 text-success fw-bold small">{{ 'Due ' . date('D, M d Y', $subduedate) }}</h6>
                 @endif
+                <div class="btn-group" style="position: absolute; top: 0; right: 0;">
+                    <button type="button" class="btn btn-sm btn-outline-success fs-6 px-1 border me-1 mt-1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item small setSchedule" href="#" data-id="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">Scheduled Task</a></li>
+                        <!-- Add more dropdown items here -->
+                    </ul>
+                </div>
 
             </div>
-
             @endforeach
 
             <nav class="border-bottom">
@@ -122,6 +126,8 @@
 
         @endif
         @endif
+
+
 
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}

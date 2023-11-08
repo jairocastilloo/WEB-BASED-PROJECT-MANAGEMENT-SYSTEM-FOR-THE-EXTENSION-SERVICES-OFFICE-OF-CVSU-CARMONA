@@ -87,4 +87,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Project::class, 'program_leaders');
     }
+    public function scheduledSubtasks()
+    {
+        return $this->belongsToMany(Subtask::class, 'scheduled_tasks')
+            ->withPivot('scheduledDate');
+    }
 }

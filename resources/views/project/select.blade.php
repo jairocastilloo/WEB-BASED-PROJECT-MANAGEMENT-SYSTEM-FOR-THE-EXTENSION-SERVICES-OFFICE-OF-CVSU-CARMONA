@@ -186,7 +186,7 @@
                                             <td class="p-2">{{ $activity['actoutput'] }}</td>
                                             <td class="p-2">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
                                             <td class="p-2">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                                            <td class="p-2">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                                            <td class="p-2">PhP {{ number_format($activity['actbudget'], 2) }}</td>
                                             <td class="p-2">{{ $activity['actsource'] }}</td>
                                         </tr>
                                         @endforeach

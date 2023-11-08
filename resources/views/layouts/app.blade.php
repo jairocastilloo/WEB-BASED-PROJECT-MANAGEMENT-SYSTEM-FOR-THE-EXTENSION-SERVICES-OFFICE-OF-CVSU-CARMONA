@@ -82,7 +82,7 @@
                         @if (Auth::user()->approval === 1 && Auth::user()->email_verified_at != null)
 
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['tasks.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Home
+                            Monitoring
                         </a>
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['project.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Projects
@@ -99,46 +99,46 @@
 
 
 
-                        <li class="nav-item dropdown">
-                            <div id="account">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-white mx-2" href="#" role="button">
-                                    {{ Auth::user()->name . ' ' . Auth::user()->last_name }}
-                                </a>
+                        <li class="nav-item dropdown navtohover">
 
-                                <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('records.show', ['username' => Auth::user()->username]) }}">
-                                            {{ __('My Records') }}
-                                        </a>
-                                    </li>
+                            <a class="nav-link dropdown-toggle text-white mx-2" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ Auth::user()->name . ' ' . Auth::user()->last_name }}
+                            </a>
 
-                                    @if (Auth::user()->role === 'Admin')
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('records.show', ['username' => Auth::user()->username]) }}">
+                                        {{ __('My Records') }}
+                                    </a>
+                                </li>
 
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('admin.manage') }}">
-                                            Account Management
-                                        </a>
-                                    </li>
+                                @if (Auth::user()->role === 'Admin')
 
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('fiscalYear.set') }}">
-                                            Set School Time Periods
-                                        </a>
-                                    </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('admin.manage') }}">
+                                        Account Management
+                                    </a>
+                                </li>
 
-                                    @endif
-                                    <li>
-                                        <a class="dropdown-item" href="#" onclick="event.preventDefault();
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('fiscalYear.set') }}">
+                                        Set School Time Periods
+                                    </a>
+                                </li>
+
+                                @endif
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-                                    </li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                        {{ __('Logout') }}
+                                    </a>
+                                </li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
 
-                                </ul>
-                            </div>
+                            </ul>
+
                         </li>
                         @endif
                         @endguest
