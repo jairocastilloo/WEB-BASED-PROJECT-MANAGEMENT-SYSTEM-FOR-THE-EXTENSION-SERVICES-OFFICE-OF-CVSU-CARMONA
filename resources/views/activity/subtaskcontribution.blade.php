@@ -121,7 +121,7 @@
 
                         <div class="p-2 pb-1 ps-3 divhover border-bottom actsubmission-div small" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
-                            <p class="lh-1 fw-bold"><em>{{ $submission->submission_remark  }}</em></p>
+                            <p class="lh-1 fw-bold @if($submission->submission_remark == 'For Approval') text-success @elseif($submission->submission_remark == 'For Revision') text-danger @else text-primary @endif"><em>{{ $submission->submission_remark  }}</em></p>
                             <p class="lh-1"> &nbsp;&nbsp;&nbsp;Activity Hours: {{ $submission->hours_rendered }} </p>
                             <p class="lh-1"> &nbsp;&nbsp;&nbsp;Actual Duration: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
                             <p class="lh-1"> &nbsp;&nbsp;&nbsp;Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
