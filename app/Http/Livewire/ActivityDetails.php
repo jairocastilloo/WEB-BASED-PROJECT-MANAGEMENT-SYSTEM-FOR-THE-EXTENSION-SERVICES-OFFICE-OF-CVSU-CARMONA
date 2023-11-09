@@ -36,7 +36,12 @@ class ActivityDetails extends Component
             'actsource' => $arguments['actsource'],
         ]);
         $this->activity = $activity;
-        $this->emit('closeActivity');
+        $objectiveset = $activity->actobjectives;
+        $objectives = Objective::where('project_id', $activity->project_id)
+            ->where('objectiveset_id', $objectiveset)
+            ->get();
+        $this->currentobjectives = $objectives;
+        $this->emit('closeActivity', $arguments['objectivevalue']);
     }
     public function handlesaveActivity($arguments)
     {

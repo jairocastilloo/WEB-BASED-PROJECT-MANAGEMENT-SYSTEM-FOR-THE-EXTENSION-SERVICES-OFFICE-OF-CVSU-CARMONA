@@ -8,7 +8,7 @@
 
     @foreach ($sortedActivities as $activity)
 
-    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}">
+    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
         <h6 class="fw-bold small">{{ $activity['actname'] }} - <span class="text-success">{{ $activity['actremark'] }}</span></h6>
 
@@ -86,18 +86,45 @@
                         </span>
                     </div>
                     <div class="mb-3">
-                        <label for="startdate" class="form-label">Activity Start Date</label>
-                        <input type="date" class="form-control" id="activitystartdate" name="activitystartdate">
+                        <label for="activitystartdate" class="form-label">Activity Start Date</label>
+
+                        <div class="input-group date" id="activitystartDatePicker">
+                            <input type="text" class="form-control" id="activitystartdate" name="activitystartdate" placeholder="mm/dd/yyyy" />
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                            </span>
+                        </div>
+
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
+
+
+
+
                     </div>
+
                     <div class="mb-3">
-                        <label for="enddate" class="form-label">Activity End Date</label>
-                        <input type="date" class="form-control" id="activityenddate" name="activityenddate">
+                        <label for="activityenddate" class="form-label">Activity End Date</label>
+
+                        <div class="input-group date" id="activityendDatePicker">
+                            <input type="text" class="form-control" id="activityenddate" name="activityenddate" placeholder="mm/dd/yyyy" />
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                            </span>
+                        </div>
+
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
+
+
+
+
                     </div>
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>

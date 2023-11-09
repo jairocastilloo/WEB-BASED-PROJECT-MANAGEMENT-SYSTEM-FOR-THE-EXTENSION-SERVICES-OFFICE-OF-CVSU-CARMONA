@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityUser;
 use App\Models\Notification;
+use App\Models\Output;
+use App\Models\Subtask;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Activity;
 use App\Models\activityContribution;
 use App\Models\ActivitycontributionsUser;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class HoursController extends Controller
@@ -21,14 +25,43 @@ class HoursController extends Controller
 
         $project = Project::findorFail($activity->project_id);
 
-
-        $activitycontributions = activityContribution::where('activity_id', $activityid)
+        $outputTypes = Output::where('activity_id', $activityid)
+            ->distinct('output_type')
+            ->pluck('output_type');
+        $outputs = Output::where('activity_id', $activityid)
             ->get();
 
+        $allSubtasks = Subtask::where('activity_id', $activityid)->count();
+        $completedSubtasks = Subtask::where('activity_id', $activityid)
+            ->where('status', 'Completed')
+            ->count();
+        $activeSubtasks = Subtask::where('activity_id', $activityid)
+            ->where('status', 'Incomplete')
+            ->where('subduedate', '>=', Carbon::now())
+            ->count();
+        $missingSubtasks = Subtask::where('activity_id', $activityid)
+            ->where('status', 'Incomplete')
+            ->where('subduedate', '<', Carbon::now())
+            ->count();
+        $activitycontributions = activityContribution::where('activity_id', $activityid)
+            ->get();
+        $implementerIds = ActivityUser::where('activity_id', $activityid)
+            ->pluck('user_id')
+            ->toArray();
+        $implementers = User::whereIn('id', $implementerIds)
+            ->select('id', 'name', 'last_name')
+            ->get();
         return view('activity.hours', [
             'activity' => $activity,
             'project' => $project,
             'activitycontributions' => $activitycontributions,
+            'outputTypes' => $outputTypes,
+            'outputs' => $outputs,
+            'allSubtasks' => $allSubtasks,
+            'completedSubtasks' => $completedSubtasks,
+            'activeSubtasks' => $activeSubtasks,
+            'missingSubtasks' => $missingSubtasks,
+            'implementers' => $implementers
         ]);
     }
 

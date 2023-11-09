@@ -12,24 +12,20 @@
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                     </div>
-                    @if (!$inCurrentYear)
-                    <span class="small ms-2"><em>
-                            Note: Not the Current Year.
-                        </em></span>
-                    @endif
+
                     <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select an fiscal year">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a Department">
 
-                            @foreach ($fiscalyears as $fiscalyear)
-                            <option value="{{ $fiscalyear->id }}" {{ $fiscalyear->id == $currentfiscalyear->id ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ date('F Y', strtotime($fiscalyear->startdate)) . ' - ' . date('F Y', strtotime($fiscalyear->enddate)) }}
+                            @foreach ($alldepartments as $alldepartment)
+                            <option class="p-2" value="{{ $alldepartment }}" {{ $alldepartment == $department ? 'selected' : '' }}>
+                                {{ $alldepartment }}
                             </option>
                             @endforeach
 
                         </select>
                         <label for="year-select" style="color:darkgreen;">
-                            <h6><strong>Fiscal Year:</strong></h6>
+                            <h6><strong>Choose Department:</strong></h6>
                         </label>
                     </div>
                     @if (Auth::user()->role === 'Admin')
@@ -40,15 +36,15 @@
                     </div>
                     @endif
                 </div>
-                @livewire('more-projects', ['department' => $department, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 1])
+                @livewire('more-projects', ['department' => $department, 'projectid' => null, 'x' => 1])
 
 
             </div>
 
             <div class="col-lg-2">
 
-                @livewire('not-started-projects', ['department' => $department, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 1])
-                @livewire('past-projects', ['department' => $department, 'projectid' => null, 'fiscalyearid' => $currentfiscalyear->id, 'z' => 0])
+                @livewire('not-started-projects', ['department' => $department, 'projectid' => null, 'y' => 1])
+                @livewire('past-projects', ['department' => $department, 'projectid' => null, 'z' => 0])
 
             </div>
 
@@ -82,7 +78,6 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
-                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $currentfiscalyear->id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -135,7 +130,7 @@
                             <div class="mb-3">
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
 
-                                <div class="input-group date" id="datepicker">
+                                <div class="input-group date" id="startDatePicker">
                                     <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
@@ -156,7 +151,7 @@
                             <div class="mb-3">
                                 <label for="projectenddate" class="form-label">Project End Date</label>
 
-                                <div class="input-group date" id="datepicker">
+                                <div class="input-group date" id="endDatePicker">
                                     <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
@@ -218,8 +213,9 @@
                 <span class="text-danger" id="createprojectError">
                     <strong></strong>
                 </span>
+                <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
-                <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
+                <button type="button" class="btn shadow rounded btn-outline-primary try" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
                 <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
@@ -245,26 +241,12 @@
 </div>
 
 @endsection
-@php
-$fiscalstartdate = $currentfiscalyear->startdate;
-$fiscalenddate = $currentfiscalyear->enddate;
-$formattedfiscalstartdate = date('m/d/Y', strtotime($fiscalstartdate));
-$formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
-
-@endphp
 @section('scripts')
 <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
     var selectElement = $('#year-select');
     var url = "";
-    var fiscalstartdate = <?php echo json_encode($fiscalstartdate);
-                            ?>;
-    var fiscalenddate = <?php echo json_encode($fiscalenddate);
-                        ?>;
-    var formattedfiscalstartdate = <?php echo json_encode($formattedfiscalstartdate);
-                                    ?>;
-    var formattedfiscalenddate = <?php echo json_encode($formattedfiscalenddate);
-                                    ?>;
+
 
     $(document).ready(function() {
 
@@ -272,12 +254,23 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
         var setcount = 0;
 
         $('.projectobjective-error strong').hide();
-
-        $('#navbarDropdown').click(function() {
-            // Add your function here
-            $('#account .dropdown-menu').toggleClass('shows');
+        $('#programtitle').on('keyup', function(e) {
+            if ($('#programtitle').val() === "") {
+                $('.programleaderdiv').css('display', 'none');
+            } else {
+                $('.programleaderdiv').css('display', 'inline-block');
+            }
         });
+        $('#startDatePicker').datepicker();
 
+        $('#startDatePicker').datepicker().on('change', function(e) {
+            $('#startDatePicker').datepicker('hide');
+        });
+        $('#endDatePicker').datepicker();
+
+        $('#endDatePicker').datepicker().on('change', function(e) {
+            $('#endDatePicker').datepicker('hide');
+        });
         $(document).on('input', '.autocapital', function() {
             var inputValue = $(this).val();
             if (inputValue.length > 0) {
@@ -330,9 +323,8 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
+            var department = $(this).attr('data-dept');
             var projectid = $(this).attr('data-value');
-            var projectname = $(this).attr('data-name');
-            var department = $('#department').val();
 
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
@@ -345,13 +337,10 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
         // Add an event listener to the select element
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var currentyear = selectedOption.val();
+            var department = selectedOption.val();
 
-            var department = $('#department').val();
-
-            var baseUrl = "{{ route('yearproject.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
-            var url = baseUrl.replace(':department', department)
-                .replace(':currentyear', currentyear);
+            var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
+            var url = baseUrl.replace(':department', encodeURIComponent(department))
 
             window.location.href = url;
         });
@@ -361,16 +350,29 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                 $('#prevproject').hide();
                 $('#nextproject').show();
                 $('#createproject').hide();
+                $('#tab1-tab').attr('disabled', true);
                 $('#tab1-tab').tab('show');
             } else if (currentstep == 1) {
                 $('#prevproject').show();
                 $('#nextproject').hide();
                 $('#createproject').show();
+                $('#tab1-tab').removeAttr('disabled');
                 $('#tab2-tab').tab('show');
             }
 
         }
+        $('#tab1-tab').click((event) => {
 
+            event.preventDefault();
+
+
+
+            currentstep--;
+            updateButtons();
+
+
+
+        });
         $('#nextproject').click((event) => {
 
             event.preventDefault();
@@ -452,12 +454,11 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
             if (!hasError) {
                 var department = $('#department').val();
-                var projectname = $('#projecttitle').val();
+
 
                 var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
 
-                projecturl = projecturl.replace(':department', department);
-                projecturl = projecturl.replace(':projectname', projectname);
+                projecturl = projecturl.replace(':department', encodeURIComponent(department));
 
                 var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -480,6 +481,7 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
                 // concatenate serialized data into a single string
                 var formData = data1 + '&' + data2;
+                $('#loadingSpan').css('display', 'block');
 
                 // send data via AJAX
                 $.ajax({
@@ -487,20 +489,59 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-
                         var projectId = response.projectid;
                         projecturl = projecturl.replace(':projectid', projectId);
-                        window.location.href = projecturl;
+                        $('#loadingSpan').css('display', 'none');
+                        if (response.isMailSent == 0) {
+                            $('#newproject').modal('hide');
+                            $('#mailNotSent').modal('show');
 
+                            // Set the initial countdown value
+                            let countdownValue = 5;
+
+                            // Function to update the countdown value and redirect
+                            function updateCountdown() {
+                                countdownValue -= 1;
+                                $('#countdown').text(countdownValue);
+
+                                if (countdownValue <= 0) {
+                                    // Redirect to your desired URL
+                                    window.location.href = projecturl; // Replace with your URL
+                                } else {
+                                    // Call the function recursively after 1 second (1000 milliseconds)
+                                    setTimeout(updateCountdown, 1000);
+                                }
+                            }
+
+                            // Start the countdown
+                            updateCountdown();
+                        } else {
+
+                            window.location.href = projecturl;
+                        }
                     },
                     error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
-                        console.log(status);
-                        console.log(error);
+                        $('#createprojectError').text("There is a problem with server. Contact Administrator!");
+                        $('#loadingSpan').css('display', 'none');
+                        /*
+                                                console.log(xhr.responseText);
+                                                console.log(status);
+                                                console.log(error);
+                                                */
                     }
                 });
             }
         });
+
+        function formatDate(inputDate) {
+            // Split the inputDate by the '/' character
+            var parts = inputDate.split('/');
+
+            // Rearrange the parts into the "YYYY-MM-DD" format
+            var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+
+            return formattedDate;
+        }
 
         function handleError() {
 
@@ -513,17 +554,14 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
                 var projectTitle = $('#projecttitle').val();
 
-                var selectprojlead = $('#projectleader').find(':selected');
-                var projectLeader = selectprojlead.val();
+                var projectLeader = $('#projectleader').val();
+
                 var programTitle = $('#programtitle').val();
 
-                var selectproglead = $('#programleader').find(':selected');
-                var programLeader = selectproglead.val();
+                var programLeader = $('#programleader').val();
 
-                var projectStartDate = new Date($('#projectstartdate').val());
-                var projectEndDate = new Date($('#projectenddate').val());
-
-                var targetYear = parseInt($('#currentyear').val(), 10);
+                var projectStartDate = formatDate($('#projectstartdate').val());
+                var projectEndDate = formatDate($('#projectenddate').val());
 
                 // Validation for Project Title
                 if (projectTitle.trim() === '') {
@@ -533,40 +571,56 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                 }
 
                 // Validation for Project Leader
-                if (projectLeader == 0) {
-                    $('#projectleader').addClass('is-invalid');
-                    $('#projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
+                if (projectLeader.length === 0) {
+                    $('.projectleader').addClass('is-invalid');
+                    $('.projectleader').next('.invalid-feedback').find('strong').text('Project Leader is required.');
                     hasErrors = true;
                 }
-
-                // Validation for Program Title
-                if (programTitle.trim() === '') {
-                    $('#programtitle').addClass('is-invalid');
-                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
-                    hasErrors = true;
-                }
-
+                /** 
+                                // Validation for Program Title
+                                if (programTitle.trim() === '') {
+                                    $('#programtitle').addClass('is-invalid');
+                                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
+                                    hasErrors = true;
+                                }
+                */
                 // Validation for Program Leader
-                if (programLeader == 0) {
-                    $('#programleader').addClass('is-invalid');
-                    $('#programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
+                if (programLeader.length === 0) {
+                    $('.programleader').addClass('is-invalid');
+                    $('.programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
+                    hasErrors = true;
+                }
+                if ($('#projectstartdate').val() == "") {
+                    $('#projectstartdate').parent().addClass('is-invalid');
+                    $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text('Project Start Date is required.');
+                    hasErrors = true;
+                }
+                if ($('#projectenddate').val() == "") {
+                    $('#projectenddate').parent().addClass('is-invalid');
+                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text('Project End Date is required.');
                     hasErrors = true;
                 }
 
-                // Validation for Project Start Date
-                if (projectStartDate.getFullYear() !== targetYear) {
-                    $('#projectstartdate').addClass('is-invalid');
-                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                if (projectEndDate <= projectStartDate) {
+                    $('#projectenddate').parent().addClass('is-invalid');
+                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text('Project End Date must be after the Start Date.');
                     hasErrors = true;
                 }
+                /*
+                                // Validation for Project Start Date
+                                if (projectStartDate.getFullYear() !== targetYear) {
+                                    $('#projectstartdate').addClass('is-invalid');
+                                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                                    hasErrors = true;
+                                }
 
-                // Validation for Project End Date
-                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
-                    $('#projectenddate').addClass('is-invalid');
-                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
-                    hasErrors = true;
-                }
-
+                                // Validation for Project End Date
+                                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
+                                    $('#projectenddate').addClass('is-invalid');
+                                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+                                    hasErrors = true;
+                                }
+                */
                 return hasErrors;
 
             } else if (currentstep === 1) {

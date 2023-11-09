@@ -8,7 +8,7 @@
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover">
             <h6 class="fw-bold small" style="color:darkgreen;">
                 <i class="bi bi-list-task"></i>
-                Ongoing
+                Active
 
             </h6>
         </div>
@@ -34,8 +34,8 @@
         </div>
         @else
         @if ($OngoingTasks->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Tasks found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Active Tasks</h6>
         </div>
         @else
 
@@ -43,8 +43,7 @@
 
         <div class="container p-0">
             @foreach($OngoingTasks as $subtask)
-
-            <div class="border-bottom p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}">
+            <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}" style="position: relative;">
                 @php
                 $subduedate = strtotime($subtask['subduedate']);
                 $subcreatedat = strtotime($subtask['created_at']);
@@ -53,29 +52,34 @@
                 $formattedSubcreatedat = date('Y-m-d', $subcreatedat);
                 @endphp
 
-                <h6 class="ps-4 lh-1 small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
+                <h6 class="small" style="color: #4A4A4A;"><b>{{ $subtask['subtask_name'] }}</b></h6>
 
                 @if ($formattedSubcreatedat === $formattedCurrentDate)
-                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Today, ' . date('M d Y', $subcreatedat) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created Today, ' . date('M d Y', $subcreatedat) }}</h6>
                 @elseif (date('Y-m-d', strtotime('-1 day', $currentDate)) === $formattedSubcreatedat)
-                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created Yesterday, ' . date('M d Y', $subcreatedat) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created Yesterday, ' . date('M d Y', $subcreatedat) }}</h6>
                 @else
-                <h6 class="ps-4 lh-1 text-secondary small">{{ 'Created ' . date('D, M d Y', $subcreatedat) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created ' . date('D, M d Y', $subcreatedat) }}</h6>
                 @endif
-
-
-
 
                 @if ($formattedSubduedate === $formattedCurrentDate)
-                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Today, ' . date('M d Y', $subduedate) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small">{{ 'Due Today, ' . date('M d Y', $subduedate) }}</h6>
                 @elseif (date('Y-m-d', strtotime('+1 day', $currentDate)) === $formattedSubduedate)
-                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due Tomorrow, ' . date('M d Y', $subduedate) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small">{{ 'Due Tomorrow, ' . date('M d Y', $subduedate) }}</h6>
                 @else
-                <h6 class="ps-5 text-success fw-bold small lh-1">{{ 'Due ' . date('D, M d Y', $subduedate) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small">{{ 'Due ' . date('D, M d Y', $subduedate) }}</h6>
                 @endif
+                <div class="btn-group" style="position: absolute; top: 0; right: 0;">
+                    <button type="button" class="btn btn-sm btn-outline-success fs-6 px-1 border me-1 mt-1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item small setSchedule" href="#" data-id="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">Scheduled Task</a></li>
+                        <!-- Add more dropdown items here -->
+                    </ul>
+                </div>
 
             </div>
-
             @endforeach
 
             <nav class="border-bottom">
@@ -111,17 +115,20 @@
 
                 </ul>
             </nav>
-            <div class="text-center p-2 border border-bottom-2">
-                <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showOngoingTasks(0)">
-                    <b class="small">Hide Tasks</b>
-                </button>
 
-            </div>
 
         </div>
 
         @endif
+        <div class="text-center p-2 border border-bottom-2">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showOngoingTasks(0)">
+                <b class="small">Hide Tasks</b>
+            </button>
+
+        </div>
         @endif
+
+
 
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}

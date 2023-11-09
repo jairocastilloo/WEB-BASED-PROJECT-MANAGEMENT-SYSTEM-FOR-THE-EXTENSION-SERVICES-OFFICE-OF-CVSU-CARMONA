@@ -25,8 +25,8 @@
         </button>
         <div class="dropdown-menu border border-1 border-warning">
             <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Edit Details</b></a>
-            <a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>
-            <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Participation Hours</b></a>
+            <!--<a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>-->
+            <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Close Activity</b></a>
         </div>
     </div>
     <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
@@ -86,19 +86,47 @@
                         </span>
                     </div>
                     <div class="mb-3">
-                        <label for="startdate" class="form-label">Activity Start Date</label>
-                        <input type="date" class="form-control" id="activitystartdate" name="activitystartdate" value="{{ $activity->actstartdate }}">
+                        <label for="activitystartdate" class="form-label">Activity Start Date</label>
+
+                        <div class="input-group date" id="activitystartDatePicker">
+                            <input type="text" class="form-control" id="activitystartdate" name="activitystartdate" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y', strtotime($activity['actstartdate'])) }}" />
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                            </span>
+                        </div>
+
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
+
+
+
+
                     </div>
+
                     <div class="mb-3">
-                        <label for="enddate" class="form-label">Activity End Date</label>
-                        <input type="date" class="form-control" id="activityenddate" name="activityenddate" value="{{ $activity->actenddate }}">
+                        <label for="activityenddate" class="form-label">Activity End Date</label>
+
+                        <div class="input-group date" id="activityendDatePicker">
+                            <input type="text" class="form-control" id="activityenddate" name="activityenddate" placeholder="mm/dd/yyyy" value="{{ date('m/d/Y', strtotime($activity['actenddate'])) }}" />
+                            <span class="input-group-append">
+                                <span class="input-group-text bg-light d-block">
+                                    <i class="bi bi-calendar-event-fill"></i>
+                                </span>
+                            </span>
+                        </div>
+
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
+
+
+
+
                     </div>
+
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>
                         <input type="number" class="form-control" id="budget" name="budget" value="{{ $activity->actbudget }}">
@@ -120,14 +148,14 @@
                         <b class="small">Close</b>
                     </button>
                     <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
-                        <b class="small">Add activity</b>
+                        <b class="small">Edit activity</b>
                     </button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        const objectiveset_id = <?php echo $currentobjectives[0]->objectiveset_id ?>;
+        var objectiveset_id = <?php echo $currentobjectives[0]->objectiveset_id ?>;
         let selectedOptionId = null;
         var actname;
         var objectivevalue;
@@ -161,8 +189,13 @@
                     });
                 }
             });
-            Livewire.on('closeActivity', function() {
+            Livewire.on('closeActivity', function(objNumber) {
+                selectOption(objNumber + 1);
+                var dropdown = document.getElementById("dropdown-options");
+                dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
                 document.getElementById('closeActivity').click();
+
+                /*
                 document.getElementById('activityname').value = "";
                 selectedOptionId = null;
                 document.getElementById('expectedoutput').value = "";
@@ -177,11 +210,12 @@
                 actenddate = "";
                 actbudget = "";
                 actsource = "";
+                */
             });
         });
 
         function toggleDropdown() {
-            const dropdown = document.getElementById("dropdown-options");
+            var dropdown = document.getElementById("dropdown-options");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
 

@@ -5,7 +5,7 @@
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover">
             <h6 class="fw-bold small" style="color:darkgreen;">
                 <i class="bi bi-activity"></i>
-                Past
+                Overdue
 
             </h6>
         </div>
@@ -31,8 +31,8 @@
         </div>
         @else
         @if ($PastActivities->isEmpty())
-        <div class="p-2">
-            <h6 class="fw-bold small">No Activities found.</h6>
+        <div class="p-2 text-center">
+            <h6 class="fw-bold small">No Overdue Activities</h6>
         </div>
         @else
 
@@ -41,16 +41,16 @@
         <div class="container p-0">
 
             @foreach ($PastActivities as $activity)
-            <div class="border-bottom ps-4 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
+            <div class="border-bottom ps-3 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
-                <h6 class="fw-bold small">{{ $activity['actname'] }}</h6>
+                <h6 class="fw-bold small" style="color: #4A4A4A;">{{ $activity['actname'] }}</h6>
 
                 @php
-                $startDate = date('M d', strtotime($activity['actstartdate']));
-                $endDate = date('M d', strtotime($activity['actenddate']));
+                $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+                $endDate = date('M d, Y', strtotime($activity['actenddate']));
                 @endphp
-
-                <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
+                <h6 class="text-secondary small">{{ 'Created ' . date('M d, Y', strtotime($activity['created_at'])) }}</h6>
+                <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
             </div>
 
             @endforeach
@@ -87,16 +87,17 @@
 
                 </ul>
             </nav>
-            <div class="text-center p-2 border border-bottom-2">
-                <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showPastActivities(0)">
-                    <b class="small">Hide Activities</b>
-                </button>
-
-            </div>
 
         </div>
 
         @endif
+        <div class="text-center p-2 border border-bottom-2">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showPastActivities(0)">
+                <b class="small">Hide Activities</b>
+            </button>
+
+        </div>
+
         @endif
 
     </div>

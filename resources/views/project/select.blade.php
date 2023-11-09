@@ -26,24 +26,20 @@
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                     </div>
-                    @if (!$inCurrentYear)
-                    <span class="small ms-2"><em>
-                            Note: Not the Current Year.
-                        </em></span>
-                    @endif
+
                     <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select an fiscal year">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a department">
 
-                            @foreach ($fiscalyears as $fiscalyear)
-                            <option value="{{ $fiscalyear->id }}" {{ $fiscalyear->id == $currentfiscalyear->id ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ date('F Y', strtotime($fiscalyear->startdate)) . ' - ' . date('F Y', strtotime($fiscalyear->enddate)) }}
+                            @foreach ($alldepartments as $alldepartment)
+                            <option class="p-2" value="{{ $alldepartment}}" {{ $alldepartment == $department ? 'selected' : '' }}>
+                                &nbsp;&nbsp;&nbsp;{{ $alldepartment }}
                             </option>
                             @endforeach
 
                         </select>
                         <label for="year-select" style="color:darkgreen;">
-                            <h6><strong>Fiscal Year:</strong></h6>
+                            <h6><strong>Choose Department:</strong></h6>
                         </label>
                     </div>
                     @if (Auth::user()->role === 'Admin')
@@ -58,78 +54,7 @@
                 <div class="basiccont p-3 rounded shadow">
 
                     <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
-                    <div class="flexmid">FY&nbsp;<u>
-                            @php
-                            $startYearFiscal = date('Y', strtotime($currentfiscalyear['startdate']));
-                            $endYearFiscal = date('Y', strtotime($currentfiscalyear['enddate']));
-                            @endphp
-
-                            {{ $startYearFiscal === $endYearFiscal ? $startYearFiscal : $startYearFiscal . ' - ' . $endYearFiscal }}
-                        </u></div>
-                    @if ($indexproject['programtitle'] != "")
-                    <div class="flex-container">
-                        <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
-                    </div>
-                    @endif
-                    @if ($programleaders->isNotEmpty())
-                    <div class="flex-container">
-                        <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">
-
-                            @foreach ($programleaders as $programleader)
-
-                            {{ ucfirst($programleader->name) }}
-
-                            @if ($programleader->middle_name)
-                            {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
-                            @endif
-
-
-                            @if (!$loop->last)
-                            {{ ucfirst($programleader->last_name) . ', ' }}
-                            @else
-                            {{ ucfirst($programleader->last_name)}}
-                            @endif
-
-                            @endforeach
-
-                        </div>
-
-
-                    </div>
-                    @endif
-
-                    <div class="flex-container">
-                        <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
-                    </div>
-                    <div class="flex-container">
-                        <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">
-                            @foreach ($projectleaders as $projectleader)
-
-                            {{ ucfirst($projectleader->name) }}
-
-                            @if ($projectleader->middle_name)
-                            {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
-                            @endif
-
-
-                            @if (!$loop->last)
-                            {{ ucfirst($projectleader->last_name) . ', ' }}
-                            @else
-                            {{ ucfirst($projectleader->last_name)}}
-                            @endif
-
-                            @endforeach
-
-                        </div>
-                    </div>
-                    <div class="flex-container">
-                        <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                        <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
-                    </div>
+                    @livewire('project-details', [ 'indexproject' => $indexproject, 'members' => $members ])
 
                     <div class="btn-group dropdown mt-3 shadow">
                         <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -139,23 +64,23 @@
                             <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Table</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
-                                <b class="small">Team Members</b>
-                            </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Activities</b>
+                            </a>
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                                <b class="small">Team Members</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" id="editIndexproject">
                                 <b class="small">Edit Details</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.terminalreport',['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Close Project</b>
                             </a>
-                           
-                           
+
+
                             <!-- if included
                         <a class="dropdown-item small hrefnav" href="{{ route('projects.objectives', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Edit Objectives</b>
@@ -261,7 +186,7 @@
                                             <td class="p-2">{{ $activity['actoutput'] }}</td>
                                             <td class="p-2">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
                                             <td class="p-2">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                                            <td class="p-2">&#8369;{{ number_format($activity['actbudget'], 2) }}</td>
+                                            <td class="p-2">PhP {{ number_format($activity['actbudget'], 2) }}</td>
                                             <td class="p-2">{{ $activity['actsource'] }}</td>
                                         </tr>
                                         @endforeach
@@ -298,9 +223,9 @@
 
 
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Projects</label>
-                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'x' => 1])
-                @livewire('not-started-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'y' => 1])
-                @livewire('past-projects', ['department' => $department, 'projectid' => $indexproject->id, 'fiscalyearid' => $currentfiscalyear->id, 'z' => 0])
+                @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'x' => 1])
+                @livewire('not-started-projects', ['department' => $department, 'projectid' => $indexproject->id, 'y' => 1])
+                @livewire('past-projects', ['department' => $department, 'projectid' => $indexproject->id, 'z' => 0])
             </div>
 
         </div>
@@ -333,7 +258,6 @@
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
-                            <input type="text" class="d-none" name="fiscalyear" id="fiscalyear" value="{{ $currentfiscalyear->id }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
@@ -496,26 +420,12 @@
     </div>
 </div>
 @endsection
-@php
-$fiscalstartdate = $currentfiscalyear->startdate;
-$fiscalenddate = $currentfiscalyear->enddate;
-$formattedfiscalstartdate = date('m/d/Y', strtotime($fiscalstartdate));
-$formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
-@endphp
 @section('scripts')
 <!--<script src="{{ asset('js/selectize.min.js') }}"></script>-->
 <script>
     var objectives = <?php echo json_encode($objectives);
                         ?>;
-    var fiscalstartdate = <?php echo json_encode($fiscalstartdate);
-                            ?>;
-    var fiscalenddate = <?php echo json_encode($fiscalenddate);
-                        ?>;
-    var formattedfiscalstartdate = <?php echo json_encode($formattedfiscalstartdate);
-                                    ?>;
-    var formattedfiscalenddate = <?php echo json_encode($formattedfiscalenddate);
-                                    ?>;
 
     var selectElement = $('#year-select');
     var url = "";
@@ -529,18 +439,15 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
 
+
+
+
         var currentstep = 0;
         var setcount = 0;
 
 
-
-
         $('.projectobjective-error strong').hide();
 
-        $('#navbarDropdown').click(function() {
-            // Add your function here
-            $('#account .dropdown-menu').toggleClass('shows');
-        });
 
 
         $('#programtitle').on('keyup', function(e) {
@@ -559,6 +466,18 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
         $('#endDatePicker').datepicker().on('change', function(e) {
             $('#endDatePicker').datepicker('hide');
+        });
+
+
+        $('#currentstartDatePicker').datepicker();
+
+        $('#currentstartDatePicker').datepicker().on('change', function(e) {
+            $('#currentstartDatePicker').datepicker('hide');
+        });
+        $('#currentendDatePicker').datepicker();
+
+        $('#currentendDatePicker').datepicker().on('change', function(e) {
+            $('#currentendDatePicker').datepicker('hide');
         });
         /*
         $('#searchInputProject').on('keyup', function(e) {
@@ -587,6 +506,9 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
             }
         });
 
+        $('#editIndexproject').click(function() {
+            $('#editProjectModal').modal('show');
+        });
         $(document).on('input', '.autocapital', function() {
             var inputValue = $(this).val();
             if (inputValue.length > 0) {
@@ -705,9 +627,8 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
 
         $(document).on('click', '.projectdiv', function(event) {
             event.preventDefault();
+            var department = $(this).attr('data-dept');
             var projectid = $(this).attr('data-value');
-            var projectname = $(this).attr('data-name');
-            var department = $('#department').val();
 
 
             var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
@@ -720,13 +641,10 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
         // Add an event listener to the select element
         selectElement.change(function() {
             var selectedOption = $(this).find(':selected');
-            var currentyear = selectedOption.val();
+            var department = selectedOption.val();
 
-            var department = $('#department').val();
-
-            var baseUrl = "{{ route('yearproject.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
-            var url = baseUrl.replace(':department', department)
-                .replace(':currentyear', currentyear);
+            var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
+            var url = baseUrl.replace(':department', encodeURIComponent(department))
 
             window.location.href = url;
         });
@@ -949,8 +867,6 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                 var projectStartDate = formatDate($('#projectstartdate').val());
                 var projectEndDate = formatDate($('#projectenddate').val());
 
-                console.log(projectStartDate);
-                console.log(projectEndDate);
                 // Validation for Project Title
                 if (projectTitle.trim() === '') {
                     $('#projecttitle').addClass('is-invalid');
@@ -989,11 +905,6 @@ $formattedfiscalenddate = date('m/d/Y', strtotime($fiscalenddate));
                     hasErrors = true;
                 }
 
-                if (!(projectStartDate >= fiscalstartdate && projectStartDate <= fiscalenddate)) {
-                    $('#projectstartdate').parent().addClass('is-invalid');
-                    $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text('Project Start Date must be in between ' + formattedfiscalstartdate + ' and ' + formattedfiscalenddate + '.');
-                    hasErrors = true;
-                }
                 if (projectEndDate <= projectStartDate) {
                     $('#projectenddate').parent().addClass('is-invalid');
                     $('#projectenddate').parent().next('.invalid-feedback').find('strong').text('Project End Date must be after the Start Date.');

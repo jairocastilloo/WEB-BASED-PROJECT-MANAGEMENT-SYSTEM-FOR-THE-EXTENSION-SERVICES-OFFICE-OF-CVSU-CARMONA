@@ -15,6 +15,7 @@ class SubtaskContributor extends Model
         'user_id',
         'activity_id',
         'hours_rendered',
+
     ];
 
     public function subtask()

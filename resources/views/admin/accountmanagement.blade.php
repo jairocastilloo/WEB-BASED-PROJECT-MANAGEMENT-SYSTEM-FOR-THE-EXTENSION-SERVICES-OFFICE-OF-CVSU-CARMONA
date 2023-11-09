@@ -46,6 +46,14 @@
         });
 
 
+        $('.declineAccount').click(function() {
+            var userId = $(this).closest('tr').data('id');
+            $('#declineId').val(userId);
+            $('#myModal').modal('show');
+        });
+
+
+
         $('#editAccounts').click(function() {
             window.location.href = "{{ route('admin.editaccount') }}";
         });

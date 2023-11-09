@@ -340,4 +340,51 @@ class ActivityController extends Controller
 
         return 'File uploaded successfully.';
     }
+    public function uploadAccomplishmentReport(Request $request)
+    {
+        /*
+        $request->validate([
+            'projectstartdate' => 'required|date_format:m/d/Y|before_or_equal:projectenddate',
+            'projectenddate' => 'required|date_format:m/d/Y|after_or_equal:projectstartdate',
+            'terminal_file' => 'required|mimes:docx|max:4096',
+        ]);
+        */
+        $activitystartdate = date("Y-m-d", strtotime($request->input('activitystartdate')));
+        $activityenddate = date("Y-m-d", strtotime($request->input('activityenddate')));
+
+        $activitycontribution = new activityContribution([
+            'activity_id' => $request->input('activity-id'),
+            'startdate' => $activitystartdate,
+            'enddate' => $activityenddate,
+            'submitter_id' => $request->input('submitter-id'),
+            'hours_rendered' => $request->input('hours-rendered'),
+        ]);
+        $activitycontribution->save();
+        $activityimplementers = $request->input('activityimplementers');
+
+        foreach ($activityimplementers as $activityimplementer) {
+            ActivitycontributionsUser::create([
+                'activitycontribution_id' => $activitycontribution->id,
+                'user_id' => $activityimplementer,
+            ]);
+        }
+        $request->validate([
+            'accomplishment_file' => 'required|mimes:docx|max:2048',
+        ]);
+        $file = $request->file('accomplishment_file');
+        $originalName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '.' . $extension;
+        $currentDateTime = date('Y-m-d_H-i-s');
+        // Store the file
+        $path = $request->file('accomplishment_file')->storeAs('uploads/' . $currentDateTime, $fileName);
+        // Save the file path to the database or perform any other necessary actions
+        // ...
+        /*  
+        $url = URL::route('projsubmission.display', ['projsubmissionid' => $projectterminal->id, 'projsubmissionname' => "Unevaluated-Submission"]);
+        return redirect($url);*/
+        return response()->json([
+            'actsubmissionid' => $activitycontribution->id,
+        ]);
+    }
 }

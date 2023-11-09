@@ -5,7 +5,7 @@
 <input class="d-none" type="date" value="{{ $activity['actstartdate'] }}" id="actsavestartdate">
 <input class="d-none" type="date" value="{{ $activity['actenddate'] }}" id="actsaveenddate">
 
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="maincontainer border border-start border-end border-bottom border-top-0">
 
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
@@ -35,219 +35,189 @@
     <div class="container">
 
         <div class="row">
-            @if ($activity['subtask'] == 1)
+
             <div class="col-lg-6">
-                @elseif ($activity['subtask'] == 0)
-                <div class="col-lg-10">
-                    @endif
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
-                        </div>
 
-                        @livewire('activity-details', [ 'activity' => $activity, 'objectives' => $objectives ])
-
+                <div class="basiccont word-wrap shadow">
+                    <div class="border-bottom ps-3 pt-2 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                     </div>
 
+                    @livewire('activity-details', [ 'activity' => $activity, 'objectives' => $objectives ])
 
-                    @livewire('activity-output', [ 'outputTypes' => $outputTypes, 'outputs' => $outputs, 'activityid' => $activity['id'] ])
-                    @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $project['projecttitle'] ])
                 </div>
-                @if ($activity['subtask'] == 1)
 
-                <div class="col-lg-4">
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                            <div class="row">
-                                <div class="col">
-                                    <h6 class="fw-bold small mt-2" style="color:darkgreen;">Subtasks</h6>
-                                </div>
-                                @if ($subtasks->count() == 0)
+
+                @livewire('activity-output', [ 'outputTypes' => $outputTypes, 'outputs' => $outputs, 'activityid' => $activity['id'] ])
+                @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $project['projecttitle'] ])
+
+            </div>
+
+
+            <div class="col-lg-3">
+
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <label class="ms-3 small form-label text-secondary fw-bold">Subtasks</label>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button type="button" class="btn btn-sm rounded btn-outline-secondary addsubtask-btn me-2">
+                            <b class="small"><i class="bi bi-plus-lg"></i> Add Subtask</b>
+                        </button>
+                    </div>
+                </div>
+
+
+
+
+                <!--
                                 <div class="col-auto mb-1">
                                     <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#nohoursmodal"><i class="bi bi-x-lg"></i></button>
                                 </div>
-                                @endif
-                            </div>
-                        </div>
-                        @php
-                        // Sort the $activities array by actstartdate in ascending order
-                        $sortedSubtasks = $subtasks->sortBy('subduedate');
-
-                        @endphp
-                        @if ($subtasks->count() == 0)
+-->
 
 
 
-                        <div class="text-center p-4 pb-2">
-                            <h4><em>No Added Subtask Yet.</em></h4>
-                        </div>
-
-                        @else
-
-                        @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
 
 
-                        @endif
+
+                @livewire('ongoing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xOngoingTasks' => 1])
+                @livewire('missing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xMissingTasks' => 1])
+                @livewire('completed-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xCompletedTasks' => 0])
+            </div>
 
 
-                        <div class="btn-group ms-3 mt-2 mb-3 shadow">
-                            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow addsubtask-btn">
-                                <b class="small">Add Subtask</b>
-                            </button>
-                        </div>
+
+            <div class="col-lg-3">
+
+                <label class="ms-3 small form-label text-secondary fw-bold">Other Activities</label>
+                @livewire('in-progress-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xInProgressActivities' => 1])
+                @livewire('not-started-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xNotStartedActivities' => 1])
+                @livewire('past-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xPastActivities' => 0])
+                @livewire('completed-activities', ['projectid' => $project['id'], 'activityid' => $activity['id'], 'xCompletedActivities' => 0])
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- add subtask -->
+<div class="modal" id="subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="new-subtask-modal-label">New Subtask</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="d-none" value='{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}' id="subtaskurl">
+                <form id="subtaskform" data-url="{{ route('add.subtask') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="subtask-name" class="form-label">Subtask Name</label>
+                        <input type="number" class="d-none" name="activitynumber" id="actid" value="{{ $activity['id'] }}">
+                        <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
 
-                </div>
-
-                @endif
-
-                <div class="col-lg-2">
-
-
-                    @php
-                    // Sort the $activities array by actstartdate in ascending order
-                    $sortedActivities = $activities->sortBy('actstartdate');
-
-                    @endphp
-                    <label class="ms-3 small form-label text-secondary fw-bold">Other Activities</label>
-                    @if($activities->isEmpty())
-                    <div class="basiccont word-wrap shadow">
-                        <div class="border-bottom ps-3 pt-2 bggreen">
-                            <h6 class="fw-bold small" style="color:darkgreen;">Activities</h6>
-                        </div>
-                        <div class="text-center p-4">
-                            <h4><em>No Other Activities Yet.</em></h4>
-                        </div>
+                    <div class="mb-3">
+                        <label for="subtask-duedate" class="form-label">Due Date</label>
+                        <input type="date" class="form-control" id="subtaskduedate" name="subtaskduedate" placeholder="Enter Due Date">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
-                    @else
-                    @livewire('other-activities', ['activities' => $sortedActivities] )
-
-                    @endif
-
-
-                </div>
+                </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createsubtask-btn">Add Subtask</button>
+            </div>
+
 
         </div>
     </div>
-    <!-- add subtask -->
-    <div class="modal" id="subtask-modal" tabindex="-1" aria-labelledby="new-subtask-modal-label" aria-hidden="true">
-        <div class="modal-dialog">
+</div>
 
-            <div class="modal-content">
+<!-- add output -->
 
-                <div class="modal-header">
-                    <h5 class="modal-title" id="new-subtask-modal-label">New Subtask</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="d-none" value='{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}' id="subtaskurl">
-                    <form id="subtaskform" data-url="{{ route('add.subtask') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="subtask-name" class="form-label">Subtask Name</label>
-                            <input type="number" class="d-none" name="activitynumber" id="actid" value="{{ $activity['id'] }}">
-                            <input type="text" class="form-control" id="subtaskname" name="subtaskname" placeholder="Enter Subtask">
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
-                        </div>
+<!--assignees details-->
+<div class="modal fade" id="assigneedetails" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Name:</strong></p>
+                <p id="assigneename"> John Doe</p>
+                <p><strong>Email:</strong></p>
+                <p id="assigneeemail"> johndoe@example.com</p>
+                <p><strong>Role:</strong> </p>
+                <p id="assigneerole">Developer</p>
+                <input type="hidden" id="assigneedataid" name="assigneedataid">
+            </div>
+            <div class="modal-footer">
 
-                        <div class="mb-3">
-                            <label for="subtask-duedate" class="form-label">Due Date</label>
-                            <input type="date" class="form-control" id="subtaskduedate" name="subtaskduedate" placeholder="Enter Due Date">
-                            <span class="invalid-feedback" role="alert">
-                                <strong></strong>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="createsubtask-btn">Add Subtask</button>
-                </div>
-
-
+                <button type="button" class="btn btn-secondary" id="unassignassignee-dismiss" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- add output -->
-
-    <!--assignees details-->
-    <div class="modal fade" id="assigneedetails" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailsModalLabel">Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p><strong>Name:</strong></p>
-                    <p id="assigneename"> John Doe</p>
-                    <p><strong>Email:</strong></p>
-                    <p id="assigneeemail"> johndoe@example.com</p>
-                    <p><strong>Role:</strong> </p>
-                    <p id="assigneerole">Developer</p>
-                    <input type="hidden" id="assigneedataid" name="assigneedataid">
-                </div>
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-secondary" id="unassignassignee-dismiss" data-bs-dismiss="modal">Close</button>
-                </div>
+<!-- mark as completed -->
+<div class="modal fade" id="completeactivitymodal" tabindex="-1" aria-labelledby="completeactivityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="completeactivityModalLabel">Complete Activity</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="markcompleteform" data-url="{{ route('activity.markcomplete') }}">
+                    @csrf
+                    <input type="number" class="d-none" name="actid" value="{{ $activity['id'] }}">
+                    <p> Are you sure you want to mark the Activity: "{{ $activity['actname'] }}" as completed?
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="markcomplete-btn">Mark as Completed</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- mark as completed -->
-    <div class="modal fade" id="completeactivitymodal" tabindex="-1" aria-labelledby="completeactivityModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="completeactivityModalLabel">Complete Activity</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="markcompleteform" data-url="{{ route('activity.markcomplete') }}">
-                        @csrf
-                        <input type="number" class="d-none" name="actid" value="{{ $activity['id'] }}">
-                        <p> Are you sure you want to mark the Activity: "{{ $activity['actname'] }}" as completed?
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="markcomplete-btn">Mark as Completed</button>
-                </div>
+
+<!-- no subtasks -->
+<div class="modal fade" id="nohoursmodal" tabindex="-1" aria-labelledby="nohoursmodal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="submitHoursModalLabel">Remove subtasks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to remove subtask panel for this activity?</p>
+                <p><em>Note: Removing this panel will declare the activity as one without any subtask.</em></p>
+                <form id="nosubtaskform" data-url="{{ route('set.nosubtask') }}">
+                    @csrf
+                    <input class="d-none" type="number" name="act-id" value="{{ $activity['id'] }}">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="setnosubtask-btn">Yes</button>
             </div>
         </div>
     </div>
-
-
-    <!-- no subtasks -->
-    <div class="modal fade" id="nohoursmodal" tabindex="-1" aria-labelledby="nohoursmodal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="submitHoursModalLabel">Remove subtasks</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to remove subtask panel for this activity?</p>
-                    <p><em>Note: Removing this panel will declare the activity as one without any subtask.</em></p>
-                    <form id="nosubtaskform" data-url="{{ route('set.nosubtask') }}">
-                        @csrf
-                        <input class="d-none" type="number" name="act-id" value="{{ $activity['id'] }}">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="setnosubtask-btn">Yes</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <input class="d-none" type="number" id="actid-hrs" value="{{ $activity['id'] }}">
-    <input class="d-none" type="text" id="actname-hrs" value="{{ $activity['actname'] }}">
+</div>
+<input class="d-none" type="number" id="actid-hrs" value="{{ $activity['id'] }}">
+<input class="d-none" type="text" id="actname-hrs" value="{{ $activity['actname'] }}">
 </div>
 @endsection
 
@@ -274,7 +244,16 @@
                 $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
             }
         });
+        $('#activitystartDatePicker').datepicker();
 
+        $('#activitystartDatePicker').datepicker().on('change', function(e) {
+            $('#activitystartDatePicker').datepicker('hide');
+        });
+        $('#activityendDatePicker').datepicker();
+
+        $('#activityendDatePicker').datepicker().on('change', function(e) {
+            $('#activityendDatePicker').datepicker('hide');
+        });
         $('#editOutput').click(function(event) {
             event.preventDefault();
             $('.numberInput').attr('type', 'number');

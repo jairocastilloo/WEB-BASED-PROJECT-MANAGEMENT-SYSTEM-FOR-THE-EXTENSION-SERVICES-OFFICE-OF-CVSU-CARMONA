@@ -84,7 +84,7 @@
 
             <tbody>
                 @foreach($pendingusers as $pendinguser)
-                <tr class="accountRow" data-name="{{ $pendinguser->name . ' ' . $pendinguser->middle_name . ' ' . $pendinguser->last_name }}" data-email="{{ $pendinguser->email }}">
+                <tr class="accountRow" data-name="{{ $pendinguser->name . ' ' . $pendinguser->middle_name . ' ' . $pendinguser->last_name }}" data-email="{{ $pendinguser->email }}" data-id="{{ $pendinguser->id }}">
                     <td class="p-2 name">{{ $pendinguser->last_name }}</td>
                     <td class="p-2 name">{{ $pendinguser->name }}</td>
                     <td class="p-2 name">{{ $pendinguser->middle_name }}</td>
@@ -110,19 +110,47 @@
 
                     </td>
                     <td class="p-2 cancel text-center">
-                        <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="decline('{{ $pendinguser->id }}')">
+                        <button type="button" class="btn btn-sm btn-outline-danger border declineAccount">
                             <i class="bi bi-trash fs-5"></i>
                         </button>
+                        <span class="ms-2 small" id="loadingSpanDecline[{{ $pendinguser->id}}]" style="display: none;">Sending Email..</span>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="emailErrorDecline[{{ $pendinguser->id}}]" style="display: none;">
+                            <!-- Your error message goes here -->
+                            <strong>Error:</strong><span id="errorMessageDecline[{{ $pendinguser->id}}]"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                     </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Decline Account Request</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="declineId">
+                    <label class="form-label">Reason:</label>
+                    <textarea class="form-control" id="notes" rows="5" placeholder="Input your notes here ..."></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeDecline">Close</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtnDecline">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener('livewire:load', function() {
             const btnSearch = document.getElementById('btnSearch');
             const inputSearch = document.getElementById('inputSearch');
+            const submitBtnDecline = document.getElementById('submitBtnDecline');
 
             Livewire.on('updateElements', function(id) {
 
@@ -139,6 +167,30 @@
 
             });
 
+            submitBtnDecline.addEventListener('click', function() {
+                var id = document.getElementById('declineId').value;
+                var reason = document.getElementById('notes').value;
+                document.getElementById('closeDecline').click();
+                document.getElementById('loadingSpanDecline[' + id + ']').style.display = "inline-block";
+                Livewire.emit('sendEmailDecline', id, reason);
+                // Livewire.emit('decline', id);
+            });
+            /*
+            Livewire.on('updateElementsDecline', function(id) {
+                var reason = document.getElementById('notes').value;
+                document.getElementById('loadingSpanDecline[' + id + ']').style.display = "inline-block";
+                Livewire.emit('sendEmailDecline', id, reason);
+            });
+            */
+            Livewire.on('updateLoadingDecline', function(id) {
+                document.getElementById('loadingSpanDecline[' + id + ']').style.display = "none";
+            });
+            Livewire.on('updateLoadingFailedDecline', function(id, e) {
+                document.getElementById('loadingSpanDecline[' + id + ']').style.display = "none";
+                document.getElementById('errorMessageDecline[' + id + ']').textContent = e;
+                document.getElementById('emailErrorDecline[' + id + ']').style.display = "inline-block";
+
+            });
 
             btnSearch.addEventListener('click', function() {
                 const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;

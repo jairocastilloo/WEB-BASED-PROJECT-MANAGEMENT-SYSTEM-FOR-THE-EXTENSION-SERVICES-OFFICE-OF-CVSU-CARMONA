@@ -14,7 +14,6 @@ class PastProjects extends Component
 
     public $department;
     public $projectid;
-    public $fiscalyearid;
     public $z;
     public $pastinputSearch = '';
     public $pastcurrentPage = 1; // The current page number
@@ -22,14 +21,13 @@ class PastProjects extends Component
     public $currentdate;
     protected $listeners = ['pastfindProject' => 'pasthandleFindProject'];
 
-    public function mount($department, $projectid, $fiscalyearid, $z)
+    public function mount($department, $projectid, $z)
 
     {
         $this->currentdate = now();
         $this->z = $z;
         $this->department = str_replace('+', ' ', $department);
         $this->projectid = $projectid;
-        $this->fiscalyearid = $fiscalyearid;
     }
     public function pastshow($z)
     {
@@ -58,16 +56,18 @@ class PastProjects extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->department == null) {
+
+            // for home
             switch ($this->z) {
 
                 case 0:
                     $pastmoreprojects = null;
                     $pastlastpage = null;
                     break;
+                    // for showing initial
                 case 1:
 
                     $pastmoreprojects = $user->projects()
-                        ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
                         ->where('projectenddate', '<', $this->currentdate)
                         ->orderBy('created_at', 'desc')
@@ -76,12 +76,11 @@ class PastProjects extends Component
                     $pastlastpage = $pastmoreprojects->lastPage();
 
                     break;
-
+                    // for searching
                 case 2:
 
 
                     $pastmoreprojects = $user->projects()
-                        ->where('fiscalyear', $this->fiscalyearid)
                         ->where('projectstatus', 'Incomplete')
                         ->where('projectenddate', '<', $this->currentdate)
                         ->where('projecttitle', 'like', "%$this->pastinputSearch%")
@@ -93,18 +92,19 @@ class PastProjects extends Component
                     break;
             }
         } else if ($user->role === "Admin") {
-
+            // for select and create as admin
             switch ($this->z) {
 
                 case 0:
                     $pastmoreprojects = null;
                     $pastlastpage = null;
                     break;
+                    // for showing initial
                 case 1:
                     if ($this->projectid == null) {
+                        // for create
                         $pastmoreprojects = Project::query()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -114,10 +114,10 @@ class PastProjects extends Component
 
                         break;
                     } else if ($this->projectid != null) {
+                        // for select
                         $pastmoreprojects = Project::query()
                             ->where('department', $this->department)
                             ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -127,12 +127,13 @@ class PastProjects extends Component
 
                         break;
                     }
+                    // for searching
                 case 2:
 
                     if ($this->projectid == null) {
+                        // for create
                         $pastmoreprojects = Project::query()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->pastinputSearch%")
@@ -143,10 +144,10 @@ class PastProjects extends Component
 
                         break;
                     } else if ($this->projectid != null) {
+                        // for select
                         $pastmoreprojects = Project::query()
                             ->where('department', $this->department)
                             ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->pastinputSearch%")
@@ -159,6 +160,7 @@ class PastProjects extends Component
                     }
             }
         } else {
+            // for select and create as user
             switch ($this->z) {
 
                 case 0:
@@ -169,7 +171,6 @@ class PastProjects extends Component
                     if ($this->projectid == null) {
                         $pastmoreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -181,8 +182,7 @@ class PastProjects extends Component
                     } else  if ($this->projectid != null) {
                         $pastmoreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->orderBy('created_at', 'desc')
@@ -197,7 +197,6 @@ class PastProjects extends Component
 
                         $pastmoreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->where('fiscalyear', $this->fiscalyearid)
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->pastinputSearch%")
@@ -210,8 +209,7 @@ class PastProjects extends Component
                     } else if ($this->projectid != null) {
                         $pastmoreprojects = $user->projects()
                             ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
-                            ->where('fiscalyear', $this->fiscalyearid)
+                            ->whereNotIn('projects.id', [$this->projectid])
                             ->where('projectstatus', 'Incomplete')
                             ->where('projectenddate', '<', $this->currentdate)
                             ->where('projecttitle', 'like', "%$this->pastinputSearch%")

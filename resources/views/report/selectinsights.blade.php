@@ -97,29 +97,28 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                 @endphp
                 @endif
                 <div class="basiccont rounded shadow pb-2 mb-3">
+
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Reports</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                     </div>
-                    @if (!$inCurrentYear)
-                    <span class="small ms-2"><em>
-                            Note: Not the Current Year.
-                        </em></span>
-                    @endif
+
                     <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 19px;" aria-label="Select an calendar year">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a department">
 
-                            @foreach ($calendaryears as $calendaryear)
-                            <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ $calendaryear }}
+                            @foreach ($alldepartments as $alldepartment)
+                            <option class="p-2" value="{{ $alldepartment}}" {{ $alldepartment == $department ? 'selected' : '' }}>
+                                &nbsp;&nbsp;&nbsp;{{ $alldepartment }}
                             </option>
                             @endforeach
 
                         </select>
                         <label for="year-select" style="color:darkgreen;">
-                            <h5><strong>Calendar Year:</strong></h5>
+                            <h6><strong>Choose Department:</strong></h6>
                         </label>
                     </div>
+
+
 
                 </div>
                 <div class="container p-0">
@@ -264,11 +263,29 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                     hoverOffset: 4
                 }]
             };
+
             new Chart(ctx, {
                 type: 'doughnut',
                 data: data,
-
+                options: {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 16 // Set the desired font size for legend labels
+                                }
+                            }
+                        },
+                        tooltip: {
+                            bodyFont: {
+                                size: 16 // Set the desired font size for dataset labels
+                            }
+                        }
+                    }
+                }
             });
+
+
 
             function getRandomColor() {
                 var r = Math.floor(Math.random() * 256);
@@ -311,6 +328,20 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                                 }
                             }
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 16 // Set the desired font size for legend labels
+                                }
+                            }
+                        },
+                        tooltip: {
+                            bodyFont: {
+                                size: 16 // Set the desired font size for dataset labels
+                            }
+                        }
                     }
                 }
             });
@@ -331,16 +362,12 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
                     $('#account .dropdown-menu').toggleClass('shows');
                 });
 
-                // Add an event listener to the select element
                 selectElement.change(function() {
                     var selectedOption = $(this).find(':selected');
-                    var currentyear = selectedOption.val();
+                    var department = selectedOption.val();
 
-                    var department = $('#department').val();
-
-                    var baseUrl = "{{ route('yearinsights.show', ['department' => ':department', 'currentyear' => ':currentyear']) }}";
+                    var baseUrl = "{{ route('insights.show', ['department' => ':department']) }}";
                     var url = baseUrl.replace(':department', department)
-                        .replace(':currentyear', currentyear);
 
                     window.location.href = url;
                 });

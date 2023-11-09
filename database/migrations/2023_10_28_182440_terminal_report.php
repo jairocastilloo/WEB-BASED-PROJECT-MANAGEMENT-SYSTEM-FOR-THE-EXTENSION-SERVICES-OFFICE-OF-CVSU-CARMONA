@@ -14,6 +14,15 @@ class TerminalReport extends Migration
     public function up()
     {
         //
+        Schema::create('project_terminal', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('project_id');
+            $table->date('startdate');
+            $table->date('enddate');
+            $table->foreignId('submitter_id');
+
+            $table->timestamps();
+        });
     }
 
     /**

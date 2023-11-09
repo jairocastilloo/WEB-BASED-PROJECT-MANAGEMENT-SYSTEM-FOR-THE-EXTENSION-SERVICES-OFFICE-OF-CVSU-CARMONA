@@ -18,7 +18,7 @@
                         <a href="{{ route('insights.show', ['department' => 'Department of Industrial and Information Technology']) }}" class="dep-choose-button"><i class="bi bi-bar-chart-line-fill fs-2"></i> Department of Industrial and Information Technology</a>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-lg-6">
                         <a href="{{ route('insights.show', ['department' => 'Department of Teacher Education']) }}" class="dep-choose-button"><i class="bi bi-bar-chart-line-fill fs-2"></i> Department of Teacher Education</a>

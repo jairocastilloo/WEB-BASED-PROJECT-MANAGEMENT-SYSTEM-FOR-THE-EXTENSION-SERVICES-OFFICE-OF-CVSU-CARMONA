@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="maincontainer border border-start border-end border-bottom border-top-0">
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper divhover" id="projectdiv" data-value="{{ $project->id }}" data-name="{{ $project->projecttitle }}" data-dept="{{ $project->department }}">
             <div class="step">
@@ -68,11 +68,11 @@
                     </div>
 
                     <div class="m-2 ms-4 me-4">
-                        <label class="form-label">Date:</label>
+                        <label class="form-label">Start Date:</label>
                         <input type="date" class="form-control" id="subtask-date" name="subtask-date">
                     </div>
                     <div class="m-2 ms-4 me-4">
-                        <label class="form-label">Date:</label>
+                        <label class="form-label">End Date:</label>
                         <input type="date" class="form-control" id="subtask-enddate" name="subtask-enddate">
                     </div>
                 </div>

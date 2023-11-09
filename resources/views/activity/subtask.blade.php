@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="maincontainer border border-start border-end border-bottom">
+<div class="maincontainer border border-start border-end border-bottom border-top-0">
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper divhover" id="projectdiv" data-value="{{ $project->id }}" data-name="{{ $project->projecttitle }}" data-dept="{{ $project['department'] }}">
             <div class="step">
@@ -37,22 +37,28 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-9">
+
                 @php
+                $countAccepted = 0;
 
-                $unevaluatedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] === null;
-                });
-                $acceptedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] === 1;
-                });
-                $rejectedSubmission = $contributions->filter(function ($contri) {
-                return $contri['approval'] === 0;
-                });
+                $contributions = $contributions->map(function ($contri) use (&$countAccepted) {
+                if ($contri['approval'] === null) {
+                $contri['submission_remark'] = 'For Evaluation';
+                } elseif ($contri['approval'] === 1) {
+                $countAccepted++;
+                $contri['submission_remark'] = 'Accepted';
+                } elseif ($contri['approval'] === 0) {
+                $contri['submission_remark'] = 'For Revision';
+                } else {
+                $contri['submission_remark'] = 'Unknown'; // Handle other cases if needed
+                }
 
+                return $contri;
+                });
                 @endphp
 
-                <div class="basiccont word-wrap shadow pb-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+                <div class="basiccont word-wrap shadow" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
                     </div>
@@ -60,98 +66,123 @@
                     <p class="ps-4 lh-1"><b>Total Hours Rendered:</b> {{ $subtask['hours_rendered'] }}</p>
                     <p class="ps-4 lh-1"><b>Due Date:</b> {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
                     </p>
-                    @if (count($acceptedSubmission) == 0)
-                    <div class="btn-group ms-3 mb-1 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="submithoursrendered-btn">
-                            <b class="small">Submit Hours</b>
+                    @if ($countAccepted == 0)
+                    <div class="btn-group m-2 ms-3 mb-3 shadow">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal">
+                            <b class="small">Submit Accomplishment Report</b>
                         </button>
+                    </div>
+                    <div class="modal fade" id="accomplishmentReportModal" tabindex="-1" aria-labelledby="accomplishmentReportModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="accomplishmentReportModalLabel">Upload Accomplishment Report</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form data-url="{{ route('subtasks.uploadaccomplishment') }}" id="accomplishmentForm">
+                                        @csrf
+                                        <input type="hidden" name="subtask-id" value="{{ $subtask->id }}">
+                                        <input type="hidden" name="submitter-id" value="{{ Auth::user()->id }}">
+                                        <div class="mb-3">
+                                            <label class="form-label">Subtask Hours:</label>
+                                            <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" value="0" min="0" step="1">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="subtaskstartdate" class="form-label">Subtask Start Date</label>
+                                            <div class="input-group date" id="startDatePicker">
+                                                <input type="text" class="form-control" id="subtaskstartdate" name="subtaskstartdate" placeholder="mm/dd/yyyy" />
+                                                <span class="input-group-append">
+                                                    <span class="input-group-text bg-light d-block">
+                                                        <i class="bi bi-calendar-event-fill"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="subtaskenddate" class="form-label">Subtask End Date</label>
+                                            <div class="input-group date" id="endDatePicker">
+                                                <input type="text" class="form-control" id="subtaskenddate" name="subtaskenddate" placeholder="mm/dd/yyyy" />
+                                                <span class="input-group-append">
+                                                    <span class="input-group-text bg-light d-block">
+                                                        <i class="bi bi-calendar-event-fill"></i>
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
+                                        </div>
+                                        <div class="container mb-3 p-0">
+                                            <label for="implementers" class="form-label">Subtask Contributors</label>
+                                            <select class="selectpicker w-100 border subtaskcontributors" name="subtaskcontributors[]" id="subtaskcontributors" multiple aria-label="Select Contributors" data-live-search="true">
+                                                <option value="0" disabled>Select Contributors</option>
+                                                @foreach ($assignees as $assignee)
+
+                                                <option value="{{ $assignee->id }}">{{ $assignee->name . ' ' . $assignee->last_name }}</option>
+
+                                                @endforeach
+                                            </select>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong></strong>
+                                            </span>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="accomplishment_file">Choose File:</label>
+                                            <input type="file" class="form-control" id="accomplishment_file" accept=".docx" name="accomplishment_file">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary submitAccomplishment">Upload</button>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                     @endif
 
                 </div>
 
-                @if($contributions->isEmpty())
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Submission</h6>
-                    </div>
-                    <div class="text-center p-4">
-                        <h4><em>No Submission Yet.</em></h4>
-                    </div>
-                </div>
-                @endif
-
-                @if (count($unevaluatedSubmission) > 0)
+                @if(!$contributions->isEmpty())
 
                 <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Unevaluated Submission</h6>
+                    <div class="border-bottom ps-3 p-2 pb-0 bggreen">
+                        <h6 class="fw-bold small" style="color:darkgreen;">Accomplishment Report/s</h6>
                     </div>
-                    @foreach ($unevaluatedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+                    @foreach ($contributions as $submission)
 
-                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                    <div class="p-2 pb-1 ps-3 divhover border-bottom submission-div small" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
+                        <p class="lh-1 fw-bold"><em>{{ $submission->submission_remark  }}</em></p>
+                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;Activity Hours: {{ $submission->hours_rendered }} </p>
+                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;Task Duration: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }} </p>
+                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
+                        @if ( $submission->notes != null)
+                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;<em>Notes: {{ $submission->notes }} </em></p>
+                        @endif
                     </div>
 
-                    @endforeach
-                </div>
-                @endif
-                @if (count($acceptedSubmission) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Accepted Submission</h6>
-                    </div>
-                    @foreach ($acceptedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-                    </div>
-                    @endforeach
-                </div>
-                @endif
-                @if (count($rejectedSubmission) > 0)
-
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 pe-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">For Revision</h6>
-                    </div>
-                    @foreach ($rejectedSubmission as $submission)
-                    <div class="p-2 pb-1 ps-4 small divhover border-bottom submission-div" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
-
-                        <p class="lh-1 fw-bold"> Submitted Hours Rendered: {{ $submission->hours_rendered }}</p>
-                        <p class="lh-1 fw-bold"> Notes: {{ $submission->notes }}</p>
-                        <p class="lh-1 ps-4"> Rendered Date: {{ \Carbon\Carbon::parse($submission->date)->format('F d, Y') }} </p>
-                        <p class="lh-1 ps-4"> Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }} </p>
-
-                    </div>
                     @endforeach
                 </div>
                 @endif
                 @livewire('subtask-assignees', ['subtask' => $subtask, 'activity' => $activity ])
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">Other Subtasks</label>
-                <div class="basiccont word-wrap shadow">
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Subtasks</h6>
-                    </div>
-                    @php
-                    // Sort the $activities array by actstartdate in ascending order
-                    $sortedSubtasks = $subtasks->sortBy('subduedate');
 
-                    @endphp
-                    @livewire('other-subtasks', ['subtasks' => $sortedSubtasks] )
+                @livewire('ongoing-tasks', ['activityid' => $activity->id, 'subtaskid' => $subtask->id, 'xOngoingTasks' => 1])
+                @livewire('missing-tasks', ['activityid' => $activity->id, 'subtaskid' => $subtask->id, 'xMissingTasks' => 1])
+                @livewire('completed-tasks', ['activityid' => $activity->id, 'subtaskid' => $subtask->id, 'xCompletedTasks' => 0])
 
 
-                </div>
+
             </div>
         </div>
     </div>
@@ -190,8 +221,8 @@
     $(document).ready(function() {
         $('.step span').each(function() {
             var $span = $(this);
-            if ($span.text().length > 16) { // Adjust the character limit as needed
-                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            if ($span.text().length > 15) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 15) + '...'); // Truncate and add ellipsis
             }
         });
 
@@ -199,6 +230,44 @@
             // Add your function here
             event.preventDefault();
             $('#account .dropdown-menu').toggleClass('shows');
+        });
+
+        $('#startDatePicker').datepicker();
+
+        $('#startDatePicker').datepicker().on('change', function(e) {
+            $('#startDatePicker').datepicker('hide');
+        });
+        $('#endDatePicker').datepicker();
+
+        $('#endDatePicker').datepicker().on('change', function(e) {
+            $('#endDatePicker').datepicker('hide');
+        });
+
+        $('.submitAccomplishment').click(function(event) {
+            event.preventDefault();
+            var dataurl = $('#accomplishmentForm').attr('data-url');
+            // Create a data object with the value you want to send
+            var formData = new FormData($("#accomplishmentForm")[0]);
+            var goToUrl = "{{ route('submission.display', [ 'submissionid' => ':submissionid', 'submissionname' => 'For Evaluation' ])}}"
+
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    goToUrl = goToUrl.replace(':submissionid', response.submissionid);
+                    window.location.href = goToUrl;
+
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
         });
 
         $('#projectdiv').click(function(event) {
@@ -321,11 +390,11 @@
             var submission;
             console.log(approval);
             if (approval === "") {
-                submission = "Unevaluated-Submission";
+                submission = "For Evaluation";
             } else if (approval == 0) {
-                submission = "Rejected-Submission";
+                submission = "For Revision";
             } else if (approval == 1) {
-                submission = "Accepted-Submission";
+                submission = "Accepted";
             }
 
 
