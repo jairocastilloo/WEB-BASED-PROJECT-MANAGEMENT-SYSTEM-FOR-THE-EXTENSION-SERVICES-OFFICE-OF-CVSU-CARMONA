@@ -25,12 +25,16 @@
     <link href="{{ asset('css/styles.css') }}" type="text/css" rel="stylesheet">
     @if(in_array(Route::currentRouteName(), ['login', 'register']))
     <link href="{{ asset('css/homelogin.css') }}" type="text/css" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+    <link href="{{ asset('css/bootstrap4.min.css') }}" type="text/css" rel="stylesheet">
     @endif
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" type="text/css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">-->
+
+
     <!--<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
     <!--<link href="{{ asset('css/selectize.bootstrap5.css') }}" rel="stylesheet">
@@ -155,14 +159,15 @@
             <script src="{{ asset('js/popper.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
             <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+            <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+            <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>-->
             <!--<script src="{{ asset('vendor/livewire/livewire.js') }}"></script>-->
             <!--<script src="{{ asset('js/main.js') }}"></script>-->
 
             <!--<script src="{{ asset('js/bootstrap.bundle.min.js.map') }}"></script>-->
             @if(in_array(Route::currentRouteName(), ['login', 'register']))
-
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="{{ asset('js/bootstrap4.min.js') }}"></script>
+            <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
             @endif
 
             @yield('scripts')

@@ -89,6 +89,7 @@ class SubtaskAssignees extends Component
     public function sendNotification($selectedAssignees)
     {
         $isMailSendable = 1;
+        $error = null;
         $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
 
         $message =  $sendername . ' assigned you to a new task: "' . $this->subtask->subtask_name . '".';

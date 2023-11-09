@@ -75,6 +75,8 @@ class ActivityAssignees extends Component
     }
     public function sendNotification($selectedAssignees)
     {
+        $isMailSendable = 1;
+        $error = null;
         $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
 
         $message =  $sendername . ' assigned you to a new activity: "' . $this->activity->actname . '".';
@@ -87,18 +89,29 @@ class ActivityAssignees extends Component
                 'message' => $message,
             ]);
             $notification->save();
-            $assignee = User::findorFail($selectedAssignee);
-            $email = $assignee->email;
-            $name = $assignee->name . ' ' . $assignee->last_name;
-            $taskname = $this->activity->actname;
-            $tasktype = "activity";
-            $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
-            $endDate = date('F d, Y', strtotime($this->activity->actenddate));
+            if ($isMailSendable === 1) {
+                try {
+                    $assignee = User::findorFail($selectedAssignee);
+                    $email = $assignee->email;
+                    $name = $assignee->name . ' ' . $assignee->last_name;
+                    $taskname = $this->activity->actname;
+                    $tasktype = "activity";
+                    $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
+                    $endDate = date('F d, Y', strtotime($this->activity->actenddate));
 
-            $taskdeadline = $startDate . ' - ' . $endDate;
-            $senderemail = Auth::user()->email;
-            Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $isMailSendable = 0;
+                    $error = $e;
+                }
+            }
+        }
+        if ($isMailSendable === 1) {
             $this->emit('updateLoading');
+        } else {
+            $this->emit('updateLoadingFailed', $error);
         }
     }
 
