@@ -30,8 +30,8 @@ class ActivityDetails extends Component
             'actname' => $arguments['actname'],
             'actobjectives' => $arguments['objectivevalue'],
             'actoutput' => $arguments['expectedoutput'],
-            'actstartdate' => $arguments['actstartdate'],
-            'actenddate' => $arguments['actenddate'],
+            'actstartdate' => date("Y-m-d", strtotime($arguments['actstartdate'])),
+            'actenddate' => date("Y-m-d", strtotime($arguments['actenddate'])),
             'actbudget' => $arguments['actbudget'],
             'actsource' => $arguments['actsource'],
         ]);
