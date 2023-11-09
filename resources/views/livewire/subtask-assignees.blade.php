@@ -13,7 +13,7 @@
                     <div class="col-10 checkassignee" data-name="{{ $assignee->name . ' ' . $assignee->last_name }}" data-email="{{ $assignee->email }}" data-role="{{ $assignee->role }}">
 
                         <p class="m-2 ms-3">
-                            {{ $assignee->name . ' ' . $assignee->last_name }}
+                            {{ $assignee->last_name . ', ' . $assignee->name . ' ' . ($assignee->middle_name ? $assignee->middle_name[0] : 'N/A') . '.' }}
                         </p>
 
                     </div>
@@ -71,7 +71,9 @@
                         @foreach($addassignees as $addassignee)
                         <div class="form-check ms-3">
                             <input class="form-check-input border border-primary" type="checkbox" id="addassignee_{{ $addassignee->id }}" name="addassignee[]" value="{{ $addassignee->id }}">
-                            <label class="form-check-label" for="addassignee_{{ $addassignee->id }}">{{ $addassignee->name . ' ' . $addassignee->last_name }}</label>
+                            <label class="form-check-label" for="addassignee_{{ $addassignee->id }}">
+                                {{ $addassignee->last_name . ', ' . $addassignee->name . ' ' . ($addassignee->middle_name ? $addassignee->middle_name[0] : 'N/A') . '.' }}
+                            </label>
                         </div>
                         @endforeach
                     </div>
@@ -139,7 +141,7 @@
                                 <option value="0" disabled>Select Contributors</option>
                                 @foreach ($assignees as $assignee)
                                 <option value="{{ $assignee->id }}">
-                                    {{ $assignee->name . ' ' . $assignee->last_name }}
+                                    {{ $assignee->last_name . ', ' . $assignee->name . ' ' . ($assignee->middle_name ? $assignee->middle_name[0] : 'N/A') . '.' }}
                                 </option>
                                 @endforeach
 

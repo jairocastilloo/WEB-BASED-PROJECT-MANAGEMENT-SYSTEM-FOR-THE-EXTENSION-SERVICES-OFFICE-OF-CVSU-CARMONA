@@ -16,7 +16,7 @@
     <p class="lh-sm ms-4 me-2"><strong>Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
     </p>
     <p class="lh-sm ms-4 me-2"><strong>Due Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
-    <p class="lh-sm ms-4 me-2"><strong>Budget:</strong> &#8369;{{ number_format($activity['actbudget'], 2) }}</p>
+    <p class="lh-sm ms-4 me-2"><strong>Budget:</strong> PhP{{ number_format($activity['actbudget'], 2) }}</p>
     <p class="lh-sm ms-4 me-2"><strong>Source:</strong> {{ $activity['actsource'] }}</p>
     <p class="lh-sm ms-4 me-2"><strong>Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
     <div class="btn-group dropdown ms-3 mb-3 shadow">

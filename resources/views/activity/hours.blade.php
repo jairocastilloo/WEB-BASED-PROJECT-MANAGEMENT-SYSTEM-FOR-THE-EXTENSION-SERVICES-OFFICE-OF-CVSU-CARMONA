@@ -139,7 +139,9 @@
                                         <option value="0" disabled>Select Implementers</option>
                                         @foreach ($implementers as $implementer)
 
-                                        <option value="{{ $implementer->id }}">{{ $implementer->name . ' ' . $implementer->last_name }}</option>
+                                        <option value="{{ $implementer->id }}">
+                                            {{ $implementer->last_name . ', ' . $implementer->name . ' ' . ($implementer->middle_name ? $implementer->middle_name[0] : 'N/A') . '.' }}
+                                        </option>
 
                                         @endforeach
                                     </select>

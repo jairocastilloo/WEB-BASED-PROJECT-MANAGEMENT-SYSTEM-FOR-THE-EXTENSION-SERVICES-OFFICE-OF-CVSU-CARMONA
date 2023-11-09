@@ -10,7 +10,7 @@
                     <div class="col-10 checkmember" data-name="{{ $member->name . ' ' . $member->last_name }}" data-email="{{ $member->email }}" data-role="{{ $member->role }}">
 
                         <p class="m-2 ms-3">
-                            {{ $member->name . ' ' . $member->last_name }}
+                            {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
                         </p>
 
                     </div>
@@ -68,7 +68,7 @@
                         @foreach($addmembers as $addmember)
                         <div class="form-check ms-3">
                             <input class="form-check-input border border-primary" type="checkbox" id="addmember_{{ $addmember->id }}" name="addmember[]" value="{{ $addmember->id }}">
-                            <label class="form-check-label" for="addmember_{{ $addmember->id }}">{{ $addmember->name . ' ' . $addmember->last_name }}</label>
+                            <label class="form-check-label" for="addmember_{{ $addmember->id }}">{{ $addmember->last_name . ', ' . $addmember->name . ' ' . ($addmember->middle_name ? $addmember->middle_name[0] : 'N/A') . '.' }}</label>
                         </div>
                         @endforeach
                     </div>

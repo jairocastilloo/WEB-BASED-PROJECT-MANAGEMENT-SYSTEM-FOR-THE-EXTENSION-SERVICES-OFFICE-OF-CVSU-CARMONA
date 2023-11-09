@@ -24,20 +24,17 @@
         <div class="underline-space inline-div ps-2">
 
             @foreach ($programleaders as $programleader)
-
-            {{ ucfirst($programleader->name) }}
+            {{ ucfirst($programleader->last_name) }}, {{ ucfirst($programleader->name) }}
 
             @if ($programleader->middle_name)
             {{ substr(ucfirst($programleader->middle_name), 0, 1) }}.
+            @else
+            {{ "N/A." }}
             @endif
-
 
             @if (!$loop->last)
-            {{ ucfirst($programleader->last_name) . ', ' }}
-            @else
-            {{ ucfirst($programleader->last_name)}}
+            ,
             @endif
-
             @endforeach
 
         </div>
@@ -54,21 +51,19 @@
         <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
         <div class="underline-space inline-div ps-2">
             @foreach ($projectleaders as $projectleader)
-
-            {{ ucfirst($projectleader->name) }}
+            {{ ucfirst($projectleader->last_name) }}, {{ ucfirst($projectleader->name) }}
 
             @if ($projectleader->middle_name)
             {{ substr(ucfirst($projectleader->middle_name), 0, 1) }}.
+            @else
+            {{ "N/A." }}
             @endif
-
 
             @if (!$loop->last)
-            {{ ucfirst($projectleader->last_name) . ', ' }}
-            @else
-            {{ ucfirst($projectleader->last_name)}}
+            ,
             @endif
-
             @endforeach
+
 
         </div>
     </div>
@@ -113,7 +108,7 @@
                             @foreach ($members as $member)
                             @if ($member->role === 'Coordinator' || $member->role === 'Admin')
                             <option value="{{ $member->id }}" @if(in_array($member->id, $programleadersIds)) selected @endif>
-                                {{ $member->name . ' ' . $member->last_name }}
+                                {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
                             </option>
                             @endif
                             @endforeach
@@ -140,7 +135,7 @@
                             @foreach ($members as $member)
                             @if ($member->role === 'Coordinator' || $member->role === 'Admin')
                             <option value="{{ $member->id }}" @if(in_array($member->id, $projectleadersIds)) selected @endif>
-                                {{ $member->name . ' ' . $member->last_name }}
+                                {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
                             </option>
                             @endif
                             @endforeach

@@ -164,7 +164,9 @@
                                     <option value="0" disabled>Select Project Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
-                                    <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
+                                    <option value="{{ $member->id }}">
+                                        {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
+                                    </option>
                                     @endif
                                     @endforeach
                                 </select>
@@ -187,7 +189,9 @@
                                     <option value="0" disabled>Select Program Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
-                                    <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->last_name }}</option>
+                                    <option value="{{ $member->id }}">
+                                        {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
+                                    </option>
                                     @endif
                                     @endforeach
                                 </select>

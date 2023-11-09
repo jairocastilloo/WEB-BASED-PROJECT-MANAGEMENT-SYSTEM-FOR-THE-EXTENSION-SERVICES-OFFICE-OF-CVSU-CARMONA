@@ -13,8 +13,8 @@
         <h6 class="fw-bold small">{{ $activity['actname'] }} - <span class="text-success">{{ $activity['actremark'] }}</span></h6>
 
         @php
-        $startDate = date('M d', strtotime($activity['actstartdate']));
-        $endDate = date('M d', strtotime($activity['actenddate']));
+        $startDate = date('M d, Y', strtotime($activity['actstartdate']));
+        $endDate = date('M d, Y', strtotime($activity['actenddate']));
         @endphp
 
         <h6 class="small"> {{ $startDate }} - {{ $endDate }}</h6>
