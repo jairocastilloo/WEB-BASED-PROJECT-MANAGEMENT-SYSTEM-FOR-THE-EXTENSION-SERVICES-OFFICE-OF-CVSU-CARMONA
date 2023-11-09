@@ -649,6 +649,9 @@ div {
   border-top: 1px solid #ccc;
 }
 
+.hide-option {
+  display: none;
+}
 /* Default styles for larger screens */
 .dropdown-options li:hover {
   background-color: #f0f0f0;

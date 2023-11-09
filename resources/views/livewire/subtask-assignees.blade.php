@@ -41,6 +41,13 @@
     </div>
     <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
 
+    <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="emailError" style="display: none;">
+        <!-- Your error message goes here -->
+        <strong>Error:</strong><span id="errorMessage">The email has not been sent due to an internet issue.</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" onclick="redirectToHomepage()"></button>
+    </div>
+
+
     <div class="modal fade" id="addActivityAssigneeModal" tabindex="-1" aria-labelledby="addActivityAssigneeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -80,9 +87,85 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="accomplishmentReportModal" tabindex="-1" aria-labelledby="accomplishmentReportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="accomplishmentReportModalLabel">Upload Accomplishment Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
+                <div class="modal-body">
+                    <form data-url="{{ route('subtasks.uploadaccomplishment') }}" id="accomplishmentForm">
+                        @csrf
+                        <input type="hidden" name="subtask-id" value="{{ $subtask->id }}">
+                        <input type="hidden" name="submitter-id" value="{{ Auth::user()->id }}">
+                        <div class="mb-3">
+                            <label class="form-label">Subtask Hours:</label>
+                            <input type="number" class="form-control" id="hours-rendered" name="hours-rendered" placeholder="Enter hours rendered" value="0" min="0" step="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="subtaskstartdate" class="form-label">Subtask Start Date</label>
+                            <div class="input-group date" id="startDatePicker">
+                                <input type="text" class="form-control" id="subtaskstartdate" name="subtaskstartdate" placeholder="mm/dd/yyyy" />
+                                <span class="input-group-append">
+                                    <span class="input-group-text bg-light d-block">
+                                        <i class="bi bi-calendar-event-fill"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subtaskenddate" class="form-label">Subtask End Date</label>
+                            <div class="input-group date" id="endDatePicker">
+                                <input type="text" class="form-control" id="subtaskenddate" name="subtaskenddate" placeholder="mm/dd/yyyy" />
+                                <span class="input-group-append">
+                                    <span class="input-group-text bg-light d-block">
+                                        <i class="bi bi-calendar-event-fill"></i>
+                                    </span>
+                                </span>
+                            </div>
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                        </div>
+                        <div class="container mb-3 p-0">
+                            <label for="implementers" class="form-label">Subtask Contributors</label>
+
+                            <select class="selectpicker w-100 border subtaskcontributors" name="subtaskcontributors[]" id="subtaskcontributors" multiple aria-label="Select Contributors" data-live-search="true">
+                                <option value="0" disabled>Select Contributors</option>
+                                @foreach ($assignees as $assignee)
+                                <option value="{{ $assignee->id }}">
+                                    {{ $assignee->name . ' ' . $assignee->last_name }}
+                                </option>
+                                @endforeach
+
+                            </select>
+
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="accomplishment_file">Choose File:</label>
+                            <input type="file" class="form-control" id="accomplishment_file" accept=".docx" name="accomplishment_file">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary submitAccomplishment">Upload</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener('livewire:load', function() {
+
             var selectAllAssignees;
             var addAssigneeCheckboxes;
             var saveAssigneesButton;
@@ -90,27 +173,40 @@
             addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
             saveAssigneesButton = document.getElementById('saveAssigneesButton');
 
+
             Livewire.on('updateElements', function(selectedAssignees) {
-                selectAllAssignees = document.getElementById('selectAllAssignees');
-                addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
-                saveAssigneesButton = document.getElementById('saveAssigneesButton');
+                var selectAllAssignees = document.getElementById('selectAllAssignees');
+                var addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
+                var saveAssigneesButton = document.getElementById('saveAssigneesButton');
                 selectAllAssignees.checked = false;
                 document.getElementById('loadingSpan').style.display = "inline-block";
                 document.getElementById('btnAddAssignee').disabled = true;
+                //document.getElementById('destroy').click();
+                //document.getElementById('reinitialize').click();
+
                 Livewire.emit('sendNotification', selectedAssignees);
             });
+
+
 
             Livewire.on('updateLoading', function() {
                 document.getElementById('loadingSpan').style.display = "none";
                 document.getElementById('btnAddAssignee').disabled = false;
                 window.location.href = "";
-            });
 
+            });
+            Livewire.on('updateLoadingFailed', function(e) {
+                document.getElementById('loadingSpan').style.display = "none";
+                document.getElementById('btnAddAssignee').disabled = false;
+                document.getElementById('emailError').style.display = "inline-block";
+
+            });
             Livewire.on('updateUnassignElements', function() {
                 selectAllAssignees = document.getElementById('selectAllAssignees');
                 addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');
                 saveAssigneesButton = document.getElementById('saveAssigneesButton');
                 selectAllAssignees.checked = false;
+                window.location.href = "";
             });
 
             saveAssigneesButton.addEventListener('click', function() {
@@ -152,6 +248,8 @@
                 }
                 return true;
             }
+
+
         });
     </script>
 </div>
