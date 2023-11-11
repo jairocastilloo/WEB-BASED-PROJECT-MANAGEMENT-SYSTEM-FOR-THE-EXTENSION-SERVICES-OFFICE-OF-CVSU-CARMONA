@@ -6,7 +6,7 @@
     <div class="container p-0">
 
         <div class="mainnav mb-3 border-1 border-bottom shadow-sm px-2 small">
-            <nav class="navbar navbar-expand-md p-0">
+            <nav class="navbar navbar-expand-sm p-0">
                 <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
