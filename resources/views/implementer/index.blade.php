@@ -5,7 +5,7 @@
 <div class="maincontainer border border-start border-end border-top-0">
     <div class="container p-0">
 
-        <div class="mainnav mb-2 border-1 border-bottom shadow-sm px-2 small">
+        <div class="mainnav mb-3 border-1 border-bottom shadow-sm px-2 small">
             <nav class="navbar navbar-expand-md p-0">
                 <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -14,11 +14,11 @@
                 <div class="collapse navbar-collapse" id="navbarMonitoring">
                     <ul class="navbar-nav me-auto">
 
-                        <a class="nav-link border border-1 border-top-0 p-2 px-3 currentdiv fw-bold small darkgreenfont" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link border border-1 p-2 px-3 currentdiv fw-bold small">
                             My Duties
                         </a>
 
-                        <a class="nav-link border border-1 p-2 px-3 divhover fw-bold small darkgreenfont" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link border border-1 p-2 px-3 divhover fw-bold small" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             My Tasks Calendar
                         </a>
 
@@ -52,7 +52,7 @@
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">My Activities</label>
                 @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
-                @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
+                @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 0])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
                 @livewire('completed-activities', ['projectid' => null, 'activityid' => null, 'xCompletedActivities' => 0])
                 @livewire('check-output')
@@ -61,7 +61,7 @@
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">My Projects</label>
                 @livewire('more-projects', ['department' => null, 'projectid' => null, 'x' => 1])
-                @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 1])
+                @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 0])
                 @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
                 @livewire('completed-projects', ['department' => null, 'projectid' => null, 'xCompletedProjects' => 0])
             </div>

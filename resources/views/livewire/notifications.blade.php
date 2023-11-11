@@ -1,6 +1,6 @@
 <div>
 
-    <a wire:click="update" class="nav-link border border-1 p-2 px-3 divhover fw-bold small darkgreenfont" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+    <a wire:click="update" class="nav-link border border-1 p-2 px-3 divhover fw-bold small" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
 
         My Notifications
         @if($unreadnotificationscount)

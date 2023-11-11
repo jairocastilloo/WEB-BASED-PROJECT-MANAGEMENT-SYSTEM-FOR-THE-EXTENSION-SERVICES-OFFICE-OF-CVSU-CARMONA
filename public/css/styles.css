@@ -410,10 +410,7 @@ body {
 .darkgreenfont{
   color: darkgreen;
 }
-.currentdiv{
-  background-color:green;
-  color:white;
-}
+
 .navtohover {
   position: relative;
 }
@@ -531,7 +528,7 @@ body {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 8px solid #e4e4e4;
+  border-bottom: 8px solid #ebebeb;
 }
 .mainnavpassive{
   background-color: #ffffff;
@@ -813,3 +810,18 @@ div {
   position: relative;
   border-bottom: 3px solid rgb(255, 255, 255);
 }
+.currentdiv{
+  
+  color:green;
+}
+/* Add this style to remove hover effect for the specified class */
+.currentdiv:hover {
+  background-color: initial; /* Set the background color to its initial value */
+  color: green; /* Set the text color to inherit from the parent */
+  text-decoration: none; /* Remove underline or other text decorations */
+  cursor: auto; /* Set the cursor style to default */
+}
+
+/* Add this style to remove hover effect for the specified class */
+
+

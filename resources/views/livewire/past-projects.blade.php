@@ -62,7 +62,7 @@
 
             @endforeach
             <nav class="border-bottom">
-                <ul class="pagination justify-content-center m-1 mt-0">
+                <ul class="pagination justify-content-center m-1">
 
                     @if ($pastcurrentPage === 1)
                     <li class="page-item disabled">
@@ -74,7 +74,7 @@
                     </li>
                     @endif
 
-                    <li class="page-item text-center">
+                    <li class="page-item text-center mx-2">
                         <h6 class="fw-bold my-0 mt-2 small">{{ $pastcurrentPage . ' of ' . $pasttotalPages }}</h6>
                         <span class="m-0 text-secondary fw-bold" style="font-size: 12px;">Pages</span>
                     </li>
