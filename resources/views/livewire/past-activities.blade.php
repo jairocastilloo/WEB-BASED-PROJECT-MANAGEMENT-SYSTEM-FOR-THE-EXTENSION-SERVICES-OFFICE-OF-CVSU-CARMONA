@@ -41,7 +41,7 @@
         <div class="container p-0">
 
             @foreach ($PastActivities as $activity)
-            <div class="border-bottom ps-3 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
+            <div class="border-bottom ps-3 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}" style="position: relative;">
 
                 <h6 class="fw-bold small" style="color: #4A4A4A;">{{ $activity['actname'] }}</h6>
 
@@ -51,6 +51,7 @@
                 @endphp
                 <h6 class="text-secondary small">{{ 'Created ' . date('M d, Y', strtotime($activity['created_at'])) }}</h6>
                 <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
+
             </div>
 
             @endforeach

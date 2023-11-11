@@ -94,12 +94,7 @@
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['insights.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('insights.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Reports
                         </a>
-                        <li class="nav-item">
 
-                            <!-- Enclose Livewire component in a single root element -->
-                            @livewire('notifications')
-
-                        </li>
 
 
 

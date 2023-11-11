@@ -1,10 +1,10 @@
 <div>
 
-    <a wire:click="update" class="nav-link text-white position-relative me-2 @if(in_array(Route::currentRouteName(), ['notification.index'])) currenthover @else navtohover @endif mx-2" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+    <a wire:click="update" class="nav-link border border-1 p-2 px-3 divhover fw-bold small darkgreenfont" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
 
-        Notifications
+        My Notifications
         @if($unreadnotificationscount)
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        <span class="position-absolute top-20 start-100 translate-middle badge rounded-pill bg-danger">
             {{ $unreadnotificationscount }}
         </span>
         @endif

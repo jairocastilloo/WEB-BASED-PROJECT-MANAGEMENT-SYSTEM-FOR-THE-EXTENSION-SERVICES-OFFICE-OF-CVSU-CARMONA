@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Activity;
+use App\Models\Notification;
 use App\Models\Output;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -22,7 +23,15 @@ class UpdateActivityStatus extends Command
         $this->updatePendingActivities();
         $this->updateOverdueActivities();
         */
-        $this->changeAllOutputs();
+        //$this->changeAllOutputs();
+        $notification = new Notification([
+            'user_id' => 1,
+            'task_id' => 501,
+            'task_type' => "project",
+            'task_name' => "Watch a movie",
+            'message' => "Admin Name appointed you as a Project Leader to a new project:",
+        ]);
+        $notification->save();
     }
     public function changeAllRemarks()
     {
