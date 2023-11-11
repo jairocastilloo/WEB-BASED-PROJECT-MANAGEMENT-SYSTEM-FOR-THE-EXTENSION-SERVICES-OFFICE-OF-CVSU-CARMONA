@@ -14,11 +14,11 @@
                 <div class="collapse navbar-collapse" id="navbarMonitoring">
                     <ul class="navbar-nav me-auto">
 
-                        <a class="nav-link border border-1 p-2 px-3 currentdiv fw-bold small">
+                        <a class="nav-link border border-1 p-2 px-4 currentdiv fw-bold small">
                             My Duties
                         </a>
 
-                        <a class="nav-link border border-1 p-2 px-3 divhover fw-bold small" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('taskscalendar.show', [ 'username' => Auth::user()->username ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             My Tasks Calendar
                         </a>
 

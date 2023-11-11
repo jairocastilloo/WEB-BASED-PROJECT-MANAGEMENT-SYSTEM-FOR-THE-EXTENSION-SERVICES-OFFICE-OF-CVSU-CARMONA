@@ -317,7 +317,7 @@
 
 @section('scripts')
 <script src="{{ asset('js/fullcalendar.global.min.js') }}"></script>
-<script src="{{ asset('js/fullcalendarbootstrap5.global.min.js') }}" defer></script>
+<script src="{{ asset('js/fullcalendarbootstrap5.global.min.js') }}"></script>
 <script>
     var selectElement = $('#year-select');
     var url = "";

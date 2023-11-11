@@ -43,6 +43,36 @@ class TasksController extends Controller
 
         return view('implementer.index');
     }
+    public function showtaskscalendar($username)
+    {
+        $user = User::where('username', $username)->firstOrFail();
+
+        $subtasks = $user->subtasks;
+        $subtasksArray = $subtasks->map(function ($subtask) {
+            return (object) [
+                'subtask_name' => $subtask->subtask_name,
+                'subduedate' => $subtask->subduedate,
+            ];
+        })->toArray();
+
+        $scheduledSubtasks = $user->scheduledSubtasks()
+            ->join('subtasks as st1', 'scheduled_tasks.subtask_id', '=', 'st1.id')
+            ->orderBy('scheduled_tasks.scheduledDate', 'asc')
+            ->select('st1.subtask_name', 'st1.subduedate', 'st1.created_at', 'scheduled_tasks.scheduledDate')
+            ->get();
+        $scheduledSubtasksArray = $scheduledSubtasks->map(function ($scheduledSubtask) {
+            return (object) [
+                'subtask_name' => $scheduledSubtask->subtask_name,
+                'subduedate' => $scheduledSubtask->subduedate,
+                'scheduledDate' => $scheduledSubtask->scheduledDate
+            ];
+        })->toArray();
+
+        return view('implementer.taskscalendar', [
+            'subtasksArray' => $subtasksArray,
+            'scheduledSubtasksArray' => $scheduledSubtasksArray
+        ]);
+    }
 
     public function showacadtasks($username, $currentYear)
     {

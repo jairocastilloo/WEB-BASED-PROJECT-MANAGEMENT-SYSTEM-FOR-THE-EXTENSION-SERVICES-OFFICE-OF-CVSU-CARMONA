@@ -76,6 +76,7 @@ Route::get('downloadterminal/{projcontributionid}/{filename}', [FileController::
 
 Route::prefix('{username}')->group(function () {
     Route::get('/home', [TasksController::class, 'showtasks'])->name('tasks.show');
+    Route::get('/taskscalendar', [TasksController::class, 'showtaskscalendar'])->name('taskscalendar.show');
     Route::get('/duties/{currentYear}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
 });
