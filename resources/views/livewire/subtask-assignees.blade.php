@@ -189,20 +189,20 @@
                 Livewire.emit('sendNotification', selectedAssignees);
             });
 
-
-
             Livewire.on('updateLoading', function() {
                 document.getElementById('loadingSpan').style.display = "none";
                 document.getElementById('btnAddAssignee').disabled = false;
                 window.location.href = "";
 
             });
+
             Livewire.on('updateLoadingFailed', function(e) {
                 document.getElementById('loadingSpan').style.display = "none";
                 document.getElementById('btnAddAssignee').disabled = false;
                 document.getElementById('emailError').style.display = "inline-block";
 
             });
+
             Livewire.on('updateUnassignElements', function() {
                 selectAllAssignees = document.getElementById('selectAllAssignees');
                 addAssigneeCheckboxes = document.querySelectorAll('input[name="addassignee[]"]');

@@ -3,7 +3,26 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-top-0">
-    <div class="container pt-3">
+    <div class="container p-0">
+
+        <div class="mainnav mb-2 border-1 border-bottom shadow-sm px-2 small">
+            <div class="border-1 border-bottom border-start border-end p-2 px-3 currentdiv fw-bold small">
+                Duties
+            </div>
+            <div class="border-1 border-bottom border-start border-end p-2 px-3 divhover fw-bold small" id="editAccounts">
+                Tasks Calendar
+            </div>
+            <div class="border-1 border-bottom border-start border-end p-2 px-3 divhover fw-bold small" id="editAccounts">
+                Notifications
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+    <div class="container">
 
         <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
         <div class="row">
@@ -23,6 +42,7 @@
                 @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
                 @livewire('completed-activities', ['projectid' => null, 'activityid' => null, 'xCompletedActivities' => 0])
+                @livewire('check-output')
 
             </div>
             <div class="col-lg-3">
@@ -81,6 +101,19 @@
             url = url.replace(':subtaskid', subtaskid);
             url = url.replace(':subtaskname', subtaskname);
             window.location.href = url;
+        });
+        $(document).on('click', '.activitydiv button', function(event) {
+            event.stopPropagation(); // Prevent the click event from propagating to the parent .subtaskdiv
+            // Add your button click logic here
+        });
+
+        $(document).on('click', '.activitydiv .dropdown-menu', function(event) {
+            event.stopPropagation();
+        });
+        $(document).on('click', '.checkOutput', function(event) {
+            $('#checkActId').val($(this).attr('data-id'));
+            $('#checkActName').text($(this).attr('data-name'));
+            $('#outputCheckModal').modal('show');
         });
 
         $(document).on('click', '.subtaskdiv button', function(event) {

@@ -408,7 +408,7 @@ body {
  
 }
 .currentdiv{
-  background-color:darkgreen;
+  background-color:green;
   color:white;
 }
 .navtohover {
@@ -592,6 +592,8 @@ body {
 }
 div {
   user-select: none;
+  
+
 }
 /* Define a CSS keyframes animation for fading in and out */
 @keyframes fadeInOut {
