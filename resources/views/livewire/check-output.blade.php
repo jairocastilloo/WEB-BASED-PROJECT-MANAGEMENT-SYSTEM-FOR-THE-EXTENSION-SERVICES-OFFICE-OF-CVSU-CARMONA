@@ -12,6 +12,7 @@
                     <p>Are you sure you want to check the output for the activity: <span id="checkActName"></span>?</p>
                 </div>
                 <div class="modal-footer">
+                    <span class="ms-2 small" id="loadingSpanOutput" style="display: none;">Searching for output..</span>
                     <button type="button" class="btn btn-primary" id="confirmCheckOutput">Yes, Check Output</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelCheckOutput">Cancel</button>
                 </div>
@@ -69,9 +70,13 @@
             document.getElementById('confirmCheckOutput').addEventListener('click', function() {
 
                 var checkActId = document.getElementById('checkActId').value;
+                document.getElementById('loadingSpanOutput').style.display = "inline-block";
+                document.getElementById('confirmCheckOutput').disabled = true;
                 Livewire.emit('showOutput', checkActId);
             });
             Livewire.on('successShow', function() {
+                document.getElementById('loadingSpanOutput').style.display = "none";
+                document.getElementById('confirmCheckOutput').disabled = false;
                 document.getElementById('cancelCheckOutput').click();
                 document.getElementById('openOutput').click();
             });

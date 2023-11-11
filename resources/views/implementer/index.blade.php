@@ -6,15 +6,28 @@
     <div class="container p-0">
 
         <div class="mainnav mb-2 border-1 border-bottom shadow-sm px-2 small">
-            <div class="border-1 border-bottom border-start border-end p-2 px-3 currentdiv fw-bold small">
-                Duties
-            </div>
-            <div class="border-1 border-bottom border-start border-end p-2 px-3 divhover fw-bold small" id="editAccounts">
-                Tasks Calendar
-            </div>
-            <div class="border-1 border-bottom border-start border-end p-2 px-3 divhover fw-bold small" id="editAccounts">
-                Notifications
-            </div>
+            <nav class="navbar navbar-expand-md p-0">
+                <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMonitoring">
+                    <ul class="navbar-nav me-auto">
+
+                        <a class="nav-link border border-1 border-top-0 p-2 px-3 currentdiv fw-bold small darkgreenfont" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            My Duties
+                        </a>
+
+                        <a class="nav-link border border-1 p-2 px-3 divhover fw-bold small darkgreenfont" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            My Tasks Calendar
+                        </a>
+
+                        @livewire('notifications')
+
+
+                    </ul>
+                </div>
+            </nav>
 
 
 
