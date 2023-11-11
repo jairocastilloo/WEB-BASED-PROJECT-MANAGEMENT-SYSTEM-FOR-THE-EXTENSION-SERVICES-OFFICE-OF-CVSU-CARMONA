@@ -57,7 +57,7 @@ class MoreProjects extends Component
         $user = User::findOrFail(Auth::user()->id);
         if ($this->department == null) {
             switch ($this->x) {
-
+        
                 case 0:
                     $moreprojects = null;
                     $lastpage = null;
