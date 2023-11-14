@@ -172,19 +172,111 @@
 
 
     </div>
-    <div class="border border-1 border-success border-top-0 border-end-0 border-start-0">
+    <div>
+    <div class="border border-1 border-success border-top-0 border-end-0 border-start-0 mb-3">
         <h4 class="p-2 pb-0">
             <b>Email Forwarding Settings</b>
         </h4>
     </div>
-    <div class="border border-1 border-success border-top-0 border-end-0 border-start-0">
+    <div class="mb-3">
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="emailSubtaskAdded" @if($emailSubtaskAdded==1) checked @endif>
+            <label class="form-check-label fw-bold d-block" for="emailSubtaskAdded">
+                Send me an email when I got assigned in a subtask.
+            </label>
+            <small class="text-secondary">
+                Enabling this option will send you a notification whenever you are assigned in a subtask.
+            </small>
+        </div>
+
+
+    </div>
+    <div class="mb-3">
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="emailActivityAdded" @if($emailActivityAdded==1) checked @endif>
+            <label class="form-check-label fw-bold d-block" for="emailActivityAdded">
+                Send me an email when I'm added as an implementer in an activity.
+            </label>
+            <small class="text-secondary">
+                Enabling this option will send you a notification whenever you are added as an implementer in an activity.
+            </small>
+        </div>
+
+
+    </div>
+    <div class="mb-3">
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="emailProjectAdded" @if($emailProjectAdded==1) checked @endif>
+            <label class="form-check-label fw-bold d-block" for="emailProjectAdded">
+                Send me an email when I'm added as a team member in a project.
+            </label>
+            <small class="text-secondary">
+                Enabling this option will send you a notification whenever you are added as a team member in a project.
+            </small>
+        </div>
+
+
+    </div>
+</div> 
+
+<div>
+    <div class="border border-1 border-success border-top-0 border-end-0 border-start-0 mb-3">
         <h4 class="p-2 pb-0">
             <b>User Account Settings</b>
         </h4>
     </div>
+    <div class="form-group row mb-3">
+        <div class="col-md-4">
+            <label for="username" class="form-label fw-bold">Username</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ $username }}" required>
+        </div>
+       
+    </div>
+    <div class="form-group row mb-3">
+        <div class="col-md-4">
+            <label for="oldPassword" class="form-label fw-bold">Old Password</label>
+            <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
+        </div>
+       
+    </div>
+    <div class="form-group row mb-3">
+        <div class="col-md-4">
+            <label for="currentPassword" class="form-label fw-bold">Current Password</label>
+            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+        </div>
+       
+    </div>
+    <div class="form-group row mb-3">
+        <div class="col-md-4">
+            <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+        </div>
+       
+    </div>
+
+    </div>
+    <div>
     <div class="border border-1 border-success border-top-0 border-end-0 border-start-0">
         <h4 class="p-2 pb-0">
             <b>Display Settings</b>
         </h4>
     </div>
+    <div class="mb-3">
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="projectAdded" @if($notifyProjectAdded==1) checked @endif>
+            <label class="form-check-label fw-bold d-block" for="projectAdded">
+                Notify me when I'm added as a team member in a project.
+            </label>
+            <small class="text-secondary">
+                Enabling this option will send you a notification whenever you are added as a team member in a project.
+            </small>
+        </div>
+
+
+    </div>
+</div>
 </div>
