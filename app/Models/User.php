@@ -28,7 +28,23 @@ class User extends Authenticatable implements MustVerifyEmail
         'middle_name',
         'last_name',
         'approval',
-        'role'
+        'role',
+        'darkMode',
+        'bio',
+        'social',
+        'notifyInSubtaskDue',
+        'notifyInActivityDue',
+        'notifyInProjectDue',
+        'notifyInSubtaskToDo',
+        'notifyInActivityStart',
+        'notifyInProjectStart',
+        'notifySubtaskAdded',
+        'notifyActivityAdded',
+        'notifyProjectAdded',
+        'emailSubtaskAdded',
+        'emailActivityAdded',
+        'emailProjectAdded',
+
     ];
 
     /**

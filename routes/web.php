@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProjectController;
@@ -79,6 +80,7 @@ Route::prefix('{username}')->group(function () {
     Route::get('/taskscalendar', [TasksController::class, 'showtaskscalendar'])->name('taskscalendar.show');
     Route::get('/duties/{currentYear}', [TasksController::class, 'showacadtasks'])->name('acadtasks.show');
     Route::get('/records', [RecordController::class, 'showrecords'])->name('records.show');
+    Route::get('/configuration', [SettingsController::class, 'configureSettings'])->name('settings.configure');
 });
 
 Route::get('/selectrecords/{username}/{ayid}/{semester}', [RecordController::class, 'selectrecords'])->name('records.select');

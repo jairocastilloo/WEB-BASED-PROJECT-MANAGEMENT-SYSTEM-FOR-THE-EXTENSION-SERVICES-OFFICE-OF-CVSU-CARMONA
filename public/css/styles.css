@@ -1,12 +1,13 @@
 * {
   font-family: 'Inter', sans-serif;
+
 }
 body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
   font-family: 'Inter', sans-serif; /* Set a default font-family */
   background-color: #fcfcfc; /* Set a default background color */
-  color: #333333; /* Set a default text color */
+  color: #4c4c4c; /* Set a default text color */
   
 }
 .input-group-append {

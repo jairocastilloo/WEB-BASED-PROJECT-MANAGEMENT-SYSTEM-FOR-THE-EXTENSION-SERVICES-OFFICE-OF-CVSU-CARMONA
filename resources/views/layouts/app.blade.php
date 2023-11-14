@@ -110,6 +110,11 @@
                                         {{ __('My Records') }}
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('settings.configure', ['username' => Auth::user()->username]) }}">
+                                        {{ __('Configuration Settings') }}
+                                    </a>
+                                </li>
 
                                 @if (Auth::user()->role === 'Admin')
 
