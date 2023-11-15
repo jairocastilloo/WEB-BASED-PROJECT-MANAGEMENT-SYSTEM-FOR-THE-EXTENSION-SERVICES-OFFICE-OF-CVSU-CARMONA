@@ -29,7 +29,12 @@ class ConfigurationSettings extends Component
         $emailActivityAdded,
         $emailProjectAdded;
 
-    protected $listeners = ['updateProfile' => 'handleupdateProfile', 'updateNotification' => 'handleupdateNotification'];
+    protected $listeners = [
+        'updateProfile' => 'handleupdateProfile',
+        'updateNotification' => 'handleupdateNotification',
+        'updateEmailForwarding' => 'handleupdateEmailForwarding',
+        'updateDisplay' => 'handleupdateDisplay'
+    ];
     public function mount($user)
     {
         $this->last_name = $user->last_name;
@@ -73,7 +78,7 @@ class ConfigurationSettings extends Component
             $this->social = $user->social;
             $this->emit('updateProfileSuccess');
         } catch (\Exception $e) {
-            $this->emit('updateProfileFailed', $e);
+            $this->emit('updateProfileFailed', $e->getMessage());
         }
     }
 
@@ -108,7 +113,7 @@ class ConfigurationSettings extends Component
             $this->notifyProjectAdded = $user->notifyProjectAdded;
             $this->emit('updateNotificationSuccess');
         } catch (\Exception $e) {
-            $this->emit('updateNotificationFailed', $e);
+            $this->emit('updateNotificationFailed', $e->getMessage());
         }
     }
 
@@ -116,6 +121,49 @@ class ConfigurationSettings extends Component
     {
         $this->updateNotification($notificationData);
     }
+
+    public function updateEmailForwarding($emailForwardingData)
+    {
+        try {
+            $user = User::where('username', $this->username)->first();
+            $user->update([
+                'emailSubtaskAdded' => $emailForwardingData['emailSubtaskAdded'],
+                'emailActivityAdded' => $emailForwardingData['emailActivityAdded'],
+                'emailProjectAdded' => $emailForwardingData['emailProjectAdded'],
+            ]);
+            $this->emailSubtaskAdded = $user->emailSubtaskAdded;
+            $this->emailActivityAdded = $user->emailActivityAdded;
+            $this->emailProjectAdded = $user->emailProjectAdded;
+
+            $this->emit('updateEmailForwardingSuccess');
+        } catch (\Exception $e) {
+            $this->emit('updateEmailForwardingFailed', $e->getMessage());
+        }
+    }
+
+    public function handleupdateEmailForwarding($emailForwardingData)
+    {
+        $this->updateEmailForwarding($emailForwardingData);
+    }
+    public function updateDisplay($displayData)
+    {
+        try {
+            $user = User::where('username', $this->username)->first();
+            $user->update([
+                'fontSize' => $displayData['fontSize'],
+            ]);
+            $this->fontSize = $user->fontSize;
+            $this->emit('updateDisplaySuccess');
+        } catch (\Exception $e) {
+            $this->emit('updateDisplayFailed', $e->getMessage());
+        }
+    }
+
+    public function handleupdateDisplay($displayData)
+    {
+        $this->updateDisplay($displayData);
+    }
+
     public function render()
     {
         return view('livewire.configuration-settings');

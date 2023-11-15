@@ -29,7 +29,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'approval',
         'role',
-        'darkMode',
+        'fontSize',
         'bio',
         'social',
         'notifyInSubtaskDue',

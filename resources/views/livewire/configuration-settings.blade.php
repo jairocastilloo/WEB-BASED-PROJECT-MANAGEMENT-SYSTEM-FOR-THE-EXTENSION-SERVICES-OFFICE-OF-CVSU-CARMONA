@@ -46,7 +46,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <div class="alert alert-success mt-3" id="updateProfileSuccessMessage" style="display:none;">
-            Profile updated successfully!
+            Profile Settings updated successfully!
         </div>
     </div>
     <div>
@@ -195,7 +195,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
         <div class="alert alert-success mt-3" id="updateNotificationSuccessMessage" style="display:none;">
-            Notification updated successfully!
+            Notification Settings updated successfully!
         </div>
 
     </div>
@@ -251,7 +251,15 @@
             <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnUpdateEmailForwarding">
                 <b class="small">Update Email Forwarding</b>
             </button>
-
+            <span class="ms-2 small loadingMessage" id="updateEmailForwardingLoadingSpan" style="display: none;">Saving data...</span>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="updateEmailForwardingError" style="display: none;">
+            <!-- Your error message goes here -->
+            <strong>Error:</strong><span id="updateEmailForwardingErrorMessage"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-success mt-3" id="updateEmailForwardingSuccessMessage" style="display:none;">
+            Email Forwarding Settings updated successfully!
         </div>
     </div>
 
@@ -261,40 +269,44 @@
                 <b>User Account Settings</b>
             </h4>
         </div>
-        <div class="form-group row mb-3">
-            <div class="col-md-4">
+        <form method="post" action="{{ route('useraccount.update') }}">
+            @csrf
+            <div class="mb-3">
                 <label for="username" class="form-label fw-bold">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ $username }}" required>
+                <input type="text" class="form-control @error('username') is-invalid @enderror" id="username" name="username" value="{{ old('username', $username) }}" required>
+                @error('username')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-        </div>
-        <div class="form-group row mb-3">
-            <div class="col-md-4">
-                <label for="oldPassword" class="form-label fw-bold">Old Password</label>
-                <input type="password" class="form-control" id="oldPassword" name="oldPassword" required>
-            </div>
-
-        </div>
-        <div class="form-group row mb-3">
-            <div class="col-md-4">
+            <div class="mb-3">
                 <label for="currentPassword" class="form-label fw-bold">Current Password</label>
-                <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                <input type="password" class="form-control @error('currentPassword') is-invalid @enderror" id="currentPassword" name="currentPassword" required>
+                @error('currentPassword')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-        </div>
-        <div class="form-group row mb-3">
-            <div class="col-md-4">
-                <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+            <div class="mb-3">
+                <label for="newPassword" class="form-label fw-bold">New Password</label>
+                <input type="password" class="form-control @error('newPassword') is-invalid @enderror" id="newPassword" name="newPassword" required>
+                @error('newPassword')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
             </div>
 
-        </div>
-        <div class="btn-group mb-3">
-            <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnUpdateUserAccount">
-                <b class="small">Update User Account</b>
-            </button>
+            <div class="mb-3">
+                <label for="confirmNewPassword" class="form-label fw-bold">Confirm New Password</label>
+                <input type="password" class="form-control" id="confirmNewPassword" name="newPassword_confirmation" required>
+            </div>
 
-        </div>
+            <div class="btn-group mb-3">
+                <button type="submit" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnUpdateUserAccount">
+                    <b class="small">Update User Account</b>
+                </button>
+            </div>
+        </form>
+
     </div>
     <div>
         <div class="border border-1 border-success border-top-0 border-end-0 border-start-0 mb-3">
@@ -315,8 +327,17 @@
             <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="btnUpdateDisplay">
                 <b class="small">Update Display</b>
             </button>
-
+            <span class="ms-2 small loadingMessage" id="updateDisplayLoadingSpan" style="display: none;">Saving data...</span>
         </div>
+        <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="updateDisplayError" style="display: none;">
+            <!-- Your error message goes here -->
+            <strong>Error:</strong><span id="updateDisplayErrorMessage"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="alert alert-success mt-3" id="updateDisplaySuccessMessage" style="display: none;">
+            Display Settings updated successfully! Please refresh site for the updated display.
+        </div>
+
 
     </div>
 
@@ -341,19 +362,13 @@
             const emailSubtaskAdded = document.getElementById('emailSubtaskAdded');
             const emailActivityAdded = document.getElementById('emailActivityAdded');
             const emailProjectAdded = document.getElementById('emailProjectAdded');
-            const username = document.getElementById('username');
-            const oldPassword = document.getElementById('oldPassword');
-            const currentPassword = document.getElementById('currentPassword');
-            const confirmPassword = document.getElementById('confirmPassword');
-
 
             const fontSizeRange = document.getElementById('fontSizeRange');
             const fontSizeValue = document.getElementById('fontSizeValue');
 
             const btnUpdateProfile = document.getElementById('btnUpdateProfile');
             const btnUpdateNotification = document.getElementById('btnUpdateNotification');
-            const btnUpdateEmailForwarding = document.getElementById('btnUpdateEmailforwarding');
-            const btnUpdateUserAccount = document.getElementById('btnUpdateUserAccount');
+            const btnUpdateEmailForwarding = document.getElementById('btnUpdateEmailForwarding');
             const btnUpdateDisplay = document.getElementById('btnUpdateDisplay');
 
             btnUpdateProfile.addEventListener('click', function() {
@@ -381,6 +396,7 @@
                 }, 3000);
 
             });
+
             Livewire.on('updateProfileFailed', function(e) {
                 document.getElementById('updateProfileErrorMessage').textContent = e;
                 document.getElementById('updateProfileError').style.display = 'block';
@@ -403,7 +419,7 @@
                     subtaskToDoDateValue = 1;
                 }
                 if (subtaskDueDate.checked === true) {
-                    subtaskToDueValue = 1;
+                    subtaskDueDateValue = 1;
                 }
                 if (addedAssignee.checked === true) {
                     addedAssigneeValue = 1;
@@ -455,6 +471,7 @@
                 }, 3000);
 
             });
+
             Livewire.on('updateNotificationFailed', function(e) {
                 document.getElementById('updateNotificationErrorMessage').textContent = e;
                 document.getElementById('updateNotificationError').style.display = 'block';
@@ -463,6 +480,77 @@
                 document.getElementById('updateNotificationLoadingSpan').style.display = 'none';
             });
 
+            btnUpdateEmailForwarding.addEventListener('click', function() {
+
+                var emailSubtaskAddedValue = 0;
+                var emailActivityAddedValue = 0;
+                var emailProjectAddedValue = 0;
+
+                if (emailSubtaskAdded.checked === true) {
+                    emailSubtaskAddedValue = 1;
+                }
+                if (emailActivityAdded.checked === true) {
+                    emailActivityAddedValue = 1;
+                }
+                if (emailProjectAdded.checked === true) {
+                    emailProjectAddedValue = 1;
+                }
+
+                var emailForwardingData = {
+                    emailSubtaskAdded: emailSubtaskAddedValue,
+                    emailActivityAdded: emailActivityAddedValue,
+                    emailProjectAdded: emailProjectAddedValue,
+                };
+
+                btnUpdateEmailForwarding.disabled = true;
+                document.getElementById('updateEmailForwardingLoadingSpan').style.display = 'block';
+                Livewire.emit('updateEmailForwarding', emailForwardingData);
+
+            });
+
+            Livewire.on('updateEmailForwardingSuccess', function() {
+
+                document.getElementById('updateEmailForwardingSuccessMessage').style.display = 'block';
+                btnUpdateEmailForwarding.disabled = false;
+                document.getElementById('updateEmailForwardingLoadingSpan').style.display = 'none';
+                // You may want to hide the message after a certain time
+                setTimeout(function() {
+                    document.getElementById('updateEmailForwardingSuccessMessage').style.display = 'none';
+                }, 3000);
+
+            });
+
+            Livewire.on('updateEmailForwardingFailed', function(e) {
+                document.getElementById('updateEmailForwardingErrorMessage').textContent = e;
+                document.getElementById('updateEmailForwardingError').style.display = 'block';
+
+                btnUpdateEmailForwarding.disabled = false;
+                document.getElementById('updateEmailForwardingLoadingSpan').style.display = 'none';
+            });
+
+            btnUpdateDisplay.addEventListener('click', function() {
+                var displayData = {
+                    fontSize: fontSizeRange.value
+                };
+                Livewire.emit('updateDisplay', displayData);
+            });
+
+            Livewire.on('updateDisplaySuccess', function() {
+                document.getElementById('updateDisplaySuccessMessage').style.display = 'block';
+                btnUpdateDisplay.disabled = false;
+                document.getElementById('updateDisplayLoadingSpan').style.display = 'none';
+                // You may want to hide the message after a certain time
+                setTimeout(function() {
+                    document.getElementById('updateDisplaySuccessMessage').style.display = 'none';
+                }, 3000);
+            });
+
+            Livewire.on('updateDisplayFailed', function(e) {
+                document.getElementById('updateDisplayErrorMessage').textContent = e;
+                document.getElementById('updateDisplayError').style.display = 'block';
+                btnUpdateDisplay.disabled = false;
+                document.getElementById('updateDisplayLoadingSpan').style.display = 'none';
+            });
 
             fontSizeRange.addEventListener('input', () => {
                 const fontSize = fontSizeRange.value;
