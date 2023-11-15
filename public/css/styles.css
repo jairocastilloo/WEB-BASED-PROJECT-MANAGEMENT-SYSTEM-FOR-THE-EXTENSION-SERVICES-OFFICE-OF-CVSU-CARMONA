@@ -1,11 +1,11 @@
 * {
   font-family: 'Inter', sans-serif;
-
+  
+  
 }
 body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
-  font-family: 'Inter', sans-serif; /* Set a default font-family */
   background-color: #fcfcfc; /* Set a default background color */
   color: #4c4c4c; /* Set a default text color */
   
@@ -610,7 +610,7 @@ div {
 }
 
 /* Apply the animation to the loading span */
-#loadingSpan {
+.loadingMessage {
   animation: fadeInOut 2s infinite; /* Use fadeInOut animation, 2 seconds duration, infinite loop */
 }
 /* Default styles for larger screens */
@@ -691,7 +691,6 @@ div {
   position: relative;
   width: 180px;
   height: 40px;
-  font-family: Arial;
   color: rgb(27, 27, 27);
   background-color: white;
   text-overflow: ellipsis;
@@ -751,7 +750,6 @@ div {
   position: relative;
   width: 180px;
   height: 40px;
-  font-family: Arial;
   color: white;
   background-color: green;
 }

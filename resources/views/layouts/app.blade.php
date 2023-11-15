@@ -46,7 +46,7 @@
 
 </head>
 
-<body @if(in_array(Route::currentRouteName(), ['login', 'register' ])) class="login-register-bg" @endif>
+<body @if(in_array(Route::currentRouteName(), ['login', 'register' ])) class="login-register-bg" @else style="font-size:{{ Auth::user()->fontSize }}px;" @endif>
     <div id="app">
         <nav class="navbar navbar-expand-md p-1 @if(in_array(Route::currentRouteName(), ['login', 'register' ])) walangbg @else shadow imbentobg @endif">
 

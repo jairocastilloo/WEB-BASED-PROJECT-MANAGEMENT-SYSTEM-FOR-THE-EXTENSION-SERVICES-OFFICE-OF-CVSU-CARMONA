@@ -27,16 +27,16 @@ class ProjectMembers extends Component
 
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
-if ($department != "All"){
-        $this->addmembers = User::where('department', $department)
-            ->whereNotIn('id', $memberIds)
-            ->where('role', '!=', 'FOR APPROVAL')
-            ->get();
-} else {
-    $this->addmembers = User::whereNotIn('id', $memberIds)
-    ->where('role', '!=', 'FOR APPROVAL')
-    ->get();
-}
+        if ($department != "All") {
+            $this->addmembers = User::where('department', $department)
+                ->whereNotIn('id', $memberIds)
+                ->where('role', '!=', 'FOR APPROVAL')
+                ->get();
+        } else {
+            $this->addmembers = User::whereNotIn('id', $memberIds)
+                ->where('role', '!=', 'FOR APPROVAL')
+                ->get();
+        }
         $this->department = $department;
     }
 
@@ -51,16 +51,16 @@ if ($department != "All"){
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
 
-        if ($department != "All"){
-            $this->addmembers = User::where('department', $department)
+        if ($this->department != "All") {
+            $this->addmembers = User::where('department', $this->department)
                 ->whereNotIn('id', $memberIds)
                 ->where('role', '!=', 'FOR APPROVAL')
                 ->get();
-    } else {
-        $this->addmembers = User::whereNotIn('id', $memberIds)
-        ->where('role', '!=', 'FOR APPROVAL')
-        ->get();
-    }
+        } else {
+            $this->addmembers = User::whereNotIn('id', $memberIds)
+                ->where('role', '!=', 'FOR APPROVAL')
+                ->get();
+        }
         $this->emit('updateElements', $selectedMembers);
     }
     public function unassignMembers($selectedMember)
@@ -72,16 +72,16 @@ if ($department != "All"){
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
 
-        if ($department != "All"){
-            $this->addmembers = User::where('department', $department)
+        if ($this->department != "All") {
+            $this->addmembers = User::where('department', $this->department)
                 ->whereNotIn('id', $memberIds)
                 ->where('role', '!=', 'FOR APPROVAL')
                 ->get();
-    } else {
-        $this->addmembers = User::whereNotIn('id', $memberIds)
-        ->where('role', '!=', 'FOR APPROVAL')
-        ->get();
-    }
+        } else {
+            $this->addmembers = User::whereNotIn('id', $memberIds)
+                ->where('role', '!=', 'FOR APPROVAL')
+                ->get();
+        }
         $this->emit('updateUnassignElements');
     }
     public function sendNotification($selectedMembers)
