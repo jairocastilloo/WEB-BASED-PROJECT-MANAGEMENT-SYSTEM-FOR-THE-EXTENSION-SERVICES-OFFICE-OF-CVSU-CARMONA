@@ -144,6 +144,10 @@ Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/{currentyear}', [ReportController::class, 'showyearinsights'])->name('yearinsights.show');
     Route::get('/{projectid}/{department}/{projectname}', [ReportController::class, 'indexinsights'])->name('insights.index');
 });
+Route::prefix('/report')->group(function () {
+    Route::get('/{department}/allreports', [ReportController::class, 'showReports'])->name('reports.show');
+    Route::get('/{projectid}/{department}', [ReportController::class, 'displayReports'])->name('reports.display');
+});
 Route::prefix('/output')->group(function () {
     Route::get('/{activityid}/{outputtype}/displayoutput', [ActivityController::class, 'getoutput'])->name('get.output');
     Route::get('/{activityid}/{outputtype}/complyoutput', [OutputController::class, 'complyoutput'])->name('comply.output');

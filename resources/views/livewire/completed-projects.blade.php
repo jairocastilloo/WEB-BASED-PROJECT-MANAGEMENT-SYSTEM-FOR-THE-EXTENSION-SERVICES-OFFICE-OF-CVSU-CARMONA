@@ -4,7 +4,11 @@
     <div class="basiccont word-wrap shadow">
         <div class="border-bottom ps-3 pe-2 pt-2 bggreen pe-2 containerhover ">
             <h6 class="fw-bold small" style="color:darkgreen;">
+                @if(in_array(Route::currentRouteName(), ['reports.show', 'reports.display']))
+                <i class="bi bi-bar-chart-line-fill"></i>
+                @else
                 <i class="bi bi-kanban"></i>
+                @endif
                 Completed
 
             </h6>
@@ -44,9 +48,16 @@
 
 
             @foreach ($CompletedProjects as $project)
-            <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+            <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv reportdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
-                <h6 class="fw-bold small" style="color: #4A4A4A;">{{ $project['projecttitle'] }}</h6>
+                <h6 class="fw-bold small" style="color: #4A4A4A;">
+                    @if(in_array(Route::currentRouteName(), ['reports.show', 'reports.display']))
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                    @else
+                    <i class="bi bi-kanban"></i>
+                    @endif
+                    {{ $project['projecttitle'] }}
+                </h6>
 
                 @php
                 $startDate = date('M d, Y', strtotime($project['projectstartdate']));

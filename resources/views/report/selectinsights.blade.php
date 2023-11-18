@@ -22,210 +22,214 @@ $project->projectstartdate <= now() && $project->projectenddate >= now();});
     return $project->projectstatus === 'Incomplete' &&
     $project->projectenddate < now(); }); @endphp <div class="maincontainer border border-start border-end">
         <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
-        <div class="container pt-3">
+        <div class="row">
+            <div class="col-9">
+                <div class="container pt-3">
 
-            @php
-            $CompletedProjectsCount = count($CompletedProjects);
-            $InProgressProjectsCount = count($InProgressProjects);
-            $NotStartedProjectsCount = count($NotStartedProjects);
-            $IncompleteProjectsCount = count($IncompleteProjects);
-            @endphp
+                    @php
+                    $CompletedProjectsCount = count($CompletedProjects);
+                    $InProgressProjectsCount = count($InProgressProjects);
+                    $NotStartedProjectsCount = count($NotStartedProjects);
+                    $IncompleteProjectsCount = count($IncompleteProjects);
+                    @endphp
 
-            @php
-            $projectpercents = [];
-            @endphp
+                    @php
+                    $projectpercents = [];
+                    @endphp
 
-            @foreach($projects as $project)
-            @php
-            $percentactivity = [];
-            @endphp
+                    @foreach($projects as $project)
+                    @php
+                    $percentactivity = [];
+                    @endphp
 
-            @foreach($activities as $activity)
-            @php
-            $percentoutput = [];
-            @endphp
+                    @foreach($activities as $activity)
+                    @php
+                    $percentoutput = [];
+                    @endphp
 
-            @if($activity->project_id == $project->id)
-            @foreach ($outputs as $output)
-            @if ($output->activity_id == $activity->id)
+                    @if($activity->project_id == $project->id)
+                    @foreach ($outputs as $output)
+                    @if ($output->activity_id == $activity->id)
 
-            @if ($output->expectedoutput != 0)
-            @php
-            $computepercent = ($output->totaloutput_submitted / $output->expectedoutput) * 100;
+                    @if ($output->expectedoutput != 0)
+                    @php
+                    $computepercent = ($output->totaloutput_submitted / $output->expectedoutput) * 100;
 
-            @endphp
-            @if ($computepercent <= 100) @php array_push($percentoutput, $computepercent); @endphp @else @php array_push($percentoutput, 100); @endphp @endif @else @php array_push($percentoutput, 0); // Push a default value of 0 @endphp @endif @endif @endforeach @if (count($percentoutput)> 0)
-                @php
+                    @endphp
+                    @if ($computepercent <= 100) @php array_push($percentoutput, $computepercent); @endphp @else @php array_push($percentoutput, 100); @endphp @endif @else @php array_push($percentoutput, 0); // Push a default value of 0 @endphp @endif @endif @endforeach @if (count($percentoutput)> 0)
+                        @php
 
-                array_push($percentactivity, array_sum($percentoutput) / count($percentoutput));
-                @endphp
-                @endif
-                @endif
-                @endforeach
+                        array_push($percentactivity, array_sum($percentoutput) / count($percentoutput));
+                        @endphp
+                        @endif
+                        @endif
+                        @endforeach
 
-                @if(count($percentactivity) > 0)
-                @php
-                $averagePercentage = array_sum($percentactivity) / count($percentactivity);
-                $formattedPercentage = number_format($averagePercentage, 2);
-                array_push($projectpercents, $formattedPercentage);
-                @endphp
-                @else
-                @php
-                array_push($projectpercents, 0);
-                @endphp
-                @endif
+                        @if(count($percentactivity) > 0)
+                        @php
+                        $averagePercentage = array_sum($percentactivity) / count($percentactivity);
+                        $formattedPercentage = number_format($averagePercentage, 2);
+                        array_push($projectpercents, $formattedPercentage);
+                        @endphp
+                        @else
+                        @php
+                        array_push($projectpercents, 0);
+                        @endphp
+                        @endif
 
-                @endforeach
-
-
-                @php
-                $projectNames = [];
-                @endphp
-                @foreach ($projects as $project)
-                @php
-                array_push($projectNames, $project->projecttitle);
-                @endphp
-                @endforeach
-                @if(count($projectpercents) > 0 )
-                @php
-                $averageoutputpercentage = array_sum($projectpercents) / count($projectpercents);
-                $formattedaverageoutputpercentage = number_format($averageoutputpercentage, 2);
-                @endphp
-                @else
-                @php
-                $formattedaverageoutputpercentage = 0;
-                @endphp
-                @endif
-                <div class="basiccont rounded shadow pb-2 mb-3">
-
-                    <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
-                    </div>
-
-                    <div class="form-floating m-3 mb-2 mt-2">
-
-                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a department">
-
-                            @foreach ($alldepartments as $alldepartment)
-                            <option class="p-2" value="{{ $alldepartment}}" {{ $alldepartment == $department ? 'selected' : '' }}>
-                                &nbsp;&nbsp;&nbsp;{{ $alldepartment }}
-                            </option>
-                            @endforeach
-
-                        </select>
-                        <label for="year-select" style="color:darkgreen;">
-                            <h6><strong>Choose Department:</strong></h6>
-                        </label>
-                    </div>
+                        @endforeach
 
 
+                        @php
+                        $projectNames = [];
+                        @endphp
+                        @foreach ($projects as $project)
+                        @php
+                        array_push($projectNames, $project->projecttitle);
+                        @endphp
+                        @endforeach
+                        @if(count($projectpercents) > 0 )
+                        @php
+                        $averageoutputpercentage = array_sum($projectpercents) / count($projectpercents);
+                        $formattedaverageoutputpercentage = number_format($averageoutputpercentage, 2);
+                        @endphp
+                        @else
+                        @php
+                        $formattedaverageoutputpercentage = 0;
+                        @endphp
+                        @endif
+                        <div class="basiccont rounded shadow pb-2 mb-3">
 
-                </div>
-                <div class="container p-0">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Total Projects</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ count($projects) }}</h1>
-                                    <h6 class="text-secondary small">Projects</h6>
-                                </div>
-                            </div>
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $CompletedProjectsCount }}</h1>
-                                    <h6 class="text-secondary small">Projects</h6>
-                                </div>
-                            </div>
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $InProgressProjectsCount + $NotStartedProjectsCount }}</h1>
-                                    <h6 class="text-secondary small">Projects</h6>
-                                </div>
-                            </div>
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Failed Projects</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $IncompleteProjectsCount }}</h1>
-                                    <h6 class="text-secondary small">Projects</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3">
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Aggregate Project Outputs</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $formattedaverageoutputpercentage . ' %' }}</h1>
-                                    <h6 class="text-secondary small">Average Percentage</h6>
-                                </div>
-                            </div>
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Total Hours</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $activityHoursRendered + $subtaskHoursRendered }}</h1>
-                                    <h6 class="text-secondary small">Hours Rendered</h6>
-                                </div>
-                            </div>
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $completedActivities }}</h1>
-                                    <h6 class="text-secondary small">Activities</h6>
-                                </div>
-                            </div>
-                            <div class="basiccont rounded shadow mb-3">
-                                <div class="border-bottom pt-2 text-center bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Remaining Activities</h6>
-                                </div>
-                                <div class="p-2 text-center">
-                                    <h1>{{ $incompleteActivities }}</h1>
-                                    <h6 class="text-secondary small">Activities</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="basiccont rounded shadow">
-                                <div class="border-bottom ps-3 pt-2 bggreen">
-                                    <h6 class="fw-bold small" style="color:darkgreen;">Projects by Progress</h6>
-                                </div>
-                                <canvas id="ProjectProgressChart" class="p-1"></canvas>
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                    <div class="container p-0 mt-3">
-                        <div class="basiccont rounded shadow">
                             <div class="border-bottom ps-3 pt-2 bggreen">
-                                <h6 class="fw-bold small" style="color:darkgreen;">Outputs Percentage by Project</h6>
+                                <h6 class="fw-bold small" style="color:darkgreen;">Browse Projects</h6>
                             </div>
-                            <canvas id="OutputsByProjectsChart" class="p-1"></canvas>
+
+                            <div class="form-floating m-3 mb-2 mt-2">
+
+                                <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a department">
+
+                                    @foreach ($alldepartments as $alldepartment)
+                                    <option class="p-2" value="{{ $alldepartment}}" {{ $alldepartment == $department ? 'selected' : '' }}>
+                                        &nbsp;&nbsp;&nbsp;{{ $alldepartment }}
+                                    </option>
+                                    @endforeach
+
+                                </select>
+                                <label for="year-select" style="color:darkgreen;">
+                                    <h6><strong>Choose Department:</strong></h6>
+                                </label>
+                            </div>
+
+
+
                         </div>
-                    </div>
+                        <div class="container p-0">
+                            <div class="row">
+                                <div class="col-xl-3">
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Total Projects</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ count($projects) }}</h1>
+                                            <h6 class="text-secondary small">Projects</h6>
+                                        </div>
+                                    </div>
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $CompletedProjectsCount }}</h1>
+                                            <h6 class="text-secondary small">Projects</h6>
+                                        </div>
+                                    </div>
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $InProgressProjectsCount + $NotStartedProjectsCount }}</h1>
+                                            <h6 class="text-secondary small">Projects</h6>
+                                        </div>
+                                    </div>
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Failed Projects</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $IncompleteProjectsCount }}</h1>
+                                            <h6 class="text-secondary small">Projects</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3">
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Aggregate Project Outputs</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $formattedaverageoutputpercentage . ' %' }}</h1>
+                                            <h6 class="text-secondary small">Average Percentage</h6>
+                                        </div>
+                                    </div>
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Total Hours</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $activityHoursRendered + $subtaskHoursRendered }}</h1>
+                                            <h6 class="text-secondary small">Hours Rendered</h6>
+                                        </div>
+                                    </div>
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Completed Activities</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $completedActivities }}</h1>
+                                            <h6 class="text-secondary small">Activities</h6>
+                                        </div>
+                                    </div>
+                                    <div class="basiccont rounded shadow mb-3">
+                                        <div class="border-bottom pt-2 text-center bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Remaining Activities</h6>
+                                        </div>
+                                        <div class="p-2 text-center">
+                                            <h1>{{ $incompleteActivities }}</h1>
+                                            <h6 class="text-secondary small">Activities</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="basiccont rounded shadow">
+                                        <div class="border-bottom ps-3 pt-2 bggreen">
+                                            <h6 class="fw-bold small" style="color:darkgreen;">Projects by Progress</h6>
+                                        </div>
+                                        <canvas id="ProjectProgressChart" class="p-1"></canvas>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="container p-0 mt-3">
+                                <div class="basiccont rounded shadow">
+                                    <div class="border-bottom ps-3 pt-2 bggreen">
+                                        <h6 class="fw-bold small" style="color:darkgreen;">Outputs Percentage by Project</h6>
+                                    </div>
+                                    <canvas id="OutputsByProjectsChart" class="p-1"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
                 </div>
-
-
-
-
-
-
+            </div>
         </div>
         </div>
 
