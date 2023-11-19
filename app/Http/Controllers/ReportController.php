@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\Project;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
@@ -33,32 +33,69 @@ class ReportController extends Controller
     {
         $indexproject = Project::findOrFail($projectid);
         $department = $indexproject->department;
+
+        $currentDate = now();
+
+        $activitiesQuery = $indexproject->activities();
+        $activities = $activitiesQuery->get(['id', 'actname', 'actstartdate', 'actenddate', 'actremark']);
+
+
+
         /*
-        $totaloutput_submitted = $indexproject->activities->sum('outputs.totaloutput_submitted');
-        $expectedoutput = $indexproject->activities->sum('outputs.expectedoutput');
-        $outputPercent = ($expectedoutput !== 0) ? number_format($totaloutput_submitted / $expectedoutput, 2) : null;
+        $completedActivitiesCount = $activitiesQuery->where('actremark', 'Completed')->count();
+        $ongoingActivitiesCount = $activitiesQuery->where('actremark', 'Incomplete')
+            ->where('actstartdate', '<=', $currentDate)
+            ->where('actenddate', '>=', $currentDate)
+            ->count();
+        $overdueActivitiesCount = $activitiesQuery->where('actremark', 'Incomplete')
+            ->where('actenddate', '<', $currentDate)
+            ->count();
+        $upcomingActivitiesCount = $activitiesQuery->where('actremark', 'Incomplete')
+            ->where('actstartdate', '>', $currentDate)
+            ->count();
+        
+        $ongoingActivitiesCount = 0;
+        $overdueActivitiesCount = 0;
+        $upcomingActivitiesCount = 0;
 */
-        $totalActivitiesCount = $indexproject->activities()
-            ->count();
-        $completedActivitiesCount = $indexproject->activities()
-            ->where('actremark', 'Completed')
-            ->count();
 
-        $ongoingActivitiesCount = $indexproject->activities()
-            ->where('actremark', 'Incomplete')
-            ->where('actstartdate', '<=', now())
-            ->where('actenddate', '>=', now())
-            ->count();
+        foreach ($activities as $activity) {
+            $activityId = $activity->id;
 
-        $overdueActivitiesCount = $indexproject->activities()
-            ->where('actremark', 'Incomplete')
-            ->where('actenddate', '<', now())
-            ->count();
+            $outputSubmitted = Output::where('activity_id', $activityId)->sum('totaloutput_submitted');
+            $expectedOutput = Output::where('activity_id', $activityId)->sum('expectedoutput');
 
-        $upcomingActivitiesCount = $indexproject->activities()
-            ->where('actremark', 'Incomplete')
-            ->where('actstartdate', '>', now())
-            ->count();
+            $outputPercent = ($expectedOutput !== 0) ? number_format($outputSubmitted / $expectedOutput * 100, 0) : null;
+
+            if ($outputPercent === null) {
+                $outputPercent = 0;
+            }
+
+            $activeTasks = Subtask::where('activity_id', $activityId)
+                ->where('status', 'Incomplete')
+                ->where('subduedate', '>=', $currentDate)
+                ->count();
+            $missingTasks = Subtask::where('activity_id', $activityId)
+                ->where('status', 'Incomplete')
+                ->where('subduedate', '<', $currentDate)
+                ->count();
+            $completedTasks = Subtask::where('activity_id', $activityId)
+                ->where('status', 'Completed')
+                ->count();
+
+            // Create an associative array with additional data
+            $additionalData = [
+                'outputPercent' => $outputPercent,
+                'activeTasks' => $activeTasks,
+                'missingTasks' => $missingTasks,
+                'completedTasks' => $completedTasks,
+            ];
+
+            // Merge the additional data into the $activity object
+            $activity->additionalData = $additionalData;
+        }
+
+
         if ($indexproject->projectstatus == "Incomplete" && $indexproject->projectstartdate <= now() && $indexproject->projectenddate >= now()) {
             $status = "Ongoing";
         } else if ($indexproject->projectstatus == "Incomplete" && $indexproject->projectstartdate > now()) {
@@ -81,12 +118,8 @@ class ReportController extends Controller
         return view('report.display', [
             'department' => $department,
             'alldepartments' => $alldepartments,
-            'totalActivitiesCount' => $totalActivitiesCount,
-            'completedActivitiesCount' => $completedActivitiesCount,
-            'ongoingActivitiesCount' => $ongoingActivitiesCount,
-            'overdueActivitiesCount' => $overdueActivitiesCount,
-            'upcomingActivitiesCount' => $upcomingActivitiesCount,
-            'status' => $status
+            'status' => $status,
+            'activities' => $activities
         ]);
     }
     public function showinsights($department)

@@ -25,7 +25,7 @@
 
                         </select>
                         <label for="year-select" style="color:darkgreen;">
-                            <h6><strong>Choose Department:</strong></h6>
+                            <h6><strong>Department Reports for:</strong></h6>
                         </label>
                     </div>
 

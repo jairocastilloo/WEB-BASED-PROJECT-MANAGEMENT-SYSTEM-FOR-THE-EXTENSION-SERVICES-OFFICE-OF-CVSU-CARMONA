@@ -347,6 +347,25 @@ body {
       min-width: 241px;
       max-width: 241px;
     }
+    .secondtable .taskscount {
+      min-width: 70px;
+      max-width: 70px;
+    }
+    .secondtable .actname {
+      min-width: 270px;
+      max-width: 270px;
+    }
+    .secondtable .date {
+      min-width: 100px;
+      max-width: 100px;
+    }
+    .secondtable .outputprogress {
+      min-width: 160px;
+      max-width: 160px;
+    }
+    .secondtable th {
+      background-color: rgb(233, 233, 233);
+    }
     .btn-gold {
       color: black;
       background-color: gold;
