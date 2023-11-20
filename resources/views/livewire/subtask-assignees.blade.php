@@ -39,7 +39,7 @@
         </button>
 
     </div>
-    <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
+    <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
 
     <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="emailError" style="display: none;">
         <!-- Your error message goes here -->

@@ -169,6 +169,7 @@
             confirmActivityBtn.addEventListener('click', function() {
                 var theresErrors = acthasError();
                 if (!theresErrors) {
+                    this.disabled = true;
                     Livewire.emit('saveActivity', {
                         actname: actname,
                         objectivevalue: objectivevalue,
@@ -182,6 +183,7 @@
             });
 
             Livewire.on('closeActivity', function() {
+                document.getElementById('confirmactivity').disabled = false;
                 document.getElementById('closeActivity').click();
                 document.getElementById('activityname').value = "";
                 selectedOptionId = null;

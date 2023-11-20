@@ -398,7 +398,7 @@
                 <span class="text-danger" id="createprojectError">
                     <strong></strong>
                 </span>
-                <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
+                <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
                 <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary try" id="prevproject">
                     <b class="small">Previous</b>
@@ -762,6 +762,7 @@
             var hasError = handleError();
 
             if (!hasError) {
+                $(this).prop('disabled', true);
                 var department = $('#department').val();
 
 
@@ -801,6 +802,7 @@
                         var projectId = response.projectid;
                         projecturl = projecturl.replace(':projectid', projectId);
                         $('#loadingSpan').css('display', 'none');
+
                         if (response.isMailSent == 0) {
                             $('#newproject').modal('hide');
                             $('#mailNotSent').modal('show');

@@ -209,6 +209,7 @@ $(document).ready(function(){
         var suberror = subtaskhasError();
 
         if (!suberror){
+        $(this).prop('disabled', true);
         var url = $('#subtaskurl').val();
        
         url = url.replace(':subtaskname', $('#subtaskname').val());

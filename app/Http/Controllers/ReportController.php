@@ -33,7 +33,7 @@ class ReportController extends Controller
     {
         $indexproject = Project::findOrFail($projectid);
         $department = $indexproject->department;
-
+        $projecttitle = $indexproject->projecttitle;
         $currentDate = now();
 
         $activitiesQuery = $indexproject->activities();
@@ -119,7 +119,8 @@ class ReportController extends Controller
             'department' => $department,
             'alldepartments' => $alldepartments,
             'status' => $status,
-            'activities' => $activities
+            'activities' => $activities,
+            'projecttitle' => $projecttitle
         ]);
     }
     public function showinsights($department)

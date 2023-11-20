@@ -191,7 +191,7 @@
                     <span class="text-danger" id="editprojectError">
                         <strong></strong>
                     </span>
-                    <span class="ms-2 small" id="editprojectloadingSpan" style="display: none;">Sending Email..</span>
+                    <span class="ms-2 small loadingMessage" id="editprojectloadingSpan" style="display: none;">Sending Email..</span>
                     <button type="button" class="btn shadow rounded border border-1 btn-light" id="closeDetails" data-bs-dismiss="modal"><b class="small">Close</b></button>
 
                     <button type="button" class="btn shadow rounded btn-primary" id="btn-confirmDetails">

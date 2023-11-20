@@ -48,7 +48,11 @@
                         @endphp
 
 
-
+                        <div class="mb-3 text-center">
+                            <h4 class="p-2 pb-0">
+                                <b>Insights for: {{ $projecttitle }}</b>
+                            </h4>
+                        </div>
 
                         <div class="container p-0">
                             <div class="row">

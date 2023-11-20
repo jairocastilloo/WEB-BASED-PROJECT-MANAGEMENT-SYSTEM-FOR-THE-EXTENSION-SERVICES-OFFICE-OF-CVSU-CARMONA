@@ -534,6 +534,7 @@
             var hasError = handleError();
 
             if (!hasError) {
+                $(this).prop('disabled', true);
                 var department = $('#department').val();
 
 
