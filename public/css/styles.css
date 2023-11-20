@@ -10,6 +10,34 @@ body {
   color: #4c4c4c; /* Set a default text color */
   
 }
+
+@media (max-width:600px) {
+  .number-link{
+    display: none;
+  }
+  .nav-pagelink{
+    max-width: fit-content;
+  }
+}
+
+@media (max-width:768px) {
+  .number-link{
+    display: none;
+  }
+  .nav-pagelink{
+    max-width: fit-content;
+  }
+}
+
+@media (max-width:1200px) {
+  .number-link{
+    display: none;
+  }
+  .nav-pagelink{
+    max-width: fit-content;
+  }
+}
+
 .input-group-append {
   cursor: pointer;
 }

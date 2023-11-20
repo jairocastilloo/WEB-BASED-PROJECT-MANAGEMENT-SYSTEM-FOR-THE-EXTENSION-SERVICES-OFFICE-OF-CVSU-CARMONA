@@ -31,40 +31,43 @@
         </div>
 
     </div>
-    <nav>
+    <nav class='nav-pagelink'>
         <ul class="pagination justify-content-center">
             <li class="page-item">
                 <a class="page-link" wire:click="changePage(1)">First</a>
             </li>
             @if ($currentPage === 1)
-            <li class="page-item disabled">
-                <span class="page-link" aria-hidden="true"><i class="bi bi-chevron-compact-left"></i></span>
-            </li>
+                <li class="page-item disabled">
+                    <span class="page-link" aria-hidden="true"><i class="bi bi-chevron-compact-left"></i></span>
+                </li>
             @else
-            <li class="page-item">
-                <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i class="bi bi-chevron-compact-left"></i></a>
-            </li>
+                <li class="page-item">
+                    <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i class="bi bi-chevron-compact-left"></i></a>
+                </li>
             @endif
 
-            @for ($i = 1; $i <= $totalPages; $i++) <li class="page-item {{ $i === $currentPage ? 'active disabled' : '' }}" aria-current="{{ $i === $currentPage ? 'page' : '' }}">
-                <a class="page-link" wire:click="changePage({{ $i }})">{{ $i }}</a>
+            @for ($i = 1; $i <= $totalPages; $i++)
+                <li class="page-item {{ $i === $currentPage ? 'active' : '' }} number-link" aria-current="{{ $i === $currentPage ? 'page' : '' }}">
+                    <a class="page-link" wire:click="changePage({{ $i }})">{{ $i }}</a>
                 </li>
-                @endfor
+            @endfor
 
-                @if ($currentPage === $totalPages)
+            @if ($currentPage === $totalPages)
                 <li class="page-item disabled">
                     <span class="page-link" aria-hidden="true"><i class="bi bi-chevron-compact-right"></i></span>
                 </li>
-                @else
+            @else
                 <li class="page-item">
                     <a class="page-link" wire:click="changePage({{ $currentPage + 1 }})"><i class="bi bi-chevron-compact-right"></i></a>
                 </li>
-                @endif
-                <li class="page-item">
-                    <a class="page-link" wire:click="changePage({{ $totalPages }})">Last</a>
-                </li>
+            @endif
+            <li class="page-item">
+                <a class="page-link" wire:click="changePage({{ $totalPages }})">Last</a>
+            </li>
         </ul>
     </nav>
+
+
 
 
     <div class="container-fluid approvalcontainer">
