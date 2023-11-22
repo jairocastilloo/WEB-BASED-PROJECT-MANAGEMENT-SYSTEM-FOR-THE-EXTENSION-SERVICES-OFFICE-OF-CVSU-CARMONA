@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Activity;
 use App\Models\ExpectedOutput;
+use App\Models\ActivityBudget;
 use App\Models\Objective;
 use Livewire\Component;
 
@@ -33,7 +34,6 @@ class ListOfActivities extends Component
 
         $activity->actstartdate = date("Y-m-d", strtotime($arguments['actstartdate']));
         $activity->actenddate = date("Y-m-d", strtotime($arguments['actenddate']));
-        $activity->actbudget = $arguments['actbudget'];
         $activity->actsource = $arguments['actsource'];
         $activity->project_id = $this->indexproject->id;
         $activity->save();
@@ -44,6 +44,17 @@ class ListOfActivities extends Component
                 'activity_id' => $activity->id,
             ]);
         }
+        $budgetItems = $arguments['actBudgetItem'];
+        $budgetPrices = $arguments['actBudgetPrice'];
+
+        foreach ($budgetItems as $key => $budgetItem) {
+            ActivityBudget::create([
+                'item' => $budgetItem,
+                'price' => $budgetPrices[$key],
+                'activity_id' => $activity->id,
+            ]);
+        }
+
         $this->activities = Activity::where('project_id', $this->indexproject->id)
             ->get();
         $this->emit('closeActivity');

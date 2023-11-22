@@ -743,15 +743,36 @@
 
         $('#addExpectedOutput-btn').click(function() {
             $('#outputContainer').append(`<div class="input-group mb-1 expectedOutput-input">
-                            <input type="text" class="form-control" id="expectedoutput-0" name="expectedoutput[0]">
-                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
-                        </div>
-                        <span class="invalid-feedback" role="alert">
+                            <input type="text" class="form-control" name="expectedoutput[]">
+                            <span class="invalid-feedback" role="alert">
                             <strong></strong>
-                        </span>`);
+                        </span>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>`);
         });
         $(document).on('click', '.removeExpectedOutput-btn', function() {
             if ($('.expectedOutput-input').length > 1) {
+                $(this).parent().remove();
+            }
+
+
+        });
+        $('#addBudget-btn').click(function() {
+            $('#budgetContainer').append(` <div class="input-group mb-1 budget-input">
+                            <input type="text" class="form-control me-2" name="budgetItem[]" placeholder="Item">
+                            <i class="bi bi-dash-lg pt-2"></i>
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <input type="number" class="form-control ms-2" min="0" name="budgetPrice[]" placeholder="Price (PhP)">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeBudget-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>`);
+        });
+        $(document).on('click', '.removeBudget-btn', function() {
+            if ($('.budget-input').length > 1) {
                 $(this).parent().remove();
             }
 

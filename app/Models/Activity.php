@@ -36,4 +36,8 @@ class Activity extends Model
     {
         return $this->hasMany(ExpectedOutput::class);
     }
+    public function activitybudgets()
+    {
+        return $this->hasMany(ActivityBudget::class);
+    }
 }

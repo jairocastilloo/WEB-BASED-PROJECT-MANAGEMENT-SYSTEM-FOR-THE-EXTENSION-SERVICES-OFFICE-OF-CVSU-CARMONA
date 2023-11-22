@@ -82,14 +82,15 @@
                         <label for="expectedoutput" class="form-label">Expected Output</label>
                         <div class="input-group mb-1 expectedOutput-input">
                             <input type="text" class="form-control" name="expectedoutput[]">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
                             <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
                         </div>
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-                    </div>
 
+                    </div>
                     <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addExpectedOutput-btn">Add Expected Output</button>
+
                     <div class="mb-3">
                         <label for="activitystartdate" class="form-label">Activity Start Date</label>
 
@@ -105,9 +106,6 @@
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
-
-
-
 
                     </div>
 
@@ -131,13 +129,26 @@
 
 
                     </div>
-                    <div class="mb-3">
+
+                    <div class="mb-1" id="budgetContainer">
                         <label for="budget" class="form-label">Budget</label>
-                        <input type="number" class="form-control" id="budget" name="budget">
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
+                        <div class="input-group mb-1 budget-input">
+                            <input type="text" class="form-control me-2" name="budgetItem[]" placeholder="Item">
+                            <i class="bi bi-dash-lg pt-2"></i>
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <input type="number" class="form-control ms-2" min="0" name="budgetPrice[]" placeholder="Price (PhP)">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeBudget-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>
+
                     </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add Budget</button>
+
+
                     <div class="mb-3">
                         <label for="Source" class="form-label">Source</label>
                         <input type="text" class="form-control" id="source" name="source">
@@ -173,19 +184,32 @@
             var confirmActivityBtn = document.getElementById("confirmactivity");
             confirmActivityBtn.addEventListener('click', function() {
                 var theresErrors = acthasError();
-                var expectedoutput = [];
-                document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
-                    expectedoutput.push(element.value);
-                });
+
                 if (!theresErrors) {
                     this.disabled = true;
+
+                    var expectedoutput = [];
+                    var budgetItem = [];
+                    var budgetPrice = [];
+
+                    document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                        expectedoutput.push(element.value);
+                    });
+                    document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                        budgetItem.push(element.value);
+                    });
+
+                    document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                        budgetPrice.push(element.value);
+                    });
                     Livewire.emit('saveActivity', {
                         actname: actname,
                         objectivevalue: objectivevalue,
                         expectedoutput: expectedoutput,
                         actstartdate: actstartdate,
                         actenddate: actenddate,
-                        actbudget: actbudget,
+                        actBudgetItem: budgetItem,
+                        actBudgetPrice: budgetPrice,
                         actsource: actsource
                     });
                 }
@@ -198,6 +222,8 @@
                 selectedOptionId = null;
 
                 var expectedOutputs = document.querySelectorAll('input[name="expectedoutput[]"]');
+                var budgetItem = document.querySelectorAll('input[name="budgetItem[]"]');
+                var budgetPrice = document.querySelectorAll('input[name="budgetPrice[]"]');
 
                 if (expectedOutputs.length > 1) {
                     for (var i = 1; i < expectedOutputs.length; i++) {
@@ -209,9 +235,28 @@
                     expectedOutputs[0].value = "";
                 }
 
+                if (budgetItem.length > 1) {
+                    for (var i = 1; i < budgetItem.length; i++) {
+                        budgetItem[i].remove();
+                    }
+                }
+
+                if (budgetItem.length > 0) {
+                    budgetItem[0].value = "";
+                }
+                if (budgetPrice.length > 1) {
+                    for (var i = 1; i < budgetPrice.length; i++) {
+                        budgetPrice[i].remove();
+                    }
+                }
+
+                if (budgetPrice.length > 0) {
+                    budgetPrice[0].value = "";
+                }
+
                 document.getElementById('activitystartdate').value = "";
                 document.getElementById('activityenddate').value = "";
-                document.getElementById('budget').value = "";
+
                 document.getElementById('source').value = "";
                 actname = "";
                 objectivevalue = null;
@@ -252,8 +297,6 @@
             objectivevalue = selectedOptionId;
             actstartdate = document.getElementById('activitystartdate').value;
             actenddate = document.getElementById('activityenddate').value;
-
-            actbudget = document.getElementById('budget').value;
             actsource = document.getElementById('source').value;
 
             // Validation for Project Title
@@ -319,11 +362,24 @@
                 hasErrors = true;
             }
 
-            if (actbudget.trim() === '') {
-                document.getElementById('budget').classList.add('is-invalid');
-                document.querySelector('#budget + .invalid-feedback strong').textContent = 'Budget is required.';
-                hasErrors = true;
-            }
+            document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent = 'Budget Item is required.';
+                    hasErrors = true;
+                }
+            });
+
+            document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent = 'Budget Price is required.';
+                    hasErrors = true;
+                }
+            });
+
             if (actsource.trim() === '') {
                 document.getElementById('source').classList.add('is-invalid');
                 document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
