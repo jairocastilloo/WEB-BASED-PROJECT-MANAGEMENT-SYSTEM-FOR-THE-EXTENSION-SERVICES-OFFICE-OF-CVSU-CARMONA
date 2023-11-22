@@ -30,11 +30,11 @@ class ProjectMembers extends Component
         if ($department != "All") {
             $this->addmembers = User::where('department', $department)
                 ->whereNotIn('id', $memberIds)
-                ->where('role', '!=', 'FOR APPROVAL')
+                ->where('approval', 1)
                 ->get();
         } else {
             $this->addmembers = User::whereNotIn('id', $memberIds)
-                ->where('role', '!=', 'FOR APPROVAL')
+                ->where('approval', 1)
                 ->get();
         }
         $this->department = $department;
@@ -54,11 +54,11 @@ class ProjectMembers extends Component
         if ($this->department != "All") {
             $this->addmembers = User::where('department', $this->department)
                 ->whereNotIn('id', $memberIds)
-                ->where('role', '!=', 'FOR APPROVAL')
+                ->where('approval', 1)
                 ->get();
         } else {
             $this->addmembers = User::whereNotIn('id', $memberIds)
-                ->where('role', '!=', 'FOR APPROVAL')
+                ->where('approval', 1)
                 ->get();
         }
         $this->emit('updateElements', $selectedMembers);
@@ -75,11 +75,11 @@ class ProjectMembers extends Component
         if ($this->department != "All") {
             $this->addmembers = User::where('department', $this->department)
                 ->whereNotIn('id', $memberIds)
-                ->where('role', '!=', 'FOR APPROVAL')
+                ->where('approval', 1)
                 ->get();
         } else {
             $this->addmembers = User::whereNotIn('id', $memberIds)
-                ->where('role', '!=', 'FOR APPROVAL')
+                ->where('approval', 1)
                 ->get();
         }
         $this->emit('updateUnassignElements');

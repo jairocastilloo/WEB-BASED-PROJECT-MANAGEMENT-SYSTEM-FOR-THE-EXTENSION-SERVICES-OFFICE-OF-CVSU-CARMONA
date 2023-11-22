@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Activity;
+use App\Models\ExpectedOutput;
 use App\Models\Objective;
 use Livewire\Component;
 
@@ -29,13 +30,20 @@ class ListOfActivities extends Component
         $activity = new Activity();
         $activity->actname = $arguments['actname'];
         $activity->actobjectives = $arguments['objectivevalue'];
-        $activity->actoutput = $arguments['expectedoutput'];
+
         $activity->actstartdate = date("Y-m-d", strtotime($arguments['actstartdate']));
         $activity->actenddate = date("Y-m-d", strtotime($arguments['actenddate']));
         $activity->actbudget = $arguments['actbudget'];
         $activity->actsource = $arguments['actsource'];
         $activity->project_id = $this->indexproject->id;
         $activity->save();
+        $expectedoutputs = $arguments['expectedoutput'];
+        foreach ($expectedoutputs as $expectedoutput) {
+            ExpectedOutput::create([
+                'name' => $expectedoutput,
+                'activity_id' => $activity->id,
+            ]);
+        }
         $this->activities = Activity::where('project_id', $this->indexproject->id)
             ->get();
         $this->emit('closeActivity');

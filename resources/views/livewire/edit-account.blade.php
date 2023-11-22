@@ -156,6 +156,7 @@
                         <label for="department" class="form-label">Department</label>
                         <select class="form-select" id="department" name="department">
                             <option value="" disabled selected>Select your Department</option>
+                            <option value="All">All</option>
                             <option value="Department of Management">Department of Management</option>
                             <option value="Department of Industrial and Information Technology">Department of Industrial and Information Technology</option>
                             <option value="Department of Teacher Education">Department of Teacher Education</option>

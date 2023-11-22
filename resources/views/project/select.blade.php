@@ -68,7 +68,7 @@
                                 <b class="small">Activities</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
-                                <b class="small">Team Members</b>
+                                <b class="small">Staff</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
@@ -226,6 +226,7 @@
                 @livewire('more-projects', ['department' => $department, 'projectid' => $indexproject->id, 'x' => 1])
                 @livewire('not-started-projects', ['department' => $department, 'projectid' => $indexproject->id, 'y' => 1])
                 @livewire('past-projects', ['department' => $department, 'projectid' => $indexproject->id, 'z' => 0])
+                @livewire('completed-projects', ['department' => $department, 'projectid' => null, 'xCompletedProjects' => 0])
             </div>
 
         </div>

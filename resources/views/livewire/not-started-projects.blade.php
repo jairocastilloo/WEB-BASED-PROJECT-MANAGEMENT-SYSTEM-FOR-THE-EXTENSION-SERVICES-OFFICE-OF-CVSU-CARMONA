@@ -38,12 +38,7 @@
         <div class="p-2 border border-bottom-2 text-center">
             <h6 class="fw-bold small">No Upcoming Projects</h6>
         </div>
-        <div class="text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="notstartedshow(0)">
-                <b class="small">Hide Projects</b>
-            </button>
 
-        </div>
         @else
 
 

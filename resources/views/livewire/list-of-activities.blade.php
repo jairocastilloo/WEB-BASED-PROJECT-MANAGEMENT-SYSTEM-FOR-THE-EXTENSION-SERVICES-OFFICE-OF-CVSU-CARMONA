@@ -78,13 +78,18 @@
                         </div>
 
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-1" id="outputContainer">
                         <label for="expectedoutput" class="form-label">Expected Output</label>
-                        <input type="text" class="form-control" id="expectedoutput" name="expectedoutput">
+                        <div class="input-group mb-1 expectedOutput-input">
+                            <input type="text" class="form-control" name="expectedoutput[]">
+                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
                     </div>
+
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addExpectedOutput-btn">Add Expected Output</button>
                     <div class="mb-3">
                         <label for="activitystartdate" class="form-label">Activity Start Date</label>
 
@@ -168,6 +173,10 @@
             var confirmActivityBtn = document.getElementById("confirmactivity");
             confirmActivityBtn.addEventListener('click', function() {
                 var theresErrors = acthasError();
+                var expectedoutput = [];
+                document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                    expectedoutput.push(element.value);
+                });
                 if (!theresErrors) {
                     this.disabled = true;
                     Livewire.emit('saveActivity', {
@@ -187,7 +196,19 @@
                 document.getElementById('closeActivity').click();
                 document.getElementById('activityname').value = "";
                 selectedOptionId = null;
-                document.getElementById('expectedoutput').value = "";
+
+                var expectedOutputs = document.querySelectorAll('input[name="expectedoutput[]"]');
+
+                if (expectedOutputs.length > 1) {
+                    for (var i = 1; i < expectedOutputs.length; i++) {
+                        expectedOutputs[i].remove();
+                    }
+                }
+
+                if (expectedOutputs.length > 0) {
+                    expectedOutputs[0].value = "";
+                }
+
                 document.getElementById('activitystartdate').value = "";
                 document.getElementById('activityenddate').value = "";
                 document.getElementById('budget').value = "";
@@ -229,7 +250,6 @@
 
             actname = document.getElementById('activityname').value;
             objectivevalue = selectedOptionId;
-            expectedoutput = document.getElementById('expectedoutput').value;
             actstartdate = document.getElementById('activitystartdate').value;
             actenddate = document.getElementById('activityenddate').value;
 
@@ -250,12 +270,15 @@
                 hasErrors = true;
             }
 
-            // Validation for Program Title
-            if (expectedoutput.trim() === '') {
-                document.getElementById('expectedoutput').classList.add('is-invalid');
-                document.querySelector('#expectedoutput + .invalid-feedback strong').textContent = 'Expected Output is required.';
-                hasErrors = true;
-            }
+            document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent = 'Expected Output is required.';
+                    hasErrors = true;
+                }
+            });
+
 
             if (actstartdate === '') {
                 document.getElementById('activitystartdate').classList.add('is-invalid');

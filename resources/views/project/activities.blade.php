@@ -64,7 +64,7 @@
                                 <b class="small">Activities</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
-                                <b class="small">Team Members</b>
+                                <b class="small">Staff</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
@@ -738,6 +738,23 @@
             url = url.replace(':activityid', activityid);
             url = url.replace(':activityname', activityname);
             window.location.href = url;
+
+        });
+
+        $('#addExpectedOutput-btn').click(function() {
+            $('#outputContainer').append(`<div class="input-group mb-1 expectedOutput-input">
+                            <input type="text" class="form-control" id="expectedoutput-0" name="expectedoutput[0]">
+                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>`);
+        });
+        $(document).on('click', '.removeExpectedOutput-btn', function() {
+            if ($('.expectedOutput-input').length > 1) {
+                $(this).parent().remove();
+            }
+
 
         });
 

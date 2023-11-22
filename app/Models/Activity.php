@@ -32,4 +32,8 @@ class Activity extends Model
     {
         return $this->hasMany(Subtask::class);
     }
+    public function expectedoutputs()
+    {
+        return $this->hasMany(ExpectedOutput::class);
+    }
 }

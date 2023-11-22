@@ -66,7 +66,7 @@
                                 <b class="small">Activities</b>
                             </a>
                             <a class="dropdown-item small bg-warning border-bottom">
-                                <b class="small">Team Members</b>
+                                <b class="small">Staff</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
@@ -99,7 +99,7 @@
                 <div class="basiccont rounded shadow pb-2">
 
                     <div class="border-bottom ps-3 pt-2 bggreen">
-                        <h6 class="fw-bold small" style="color:darkgreen;">Team Members</h6>
+                        <h6 class="fw-bold small" style="color:darkgreen;">Staff And Leaders</h6>
                     </div>
 
                     @livewire('project-members', ['indexproject' => $indexproject, 'department' => $department ])

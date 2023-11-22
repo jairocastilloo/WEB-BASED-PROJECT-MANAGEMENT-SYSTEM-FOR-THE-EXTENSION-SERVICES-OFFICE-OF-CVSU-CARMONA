@@ -44,8 +44,9 @@
             <div class="col-lg-2">
 
                 @livewire('not-started-projects', ['department' => $department, 'projectid' => null, 'y' => 1])
-                @livewire('past-projects', ['department' => $department, 'projectid' => null, 'z' => 0])
 
+                @livewire('past-projects', ['department' => $department, 'projectid' => null, 'z' => 0])
+                @livewire('completed-projects', ['department' => $department, 'projectid' => null, 'xCompletedProjects' => 0])
             </div>
 
         </div>

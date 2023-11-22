@@ -44,9 +44,6 @@
 
         <div class="container p-0">
 
-
-
-
             @foreach ($CompletedProjects as $project)
             <div class="border-bottom ps-3 p-2 pb-0 divhover projectdiv reportdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 

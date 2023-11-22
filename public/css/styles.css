@@ -391,7 +391,7 @@ body {
       min-width: 160px;
       max-width: 160px;
     }
-    .secondtable th {
+    .secondtable .reportsecondtable {
       background-color: rgb(233, 233, 233);
     }
     .btn-gold {
@@ -868,6 +868,12 @@ div {
   cursor: auto; /* Set the cursor style to default */
 }
 
-/* Add this style to remove hover effect for the specified class */
+@media print {
+  /* Add print-specific styles here */
+  body {
+      font-size: 12pt;
+  }
+  /* ... other print styles ... */
+}
 
 
