@@ -15,8 +15,6 @@
                     {{ $project['projecttitle'] }}
                 </div>
             </div>
-
-
         </div>
         <div class="step-wrapper">
             <div class="step highlight" data-hover="{{ $activity['actname'] }}">
@@ -25,32 +23,20 @@
                     {{ $activity['actname'] }}
                 </div>
             </div>
-
-
         </div>
-
     </div>
 
-
     <div class="container">
-
         <div class="row">
-
             <div class="col-lg-6">
-
                 <div class="basiccont word-wrap shadow">
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Activity</h6>
                     </div>
-
                     @livewire('activity-details', [ 'activity' => $activity, 'objectives' => $objectives ])
-
                 </div>
-
-
                 @livewire('activity-output', [ 'outputTypes' => $outputTypes, 'outputs' => $outputs, 'activityid' => $activity['id'] ])
                 @livewire('activity-assignees', ['activity' => $activity, 'projectName' => $project['projecttitle'] ])
-
             </div>
 
 
@@ -67,19 +53,11 @@
                     </div>
                 </div>
 
-
-
-
                 <!--
                                 <div class="col-auto mb-1">
                                     <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#nohoursmodal"><i class="bi bi-x-lg"></i></button>
                                 </div>
 -->
-
-
-
-
-
 
                 @livewire('ongoing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xOngoingTasks' => 1])
                 @livewire('missing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xMissingTasks' => 1])

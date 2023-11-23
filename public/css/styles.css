@@ -251,7 +251,7 @@ body {
     height: 0;
   }
   .secondtable, .secondtable th, .secondtable td {
-    vertical-align: top;
+    
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
@@ -259,7 +259,9 @@ body {
     word-wrap: break-word;
     height: 0;
   }
-  
+  .secondtable td{
+    vertical-align: top;
+  }
   .accounttable, .accounttable th, .accounttable td {
     border: 1px solid #bababa;
     min-width: 187px;

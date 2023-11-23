@@ -203,6 +203,9 @@
 
                                 <div class="input-group date" id="startDatePicker">
                                     <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong></strong>
+                                    </span>
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
                                             <i class="bi bi-calendar-event-fill"></i>
@@ -210,9 +213,7 @@
                                     </span>
                                 </div>
 
-                                <span class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
+
 
                                 <!--<input type="date" class="form-control" id="projectstartdate" name="projectstartdate">-->
 
@@ -224,6 +225,9 @@
 
                                 <div class="input-group date" id="endDatePicker">
                                     <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong></strong>
+                                    </span>
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-light d-block">
                                             <i class="bi bi-calendar-event-fill"></i>
@@ -231,9 +235,7 @@
                                     </span>
                                 </div>
 
-                                <span class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
+
 
                                 <!--<input type="date" class="form-control" id="projectenddate" name="projectenddate">-->
 

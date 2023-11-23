@@ -96,6 +96,9 @@
 
                         <div class="input-group date" id="activitystartDatePicker">
                             <input type="text" class="form-control" id="activitystartdate" name="activitystartdate" placeholder="mm/dd/yyyy" />
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
                             <span class="input-group-append">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="bi bi-calendar-event-fill"></i>
@@ -103,9 +106,7 @@
                             </span>
                         </div>
 
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
+
 
                     </div>
 
@@ -114,19 +115,15 @@
 
                         <div class="input-group date" id="activityendDatePicker">
                             <input type="text" class="form-control" id="activityenddate" name="activityenddate" placeholder="mm/dd/yyyy" />
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
                             <span class="input-group-append">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="bi bi-calendar-event-fill"></i>
                                 </span>
                             </span>
                         </div>
-
-                        <span class="invalid-feedback" role="alert">
-                            <strong></strong>
-                        </span>
-
-
-
 
                     </div>
 
