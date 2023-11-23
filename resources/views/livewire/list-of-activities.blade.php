@@ -308,6 +308,7 @@
             actname = document.getElementById('activityname').value;
             objectivevalue = selectedOptionId;
             actstartdate = document.getElementById('activitystartdate').value;
+
             actenddate = document.getElementById('activityenddate').value;
             actsource = document.getElementById('source').value;
 
@@ -339,8 +340,7 @@
                 document.getElementById('activitystartdate').classList.add('is-invalid');
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date is required.';
                 hasErrors = true;
-            } else if (!(new Date(projstartdate) <= new Date(actstartdate))) {
-                console.log(projstartdate + ', ' + actstartdate);
+            } else if (!((new Date(projstartdate) - (24 * 60 * 60 * 1000)) < new Date(actstartdate))) {
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -348,6 +348,7 @@
                 }) + '.';
                 hasErrors = true;
             }
+
 
             if (actenddate === '') {
                 document.getElementById('activityenddate').classList.add('is-invalid');
