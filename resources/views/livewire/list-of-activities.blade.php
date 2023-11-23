@@ -324,10 +324,8 @@
                 document.getElementById('activitystartdate').classList.add('is-invalid');
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date is required.';
                 hasErrors = true;
-            }
+            } else if (!(new Date(projstartdate) <= new Date(actstartdate))) {
 
-            // Validation for Project Start Date
-            else if (new Date(projstartdate) > new Date(actstartdate)) {
                 document.getElementById('activitystartdate').classList.add('is-invalid');
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
                     year: 'numeric',
