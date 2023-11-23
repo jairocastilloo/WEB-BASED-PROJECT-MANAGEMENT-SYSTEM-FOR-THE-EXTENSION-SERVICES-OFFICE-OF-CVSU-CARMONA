@@ -785,6 +785,7 @@
         $(document).on('click', '.removeBudget-btn', function() {
             if ($('.budget-input').length == 1) {
                 $('#tinipid').removeClass('d-none');
+                $('#source').val("");
                 $('#sourceDiv').hide();
             }
             $(this).parent().remove();
