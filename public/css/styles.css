@@ -11,12 +11,17 @@ body {
   
 }
 
+.nav-pagelink{
+  margin: 10px;
+}
+
 @media (max-width:600px) {
   .number-link{
     display: none;
   }
   .nav-pagelink{
     max-width: fit-content;
+    margin: 10px;
   }
 }
 
@@ -26,6 +31,7 @@ body {
   }
   .nav-pagelink{
     max-width: fit-content;
+    margin: 10px;
   }
 }
 
@@ -35,6 +41,7 @@ body {
   }
   .nav-pagelink{
     max-width: fit-content;
+    margin: 10px;
   }
 }
 
