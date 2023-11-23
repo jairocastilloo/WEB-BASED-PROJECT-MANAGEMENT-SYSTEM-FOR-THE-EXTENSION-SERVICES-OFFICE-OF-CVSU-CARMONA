@@ -126,7 +126,7 @@
                                     @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                                         @endphp
                                         <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
-                                            <td class="ps-3 pt-3">
+                                            <td class="pt-3 p-2">
 
                                                 @foreach($objectives->where('objectiveset_id', $x) as $objective)
 
@@ -178,21 +178,36 @@
                                         @if ($actcount > 0)
                                         @foreach($activities->where('actobjectives', $x) as $activity)
                                         <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="{{ $activity['id'] }}" act-name="{{ $activity['actname'] }}">
-                                            <td class="pt-4 pb-2 pe-2" data-value=" {{ $activity['id'] }}" id="actid">
+                                            <td class="p-2" data-value="{{ $activity['id'] }}" id="actid">
                                                 <ul>
                                                     <li>{{ $activity['actname'] }}</li>
                                                 </ul>
                                             </td>
-                                            <td class="p-2">{{ $activity['actoutput'] }}</td>
+                                            <td>
+                                                @foreach ($activity['expectedOutputs'] as $expectedOutput)
+                                                <div class="p-2 @unless($loop->last) border1px @endunless">
+                                                    {{ $expectedOutput }}
+                                                </div>
+                                                @endforeach
+                                            </td>
                                             <td class="p-2">{{ date('F d, Y', strtotime($activity['actstartdate'])) }}</td>
                                             <td class="p-2">{{ date('F d, Y', strtotime($activity['actenddate'])) }}</td>
-                                            <td class="p-2">PhP {{ number_format($activity['actbudget'], 2) }}</td>
+                                            <td>
+
+                                                @foreach ($activity['budgetItems'] as $key => $budgetItem)
+                                                <div class="p-2 @unless($loop->last) border1px @endunless">
+                                                    {{ $budgetItem . ' - PhP' . number_format($activity['budgetPrices'][$key], 2) }}
+                                                </div>
+                                                @endforeach
+
+
+                                            </td>
                                             <td class="p-2">{{ $activity['actsource'] }}</td>
                                         </tr>
                                         @endforeach
                                         @else
                                         <tr id="activity-{{ $x }}" name="activity-{{ $x }}[]" data-value="0">
-                                            <td class="pt-2 pb-2 pe-2" data-value="0" id="actid">
+                                            <td>
                                                 &nbsp;
                                             </td>
                                             <td>&nbsp;</td>

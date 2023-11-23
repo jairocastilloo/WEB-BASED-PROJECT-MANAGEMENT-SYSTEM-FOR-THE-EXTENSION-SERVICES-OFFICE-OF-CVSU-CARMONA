@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Artisan;
 use App\Events\NewNotificationEvent;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MyMail;
+use App\Models\ActivityBudget;
+use App\Models\ExpectedOutput;
 use App\Models\FiscalYear;
 use Illuminate\Support\Facades\Redirect;
 
@@ -129,6 +131,21 @@ class ProjectController extends Controller
         $objectives = $indexproject->objectives;
         $activities = $indexproject->activities;
         $department = $indexproject->department;
+        $activitiesIds = $activities->pluck('id')->toArray();
+        $expectedOutputs = ExpectedOutput::whereIn('activity_id', $activitiesIds)->get();
+        $activityBudgets = ActivityBudget::whereIn('activity_id', $activitiesIds)->get();
+
+        foreach ($activities as $activity) {
+            $activityExpectedOutputs = $expectedOutputs->where('activity_id', $activity->id);
+            $budgets =  $activityBudgets->where('activity_id', $activity->id);
+
+            $expectedOutputNames = $activityExpectedOutputs->pluck('name')->toArray();
+            $activityBudgetItems = $budgets->pluck('item')->toArray();
+            $activityBudgetPrices = $budgets->pluck('price')->toArray();
+            $activity->expectedOutputs = $expectedOutputNames;
+            $activity->budgetItems = $activityBudgetItems;
+            $activity->budgetPrices = $activityBudgetPrices;
+        }
 
         if (Auth::user()->role == 'Admin') {
             if ($department == 'All') {

@@ -181,10 +181,14 @@ body {
     margin-top:4px;
     margin-bottom:4px;
     overflow-x: scroll;
-    display: flex; /* Add flexbox */
+ 
+    display: flex;
+    
     flex-wrap: nowrap; /* Prevent wrapping */
     width: 100%;
+   
   }
+  
   .tablecontainer::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */ 
     background-color: #dadadc; /* Background color of the scrollbar */
@@ -202,50 +206,60 @@ body {
   @media (min-width: 576px) {
     .tablecontainer {
       max-width: 540px;
+    
     }
   }
   
   @media (min-width: 768px) {
     .tablecontainer {
       max-width: 720px;
+     
     }
   }
   
   @media (min-width: 992px) {
     .tablecontainer {
       max-width: 960px;
+    
     }
   }
   
-  @media (min-width: 1200px) {
-    .tablecontainer {
-      max-width: 1140px;
+    @media (min-width: 1200px) {
+      .tablecontainer {
+        max-width: 1140px;
+        
+      }
     }
-  }
+    
+  
   th{
  background-color:#e2ebda;
     
   }
   .recordth th{
     background-color:rgb(233, 233, 233);
-       
      }
+     
   .firsttable, .firsttable th, .firsttable td {
+   
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     border-right: 0;
+    height: 0;
   }
   .secondtable, .secondtable th, .secondtable td {
+    vertical-align: top;
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    
+    height: 0;
   }
+  
   .accounttable, .accounttable th, .accounttable td {
     border: 1px solid #bababa;
     min-width: 187px;
@@ -874,6 +888,9 @@ div {
       font-size: 12pt;
   }
   /* ... other print styles ... */
+}
+.border1px{
+  border-bottom: 1px solid #bababa;  
 }
 
 
