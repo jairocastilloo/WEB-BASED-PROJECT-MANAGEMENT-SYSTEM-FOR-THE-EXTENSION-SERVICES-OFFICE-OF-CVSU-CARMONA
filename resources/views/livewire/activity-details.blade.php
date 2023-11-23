@@ -20,10 +20,6 @@
     <p class="lh-sm ms-5 me-2">{{ $expectedOutput->name }}</p>
 
     @endforeach
-
-
-
-    <p class="lh-sm ms-4 me-2"><strong>Expected Output:</strong> {{ $activity['actoutput'] }} </p>
     <p class="lh-sm ms-4 me-2"><strong>Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
     </p>
     <p class="lh-sm ms-4 me-2"><strong>Due Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
