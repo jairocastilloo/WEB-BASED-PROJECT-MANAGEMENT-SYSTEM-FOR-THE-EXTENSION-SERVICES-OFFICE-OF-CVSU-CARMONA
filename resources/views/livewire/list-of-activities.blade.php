@@ -388,12 +388,12 @@
                     hasErrors = true;
                 }
             });
-
-            if (actsource.trim() === '') {
-                document.getElementById('source').classList.add('is-invalid');
-                document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
-                hasErrors = true;
-            }
+            /** 
+                        if (actsource.trim() === '') {
+                            document.getElementById('source').classList.add('is-invalid');
+                            document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
+                            hasErrors = true;
+                        }*/
             return hasErrors;
         }
     </script>
