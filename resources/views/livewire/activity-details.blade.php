@@ -9,14 +9,29 @@
     <p class="lh-sm ms-4 me-2"><strong>Objectives:</strong></p>
     @foreach ($currentobjectives as $currentobjective)
 
-    <p class="ms-4 me-2 lh-1">- {{ $currentobjective['name'] }}</p>
+    <p class="ms-5 me-2 lh-1">{{ $currentobjective['name'] }}</p>
 
     @endforeach
+    <!--<p class="lh-sm ms-4 me-2"><strong>Expected Output:</strong> {{ $activity['actoutput'] }} </p>-->
+
+
+    <p class="lh-sm ms-4 me-2"><strong>Expected Output:</strong></p>
+    @foreach ($expectedOutputs as $expectedOutput)
+    <p class="lh-sm ms-5 me-2">{{ $expectedOutput->name }}</p>
+
+    @endforeach
+
+
+
     <p class="lh-sm ms-4 me-2"><strong>Expected Output:</strong> {{ $activity['actoutput'] }} </p>
     <p class="lh-sm ms-4 me-2"><strong>Start Date:</strong> {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
     </p>
     <p class="lh-sm ms-4 me-2"><strong>Due Date:</strong> {{ date('M d, Y', strtotime($activity['actenddate'])) }}</p>
-    <p class="lh-sm ms-4 me-2"><strong>Budget:</strong> PhP{{ number_format($activity['actbudget'], 2) }}</p>
+    <p class="lh-sm ms-4 me-2"><strong>Budget:</strong></p>
+    @foreach ($activityBudgets as $activityBudget)
+    <p class="lh-sm ms-5 me-2">{{ $activityBudget->item }} - PhP {{ number_format($activityBudget->price, 2) }}</p>
+
+    @endforeach
     <p class="lh-sm ms-4 me-2"><strong>Source:</strong> {{ $activity['actsource'] }}</p>
     <p class="lh-sm ms-4 me-2"><strong>Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
     <div class="btn-group dropdown ms-3 mb-3 shadow">
@@ -78,6 +93,21 @@
                         </div>
 
                     </div>
+
+                    <div class="mb-1" id="outputContainer">
+                        <label for="expectedoutput" class="form-label">Expected Output</label>
+                        @foreach ($expectedOutputs as $expectedOutput)
+                        <div class="input-group mb-1 expectedOutput-input">
+                            <input type="text" class="form-control" name="expectedoutput[]" value="{{ $expectedOutput['name'] }}">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>
+                        @endforeach
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addExpectedOutput-btn">Add Expected Output</button>
+                    <!--
                     <div class="mb-3">
                         <label for="expectedoutput" class="form-label">Expected Output</label>
                         <input type="text" class="form-control" id="expectedoutput" name="expectedoutput" value="{{ $activity->actoutput }}">
@@ -85,6 +115,7 @@
                             <strong></strong>
                         </span>
                     </div>
+-->
                     <div class="mb-3">
                         <label for="activitystartdate" class="form-label">Activity Start Date</label>
 
@@ -126,14 +157,37 @@
 
 
                     </div>
-
+                    <div class="mb-1" id="budgetContainer">
+                        <label for="budget" class="form-label">Budget</label>
+                        <div class="text-center d-none" id="tinipid">
+                            <h5><em>
+                                    No Budget Applicable
+                                </em></h5>
+                        </div>
+                        @foreach ($activityBudgets as $activityBudget)
+                        <div class="input-group mb-1 budget-input">
+                            <input type="text" class="form-control me-2" name="budgetItem[]" placeholder="Item" value="{{ $activityBudget['item'] }}">
+                            <i class="bi bi-dash-lg pt-2"></i>
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <input type="number" class="form-control ms-2" min="0" name="budgetPrice[]" placeholder="Price (PhP)" value="{{ $activityBudget['price'] }}">
+                            <span class="invalid-feedback" role="alert">
+                                <strong></strong>
+                            </span>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeBudget-btn"><i class="bi bi-x-lg"></i></button>
+                        </div>
+                        @endforeach
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add Budget</button>
+                    <!--
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>
                         <input type="number" class="form-control" id="budget" name="budget" value="{{ $activity->actbudget }}">
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
-                    </div>
+                    </div>-->
                     <div class="mb-3">
                         <label for="Source" class="form-label">Source</label>
                         <input type="text" class="form-control" id="source" name="source" value="{{ $activity->actsource }}">
@@ -178,13 +232,40 @@
             confirmActivityBtn.addEventListener('click', function() {
                 var theresErrors = acthasError();
                 if (!theresErrors) {
+                    this.disabled = true;
+
+                    var expectedoutput = [];
+                    var budgetItem = [];
+                    var budgetPrice = [];
+
+                    document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                        expectedoutput.push(element.value);
+                    });
+                    if (document.querySelectorAll('input[name="budgetItem[]"]').length > 0) {
+                        // Collect values from input elements with name "budgetItem[]"
+                        document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                            if (element.value.trim() !== '') {
+                                budgetItem.push(element.value);
+                            }
+                        });
+                    }
+
+                    if (document.querySelectorAll('input[name="budgetPrice[]"]').length > 0) {
+                        // Collect values from input elements with name "budgetPrice[]"
+                        document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                            if (element.value.trim() !== '') {
+                                budgetPrice.push(element.value);
+                            }
+                        });
+                    }
                     Livewire.emit('saveActivity', {
                         actname: actname,
                         objectivevalue: objectivevalue,
                         expectedoutput: expectedoutput,
                         actstartdate: actstartdate,
                         actenddate: actenddate,
-                        actbudget: actbudget,
+                        actBudgetItem: budgetItem,
+                        actBudgetPrice: budgetPrice,
                         actsource: actsource
                     });
                 }
@@ -241,11 +322,8 @@
 
             actname = document.getElementById('activityname').value;
             objectivevalue = selectedOptionId;
-            expectedoutput = document.getElementById('expectedoutput').value;
             actstartdate = document.getElementById('activitystartdate').value;
             actenddate = document.getElementById('activityenddate').value;
-
-            actbudget = document.getElementById('budget').value;
             actsource = document.getElementById('source').value;
 
             // Validation for Project Title
@@ -263,21 +341,20 @@
             }
 
             // Validation for Program Title
-            if (expectedoutput.trim() === '') {
-                document.getElementById('expectedoutput').classList.add('is-invalid');
-                document.querySelector('#expectedoutput + .invalid-feedback strong').textContent = 'Expected Output is required.';
-                hasErrors = true;
-            }
+            document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent = 'Expected Output is required.';
+                    hasErrors = true;
+                }
+            });
 
             if (actstartdate === '') {
                 document.getElementById('activitystartdate').classList.add('is-invalid');
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date is required.';
                 hasErrors = true;
-            }
-
-            // Validation for Project Start Date
-            else if (new Date(projstartdate) > new Date(actstartdate)) {
-                document.getElementById('activitystartdate').classList.add('is-invalid');
+            } else if (!((new Date(projstartdate) - (24 * 60 * 60 * 1000)) < new Date(actstartdate))) {
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -308,16 +385,29 @@
                 hasErrors = true;
             }
 
-            if (actbudget.trim() === '') {
-                document.getElementById('budget').classList.add('is-invalid');
-                document.querySelector('#budget + .invalid-feedback strong').textContent = 'Budget is required.';
-                hasErrors = true;
-            }
+            document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent = 'Budget Item is required.';
+                    hasErrors = true;
+                }
+            });
+
+            document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent = 'Budget Price is required.';
+                    hasErrors = true;
+                }
+            });
+            /**
             if (actsource.trim() === '') {
                 document.getElementById('source').classList.add('is-invalid');
                 document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
                 hasErrors = true;
-            }
+            } */
             return hasErrors;
         }
     </script>
