@@ -45,8 +45,8 @@
                 <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i class="bi bi-chevron-compact-left"></i></a>
             </li>
             @endif
-
-            @for ($i = 1; $i <= $totalPages; $i++) <li class="page-item {{ $i === $currentPage ? 'active' : '' }} number-link" aria-current="{{ $i === $currentPage ? 'page' : '' }}">
+            
+            @for ($i = 1; $i <= $totalPages; $i++) <li class="page-item {{ $i === $currentPage ? 'active' : 'number-link' }}" aria-current="{{ $i === $currentPage ? 'page' : '' }}">
                 <a class="page-link" wire:click="changePage({{ $i }})">{{ $i }}</a>
                 </li>
                 @endfor
