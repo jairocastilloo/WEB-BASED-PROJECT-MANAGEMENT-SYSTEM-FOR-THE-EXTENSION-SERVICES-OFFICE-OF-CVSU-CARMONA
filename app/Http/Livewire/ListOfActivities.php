@@ -46,13 +46,14 @@ class ListOfActivities extends Component
         }
         $budgetItems = $arguments['actBudgetItem'];
         $budgetPrices = $arguments['actBudgetPrice'];
-
-        foreach ($budgetItems as $key => $budgetItem) {
-            ActivityBudget::create([
-                'item' => $budgetItem,
-                'price' => $budgetPrices[$key],
-                'activity_id' => $activity->id,
-            ]);
+        if ($budgetItems != []) {
+            foreach ($budgetItems as $key => $budgetItem) {
+                ActivityBudget::create([
+                    'item' => $budgetItem,
+                    'price' => $budgetPrices[$key],
+                    'activity_id' => $activity->id,
+                ]);
+            }
         }
 
         $this->activities = Activity::where('project_id', $this->indexproject->id)

@@ -129,6 +129,11 @@
 
                     <div class="mb-1" id="budgetContainer">
                         <label for="budget" class="form-label">Budget</label>
+                        <div class="text-center d-none" id="tinipid">
+                            <h5><em>
+                                    No Budget Applicable
+                                </em></h5>
+                        </div>
                         <div class="input-group mb-1 budget-input">
                             <input type="text" class="form-control me-2" name="budgetItem[]" placeholder="Item">
                             <i class="bi bi-dash-lg pt-2"></i>
@@ -146,7 +151,7 @@
                     <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add Budget</button>
 
 
-                    <div class="mb-3">
+                    <div class="mb-3" id="sourceDiv">
                         <label for="Source" class="form-label">Source</label>
                         <input type="text" class="form-control" id="source" name="source">
                         <span class="invalid-feedback" role="alert">
@@ -192,13 +197,23 @@
                     document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
                         expectedoutput.push(element.value);
                     });
-                    document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
-                        budgetItem.push(element.value);
-                    });
+                    if (document.querySelectorAll('input[name="budgetItem[]"]').length > 0) {
+                        // Collect values from input elements with name "budgetItem[]"
+                        document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                            if (element.value.trim() !== '') {
+                                budgetItem.push(element.value);
+                            }
+                        });
+                    }
 
-                    document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
-                        budgetPrice.push(element.value);
-                    });
+                    if (document.querySelectorAll('input[name="budgetPrice[]"]').length > 0) {
+                        // Collect values from input elements with name "budgetPrice[]"
+                        document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                            if (element.value.trim() !== '') {
+                                budgetPrice.push(element.value);
+                            }
+                        });
+                    }
                     Livewire.emit('saveActivity', {
                         actname: actname,
                         objectivevalue: objectivevalue,
@@ -325,8 +340,7 @@
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date is required.';
                 hasErrors = true;
             } else if (!(new Date(projstartdate) <= new Date(actstartdate))) {
-
-                document.getElementById('activitystartdate').classList.add('is-invalid');
+                console.log(projstartdate + ', ' + actstartdate);
                 document.querySelector('#activitystartdate + .invalid-feedback strong').textContent = 'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',

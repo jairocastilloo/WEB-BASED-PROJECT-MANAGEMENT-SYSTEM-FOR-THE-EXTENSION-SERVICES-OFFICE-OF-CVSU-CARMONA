@@ -747,6 +747,7 @@
         });
 
         $('#addExpectedOutput-btn').click(function() {
+
             $('#outputContainer').append(`<div class="input-group mb-1 expectedOutput-input">
                             <input type="text" class="form-control" name="expectedoutput[]">
                             <span class="invalid-feedback" role="alert">
@@ -763,6 +764,11 @@
 
         });
         $('#addBudget-btn').click(function() {
+            if (!$('#tinipid').hasClass('d-none')) {
+                $('#tinipid').addClass('d-none');
+            }
+            $('#sourceDiv').show();
+
             $('#budgetContainer').append(` <div class="input-group mb-1 budget-input">
                             <input type="text" class="form-control me-2" name="budgetItem[]" placeholder="Item">
                             <i class="bi bi-dash-lg pt-2"></i>
@@ -777,10 +783,11 @@
                         </div>`);
         });
         $(document).on('click', '.removeBudget-btn', function() {
-            if ($('.budget-input').length > 1) {
-                $(this).parent().remove();
+            if ($('.budget-input').length == 1) {
+                $('#tinipid').removeClass('d-none');
+                $('#sourceDiv').hide();
             }
-
+            $(this).parent().remove();
 
         });
 
