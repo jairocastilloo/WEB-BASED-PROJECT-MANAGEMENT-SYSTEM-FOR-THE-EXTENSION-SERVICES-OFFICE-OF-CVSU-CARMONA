@@ -45,7 +45,7 @@ class ProjectController extends Controller
         } else {
             $alldepartments = [Auth::user()->department, 'All'];
         }
-
+        $department = str_replace('+', ' ', $department);
 
         if (Auth::user()->role == 'Admin') {
             if ($department == 'All') {
@@ -314,7 +314,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $isMailSendable = 1;
-        $error = null;
+
 
         $projecttitle = $request->input('projecttitle');
         //$projectleaderid = $request->input('projectleader');
@@ -377,13 +377,13 @@ class ProjectController extends Controller
 
                     Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
                 } catch (\Exception $e) {
-                    $error = $e->getMessage();
+
                     $isMailSendable = 0;
                 }
             }
         }
 
-        if (count($programleaders) > 0) {
+        if ($programleaders) {
             foreach ($programleaders as $userId) {
                 ProgramLeader::create([
                     'project_id' => $newProjectId,
@@ -413,14 +413,14 @@ class ProjectController extends Controller
                     $senderemail = Auth::user()->email;
                     Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
                 } catch (\Exception $e) {
-                    $error = $e->getMessage();
+
                     $isMailSendable = 0;
                 }
             }
         }
 
         $validatedData = $request->validate([
-            'objectiveName.*' => 'required',
+            'objectiveName.*' => 'required|string',
             'objectiveindex' => 'required|integer',
             'objectiveSetNumber.*' => 'required|integer',
         ]);

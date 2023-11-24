@@ -306,7 +306,7 @@
                 $(this).parent().remove();
             }
         });
-        $('#objectiveInput-error strong').hide();
+
         $('#programtitle').on('keyup', function(e) {
             if ($('#programtitle').val() === "") {
                 $('.programleaderdiv').css('display', 'none');
@@ -470,6 +470,7 @@
 
                 $('div.objectiveSetContainer').each(function(index) {
                     $(this).attr("data-value", index);
+
                 });
 
                 $('textarea[name="objectiveName[]"]').each(function(index) {
@@ -477,9 +478,15 @@
 
                 });
                 $('input[name="objectiveSetNumber[]"]').each(function(index) {
+                    var id = $(this).parent().parent().parent().attr('data-value');
+
+                    $(this).val(id);
                     $(this).attr('name', 'objectiveSetNumber[' + index + ']');
-                    $(this).val($(this).parent().attr('data-value'));
+
                 });
+
+
+
                 /**
                                 var objectiveindex = $('input[name="projectobjective[]"]').length;
 
@@ -543,6 +550,7 @@
                         }
                     },
                     error: function(xhr, status, error) {
+                        //$('#createprojectError').text(xhr.responseText);
                         $('#createprojectError').text("There is a problem with server. Contact Administrator!");
                         $('#loadingSpan').css('display', 'none');
                         /*
