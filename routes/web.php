@@ -95,7 +95,7 @@ Route::prefix('/subtasks')->group(function () {
 });
 
 Route::prefix('/activities')->group(function () {
-    Route::get('/{activityid}/{activityname}', [ActivityController::class, 'displayactivity'])->name('activities.display');
+    Route::get('/{activityid}', [ActivityController::class, 'displayactivity'])->name('activities.display');
     Route::post('/acceptoutput', [OutputController::class, 'acceptoutput'])->name('output.accept');
     Route::post('/markcomplete', [ActivityController::class, 'markcomplete'])->name('activity.markcomplete');
     Route::post('/addassignee', [ActivityController::class, 'addassignee'])->name('add.assignee');

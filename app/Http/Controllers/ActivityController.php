@@ -206,7 +206,7 @@ class ActivityController extends Controller
     }
 
 
-    public function displayactivity($activityid, $activityname)
+    public function displayactivity($activityid)
     {
         // activity details
         $activity = Activity::find($activityid);

@@ -126,7 +126,7 @@
                                     @while ($x <= $lastObjectivesetId) @php $actcount=$activities->where('actobjectives', $x)->count();
                                         @endphp
                                         <tr id="objective-{{ $x }}" name="objective-{{ $x }}">
-                                            <td class="pt-3 p-2">
+                                            <td class="p-2">
 
                                                 @foreach($objectives->where('objectiveset_id', $x) as $objective)
 
@@ -669,14 +669,12 @@
             event.preventDefault();
 
             var activityid = $(this).data('value');
-            var activityname = $(this).attr('act-name');
 
 
             if (activityid != 0) {
 
-                var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+                var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
                 url = url.replace(':activityid', activityid);
-                url = url.replace(':activityname', activityname);
                 window.location.href = url;
             }
         });

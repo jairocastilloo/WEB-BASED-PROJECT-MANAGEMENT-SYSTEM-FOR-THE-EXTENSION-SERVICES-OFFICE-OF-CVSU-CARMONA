@@ -155,9 +155,8 @@
             var activityname = $(this).find("h6:first").text();
             var activityid = $(this).attr("data-value");
 
-            var url = '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
             url = url.replace(':activityid', activityid);
-            url = url.replace(':activityname', activityname);
             window.location.href = url;
         });
 

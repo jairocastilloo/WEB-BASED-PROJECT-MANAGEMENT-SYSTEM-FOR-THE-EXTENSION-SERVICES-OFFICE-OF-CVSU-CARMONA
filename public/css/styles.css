@@ -266,6 +266,9 @@ body {
     word-wrap: break-word;
     height: 0;
   }
+  .firsttable td {
+    vertical-align: top;
+  }
   .secondtable td{
     vertical-align: top;
   }
