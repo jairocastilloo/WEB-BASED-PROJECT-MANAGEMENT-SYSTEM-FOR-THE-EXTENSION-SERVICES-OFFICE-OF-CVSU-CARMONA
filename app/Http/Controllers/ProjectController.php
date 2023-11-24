@@ -420,16 +420,16 @@ class ProjectController extends Controller
         }
 
         $validatedData = $request->validate([
-            'projectobjective.*' => 'required',
+            'objectiveName.*' => 'required',
             'objectiveindex' => 'required|integer',
-            'objectivesetid.*' => 'required|integer',
+            'objectiveSetNumber.*' => 'required|integer',
         ]);
 
         for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
             $projectobjective = new Objective;
-            $projectobjective->name = $validatedData['projectobjective'][$i];
+            $projectobjective->name = $validatedData['objectiveName'][$i];
             $projectobjective->project_id = $newProjectId;
-            $projectobjective->objectiveset_id = $validatedData['objectivesetid'][$i];
+            $projectobjective->objectiveset_id = $validatedData['objectiveSetNumber'][$i];
             $projectobjective->save();
         }
         /*

@@ -194,32 +194,30 @@
                                 @csrf
 
                                 <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
-                                <div class="container-fluid" id="objectiveset">
+                                <div class="container-fluid objectiveSetContainer mb-2 p-2" data-value="0">
                                     <div>
+                                        <div class="input-group mb-2 objectiveName-input">
 
-                                        <div class="mb-2 row" id="selectobjectives">
-                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
-                                            <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
-                                            <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
+                                            <textarea class="form-control" aria-label="With textarea" name="objectiveName[]" placeholder="Write objective here.."></textarea>
 
-
+                                            <input type="number" name="objectiveSetNumber[]" class="objectiveSetNumber d-none" value="0">
+                                            <button type="button" class="btn btn-sm btn-outline-danger removeObjectiveName-btn"><i class="bi bi-x-lg"></i></button>
                                         </div>
-
                                     </div>
-                                    <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
+                                    <button type="button" class="addObjective-btn btn btn-sm btn-outline-success">
                                         <b class="small">Add Objective</b>
                                     </button>
-                                    <br>
-                                    <span class="small text-danger projectobjective-error">
-                                        <strong>Please ensure that there is objective in every input.</strong>
-                                    </span>
+                                    <button type="button" class="removeObjectiveSet-btn btn btn-sm btn-outline-danger px-5 d-block mx-auto">
+                                        <b class="small">Remove Objective Set</b>
+                                    </button>
 
-                                    <hr>
+
                                 </div>
                             </form>
-                            <button type="button" class="addset btn btn-outline-secondary w-100" id="addset">
+                            <button type="button" class="btn btn-outline-primary w-100" id="addObjectiveSet-btn">
                                 <b class="small">Add Objective Set</b>
                             </button>
+                            <span class="text-danger small fw-bold" id="objectiveInput-error">Please ensure that there is objective in every input.</span>
                         </div>
                     </div>
                 </div>
@@ -267,8 +265,48 @@
 
         var currentstep = 0;
         var setcount = 0;
+        $('#objectiveInput-error').hide();
+        $('#addObjectiveSet-btn').click(function() {
+            $('#form2').append(`<div class="container-fluid objectiveSetContainer mb-2 p-2" data-value="0">
+                                    <div>
+                                        <div class="input-group mb-2 objectiveName-input">
 
-        $('.projectobjective-error strong').hide();
+                                            <textarea class="form-control" aria-label="With textarea" name="objectiveName[]" placeholder="Write objective here.."></textarea>
+                                            
+                                            <input type="number" name="objectiveSetNumber[]" class="objectiveSetNumber d-none" value="0">
+                                            <button type="button" class="btn btn-sm btn-outline-danger removeObjectiveName-btn"><i class="bi bi-x-lg"></i></button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="addObjective-btn btn btn-sm btn-outline-success">
+                                        <b class="small">Add Objective</b>
+                                    </button>
+                                    <button type="button" class="removeObjectiveSet-btn btn btn-sm btn-outline-danger px-5 d-block mx-auto">
+                                        <b class="small">Remove Objective Set</b>
+                                    </button>
+
+
+                                </div>`);
+        });
+        $(document).on('click', '.addObjective-btn', function() {
+            $(this).prev().append(`<div class="input-group mb-2 objectiveName-input">
+
+<textarea class="form-control" aria-label="With textarea" name="objectiveName[]" placeholder="Write objective here.."></textarea>
+
+<input type="number" name="objectiveSetNumber[]" class="objectiveSetNumber d-none" value="0">
+<button type="button" class="btn btn-sm btn-outline-danger removeObjectiveName-btn"><i class="bi bi-x-lg"></i></button>
+</div>`);
+        });
+        $(document).on('click', '.removeObjectiveName-btn', function() {
+            if ($(this).parent().parent().find('.objectiveName-input').length > 1) {
+                $(this).parent().remove();
+            }
+        });
+        $(document).on('click', '.removeObjectiveSet-btn', function() {
+            if ($(this).parent().parent().find('.objectiveSetContainer').length > 1) {
+                $(this).parent().remove();
+            }
+        });
+        $('#objectiveInput-error strong').hide();
         $('#programtitle').on('keyup', function(e) {
             if ($('#programtitle').val() === "") {
                 $('.programleaderdiv').css('display', 'none');
@@ -295,45 +333,6 @@
 
         $(document).on('click', '#toggleButton', function(event) {
             $(this).next().slideToggle("fast");
-        });
-
-
-        $('#searchInputPastProject').on('keyup', function(e) {
-
-            var inputData = $('#searchInputPastProject').val().toLowerCase();
-            var x = 0;
-            $('.pastprojectdiv').each(function() {
-                var projectName = $(this).attr('data-name').toLowerCase();
-
-                if (projectName.includes(inputData)) {
-                    $(this).show();
-                    x++;
-                } else {
-                    $(this).hide();
-                }
-            });
-            $('.countPastProjects').text(x);
-
-        });
-
-
-
-        $('#searchInputProject').on('keyup', function(e) {
-
-            var inputData = $('#searchInputProject').val().toLowerCase();
-            var x = 0;
-            $('.projectdiv').each(function() {
-                var projectName = $(this).attr('data-name').toLowerCase();
-
-                if (projectName.includes(inputData)) {
-                    $(this).show();
-                    x++;
-                } else {
-                    $(this).hide();
-                }
-            });
-            $('.countProjects').text(x);
-
         });
 
         $(document).on('click', '.projectdiv', function(event) {
@@ -467,21 +466,36 @@
 
                 projecturl = projecturl.replace(':department', encodeURIComponent(department));
 
-                var objectiveindex = $('input[name="projectobjective[]"]').length;
+                $('#objectiveindex').val($('textarea[name="objectiveName[]"]').length);
 
-                $('input[name="projectobjective[]"]').each(function(index) {
-                    $(this).attr('name', 'projectobjective[' + index + ']');
-
+                $('div.objectiveSetContainer').each(function(index) {
+                    $(this).attr("data-value", index);
                 });
 
-                $('input[name="objectivesetid[]"]').each(function(index) {
-                    $(this).attr('name', 'objectivesetid[' + index + ']');
+                $('textarea[name="objectiveName[]"]').each(function(index) {
+                    $(this).attr('name', 'objectiveName[' + index + ']');
 
                 });
+                $('input[name="objectiveSetNumber[]"]').each(function(index) {
+                    $(this).attr('name', 'objectiveSetNumber[' + index + ']');
+                    $(this).val($(this).parent().attr('data-value'));
+                });
+                /**
+                                var objectiveindex = $('input[name="projectobjective[]"]').length;
+
+                                $('input[name="projectobjective[]"]').each(function(index) {
+                                    $(this).attr('name', 'projectobjective[' + index + ']');
+
+                                });
+
+                                $('input[name="objectivesetid[]"]').each(function(index) {
+                                    $(this).attr('name', 'objectivesetid[' + index + ']');
+
+                                });
 
 
-                $('#objectiveindex').val(objectiveindex);
-
+                                $('#objectiveindex').val(objectiveindex);
+                */
                 var dataurl = $('#form1').attr('data-url');
                 var data1 = $('#form1').serialize();
                 var data2 = $('#form2').serialize();
@@ -591,13 +605,14 @@
                                     $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
                                     hasErrors = true;
                                 }
-                */
-                // Validation for Program Leader
+                
+             
                 if (programLeader.length === 0) {
                     $('.programleader').addClass('is-invalid');
                     $('.programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
                     hasErrors = true;
                 }
+                */
                 if ($('#projectstartdate').val() == "") {
                     $('#projectstartdate').parent().addClass('is-invalid');
                     $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text('Project Start Date is required.');
@@ -634,6 +649,17 @@
             } else if (currentstep === 1) {
                 var hasErrors = false;
 
+                $('textarea[name="objectiveName[]"]').each(function(index, element) {
+
+                    if ($(element).val() === "") {
+                        $('#objectiveInput-error').show();
+                        hasErrors = true;
+                    }
+
+                });
+
+
+                /*
                 if ($('input[name="projectobjective[]"]').length === 0) {
                     $('.projectobjective-error strong').show();
                     hasErrors = true;
@@ -647,7 +673,7 @@
 
                     });
 
-                }
+                }*/
                 return hasErrors;
             }
 
