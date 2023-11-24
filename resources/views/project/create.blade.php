@@ -56,7 +56,7 @@
 <!-- New Project -->
 @if (Auth::user()->role === 'Admin')
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="newproject">New Project</h5>
@@ -82,6 +82,9 @@
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
+
+
+
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
                                 <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
@@ -189,9 +192,11 @@
                         <div class="container-fluid" id="objform">
                             <form id="form2">
                                 @csrf
+
                                 <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
                                 <div class="container-fluid" id="objectiveset">
                                     <div>
+
                                         <div class="mb-2 row" id="selectobjectives">
                                             <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
                                             <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
@@ -199,6 +204,7 @@
 
 
                                         </div>
+
                                     </div>
                                     <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
                                         <b class="small">Add Objective</b>

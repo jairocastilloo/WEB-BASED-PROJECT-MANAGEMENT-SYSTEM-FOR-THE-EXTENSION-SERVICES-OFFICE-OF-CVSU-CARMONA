@@ -314,7 +314,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $isMailSendable = 1;
-
+        $error = null;
 
         $projecttitle = $request->input('projecttitle');
         //$projectleaderid = $request->input('projectleader');
@@ -377,6 +377,7 @@ class ProjectController extends Controller
 
                     Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
                 } catch (\Exception $e) {
+                    $error = $e->getMessage();
                     $isMailSendable = 0;
                 }
             }
@@ -412,6 +413,7 @@ class ProjectController extends Controller
                     $senderemail = Auth::user()->email;
                     Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
                 } catch (\Exception $e) {
+                    $error = $e->getMessage();
                     $isMailSendable = 0;
                 }
             }
