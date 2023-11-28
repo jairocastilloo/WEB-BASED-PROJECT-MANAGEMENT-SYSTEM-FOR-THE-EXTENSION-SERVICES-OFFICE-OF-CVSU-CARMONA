@@ -50,7 +50,7 @@
 
                     $submittedoutput = $submittedoutput->map(function ($contri) use (&$countAccepted) {
                     if ($contri['approval'] === null) {
-                    $contri['submission_remark'] = 'For Evaluation';
+                    $contri['submission_remark'] = 'For Approval';
                     } elseif ($contri['approval'] === 1) {
                     $countAccepted++;
                     $contri['submission_remark'] = 'Accepted';
@@ -96,7 +96,7 @@
                             <h6 class="fw-bold small" style="color:darkgreen;">{{ $outputtype }}'s Reports</h6>
                         </div>
                         @foreach ($groupedSubmittedOutput as $date => $group)
-                        <div class="p-2 pb-1 ps-3 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Unevaluated-Submission">
+                        <div class="p-2 pb-1 ps-3 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="{{ $group[0]->approval }}">
 
                             <p class="lh-1 fw-bold @if($group[0]->submission_remark == 'For Approval') text-success @elseif($group[0]->submission_remark == 'For Revision') text-danger @else text-primary @endif"><em>
                                     {{ $group[0]->submission_remark  }}
@@ -268,11 +268,22 @@
                 var submittedoutputid = $(this).attr('data-value');
                 var approval = $(this).attr('data-approval');
                 var outputtype = $('#typeofOutput').attr('data-value');
+
+                var submission;
+
+                if (approval === "") {
+                    submission = "For Approval";
+                } else if (approval == 0) {
+                    submission = "For Revision";
+                } else if (approval == 1) {
+                    submission = "Accepted";
+                }
+
                 outputtype = outputtype.replace(' ', '-');
                 var url = '{{ route("submittedoutput.display", ["submittedoutputid" => ":submittedoutputid", "outputtype" => ":outputtype", "submissionname" => ":approval"]) }}';
                 url = url.replace(':submittedoutputid', submittedoutputid);
                 url = url.replace(':outputtype', outputtype);
-                url = url.replace(':approval', approval);
+                url = url.replace(':approval', submission);
                 window.location.href = url;
             });
             $(document).on('click', '.selectoutputdiv', function() {

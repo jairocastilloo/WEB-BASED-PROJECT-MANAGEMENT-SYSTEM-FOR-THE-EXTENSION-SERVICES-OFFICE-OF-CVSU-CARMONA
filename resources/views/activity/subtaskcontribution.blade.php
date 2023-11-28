@@ -212,11 +212,11 @@
                 var submission;
 
                 if (approval === "") {
-                    submission = "Unevaluated-Submission";
+                    submission = "For Approval";
                 } else if (approval == 0) {
-                    submission = "Rejected-Submission";
+                    submission = "For Revision";
                 } else if (approval == 1) {
-                    submission = "Accepted-Submission";
+                    submission = "Accepted";
                 }
 
 

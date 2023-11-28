@@ -128,28 +128,43 @@
                     <div class="mb-3">
                         <label for="firstname" class="form-label">First Name</label>
                         <input type="text" class="form-control" id="firstname" name="firstname">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
 
                     <!-- Middle Name -->
                     <div class="mb-3">
                         <label for="middlename" class="form-label">Middle Name</label>
                         <input type="text" class="form-control" id="middlename" name="middlename">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
 
                     <!-- Last Name -->
                     <div class="mb-3">
                         <label for="lastname" class="form-label">Last Name</label>
                         <input type="text" class="form-control" id="lastname" name="lastname">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
 
                     <!-- Username -->
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="text" class="form-control" id="email" name="email">
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
                     <!-- Department (Select Input) -->
                     <div class="mb-3">
@@ -162,6 +177,9 @@
                             <option value="Department of Teacher Education">Department of Teacher Education</option>
                             <option value="Department of Arts and Science">Department of Arts and Science</option>
                         </select>
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
 
                     <!-- Role (Select Input) -->
@@ -172,6 +190,9 @@
                             <option value="Coordinator">Coordinator</option>
                             <option value="Implementer">Implementer</option>
                         </select>
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
                     </div>
 
                 </div>
@@ -198,11 +219,60 @@
                     'department': document.getElementById('department').value,
                     'role': document.getElementById('role').value,
                 };
-                Livewire.emit('updateData', data);
+                var hasError = handleError();
+                if (!hasError) {
+                    Livewire.emit('updateData', data);
+                }
+
             });
             Livewire.on('afterUpdateData', function() {
                 document.getElementById('closeEdit').click();
             });
+
+            function handleError() {
+
+                // Display an error message or handle the error accordingly
+                if (document.getElementById('firstname').value === "") {
+                    document.getElementById('firstname').classList.add('is-invalid');
+                    document.getElementById('firstname').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'First Name is required.';
+
+                    return true;
+                }
+                if (document.getElementById('lastname').value === "") {
+                    document.getElementById('lastname').classList.add('is-invalid');
+                    document.getElementById('lastname').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'Last Name is required.';
+
+                    return true;
+                }
+                if (document.getElementById('username').value === "") {
+                    document.getElementById('username').classList.add('is-invalid');
+                    document.getElementById('username').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'Username is required.';
+
+                    return true;
+                }
+                if (document.getElementById('email').value === "") {
+                    document.getElementById('email').classList.add('is-invalid');
+                    document.getElementById('email').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'Email is required.';
+
+                    return true;
+                }
+                if (document.getElementById('department').value === "") {
+                    document.getElementById('department').classList.add('is-invalid');
+                    document.getElementById('department').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'Department is required.';
+
+                    return true;
+                }
+                if (document.getElementById('role').value === "") {
+                    document.getElementById('role').classList.add('is-invalid');
+                    document.getElementById('role').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'Role is required.';
+
+                    return true;
+                }
+
+                // Error found
+
+                return false; // No error
+            }
 
             btnSearch.addEventListener('click', function() {
                 const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;

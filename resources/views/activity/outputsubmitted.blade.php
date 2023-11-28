@@ -57,7 +57,7 @@
                             <h6 class="fw-bold small" style="color:darkgreen;">{{ $nameofsubmission }}</h6>
                         </div>
 
-                        <div class="p-2">
+                        <div class="p-2" id="typeofOutput" data-value="{{ $outputtype }}">
                             <p class="ps-4 lh-1 pt-2"><b>{{ $outputs[0]->output_type }}</b></p>
                             @foreach ($outputs as $index => $output)
                             <p class="lh-1 ps-5">{{ 'Submitted ' . $output->output_name . ': ' .  $submittedoutputs[$index]->output_submitted }}</p>
@@ -96,7 +96,7 @@
 
                 $othersubmittedoutput = $othersubmittedoutput->map(function ($contri) use (&$countAccepted) {
                 if ($contri['approval'] === null) {
-                $contri['submission_remark'] = 'For Evaluation';
+                $contri['submission_remark'] = 'For Approval';
                 } elseif ($contri['approval'] === 1) {
                 $countAccepted++;
                 $contri['submission_remark'] = 'Accepted';
@@ -121,7 +121,7 @@
                             <h6 class="fw-bold small" style="color:darkgreen;">{{ $outputtype }}'s Reports</h6>
                         </div>
                         @foreach ($groupedSubmittedOutput as $date => $group)
-                        <div class="p-2 pb-1 ps-3 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="Unevaluated-Submission">
+                        <div class="p-2 pb-1 ps-3 small divhover border-bottom outputsubmitteddiv" data-value="{{ $group[0]->id }}" data-approval="{{ $group[0]->approval }}">
 
                             <p class="lh-1 fw-bold @if($group[0]->submission_remark == 'For Approval') text-success @elseif($group[0]->submission_remark == 'For Revision') text-danger @else text-primary @endif"><em>
                                     {{ $group[0]->submission_remark  }}
@@ -171,6 +171,29 @@
                 }
             });
 
+            $(document).on('click', '.outputsubmitteddiv', function() {
+                var submittedoutputid = $(this).attr('data-value');
+                var approval = $(this).attr('data-approval');
+                var outputtype = $('#typeofOutput').attr('data-value');
+
+                var submission;
+
+                if (approval === "") {
+                    submission = "For Approval";
+                } else if (approval == 0) {
+                    submission = "For Revision";
+                } else if (approval == 1) {
+                    submission = "Accepted";
+                }
+
+                outputtype = outputtype.replace(' ', '-');
+                var url = '{{ route("submittedoutput.display", ["submittedoutputid" => ":submittedoutputid", "outputtype" => ":outputtype", "submissionname" => ":approval"]) }}';
+                url = url.replace(':submittedoutputid', submittedoutputid);
+                url = url.replace(':outputtype', outputtype);
+                url = url.replace(':approval', submission);
+                window.location.href = url;
+            });
+
             $('#projectdiv').click(function(event) {
                 event.preventDefault();
                 var projectid = $(this).attr('data-value');
@@ -189,12 +212,9 @@
 
                 event.preventDefault();
                 var actid = $(this).attr('data-value');
-                var activityname = $(this).attr('data-name');
 
-                var url = '{{ route("activities.display", ["activityid" => ":activityid", "department" => ":department", "activityname" => ":activityname"]) }}';
+                var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
                 url = url.replace(':activityid', actid);
-                url = url.replace(':department', department);
-                url = url.replace(':activityname', activityname);
                 window.location.href = url;
             });
             $(document).on('click', '.selectoutputdiv', function() {
