@@ -45,7 +45,7 @@ Auth::routes([
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('homepage');
 //Route::get('/user/{id}', [Monitoring::class, 'show'])->name('user.show');
-Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
+//Route::get('/createproject', [ProjectController::class, 'getMembers'])->name('get.members');
 //Route::get('/user/{id}/selectproject/{projectid}', [ProjectController::class, 'getobjectives'])->name('get.objectives');
 Route::POST('/saveproject', [ProjectController::class, 'store'])->name('project.store');
 Route::POST('/saveactivity', [ActivityController::class, 'storeactivity'])->name('activity.store');
@@ -107,7 +107,7 @@ Route::prefix('/activities')->group(function () {
 
 Route::prefix('/participationhours')->group(function () {
 
-    Route::get('/{activityid}/{activityname}', [HoursController::class, 'displayhours'])->name('hours.display');
+    Route::get('/{activityid}', [HoursController::class, 'displayhours'])->name('hours.display');
     Route::post('/acceptacthours', [HoursController::class, 'acceptacthours'])->name('acthours.accept');
 });
 

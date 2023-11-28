@@ -257,11 +257,8 @@
             var activityid = $('#actid-hrs').val();
             var activityname = $('#actname-hrs').val();
 
-
-            var url = '{{ route("hours.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            var url = '{{ route("hours.display", ["activityid" => ":activityid"]) }}';
             url = url.replace(':activityid', activityid);
-            url = url.replace(':activityname', activityname);
-
 
             window.location.href = url;
         });

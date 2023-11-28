@@ -389,6 +389,10 @@ class ProjectController extends Controller
                     'project_id' => $newProjectId,
                     'user_id' => $userId,
                 ]);
+                ProjectUser::create([
+                    'project_id' => $newProjectId,
+                    'user_id' => $userId,
+                ]);
             }
 
             $notification = new Notification([

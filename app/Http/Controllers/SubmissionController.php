@@ -86,7 +86,8 @@ class SubmissionController extends Controller
             ->toArray();
 
         $outputs = Output::whereIn('id', $outputids)->get();
-
+        $outputNames = $outputs->pluck('output_name')
+            ->toArray();
         $activityid = $outputs[0]->activity_id;
         $activity = Activity::findOrFail($activityid);
 
@@ -105,6 +106,8 @@ class SubmissionController extends Controller
         return view('activity.outputsubmitted', [
             'submittedoutputs' => $submittedoutputs,
             'outputs' => $outputs,
+            'outputtype' => $outputtype,
+            'outputNames' => $outputNames,
             'activity' => $activity,
             'project' => $project,
             'nameofsubmission' => $nameofsubmission,

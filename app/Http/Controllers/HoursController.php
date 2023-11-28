@@ -19,7 +19,7 @@ class HoursController extends Controller
 {
     //
 
-    public function displayhours($activityid, $activityname)
+    public function displayhours($activityid)
     {
         $activity = Activity::findOrFail($activityid);
 

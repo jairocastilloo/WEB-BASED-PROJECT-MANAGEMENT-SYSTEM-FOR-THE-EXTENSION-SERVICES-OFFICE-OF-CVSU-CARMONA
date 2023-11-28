@@ -97,6 +97,7 @@ class OutputController extends Controller
 
     public function addtooutput(Request $request)
     {
+        $redirectId = 0;
         $validatedData = $request->validate([
             'output-id.*' => 'required|integer',
             'output-quantity.*' => 'required|integer',
@@ -124,6 +125,9 @@ class OutputController extends Controller
             $outputuser->output_submitted = $validatedData['output-quantity'][$j];
             $outputuser->user_id = Auth::user()->id;
             $outputuser->save();
+            if ($j == 0) {
+                $redirectId = $outputuser->id;
+            }
         }
         $request->validate([
             'outputdocs' => 'required|mimes:docx|max:2048',
@@ -138,7 +142,7 @@ class OutputController extends Controller
         // Store the file
         $path = $request->file('outputdocs')->storeAs('uploads/' . $currentDateTime, $fileName);
 
-        return 'File uploaded successfully.';
+        return response()->json(['success' => true, 'redirectId' => $redirectId]);
     }
 
     public function acceptoutput(Request $request)
