@@ -94,35 +94,43 @@ class SubtaskAssignees extends Component
 
         $message =  $sendername . ' assigned you to a new task: "' . $this->subtask->subtask_name . '".';
         foreach ($selectedAssignees as $selectedAssignee) {
-            $notification = new Notification([
-                'user_id' => $selectedAssignee,
-                'task_id' => $this->subtask->id,
-                'task_type' => "subtask",
-                'task_name' => $this->subtask->subtask_name,
-                'message' => $message,
-            ]);
-            $notification->save();
-            if ($isMailSendable === 1) {
-                try {
-                    $assignee = User::findorFail($selectedAssignee);
-                    $email = $assignee->email;
-                    $name = $assignee->name . ' ' . $assignee->last_name;
-                    $taskname = $this->subtask->subtask_name;
-                    $tasktype = "subtask";
 
-                    $taskdeadline = date('F d, Y', strtotime($this->subtask->subduedate));
-                    $senderemail = Auth::user()->email;
-                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                } catch (\Exception $e) {
-                    $isMailSendable = 0;
-                    $error = $e;
+            $assignee = User::findorFail($selectedAssignee);
+
+            if ($assignee->notifyActivityAdded == 1) {
+                $notification = new Notification([
+                    'user_id' => $selectedAssignee,
+                    'task_id' => $this->subtask->id,
+                    'task_type' => "subtask",
+                    'task_name' => $this->subtask->subtask_name,
+                    'message' => $message,
+                ]);
+                $notification->save();
+            }
+
+            if ($assignee->emailActivityAdded == 1) {
+                if ($isMailSendable === 1) {
+                    try {
+
+                        $email = $assignee->email;
+                        $name = $assignee->name . ' ' . $assignee->last_name;
+                        $taskname = $this->subtask->subtask_name;
+                        $tasktype = "subtask";
+
+                        $taskdeadline = date('F d, Y', strtotime($this->subtask->subduedate));
+                        $senderemail = Auth::user()->email;
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+                        $isMailSendable = 0;
+                        $error = $e;
+                    }
                 }
             }
-            if ($isMailSendable === 1) {
-                $this->emit('updateLoading');
-            } else {
-                $this->emit('updateLoadingFailed', $error);
-            }
+        }
+        if ($isMailSendable === 1) {
+            $this->emit('updateLoading');
+        } else {
+            $this->emit('updateLoadingFailed', $error);
         }
     }
 

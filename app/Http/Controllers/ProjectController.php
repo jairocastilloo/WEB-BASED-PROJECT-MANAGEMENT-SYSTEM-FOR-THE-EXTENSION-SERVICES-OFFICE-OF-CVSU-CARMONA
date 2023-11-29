@@ -343,6 +343,9 @@ class ProjectController extends Controller
             $projectleaders = explode(',', $projectleaders);
         }*/
         foreach ($projectleaders as $userId) {
+
+            $appointedUser = User::findOrFail($userId);
+
             ProjectLeader::create([
                 'project_id' => $newProjectId,
                 'user_id' => $userId,
@@ -351,40 +354,48 @@ class ProjectController extends Controller
                 'project_id' => $newProjectId,
                 'user_id' => $userId,
             ]);
-            $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
-            $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
 
-            $notification = new Notification([
-                'user_id' => $userId,
-                'task_id' => $newProjectId,
-                'task_type' => "project",
-                'task_name' => $projecttitle,
-                'message' => $message,
-            ]);
-            $notification->save();
-            if ($isMailSendable === 1) {
-                try {
-                    $projectleader = User::findOrFail($userId);
-                    $email = $projectleader->email;
-                    $name = $projectleader->name . ' ' . $projectleader->last_name;
-                    $taskname = $projecttitle;
-                    $tasktype = "project";
-                    $startDate = date('F d, Y', strtotime($projectstartdate));
-                    $endDate = date('F d, Y', strtotime($projectenddate));
 
-                    $taskdeadline = $startDate . ' - ' . $endDate;
-                    $senderemail = Auth::user()->email;
 
-                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                } catch (\Exception $e) {
+            if ($appointedUser->notifyProjectAdded == 1) {
+                $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
+                $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
 
-                    $isMailSendable = 0;
+                $notification = new Notification([
+                    'user_id' => $userId,
+                    'task_id' => $newProjectId,
+                    'task_type' => "project",
+                    'task_name' => $projecttitle,
+                    'message' => $message,
+                ]);
+                $notification->save();
+            }
+            if ($appointedUser->emailProjectAdded == 1) {
+                if ($isMailSendable === 1) {
+                    try {
+
+                        $email = $appointedUser->email;
+                        $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                        $taskname = $projecttitle;
+                        $tasktype = "project";
+                        $startDate = date('F d, Y', strtotime($projectstartdate));
+                        $endDate = date('F d, Y', strtotime($projectenddate));
+
+                        $taskdeadline = $startDate . ' - ' . $endDate;
+                        $senderemail = Auth::user()->email;
+
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+
+                        $isMailSendable = 0;
+                    }
                 }
             }
         }
 
         if ($programleaders) {
             foreach ($programleaders as $userId) {
+                $appointedUser = User::findOrFail($userId);
                 ProgramLeader::create([
                     'project_id' => $newProjectId,
                     'user_id' => $userId,
@@ -393,32 +404,37 @@ class ProjectController extends Controller
                     'project_id' => $newProjectId,
                     'user_id' => $userId,
                 ]);
-            }
 
-            $notification = new Notification([
-                'user_id' => $userId,
-                'task_id' => $newProjectId,
-                'task_type' => "project",
-                'task_name' => $projecttitle,
-                'message' => $message,
-            ]);
-            $notification->save();
-            if ($isMailSendable === 1) {
-                try {
-                    $programleader = User::findorFail($userId);
-                    $email =  $programleader->email;
-                    $name =  $programleader->name . ' ' . $projectleader->last_name;
-                    $taskname = $projecttitle;
-                    $tasktype = "project";
-                    $startDate = date('F d, Y', strtotime($projectstartdate));
-                    $endDate = date('F d, Y', strtotime($projectenddate));
+                if ($appointedUser->notifyProjectAdded == 1) {
+                    $notification = new Notification([
+                        'user_id' => $userId,
+                        'task_id' => $newProjectId,
+                        'task_type' => "project",
+                        'task_name' => $projecttitle,
+                        'message' => $message,
+                    ]);
 
-                    $taskdeadline = $startDate . ' - ' . $endDate;
-                    $senderemail = Auth::user()->email;
-                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                } catch (\Exception $e) {
+                    $notification->save();
+                }
+                if ($appointedUser->emailProjectAdded == 1) {
+                    if ($isMailSendable === 1) {
+                        try {
 
-                    $isMailSendable = 0;
+                            $email =  $appointedUser->email;
+                            $name =  $appointedUser->name . ' ' . $appointedUser->last_name;
+                            $taskname = $projecttitle;
+                            $tasktype = "project";
+                            $startDate = date('F d, Y', strtotime($projectstartdate));
+                            $endDate = date('F d, Y', strtotime($projectenddate));
+
+                            $taskdeadline = $startDate . ' - ' . $endDate;
+                            $senderemail = Auth::user()->email;
+                            Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                        } catch (\Exception $e) {
+
+                            $isMailSendable = 0;
+                        }
+                    }
                 }
             }
         }

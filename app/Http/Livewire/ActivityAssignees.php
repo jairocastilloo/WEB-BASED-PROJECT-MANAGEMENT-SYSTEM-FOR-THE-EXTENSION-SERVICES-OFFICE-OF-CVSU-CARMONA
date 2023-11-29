@@ -81,30 +81,38 @@ class ActivityAssignees extends Component
 
         $message =  $sendername . ' assigned you to a new activity: "' . $this->activity->actname . '".';
         foreach ($selectedAssignees as $selectedAssignee) {
-            $notification = new Notification([
-                'user_id' => $selectedAssignee,
-                'task_id' => $this->activity->id,
-                'task_type' => "activity",
-                'task_name' => $this->activity->actname,
-                'message' => $message,
-            ]);
-            $notification->save();
-            if ($isMailSendable === 1) {
-                try {
-                    $assignee = User::findorFail($selectedAssignee);
-                    $email = $assignee->email;
-                    $name = $assignee->name . ' ' . $assignee->last_name;
-                    $taskname = $this->activity->actname;
-                    $tasktype = "activity";
-                    $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
-                    $endDate = date('F d, Y', strtotime($this->activity->actenddate));
 
-                    $taskdeadline = $startDate . ' - ' . $endDate;
-                    $senderemail = Auth::user()->email;
-                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                } catch (\Exception $e) {
-                    $isMailSendable = 0;
-                    $error = $e;
+            $assignee = User::findorFail($selectedAssignee);
+
+            if ($assignee->notifyActivityAdded == 1) {
+                $notification = new Notification([
+                    'user_id' => $selectedAssignee,
+                    'task_id' => $this->activity->id,
+                    'task_type' => "activity",
+                    'task_name' => $this->activity->actname,
+                    'message' => $message,
+                ]);
+
+                $notification->save();
+            }
+            if ($assignee->emailActivityAdded == 1) {
+                if ($isMailSendable === 1) {
+                    try {
+
+                        $email = $assignee->email;
+                        $name = $assignee->name . ' ' . $assignee->last_name;
+                        $taskname = $this->activity->actname;
+                        $tasktype = "activity";
+                        $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
+                        $endDate = date('F d, Y', strtotime($this->activity->actenddate));
+
+                        $taskdeadline = $startDate . ' - ' . $endDate;
+                        $senderemail = Auth::user()->email;
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+                        $isMailSendable = 0;
+                        $error = $e;
+                    }
                 }
             }
         }
