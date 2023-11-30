@@ -67,9 +67,11 @@ class NotifyMembers extends Command
             $membersInProjectStartedIds = ProjectUser::where('project_id', $projectStarted->id)
                 ->pluck('user_id')
                 ->toArray();
-            $membersInProjectStarted = $users->where('notifyInProjectStart', 1)
-                ->whereIn('id', $membersInProjectStartedIds)
-                ->get();
+            $membersInProjectStarted = $users
+                ->filter(function ($user) use ($membersInProjectStartedIds) {
+                    return $user->notifyInProjectStart == 1 && in_array($user->id, $membersInProjectStartedIds);
+                });
+
             foreach ($membersInProjectStarted as $memberInProjectStarted) {
                 $notification = new Notification([
                     'user_id' => $memberInProjectStarted->id,
@@ -85,9 +87,13 @@ class NotifyMembers extends Command
             $membersInProjectEndedIds = ProjectUser::where('project_id', $projectEnded->id)
                 ->pluck('user_id')
                 ->toArray();
-            $membersInProjectEnded = $users->where('notifyInProjectDue', 1)
-                ->whereIn('id', $membersInProjectEndedIds)
-                ->get();
+
+            $membersInProjectEnded = $users
+                ->filter(function ($user) use ($membersInProjectEndedIds) {
+                    return $user->notifyInProjectDue == 1 && in_array($user->id, $membersInProjectEndedIds);
+                });
+
+
             foreach ($membersInProjectEnded as $memberInProjectEnded) {
                 $notification = new Notification([
                     'user_id' => $memberInProjectEnded->id,
@@ -104,9 +110,12 @@ class NotifyMembers extends Command
             $membersInActivityStartedIds = ActivityUser::where('activity_id', $activityStarted->id)
                 ->pluck('user_id')
                 ->toArray();
-            $membersInActivityStarted = $users->where('notifyInActivityStart', 1)
-                ->whereIn('id', $membersInActivityStartedIds)
-                ->get();
+
+            $membersInActivityStarted = $users
+                ->filter(function ($user) use ($membersInActivityStartedIds) {
+                    return $user->notifyInActivityStart == 1 && in_array($user->id, $membersInActivityStartedIds);
+                });
+
             foreach ($membersInActivityStarted as $memberInActivityStarted) {
                 $notification = new Notification([
                     'user_id' => $memberInActivityStarted->id,
@@ -124,9 +133,11 @@ class NotifyMembers extends Command
                 ->pluck('user_id')
                 ->toArray();
 
-            $membersInActivityEnded = $users->where('notifyInActivityDue', 1)
-                ->whereIn('id', $membersInActivityEndedIds)
-                ->get();
+            $membersInActivityEnded = $users
+                ->filter(function ($user) use ($membersInActivityEndedIds) {
+                    return $user->notifyInActivityDue == 1 && in_array($user->id, $membersInActivityEndedIds);
+                });
+
             foreach ($membersInActivityEnded as $memberInActivityEnded) {
                 $notification = new Notification([
                     'user_id' => $memberInActivityEnded->id,
@@ -144,9 +155,10 @@ class NotifyMembers extends Command
                 ->pluck('user_id')
                 ->unique()
                 ->toArray();
-            $membersInScheduledTask = $users->where('notifyInSubtaskToDo', 1)
-                ->whereIn('id', $membersInScheduledTaskIds)
-                ->get();
+            $membersInScheduledTask = $users
+                ->filter(function ($user) use ($membersInScheduledTaskIds) {
+                    return $user->notifyInSubtaskToDo == 1 && in_array($user->id, $membersInScheduledTaskIds);
+                });
             foreach ($membersInScheduledTask as $memberInScheduledTask) {
                 $notification = new Notification([
                     'user_id' => $memberInScheduledTask->id,
@@ -167,17 +179,16 @@ class NotifyMembers extends Command
                     return $user->notifyInSubtaskDue == 1 && in_array($user->id, $membersInSubtaskDueIds);
                 });
 
-            if ($membersInSubtaskDue->isNotEmpty()) {
-                foreach ($membersInSubtaskDue as $memberInSubtaskDue) {
-                    $notification = new Notification([
-                        'user_id' => $memberInSubtaskDue->id,
-                        'task_id' => $subtaskDue->id,
-                        'task_type' => "subtask",
-                        'task_name' => $subtaskDue->subtask_name,
-                        'message' => "The subtask: " . $subtaskDue->subtask_name . " is due today.",
-                    ]);
-                    $notification->save();
-                }
+
+            foreach ($membersInSubtaskDue as $memberInSubtaskDue) {
+                $notification = new Notification([
+                    'user_id' => $memberInSubtaskDue->id,
+                    'task_id' => $subtaskDue->id,
+                    'task_type' => "subtask",
+                    'task_name' => $subtaskDue->subtask_name,
+                    'message' => "The subtask: " . $subtaskDue->subtask_name . " is due today.",
+                ]);
+                $notification->save();
             }
         }
     }

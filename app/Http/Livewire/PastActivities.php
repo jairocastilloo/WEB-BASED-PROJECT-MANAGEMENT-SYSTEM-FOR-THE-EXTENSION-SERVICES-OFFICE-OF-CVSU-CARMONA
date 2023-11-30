@@ -65,6 +65,7 @@ class PastActivities extends Component
                         $PastActivities = Activity::query()
                             ->where('actremark', 'Incomplete')
                             ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
                             ->orderBy('created_at', 'desc')
                             ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
 
@@ -78,6 +79,7 @@ class PastActivities extends Component
                         $PastActivities = Activity::query()
                             ->where('actremark', 'Incomplete')
                             ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
                             ->where('actname', 'like', "%$this->inputSearchPastActivities%")
                             ->orderBy('created_at', 'desc')
                             ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
@@ -98,6 +100,7 @@ class PastActivities extends Component
                         $PastActivities = $user->activities()
                             ->where('actremark', 'Incomplete')
                             ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
                             ->orderBy('created_at', 'desc')
                             ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
 
@@ -111,6 +114,7 @@ class PastActivities extends Component
                         $PastActivities = $user->activities()
                             ->where('actremark', 'Incomplete')
                             ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
                             ->where('actname', 'like', "%$this->inputSearchPastActivities%")
                             ->orderBy('created_at', 'desc')
                             ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
@@ -132,6 +136,7 @@ class PastActivities extends Component
                     $PastActivities = Activity::query()
                         ->where('actremark', 'Incomplete')
                         ->where('actenddate', '<', $this->currentdate)
+                        ->whereDate('actenddate', '!=', $this->currentdate)
                         ->where('project_id', $this->projectid)
                         ->whereNotIn('activities.id', [$this->activityid])
                         ->orderBy('created_at', 'desc')
@@ -147,6 +152,7 @@ class PastActivities extends Component
                     $PastActivities = Activity::query()
                         ->where('actremark', 'Incomplete')
                         ->where('actenddate', '<', $this->currentdate)
+                        ->whereDate('actenddate', '!=', $this->currentdate)
                         ->where('project_id', $this->projectid)
                         ->whereNotIn('activities.id', [$this->activityid])
                         ->where('actname', 'like', "%$this->inputSearchPastActivities%")
@@ -169,6 +175,7 @@ class PastActivities extends Component
                     $PastActivities = $user->activities()
                         ->where('actremark', 'Incomplete')
                         ->where('actenddate', '<', $this->currentdate)
+                        ->whereDate('actenddate', '!=', $this->currentdate)
                         ->where('project_id', $this->projectid)
                         ->whereNotIn('activities.id', [$this->activityid])
                         ->orderBy('created_at', 'desc')
@@ -184,6 +191,7 @@ class PastActivities extends Component
                     $PastActivities = $user->activities()
                         ->where('actremark', 'Incomplete')
                         ->where('actenddate', '<', $this->currentdate)
+                        ->whereDate('actenddate', '!=', $this->currentdate)
                         ->where('project_id', $this->projectid)
                         ->whereNotIn('activities.id', [$this->activityid])
                         ->where('actname', 'like', "%$this->inputSearchPastActivities%")
