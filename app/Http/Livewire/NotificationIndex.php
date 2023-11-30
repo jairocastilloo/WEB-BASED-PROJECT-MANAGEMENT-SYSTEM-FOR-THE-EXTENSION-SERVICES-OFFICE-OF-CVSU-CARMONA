@@ -6,6 +6,7 @@ use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Artisan;
 
 class NotificationIndex extends Component
 {
@@ -24,6 +25,16 @@ class NotificationIndex extends Component
             ->get();
         $this->notifications = $this->notifications->concat($nextNotifications);
     }
+    public function notify()
+    {
+        Artisan::call('notify:members');
+        $notifications = Notification::where('user_id', Auth::user()->id)
+            ->latest()
+            ->limit(10)
+            ->get();
+        $this->notifications = $notifications;
+    }
+
     public function showTask($notificationid, $taskid, $tasktype, $taskname)
     {
         $notification = Notification::findOrFail($notificationid);
@@ -32,8 +43,9 @@ class NotificationIndex extends Component
         if ($tasktype === 'project') {
             return redirect()->route('projects.display', ["projectid" => $taskid, "department" => Auth::user()->department]);
         } elseif ($tasktype === 'activity') {
-            return redirect()->route('activities.display', ["activityid" => $taskid, "department" => Auth::user()->department, "activityname" => $taskname,]);
+            return redirect()->route('activities.display', ["activityid" => $taskid]);
         } elseif ($tasktype === 'subtask') {
+            return redirect()->route('subtasks.display', ["subtaskid" => $taskid,  "subtaskname" => $taskname,]);
         }
     }
     public function handleshowTask($notificationid, $taskid, $tasktype, $taskname)

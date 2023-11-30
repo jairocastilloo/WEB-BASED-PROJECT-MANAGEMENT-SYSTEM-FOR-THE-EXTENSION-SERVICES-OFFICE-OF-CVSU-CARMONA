@@ -53,37 +53,72 @@ class NotStartedActivities extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->projectid == null) {
-            switch ($this->xNotStartedActivities) {
+            if ($user->role == "Admin") {
+                switch ($this->xNotStartedActivities) {
 
-                case 0:
-                    $NotStartedActivities = null;
-                    $lastpageNotStartedActivities = null;
-                    break;
-                case 1:
+                    case 0:
+                        $NotStartedActivities = null;
+                        $lastpageNotStartedActivities = null;
+                        break;
+                    case 1:
 
-                    $NotStartedActivities = $user->activities()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '>', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
+                        $NotStartedActivities = Activity::query()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '>', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
 
-                    $lastpageNotStartedActivities = $NotStartedActivities->lastPage();
+                        $lastpageNotStartedActivities = $NotStartedActivities->lastPage();
 
 
-                    break;
+                        break;
 
-                case 2:
+                    case 2:
 
-                    $NotStartedActivities = $user->activities()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '>', $this->currentdate)
-                        ->where('actname', 'like', "%$this->inputSearchNotStartedActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
+                        $NotStartedActivities = Activity::query()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '>', $this->currentdate)
+                            ->where('actname', 'like', "%$this->inputSearchNotStartedActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
 
-                    $lastpageNotStartedActivities = $NotStartedActivities->lastPage();
+                        $lastpageNotStartedActivities = $NotStartedActivities->lastPage();
 
-                    break;
+                        break;
+                }
+            } else {
+                switch ($this->xNotStartedActivities) {
+
+                    case 0:
+                        $NotStartedActivities = null;
+                        $lastpageNotStartedActivities = null;
+                        break;
+                    case 1:
+
+                        $NotStartedActivities = $user->activities()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '>', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
+
+                        $lastpageNotStartedActivities = $NotStartedActivities->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $NotStartedActivities = $user->activities()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '>', $this->currentdate)
+                            ->where('actname', 'like', "%$this->inputSearchNotStartedActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageNotStartedActivities, ['*'], 'page', $this->currentPageNotStartedActivities);
+
+                        $lastpageNotStartedActivities = $NotStartedActivities->lastPage();
+
+                        break;
+                }
             }
         } else if ($user->role == 'Admin') {
             switch ($this->xNotStartedActivities) {

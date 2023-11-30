@@ -10,10 +10,16 @@
             <div class="col-md-4">
                 <label for="lastName" class="form-label fw-bold">Last Name</label>
                 <input type="text" class="form-control" id="lastName" name="lastName" value="{{ $last_name }}" required>
+                <span class="invalid-feedback" role="alert">
+                    <strong></strong>
+                </span>
             </div>
             <div class="col-md-4">
                 <label for="firstName" class="form-label fw-bold">First Name</label>
                 <input type="text" class="form-control" id="firstName" name="firstName" value="{{ $name }}" required>
+                <span class="invalid-feedback" role="alert">
+                    <strong></strong>
+                </span>
             </div>
             <div class="col-md-4">
                 <label for="middleName" class="form-label fw-bold">Middle Name</label>
@@ -372,18 +378,42 @@
             const btnUpdateDisplay = document.getElementById('btnUpdateDisplay');
 
             btnUpdateProfile.addEventListener('click', function() {
-                var profileData = {
-                    lastName: lastName.value,
-                    firstName: firstName.value,
-                    middleName: middleName.value,
-                    bio: bio.value,
-                    socialProfile: socialProfile.value
-                };
-                btnUpdateProfile.disabled = true;
-                document.getElementById('updateProfileLoadingSpan').style.display = 'block';
-                Livewire.emit('updateProfile', profileData);
-
+                var hasError = handleProfileError();
+                if (!hasError) {
+                    var profileData = {
+                        lastName: lastName.value,
+                        firstName: firstName.value,
+                        middleName: middleName.value,
+                        bio: bio.value,
+                        socialProfile: socialProfile.value
+                    };
+                    btnUpdateProfile.disabled = true;
+                    document.getElementById('updateProfileLoadingSpan').style.display = 'block';
+                    Livewire.emit('updateProfile', profileData);
+                }
             });
+
+            function handleProfileError() {
+
+                // Display an error message or handle the error accordingly
+                if (document.getElementById('firstName').value === "") {
+                    document.getElementById('firstName').classList.add('is-invalid');
+                    document.getElementById('firstName').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'First Name is required.';
+
+                    return true;
+                }
+                if (document.getElementById('lastName').value === "") {
+                    document.getElementById('lastName').classList.add('is-invalid');
+                    document.getElementById('lastName').nextElementSibling.querySelector('.invalid-feedback strong').textContent = 'Last Name is required.';
+
+                    return true;
+                }
+
+
+                // Error found
+
+                return false; // No error
+            }
 
             Livewire.on('updateProfileSuccess', function() {
 

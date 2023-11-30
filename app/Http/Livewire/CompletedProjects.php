@@ -53,35 +53,68 @@ class CompletedProjects extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->department == null) {
-            switch ($this->xCompletedProjects) {
+            if ($user->role == "Admin") {
+                switch ($this->xCompletedProjects) {
 
-                case 0:
-                    $CompletedProjects = null;
-                    $lastpageCompletedProjects = null;
-                    break;
-                case 1:
+                    case 0:
+                        $CompletedProjects = null;
+                        $lastpageCompletedProjects = null;
+                        break;
+                    case 1:
 
-                    $CompletedProjects = $user->projects()
-                        ->where('projectstatus', 'Completed')
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+                        $CompletedProjects = Project::query()
+                            ->where('projectstatus', 'Completed')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
-                    $lastpageCompletedProjects = $CompletedProjects->lastPage();
+                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
+                        break;
 
 
-                    break;
 
-                case 2:
+                    case 2:
 
-                    $CompletedProjects = $user->projects()
-                        ->where('projectstatus', 'Completed')
-                        ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+                        $CompletedProjects = Project::query()
+                            ->where('projectstatus', 'Completed')
+                            ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
-                    $lastpageCompletedProjects = $CompletedProjects->lastPage();
+                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
 
-                    break;
+                        break;
+                }
+            } else {
+                switch ($this->xCompletedProjects) {
+
+                    case 0:
+                        $CompletedProjects = null;
+                        $lastpageCompletedProjects = null;
+                        break;
+                    case 1:
+
+                        $CompletedProjects = $user->projects()
+                            ->where('projectstatus', 'Completed')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+
+                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $CompletedProjects = $user->projects()
+                            ->where('projectstatus', 'Completed')
+                            ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+
+                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+                        break;
+                }
             }
         } else if ($user->role === "Admin") {
 

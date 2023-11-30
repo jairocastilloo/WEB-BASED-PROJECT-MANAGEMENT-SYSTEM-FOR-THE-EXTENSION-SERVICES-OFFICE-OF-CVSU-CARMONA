@@ -37,6 +37,7 @@
     <div class="py-2 text-center">
         <button wire:click="showMore({{ $notificationcount }})" type="button" class="btn btn-outline-secondary">Load more</button>
     </div>
+    <button wire:click="notify()" type="button" class="btn btn-outline-primary">Notify (for developer)</button>
     <script>
         document.addEventListener('livewire:load', function() {
             document.addEventListener('click', function(event) {

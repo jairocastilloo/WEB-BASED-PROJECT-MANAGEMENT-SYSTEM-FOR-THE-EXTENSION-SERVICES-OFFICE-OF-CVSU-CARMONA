@@ -56,40 +56,79 @@ class MissingTasks extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->activityid == null) {
-            switch ($this->xMissingTasks) {
+            if ($user->role == "Admin") {
+                switch ($this->xMissingTasks) {
 
-                case 0:
-                    $MissingTasks = null;
-                    $lastpageMissingTasks = null;
-                    break;
-                case 1:
+                    case 0:
+                        $MissingTasks = null;
+                        $lastpageMissingTasks = null;
+                        break;
+                    case 1:
 
-                    $MissingTasks = $user->subtasks()
-                        ->where('status', 'Incomplete')
-                        ->where('subduedate', '<', now())  // Add this line
-                        ->orderBy('subduedate', 'desc') // Sort in ascending order
-                        ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
-
-
-
-                    $lastpageMissingTasks = $MissingTasks->lastPage();
+                        $MissingTasks = Subtask::query()
+                            ->where('status', 'Incomplete')
+                            ->where('subduedate', '<', now())  // Add this line
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
 
 
-                    break;
 
-                case 2:
+                        $lastpageMissingTasks = $MissingTasks->lastPage();
 
-                    $MissingTasks = $user->subtasks()
-                        ->where('status', 'Incomplete')
-                        ->where('subduedate', '<', now())  // Add this line
-                        ->where('actname', 'like', "%$this->inputSearchMissingTasks%")
-                        ->orderBy('subduedate', 'desc') // Sort in ascending order
-                        ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
+                        break;
 
-                    $lastpageMissingTasks = $MissingTasks->lastPage();
+                    case 2:
+
+                        $MissingTasks = Subtask::query()
+                            ->where('status', 'Incomplete')
+                            ->where('subtask_name', 'like', "%$this->inputSearchMissingTasks%")
+                            ->where('subduedate', '<', now())  // Add this line
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
 
 
-                    break;
+
+                        $lastpageMissingTasks = $MissingTasks->lastPage();
+
+
+                        break;
+                }
+            } else {
+                switch ($this->xMissingTasks) {
+
+                    case 0:
+                        $MissingTasks = null;
+                        $lastpageMissingTasks = null;
+                        break;
+                    case 1:
+
+                        $MissingTasks = $user->subtasks()
+                            ->where('status', 'Incomplete')
+                            ->where('subduedate', '<', now())  // Add this line
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
+
+
+
+                        $lastpageMissingTasks = $MissingTasks->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $MissingTasks = $user->subtasks()
+                            ->where('status', 'Incomplete')
+                            ->where('subduedate', '<', now())  // Add this line
+                            ->where('subtask_name', 'like', "%$this->inputSearchMissingTasks%")
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
+
+                        $lastpageMissingTasks = $MissingTasks->lastPage();
+
+
+                        break;
+                }
             }
         } else if ($user->role == "Admin") {
             switch ($this->xMissingTasks) {
@@ -130,7 +169,7 @@ class MissingTasks extends Component
                         $MissingTasks = Subtask::query()
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
-                            ->where('actname', 'like', "%$this->inputSearchMissingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchMissingTasks%")
                             ->where('subduedate', '<', now())  // Add this line
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
@@ -143,7 +182,7 @@ class MissingTasks extends Component
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
                             ->whereNotIn('subtasks.id', [$this->subtaskid])
-                            ->where('actname', 'like', "%$this->inputSearchMissingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchMissingTasks%")
                             ->where('subduedate', '<', now())  // Add this line
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
@@ -194,7 +233,7 @@ class MissingTasks extends Component
                         $MissingTasks = $user->subtasks()
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
-                            ->where('actname', 'like', "%$this->inputSearchMissingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchMissingTasks%")
                             ->where('subduedate', '<', now())  // Add this line
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);
@@ -207,7 +246,7 @@ class MissingTasks extends Component
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
                             ->whereNotIn('subtasks.id', [$this->subtaskid])
-                            ->where('actname', 'like', "%$this->inputSearchMissingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchMissingTasks%")
                             ->where('subduedate', '<', now())  // Add this line
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageMissingTasks, ['*'], 'page', $this->currentPageMissingTasks);

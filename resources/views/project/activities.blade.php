@@ -64,7 +64,7 @@
                                 <b class="small">Activities</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
-                                <b class="small">Staff</b>
+                                <b class="small">Staff And Leaders</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>

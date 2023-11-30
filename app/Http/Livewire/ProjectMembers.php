@@ -28,7 +28,10 @@ class ProjectMembers extends Component
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
         if ($department != "All") {
-            $this->addmembers = User::where('department', $department)
+            $this->addmembers = User::where(function ($query) use ($department) {
+                $query->where('department', $department)
+                    ->orWhere('department', 'All');
+            })
                 ->whereNotIn('id', $memberIds)
                 ->where('approval', 1)
                 ->get();
@@ -50,9 +53,12 @@ class ProjectMembers extends Component
 
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
-
+        $department = $this->department;
         if ($this->department != "All") {
-            $this->addmembers = User::where('department', $this->department)
+            $this->addmembers = User::where(function ($query) use ($department) {
+                $query->where('department', $department)
+                    ->orWhere('department', 'All');
+            })
                 ->whereNotIn('id', $memberIds)
                 ->where('approval', 1)
                 ->get();
@@ -71,9 +77,12 @@ class ProjectMembers extends Component
 
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
-
+        $department = $this->department;
         if ($this->department != "All") {
-            $this->addmembers = User::where('department', $this->department)
+            $this->addmembers = User::where(function ($query) use ($department) {
+                $query->where('department', $department)
+                    ->orWhere('department', 'All');
+            })
                 ->whereNotIn('id', $memberIds)
                 ->where('approval', 1)
                 ->get();

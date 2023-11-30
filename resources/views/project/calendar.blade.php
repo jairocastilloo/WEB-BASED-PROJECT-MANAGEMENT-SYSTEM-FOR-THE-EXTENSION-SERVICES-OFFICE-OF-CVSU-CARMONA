@@ -66,7 +66,7 @@
                                 <b class="small">Activities</b>
                             </a>
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
-                                <b class="small">Staff</b>
+                                <b class="small">Staff and Leaders</b>
                             </a>
                             <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Calendar</b>

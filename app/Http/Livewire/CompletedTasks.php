@@ -54,36 +54,70 @@ class CompletedTasks extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->activityid == null) {
-            switch ($this->xCompletedTasks) {
+            if ($user->role == "Admin") {
+                switch ($this->xCompletedTasks) {
 
-                case 0:
-                    $CompletedTasks = null;
-                    $lastpageCompletedTasks = null;
-                    break;
-                case 1:
+                    case 0:
+                        $CompletedTasks = null;
+                        $lastpageCompletedTasks = null;
+                        break;
+                    case 1:
 
-                    $CompletedTasks = $user->subtasks()
-                        ->where('status', 'Completed')
-                        ->orderBy('subduedate', 'desc') // Sort in ascending order
-                        ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
+                        $CompletedTasks = Subtask::query()
+                            ->where('status', 'Completed')
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
 
-                    $lastpageCompletedTasks = $CompletedTasks->lastPage();
+                        $lastpageCompletedTasks = $CompletedTasks->lastPage();
 
-                    break;
+                        break;
 
-                case 2:
+                    case 2:
 
-                    $CompletedTasks = $user->subtasks()
-                        ->where('status', 'Completed')
-                        ->where('subduedate', '>=', now())  // Add this line
-                        ->where('actname', 'like', "%$this->inputSearchCompletedTasks%")
-                        ->orderBy('subduedate', 'desc') // Sort in ascending order
-                        ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
+                        $CompletedTasks = Subtask::query()
+                            ->where('status', 'Completed')
+                            ->where('subduedate', '>=', now())  // Add this line
+                            ->where('subtask_name', 'like', "%$this->inputSearchCompletedTasks%")
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
 
-                    $lastpageCompletedTasks = $CompletedTasks->lastPage();
+                        $lastpageCompletedTasks = $CompletedTasks->lastPage();
 
 
-                    break;
+                        break;
+                }
+            } else {
+                switch ($this->xCompletedTasks) {
+
+                    case 0:
+                        $CompletedTasks = null;
+                        $lastpageCompletedTasks = null;
+                        break;
+                    case 1:
+
+                        $CompletedTasks = $user->subtasks()
+                            ->where('status', 'Completed')
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
+
+                        $lastpageCompletedTasks = $CompletedTasks->lastPage();
+
+                        break;
+
+                    case 2:
+
+                        $CompletedTasks = $user->subtasks()
+                            ->where('status', 'Completed')
+                            ->where('subduedate', '>=', now())  // Add this line
+                            ->where('subtask_name', 'like', "%$this->inputSearchCompletedTasks%")
+                            ->orderBy('subduedate', 'desc') // Sort in ascending order
+                            ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
+
+                        $lastpageCompletedTasks = $CompletedTasks->lastPage();
+
+
+                        break;
+                }
             }
         } else if ($user->role == "Admin") {
             switch ($this->xCompletedTasks) {
@@ -119,7 +153,7 @@ class CompletedTasks extends Component
                             ->where('status', 'Completed')
                             ->where('subduedate', '>=', now())  // Add this line
                             ->where('activity_id', $this->activityid)
-                            ->where('actname', 'like', "%$this->inputSearchCompletedTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchCompletedTasks%")
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
 
@@ -130,7 +164,7 @@ class CompletedTasks extends Component
                             ->where('subduedate', '>=', now())  // Add this line
                             ->where('activity_id', $this->activityid)
                             ->whereNotIn('subtasks.id', $this->subtaskid)
-                            ->where('actname', 'like', "%$this->inputSearchCompletedTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchCompletedTasks%")
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
 
@@ -173,7 +207,7 @@ class CompletedTasks extends Component
                             ->where('status', 'Completed')
                             ->where('subduedate', '>=', now())  // Add this line
                             ->where('activity_id', $this->activityid)
-                            ->where('actname', 'like', "%$this->inputSearchCompletedTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchCompletedTasks%")
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
 
@@ -184,7 +218,7 @@ class CompletedTasks extends Component
                             ->where('subduedate', '>=', now())  // Add this line
                             ->where('activity_id', $this->activityid)
                             ->whereNotIn('subtasks.id', $this->subtaskid)
-                            ->where('actname', 'like', "%$this->inputSearchCompletedTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchCompletedTasks%")
                             ->orderBy('subduedate', 'desc') // Sort in ascending order
                             ->paginate($this->perPageCompletedTasks, ['*'], 'page', $this->currentPageCompletedTasks);
 

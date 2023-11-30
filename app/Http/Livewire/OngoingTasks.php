@@ -52,40 +52,78 @@ class OngoingTasks extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->activityid == null) {
-            switch ($this->xOngoingTasks) {
+            if ($user->role == "Admin") {
+                switch ($this->xOngoingTasks) {
 
-                case 0:
-                    $OngoingTasks = null;
-                    $lastpageOngoingTasks = null;
-                    break;
-                case 1:
+                    case 0:
+                        $OngoingTasks = null;
+                        $lastpageOngoingTasks = null;
+                        break;
+                    case 1:
 
-                    $OngoingTasks = $user->subtasks()
-                        ->where('status', 'Incomplete')
-                        ->where('subduedate', '>=', now())  // Add this line
-                        ->orderBy('subduedate', 'asc') // Sort in ascending order
-                        ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
-
-
-
-                    $lastpageOngoingTasks = $OngoingTasks->lastPage();
+                        $OngoingTasks = Subtask::query()
+                            ->where('status', 'Incomplete')
+                            ->where('subduedate', '>=', now())  // Add this line
+                            ->orderBy('subduedate', 'asc') // Sort in ascending order
+                            ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
 
 
-                    break;
 
-                case 2:
+                        $lastpageOngoingTasks = $OngoingTasks->lastPage();
 
-                    $OngoingTasks = $user->subtasks()
-                        ->where('status', 'Incomplete')
-                        ->where('subduedate', '>=', now())  // Add this line
-                        ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
-                        ->orderBy('subduedate', 'asc') // Sort in ascending order
-                        ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
+                        break;
 
-                    $lastpageOngoingTasks = $OngoingTasks->lastPage();
+                    case 2:
+
+                        $OngoingTasks = Subtask::query()
+                            ->where('status', 'Incomplete')
+                            ->where('subtask_name', 'like', "%$this->inputSearchOngoingTasks%")
+                            ->where('subduedate', '>=', now())  // Add this line
+                            ->orderBy('subduedate', 'asc') // Sort in ascending order
+                            ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
 
 
-                    break;
+
+                        $lastpageOngoingTasks = $OngoingTasks->lastPage();
+
+                        break;
+                }
+            } else {
+                switch ($this->xOngoingTasks) {
+
+                    case 0:
+                        $OngoingTasks = null;
+                        $lastpageOngoingTasks = null;
+                        break;
+                    case 1:
+
+                        $OngoingTasks = $user->subtasks()
+                            ->where('status', 'Incomplete')
+                            ->where('subduedate', '>=', now())  // Add this line
+                            ->orderBy('subduedate', 'asc') // Sort in ascending order
+                            ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
+
+
+
+                        $lastpageOngoingTasks = $OngoingTasks->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $OngoingTasks = $user->subtasks()
+                            ->where('status', 'Incomplete')
+                            ->where('subduedate', '>=', now())  // Add this line
+                            ->where('subtask_name', 'like', "%$this->inputSearchOngoingTasks%")
+                            ->orderBy('subduedate', 'asc') // Sort in ascending order
+                            ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
+
+                        $lastpageOngoingTasks = $OngoingTasks->lastPage();
+
+
+                        break;
+                }
             }
         } else if ($user->role == "Admin") {
             switch ($this->xOngoingTasks) {
@@ -126,7 +164,7 @@ class OngoingTasks extends Component
                         $OngoingTasks = Subtask::query()
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
-                            ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchOngoingTasks%")
                             ->where('subduedate', '>=', now())  // Add this line
                             ->orderBy('subduedate', 'asc') // Sort in ascending order
                             ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
@@ -139,7 +177,7 @@ class OngoingTasks extends Component
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
                             ->whereNotIn('subtasks.id', [$this->subtaskid])
-                            ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchOngoingTasks%")
                             ->where('subduedate', '>=', now())  // Add this line
                             ->orderBy('subduedate', 'asc') // Sort in ascending order
                             ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
@@ -190,7 +228,7 @@ class OngoingTasks extends Component
                         $OngoingTasks = $user->subtasks()
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
-                            ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchOngoingTasks%")
                             ->where('subduedate', '>=', now())  // Add this line
                             ->orderBy('subduedate', 'asc') // Sort in ascending order
                             ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);
@@ -203,7 +241,7 @@ class OngoingTasks extends Component
                             ->where('status', 'Incomplete')
                             ->where('activity_id', $this->activityid)
                             ->whereNotIn('subtasks.id', [$this->subtaskid])
-                            ->where('actname', 'like', "%$this->inputSearchOngoingTasks%")
+                            ->where('subtask_name', 'like', "%$this->inputSearchOngoingTasks%")
                             ->where('subduedate', '>=', now())  // Add this line
                             ->orderBy('subduedate', 'asc') // Sort in ascending order
                             ->paginate($this->perPageOngoingTasks, ['*'], 'page', $this->currentPageOngoingTasks);

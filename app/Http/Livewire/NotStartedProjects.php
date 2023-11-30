@@ -57,37 +57,70 @@ class NotStartedProjects extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->department == null) {
+            if ($user->role == "Admin") {
+                switch ($this->y) {
 
-            switch ($this->y) {
+                    case 0:
+                        $notstartedprojects = null;
+                        $notstartedlastpage = null;
+                        break;
+                    case 1:
+                        if ($this->projectid == null) {
+                            $notstartedprojects = Project::query()
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                case 0:
-                    $notstartedprojects = null;
-                    $notstartedlastpage = null;
-                    break;
-                case 1:
+                            $notstartedlastpage = $notstartedprojects->lastPage();
 
-                    $notstartedprojects = $user->projects()
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '>', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+                            break;
+                        }
+                    case 2:
 
-                    $notstartedlastpage = $notstartedprojects->lastPage();
+                        $notstartedprojects = Project::query()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '>', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                    break;
+                        $notstartedlastpage = $notstartedprojects->lastPage();
 
-                case 2:
+                        break;
+                }
+            } else {
+                switch ($this->y) {
 
-                    $notstartedprojects = $user->projects()
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '>', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+                    case 0:
+                        $notstartedprojects = null;
+                        $notstartedlastpage = null;
+                        break;
+                    case 1:
 
-                    $notstartedlastpage = $notstartedprojects->lastPage();
+                        $notstartedprojects = $user->projects()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '>', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                    break;
+                        $notstartedlastpage = $notstartedprojects->lastPage();
+
+                        break;
+
+                    case 2:
+
+                        $notstartedprojects = $user->projects()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '>', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                        $notstartedlastpage = $notstartedprojects->lastPage();
+
+                        break;
+                }
             }
         } else if ($user->role === "Admin") {
 

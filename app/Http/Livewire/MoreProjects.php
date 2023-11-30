@@ -56,39 +56,76 @@ class MoreProjects extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->department == null) {
-            switch ($this->x) {
-        
-                case 0:
-                    $moreprojects = null;
-                    $lastpage = null;
-                    break;
-                case 1:
+            if ($user->role == "Admin") {
+                switch ($this->x) {
 
-                    $moreprojects = $user->projects()
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '<=', $this->currentdate)
-                        ->where('projectenddate', '>=', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+                    case 0:
+                        $moreprojects = null;
+                        $lastpage = null;
+                        break;
+                    case 1:
 
-                    $lastpage = $moreprojects->lastPage();
+                        $moreprojects = Project::query()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                        $lastpage = $moreprojects->lastPage();
+                        break;
 
 
-                    break;
 
-                case 2:
+                    case 2:
 
-                    $moreprojects = $user->projects()
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectstartdate', '<=', $this->currentdate)
-                        ->where('projectenddate', '>=', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->inputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+                        $moreprojects = Project::query()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
 
-                    $lastpage = $moreprojects->lastPage();
+                        $lastpage = $moreprojects->lastPage();
 
-                    break;
+                        break;
+                }
+            } else {
+                switch ($this->x) {
+
+                    case 0:
+                        $moreprojects = null;
+                        $lastpage = null;
+                        break;
+                    case 1:
+
+                        $moreprojects = $user->projects()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                        $lastpage = $moreprojects->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $moreprojects = $user->projects()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '<=', $this->currentdate)
+                            ->where('projectenddate', '>=', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->inputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
+
+                        $lastpage = $moreprojects->lastPage();
+
+                        break;
+                }
             }
         } else if ($user->role === "Admin") {
 

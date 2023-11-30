@@ -56,40 +56,78 @@ class PastProjects extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->department == null) {
+            if ($user->role == "Admin") {
+                switch ($this->z) {
 
-            // for home
-            switch ($this->z) {
+                    case 0:
+                        $pastmoreprojects = null;
+                        $pastlastpage = null;
+                        break;
+                        // for showing initial
+                    case 1:
 
-                case 0:
-                    $pastmoreprojects = null;
-                    $pastlastpage = null;
-                    break;
-                    // for showing initial
-                case 1:
+                        // for create
+                        $pastmoreprojects = Project::query()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    $pastmoreprojects = $user->projects()
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->currentdate)
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+                        $pastlastpage = $pastmoreprojects->lastPage();
 
-                    $pastlastpage = $pastmoreprojects->lastPage();
+                        break;
 
-                    break;
-                    // for searching
-                case 2:
+                        // for searching
+                    case 2:
 
 
-                    $pastmoreprojects = $user->projects()
-                        ->where('projectstatus', 'Incomplete')
-                        ->where('projectenddate', '<', $this->currentdate)
-                        ->where('projecttitle', 'like', "%$this->pastinputSearch%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+                        // for create
+                        $pastmoreprojects = Project::query()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
 
-                    $pastlastpage = $pastmoreprojects->lastPage();
+                        $pastlastpage = $pastmoreprojects->lastPage();
 
-                    break;
+                        break;
+                }
+            } else {
+                // for home
+                switch ($this->z) {
+
+                    case 0:
+                        $pastmoreprojects = null;
+                        $pastlastpage = null;
+                        break;
+                        // for showing initial
+                    case 1:
+
+                        $pastmoreprojects = $user->projects()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+
+                        $pastlastpage = $pastmoreprojects->lastPage();
+
+                        break;
+                        // for searching
+                    case 2:
+
+
+                        $pastmoreprojects = $user->projects()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectenddate', '<', $this->currentdate)
+                            ->where('projecttitle', 'like', "%$this->pastinputSearch%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->pastperPage, ['*'], 'page', $this->pastcurrentPage);
+
+                        $pastlastpage = $pastmoreprojects->lastPage();
+
+                        break;
+                }
             }
         } else if ($user->role === "Admin") {
             // for select and create as admin

@@ -52,35 +52,68 @@ class CompletedActivities extends Component
     {
         $user = User::findOrFail(Auth::user()->id);
         if ($this->projectid == null) {
-            switch ($this->xCompletedActivities) {
+            if ($user->role == "Admin") {
+                switch ($this->xCompletedActivities) {
 
-                case 0:
-                    $CompletedActivities = null;
-                    $lastpageCompletedActivities = null;
-                    break;
-                case 1:
+                    case 0:
+                        $CompletedActivities = null;
+                        $lastpageCompletedActivities = null;
+                        break;
+                    case 1:
 
-                    $CompletedActivities = $user->activities()
-                        ->where('actremark', 'Completed')
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+                        $CompletedActivities = Activity::query()
+                            ->where('actremark', 'Completed')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
 
-                    $lastpageCompletedActivities = $CompletedActivities->lastPage();
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
 
 
-                    break;
+                        break;
 
-                case 2:
+                    case 2:
 
-                    $CompletedActivities = $user->activities()
-                        ->where('actremark', 'Completed')
-                        ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+                        $CompletedActivities = Activity::query()
+                            ->where('actremark', 'Completed')
+                            ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
 
-                    $lastpageCompletedActivities = $CompletedActivities->lastPage();
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
 
-                    break;
+                        break;
+                }
+            } else {
+                switch ($this->xCompletedActivities) {
+
+                    case 0:
+                        $CompletedActivities = null;
+                        $lastpageCompletedActivities = null;
+                        break;
+                    case 1:
+
+                        $CompletedActivities = $user->activities()
+                            ->where('actremark', 'Completed')
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $CompletedActivities = $user->activities()
+                            ->where('actremark', 'Completed')
+                            ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
+
+                        break;
+                }
             }
         } else if ($user->role == 'Admin') {
             switch ($this->xCompletedActivities) {

@@ -3,9 +3,13 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-top-0">
+    @php
+    $role = Auth::user()->role;
+    @endphp
+    @if($role != "Admin")
     <div class="container p-0">
 
-        <div class="mainnav mb-3 border-1 border-bottom shadow-sm px-2 small">
+        <div class="mainnav border-1 border-bottom shadow-sm px-2 small">
             <nav class="navbar navbar-expand-sm p-0">
                 <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -35,14 +39,23 @@
 
         </div>
     </div>
-    <div class="container">
+    @endif
+    <div class="container mt-3">
 
         <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
         <div class="row">
             <div class="col-lg-6">
 
-                <label class="ms-3 small form-label text-secondary fw-bold">My Tasks</label>
+                <label class="ms-3 small form-label text-secondary fw-bold">
+                    @if($role == "Admin")
+                    All Tasks
+                    @else
+                    My Tasks
+                    @endif
+                </label>
+                @if($role != "Admin")
                 @livewire('scheduled-subtasks', ['xScheduledTasks' => 1])
+                @endif
                 @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
                 @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 0])
                 @livewire('completed-tasks', ['activityid' => null, 'subtaskid' => null, 'xCompletedTasks' => 0])
@@ -50,7 +63,13 @@
             </div>
 
             <div class="col-lg-3">
-                <label class="ms-3 small form-label text-secondary fw-bold">My Activities</label>
+                <label class="ms-3 small form-label text-secondary fw-bold">
+                    @if($role == "Admin")
+                    All Activities
+                    @else
+                    My Activities
+                    @endif
+                </label>
                 @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
                 @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 0])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
@@ -59,7 +78,13 @@
 
             </div>
             <div class="col-lg-3">
-                <label class="ms-3 small form-label text-secondary fw-bold">My Projects</label>
+                <label class="ms-3 small form-label text-secondary fw-bold">
+                    @if($role == "Admin")
+                    All Projects
+                    @else
+                    My Projects
+                    @endif
+                </label>
                 @livewire('more-projects', ['department' => null, 'projectid' => null, 'x' => 1])
                 @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 0])
                 @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
