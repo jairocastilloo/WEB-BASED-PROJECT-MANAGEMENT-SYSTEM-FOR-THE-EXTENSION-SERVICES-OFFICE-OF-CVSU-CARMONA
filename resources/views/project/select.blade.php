@@ -3,6 +3,9 @@
 @section('content')
 
 <div class="maincontainer border border-start border-end border-bottom border-top-0">
+    @php
+    $userRole = Auth::user()->role;
+    @endphp
     <div class="mainnav border-bottom mb-3 shadow-sm">
         <div class="step-wrapper">
             <div class="step highlight">
@@ -42,7 +45,7 @@
                             <h6><strong>Department Projects for:</strong></h6>
                         </label>
                     </div>
-                    @if (Auth::user()->role === 'Admin')
+                    @if ($userRole == 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                             <b class="small">Create Project</b>
@@ -249,7 +252,7 @@
 </div>
 
 <!-- New Project -->
-@if (Auth::user()->role === 'Admin')
+@if ($userRole == 'Admin')
 <div class="modal fade" id="newproject" tabindex="-1" aria-labelledby="newprojectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">

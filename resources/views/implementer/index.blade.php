@@ -6,7 +6,7 @@
     @php
     $role = Auth::user()->role;
     @endphp
-    @if($role != "Admin")
+
     <div class="container p-0">
 
         <div class="mainnav border-1 border-bottom shadow-sm px-2 small">
@@ -39,7 +39,7 @@
 
         </div>
     </div>
-    @endif
+
     <div class="container mt-3">
 
         <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
@@ -48,14 +48,14 @@
 
                 <label class="ms-3 small form-label text-secondary fw-bold">
                     @if($role == "Admin")
-                    All Tasks
+                    Tasks
                     @else
                     My Tasks
                     @endif
                 </label>
-                @if($role != "Admin")
+
                 @livewire('scheduled-subtasks', ['xScheduledTasks' => 1])
-                @endif
+
                 @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
                 @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 0])
                 @livewire('completed-tasks', ['activityid' => null, 'subtaskid' => null, 'xCompletedTasks' => 0])
@@ -65,7 +65,7 @@
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">
                     @if($role == "Admin")
-                    All Activities
+                    Activities
                     @else
                     My Activities
                     @endif
@@ -80,7 +80,7 @@
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">
                     @if($role == "Admin")
-                    All Projects
+                    Projects
                     @else
                     My Projects
                     @endif

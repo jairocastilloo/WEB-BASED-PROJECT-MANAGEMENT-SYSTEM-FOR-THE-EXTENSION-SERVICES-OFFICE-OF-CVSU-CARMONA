@@ -148,8 +148,8 @@
                                                     <th class="p-1 py-2 text-center outputprogress">OUTPUT PROGRESS</th>
                                                     <th class="p-1 py-2 text-center taskscount">TASKS COUNT</th>
                                                     <th class="p-1 py-2 text-center taskscount">ACTIVE TASKS</th>
-                                                    <th class="p-1 py-2 text-center taskscount">MISSING TASKS</th>
-                                                    <th class="p-1 py-2 text-center taskscount">DONE TASKS</th>
+                                                    <th class="p-1 py-2 text-center taskscount">OVERDUE TASKS</th>
+                                                    <th class="p-1 py-2 text-center taskscount">COMPLETED TASKS</th>
                                                 </tr>
 
                                             </thead>

@@ -44,6 +44,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'emailSubtaskAdded',
         'emailActivityAdded',
         'emailProjectAdded',
+        'showOnlyMyActiveTasks',
+        'showOnlyMyOverdueTasks',
+        'showOnlyMyCompletedTasks',
+        'showOnlyMyOngoingActivities',
+        'showOnlyMyUpcomingActivities',
+        'showOnlyMyOverdueActivities',
+        'showOnlyMyCompletedActivities',
+        'showOnlyMyOngoingProjects',
+        'showOnlyMyUpcomingProjects',
+        'showOnlyMyOverdueProjects',
+        'showOnlyMyCompletedProjects',
 
     ];
 

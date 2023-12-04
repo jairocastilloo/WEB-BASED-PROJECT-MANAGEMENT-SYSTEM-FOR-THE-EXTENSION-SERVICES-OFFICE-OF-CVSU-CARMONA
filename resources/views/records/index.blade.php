@@ -186,7 +186,7 @@
                                     {{ $proj->projecttitle }}
                                 </td>
                                 <td class="extension p-1">
-                                    {{ $activity->actname }}
+                                    {{ 'Activity: ' . $activity->actname }}
                                 </td>
                                 <td class="num p-1">
                                     {{ $actcontristartdate . ' - ' . $actcontrienddate }}
@@ -221,6 +221,7 @@
                             @if ($subtask->id === $subcontribution->subtask_id)
                             @php
                             $subdate = $subcontribution->date;
+                            $subenddate = $subcontribution->enddate;
                             $subcontrihours = $subcontribution->hours_rendered;
                             unset($subtaskcontributions[$key]); // Remove the processed contribution
                             @endphp
@@ -235,10 +236,10 @@
 
                                 </td>
                                 <td class="extension p-1">
-                                    {{ $subtask->subtask_name }}
+                                    {{ 'Subtask: ' . $subtask->subtask_name }}
                                 </td>
                                 <td class="num p-1">
-                                    {{ $subdate }}
+                                    {{ $subdate . ' - ' . $subenddate }}
 
                                 </td>
                                 <td class="majority p-1">
@@ -290,12 +291,6 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-
-        $('#navbarDropdown').click(function(event) {
-            // Add your function here
-            event.preventDefault();
-            $('#account .dropdown-menu').toggleClass('shows');
-        });
 
         $('#sem-select').change(function() {
             var selectedOption = $(this).find(':selected');
