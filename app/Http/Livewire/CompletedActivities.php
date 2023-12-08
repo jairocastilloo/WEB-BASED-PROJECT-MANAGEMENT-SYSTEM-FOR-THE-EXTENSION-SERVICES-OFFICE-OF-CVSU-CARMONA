@@ -16,6 +16,7 @@ class CompletedActivities extends Component
     public $perPageCompletedActivities = 5;
     public $currentdate;
     public $activityid;
+    public $showOnlyMyCompletedActivities;
     protected $listeners = ['findCompletedActivities' => 'handleFindCompletedActivities'];
     public function mount($projectid, $activityid, $xCompletedActivities)
 
@@ -48,11 +49,30 @@ class CompletedActivities extends Component
     {
         $this->findCompletedActivities($inputSearchCompletedActivities, $xCompletedActivities);
     }
+    public function toggleSelectionCompletedActivities($isChecked)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($isChecked) {
+
+            $user->update([
+                'showOnlyMyCompletedActivities' => 1,
+            ]);
+        } else {
+            $user->update([
+                'showOnlyMyCompletedActivities' => 0,
+            ]);
+        }
+
+        $this->showOnlyMyCompletedActivities = $user->showOnlyMyCompletedActivities;
+    }
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($this->projectid == null) {
-            if ($user->role == "Admin") {
+        $this->showOnlyMyCompletedActivities = $user->showOnlyMyCompletedActivities;
+        if ($user->role == "Admin" && $this->showOnlyMyCompletedActivities == 0) {
+            if ($this->projectid == null) {
+
                 switch ($this->xCompletedActivities) {
 
                     case 0:
@@ -92,6 +112,44 @@ class CompletedActivities extends Component
                         break;
                     case 1:
 
+                        $CompletedActivities = Activity::query()
+                            ->where('actremark', 'Completed')
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $CompletedActivities = Activity::query()
+                            ->where('actremark', 'Completed')
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
+
+                        break;
+                }
+            }
+        } else {
+            if ($this->projectid == null) {
+
+                switch ($this->xCompletedActivities) {
+
+                    case 0:
+                        $CompletedActivities = null;
+                        $lastpageCompletedActivities = null;
+                        break;
+                    case 1:
+
                         $CompletedActivities = $user->activities()
                             ->where('actremark', 'Completed')
                             ->orderBy('created_at', 'desc')
@@ -114,76 +172,41 @@ class CompletedActivities extends Component
 
                         break;
                 }
-            }
-        } else if ($user->role == 'Admin') {
-            switch ($this->xCompletedActivities) {
+            } else {
+                switch ($this->xCompletedActivities) {
 
-                case 0:
-                    $CompletedActivities = null;
-                    $lastpageCompletedActivities = null;
-                    break;
-                case 1:
+                    case 0:
+                        $CompletedActivities = null;
+                        $lastpageCompletedActivities = null;
+                        break;
+                    case 1:
 
-                    $CompletedActivities = Activity::query()
-                        ->where('actremark', 'Completed')
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+                        $CompletedActivities = $user->activities()
+                            ->where('actremark', 'Completed')
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
 
-                    $lastpageCompletedActivities = $CompletedActivities->lastPage();
-
-
-                    break;
-
-                case 2:
-
-                    $CompletedActivities = Activity::query()
-                        ->where('actremark', 'Completed')
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
-
-                    $lastpageCompletedActivities = $CompletedActivities->lastPage();
-
-                    break;
-            }
-        } else {
-            switch ($this->xCompletedActivities) {
-
-                case 0:
-                    $CompletedActivities = null;
-                    $lastpageCompletedActivities = null;
-                    break;
-                case 1:
-
-                    $CompletedActivities = $user->activities()
-                        ->where('actremark', 'Completed')
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
-
-                    $lastpageCompletedActivities = $CompletedActivities->lastPage();
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
 
 
-                    break;
+                        break;
 
-                case 2:
+                    case 2:
 
-                    $CompletedActivities = $user->activities()
-                        ->where('actremark', 'Completed')
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
+                        $CompletedActivities = $user->activities()
+                            ->where('actremark', 'Completed')
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->where('actname', 'like', "%$this->inputSearchCompletedActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageCompletedActivities, ['*'], 'page', $this->currentPageCompletedActivities);
 
-                    $lastpageCompletedActivities = $CompletedActivities->lastPage();
+                        $lastpageCompletedActivities = $CompletedActivities->lastPage();
 
-                    break;
+                        break;
+                }
             }
         }
         return view('livewire.completed-activities', [

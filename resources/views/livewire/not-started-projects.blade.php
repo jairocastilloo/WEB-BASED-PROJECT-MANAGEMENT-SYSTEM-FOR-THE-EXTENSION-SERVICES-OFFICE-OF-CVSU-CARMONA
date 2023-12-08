@@ -15,6 +15,18 @@
         </div>
 
         <div class="m-2 mb-0 text-center" @if ($y==0)style="display: none;" @endif>
+            @if(Auth::user()->role == "Admin")
+            <div class="mb-1 d-flex justify-content-start small">
+
+                <div class="form-check">
+                    <input class="form-check-input small" type="checkbox" wire:click="toggleSelectionUpcomingProjects($event.target.checked)" @if($showOnlyMyUpcomingProjects==1) checked @endif>
+                    <label class="form-check-label d-block small" for="showOnlyMyUpcomingProjects">
+                        Show only the ones I'm involved in.
+                    </label>
+                </div>
+
+            </div>
+            @endif
             <input type="text" class="form-control border border-2 mb-1" id="notstartedinputSearch" placeholder="Enter title...">
             <button type="button" class="btn btn-sm btn-outline-success px-3" id="notstartedbtnSearch">Search Project</button>
             <span class="invalid-feedback small fw-bold text-end" id="notstartederrorAccount">

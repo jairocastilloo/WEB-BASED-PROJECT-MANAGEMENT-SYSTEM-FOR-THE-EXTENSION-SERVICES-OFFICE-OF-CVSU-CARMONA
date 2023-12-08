@@ -20,6 +20,7 @@ class NotStartedProjects extends Component
     public $notstartedcurrentPage = 1; // The current page number
     public $notstartedperPage = 5;
     public $currentdate;
+    public $showOnlyMyUpcomingProjects;
     protected $listeners = ['notstartedfindProject' => 'notstartedhandleFindProject'];
 
     public function mount($department, $projectid, $y)
@@ -53,11 +54,30 @@ class NotStartedProjects extends Component
     {
         $this->notstartedfindProject($notstartedinputSearch, $y);
     }
+    public function toggleSelectionUpcomingProjects($isChecked)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($isChecked) {
+
+            $user->update([
+                'showOnlyMyUpcomingProjects' => 1,
+            ]);
+        } else {
+            $user->update([
+                'showOnlyMyUpcomingProjectss' => 0,
+            ]);
+        }
+
+        $this->showOnlyMyUpcomingProjects = $user->showOnlyMyUpcomingProjects;
+    }
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($this->department == null) {
-            if ($user->role == "Admin") {
+        $this->showOnlyMyUpcomingProjects = $user->showOnlyMyUpcomingProjects;
+        if ($user->role == "Admin" && $this->showOnlyMyUpcomingProjects == 0) {
+            if ($this->department == null) {
+
                 switch ($this->y) {
 
                     case 0:
@@ -65,17 +85,17 @@ class NotStartedProjects extends Component
                         $notstartedlastpage = null;
                         break;
                     case 1:
-                        if ($this->projectid == null) {
-                            $notstartedprojects = Project::query()
-                                ->where('projectstatus', 'Incomplete')
-                                ->where('projectstartdate', '>', $this->currentdate)
-                                ->orderBy('created_at', 'desc')
-                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                            $notstartedlastpage = $notstartedprojects->lastPage();
+                        $notstartedprojects = Project::query()
+                            ->where('projectstatus', 'Incomplete')
+                            ->where('projectstartdate', '>', $this->currentdate)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                            break;
-                        }
+                        $notstartedlastpage = $notstartedprojects->lastPage();
+
+                        break;
+
                     case 2:
 
                         $notstartedprojects = Project::query()
@@ -97,6 +117,69 @@ class NotStartedProjects extends Component
                         $notstartedlastpage = null;
                         break;
                     case 1:
+                        if ($this->projectid == null) {
+                            $notstartedprojects = Project::query()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                            $notstartedlastpage = $notstartedprojects->lastPage();
+
+                            break;
+                        } else if ($this->projectid != null) {
+                            $notstartedprojects = Project::query()
+                                ->where('department', $this->department)
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                            $notstartedlastpage = $notstartedprojects->lastPage();
+
+                            break;
+                        }
+                    case 2:
+                        if ($this->projectid == null) {
+                            $notstartedprojects = Project::query()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                            $notstartedlastpage = $notstartedprojects->lastPage();
+
+                            break;
+                        } else if ($this->projectid != null) {
+                            $notstartedprojects = Project::query()
+                                ->where('department', $this->department)
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+
+                            $notstartedlastpage = $notstartedprojects->lastPage();
+
+                            break;
+                        }
+                }
+            }
+        } else {
+            if ($this->department == null) {
+
+                switch ($this->y) {
+
+                    case 0:
+                        $notstartedprojects = null;
+                        $notstartedlastpage = null;
+                        break;
+                    case 1:
 
                         $notstartedprojects = $user->projects()
                             ->where('projectstatus', 'Incomplete')
@@ -121,127 +204,66 @@ class NotStartedProjects extends Component
 
                         break;
                 }
-            }
-        } else if ($user->role === "Admin") {
+            } else {
+                switch ($this->y) {
 
-            switch ($this->y) {
-
-                case 0:
-                    $notstartedprojects = null;
-                    $notstartedlastpage = null;
-                    break;
-                case 1:
-                    if ($this->projectid == null) {
-                        $notstartedprojects = Project::query()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
-
-                        $notstartedlastpage = $notstartedprojects->lastPage();
-
+                    case 0:
+                        $notstartedprojects = null;
+                        $notstartedlastpage = null;
                         break;
-                    } else if ($this->projectid != null) {
-                        $notstartedprojects = Project::query()
-                            ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+                    case 1:
+                        if ($this->projectid == null) {
+                            $notstartedprojects = $user->projects()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                        $notstartedlastpage = $notstartedprojects->lastPage();
+                            $notstartedlastpage = $notstartedprojects->lastPage();
 
-                        break;
-                    }
-                case 2:
-                    if ($this->projectid == null) {
-                        $notstartedprojects = Project::query()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+                            break;
+                        } else if ($this->projectid != null) {
+                            $notstartedprojects = $user->projects()
+                                ->where('department', $this->department)
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                        $notstartedlastpage = $notstartedprojects->lastPage();
+                            $notstartedlastpage = $notstartedprojects->lastPage();
 
-                        break;
-                    } else if ($this->projectid != null) {
-                        $notstartedprojects = Project::query()
-                            ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+                            break;
+                        }
+                    case 2:
+                        if ($this->projectid == null) {
+                            $notstartedprojects = $user->projects()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                        $notstartedlastpage = $notstartedprojects->lastPage();
+                            $notstartedlastpage = $notstartedprojects->lastPage();
 
-                        break;
-                    }
-            }
-        } else {
-            switch ($this->y) {
+                            break;
+                        } else if ($this->projectid != null) {
+                            $notstartedprojects = $user->projects()
+                                ->where('department', $this->department)
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->where('projectstatus', 'Incomplete')
+                                ->where('projectstartdate', '>', $this->currentdate)
+                                ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
 
-                case 0:
-                    $notstartedprojects = null;
-                    $notstartedlastpage = null;
-                    break;
-                case 1:
-                    if ($this->projectid == null) {
-                        $notstartedprojects = $user->projects()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
+                            $notstartedlastpage = $notstartedprojects->lastPage();
 
-                        $notstartedlastpage = $notstartedprojects->lastPage();
-
-                        break;
-                    } else if ($this->projectid != null) {
-                        $notstartedprojects = $user->projects()
-                            ->where('department', $this->department)
-                            ->whereNotIn('projects.id', [$this->projectid])
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
-
-                        $notstartedlastpage = $notstartedprojects->lastPage();
-
-                        break;
-                    }
-                case 2:
-                    if ($this->projectid == null) {
-                        $notstartedprojects = $user->projects()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
-
-                        $notstartedlastpage = $notstartedprojects->lastPage();
-
-                        break;
-                    } else if ($this->projectid != null) {
-                        $notstartedprojects = $user->projects()
-                            ->where('department', $this->department)
-                            ->whereNotIn('projects.id', [$this->projectid])
-                            ->where('projectstatus', 'Incomplete')
-                            ->where('projectstartdate', '>', $this->currentdate)
-                            ->where('projecttitle', 'like', "%$this->notstartedinputSearch%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->notstartedperPage, ['*'], 'page', $this->notstartedcurrentPage);
-
-                        $notstartedlastpage = $notstartedprojects->lastPage();
-
-                        break;
-                    }
+                            break;
+                        }
+                }
             }
         }
 

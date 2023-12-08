@@ -16,6 +16,7 @@ class CompletedProjects extends Component
     public $currentPageCompletedProjects = 1; // The current page number
     public $perPageCompletedProjects = 5;
     public $currentdate;
+    public $showOnlyMyCompletedProjects;
     protected $listeners = ['findCompletedProjects' => 'handleFindCompletedProjects'];
 
     public function mount($department, $projectid, $xCompletedProjects)
@@ -49,11 +50,31 @@ class CompletedProjects extends Component
     {
         $this->findCompletedProjects($inputSearchCompletedProjects, $xCompletedProjects);
     }
+    public function toggleSelectionCompletedProjects($isChecked)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($isChecked) {
+
+            $user->update([
+                'showOnlyMyCompletedProjects' => 1,
+            ]);
+        } else {
+            $user->update([
+                'showOnlyMyCompletedProjects' => 0,
+            ]);
+        }
+
+        $this->showOnlyMyCompletedProjects = $user->showOnlyMyCompletedProjecs;
+    }
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($this->department == null) {
-            if ($user->role == "Admin") {
+        $this->showOnlyMyCompletedProjects = $user->showOnlyMyCompletedProjects;
+
+        if ($user->role == "Admin" && $this->showOnlyMyCompletedProjects == 0) {
+            if ($this->department == null) {
+
                 switch ($this->xCompletedProjects) {
 
                     case 0:
@@ -68,9 +89,9 @@ class CompletedProjects extends Component
                             ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
                         $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+
                         break;
-
-
 
                     case 2:
 
@@ -92,6 +113,66 @@ class CompletedProjects extends Component
                         $lastpageCompletedProjects = null;
                         break;
                     case 1:
+                        if ($this->projectid == null) {
+                            $CompletedProjects = Project::query()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+
+                            break;
+                        } else if ($this->projectid != null) {
+                            $CompletedProjects = Project::query()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+                            break;
+                        }
+                    case 2:
+                        if ($this->projectid == null) {
+                            $CompletedProjects = Project::query()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+                            break;
+                        } else if ($this->projectid != null) {
+                            $CompletedProjects = Project::query()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
+
+                            break;
+                        }
+                }
+            }
+        } else {
+            if ($this->department == null) {
+
+                switch ($this->xCompletedProjects) {
+
+                    case 0:
+                        $CompletedProjects = null;
+                        $lastpageCompletedProjects = null;
+                        break;
+                    case 1:
 
                         $CompletedProjects = $user->projects()
                             ->where('projectstatus', 'Completed')
@@ -115,120 +196,63 @@ class CompletedProjects extends Component
 
                         break;
                 }
-            }
-        } else if ($user->role === "Admin") {
+            } else {
+                switch ($this->xCompletedProjects) {
 
-            switch ($this->xCompletedProjects) {
-
-                case 0:
-                    $CompletedProjects = null;
-                    $lastpageCompletedProjects = null;
-                    break;
-                case 1:
-                    if ($this->projectid == null) {
-                        $CompletedProjects = Project::query()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Completed')
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
-
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
+                    case 0:
+                        $CompletedProjects = null;
+                        $lastpageCompletedProjects = null;
                         break;
-                    } else if ($this->projectid != null) {
-                        $CompletedProjects = Project::query()
-                            ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
-                            ->where('projectstatus', 'Completed')
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+                    case 1:
+                        if ($this->projectid == null) {
+                            $CompletedProjects = $user->projects()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
-                        break;
-                    }
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
 
 
-                case 2:
-                    if ($this->projectid == null) {
-                        $CompletedProjects = Project::query()
-                            ->where('department', $this->department)
-                            ->whereNotIn('id', [$this->projectid])
-                            ->where('projectstatus', 'Completed')
-                            ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+                            break;
+                        } else if ($this->projectid != null) {
+                            $CompletedProjects = $user->projects()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
 
-                        break;
-                    } else if ($this->projectid != null) {
-                        $CompletedProjects = Project::query()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Completed')
-                            ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+                            break;
+                        }
+                    case 2:
+                        if ($this->projectid == null) {
+                            $CompletedProjects = $user->projects()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
 
-                        break;
-                    }
-            }
-        } else {
-            switch ($this->xCompletedProjects) {
+                            break;
+                        } else if ($this->projectid != null) {
+                            $CompletedProjects = $user->projects()
+                                ->where('department', $this->department)
+                                ->where('projectstatus', 'Completed')
+                                ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
+                                ->whereNotIn('projects.id', [$this->projectid])
+                                ->orderBy('created_at', 'desc')
+                                ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
 
-                case 0:
-                    $CompletedProjects = null;
-                    $lastpageCompletedProjects = null;
-                    break;
-                case 1:
-                    if ($this->projectid == null) {
-                        $CompletedProjects = $user->projects()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Completed')
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
+                            $lastpageCompletedProjects = $CompletedProjects->lastPage();
 
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
-
-
-                        break;
-                    } else if ($this->projectid != null) {
-                        $CompletedProjects = $user->projects()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Completed')
-                            ->whereNotIn('projects.id', [$this->projectid])
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
-
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
-
-                        break;
-                    }
-                case 2:
-                    if ($this->projectid == null) {
-                        $CompletedProjects = $user->projects()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Completed')
-                            ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
-
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
-
-                        break;
-                    } else if ($this->projectid != null) {
-                        $CompletedProjects = $user->projects()
-                            ->where('department', $this->department)
-                            ->where('projectstatus', 'Completed')
-                            ->where('projecttitle', 'like', "%$this->inputSearchCompletedProjects%")
-                            ->whereNotIn('projects.id', [$this->projectid])
-                            ->orderBy('created_at', 'desc')
-                            ->paginate($this->perPageCompletedProjects, ['*'], 'page', $this->currentPageCompletedProjects);
-
-                        $lastpageCompletedProjects = $CompletedProjects->lastPage();
-
-                        break;
-                    }
+                            break;
+                        }
+                }
             }
         }
         return view('livewire.completed-projects', [

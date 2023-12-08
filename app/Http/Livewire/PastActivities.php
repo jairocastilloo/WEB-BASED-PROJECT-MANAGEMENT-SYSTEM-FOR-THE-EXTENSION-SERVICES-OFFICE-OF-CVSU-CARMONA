@@ -16,6 +16,7 @@ class PastActivities extends Component
     public $perPagePastActivities = 5;
     public $currentdate;
     public $activityid;
+    public $showOnlyMyOverdueActivities;
     protected $listeners = ['findPastActivities' => 'handleFindPastActivities'];
 
     public function mount($projectid, $activityid, $xPastActivities)
@@ -49,11 +50,31 @@ class PastActivities extends Component
     {
         $this->findPastActivities($inputSearchPastActivities, $xPastActivities);
     }
+
+    public function toggleSelectionOverdueActivities($isChecked)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($isChecked) {
+
+            $user->update([
+                'showOnlyMyOverdueActivities' => 1,
+            ]);
+        } else {
+            $user->update([
+                'showOnlyMyOverdueActivities' => 0,
+            ]);
+        }
+
+        $this->showOnlyMyOverdueActivities = $user->showOnlyMyOverdueActivities;
+    }
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($this->projectid == null) {
-            if ($user->role == "Admin") {
+        $this->showOnlyMyOverdueActivities = $user->showOnlyMyOverdueActivities;
+        if ($user->role == "Admin" && $this->showOnlyMyOverdueActivities == 0) {
+            if ($this->projectid == null) {
+
                 switch ($this->xPastActivities) {
 
                     case 0:
@@ -97,6 +118,48 @@ class PastActivities extends Component
                         break;
                     case 1:
 
+                        $PastActivities = Activity::query()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
+
+                        $lastpagePastActivities = $PastActivities->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $PastActivities = Activity::query()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->where('actname', 'like', "%$this->inputSearchPastActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
+
+                        $lastpagePastActivities = $PastActivities->lastPage();
+
+                        break;
+                }
+            }
+        } else {
+            if ($this->projectid == null) {
+
+                switch ($this->xPastActivities) {
+
+                    case 0:
+                        $PastActivities = null;
+                        $lastpagePastActivities = null;
+                        break;
+                    case 1:
+
                         $PastActivities = $user->activities()
                             ->where('actremark', 'Incomplete')
                             ->where('actenddate', '<', $this->currentdate)
@@ -123,84 +186,45 @@ class PastActivities extends Component
 
                         break;
                 }
-            }
-        } else if ($user->role == "Admin") {
-            switch ($this->xPastActivities) {
+            } else {
+                switch ($this->xPastActivities) {
 
-                case 0:
-                    $PastActivities = null;
-                    $lastpagePastActivities = null;
-                    break;
-                case 1:
+                    case 0:
+                        $PastActivities = null;
+                        $lastpagePastActivities = null;
+                        break;
+                    case 1:
 
-                    $PastActivities = Activity::query()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actenddate', '<', $this->currentdate)
-                        ->whereDate('actenddate', '!=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
+                        $PastActivities = $user->activities()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
 
-                    $lastpagePastActivities = $PastActivities->lastPage();
-
-
-                    break;
-
-                case 2:
-
-                    $PastActivities = Activity::query()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actenddate', '<', $this->currentdate)
-                        ->whereDate('actenddate', '!=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->where('actname', 'like', "%$this->inputSearchPastActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
-
-                    $lastpagePastActivities = $PastActivities->lastPage();
-
-                    break;
-            }
-        } else {
-            switch ($this->xPastActivities) {
-
-                case 0:
-                    $PastActivities = null;
-                    $lastpagePastActivities = null;
-                    break;
-                case 1:
-
-                    $PastActivities = $user->activities()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actenddate', '<', $this->currentdate)
-                        ->whereDate('actenddate', '!=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
-
-                    $lastpagePastActivities = $PastActivities->lastPage();
+                        $lastpagePastActivities = $PastActivities->lastPage();
 
 
-                    break;
+                        break;
 
-                case 2:
+                    case 2:
 
-                    $PastActivities = $user->activities()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actenddate', '<', $this->currentdate)
-                        ->whereDate('actenddate', '!=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->where('actname', 'like', "%$this->inputSearchPastActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
+                        $PastActivities = $user->activities()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actenddate', '<', $this->currentdate)
+                            ->whereDate('actenddate', '!=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->where('actname', 'like', "%$this->inputSearchPastActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPagePastActivities, ['*'], 'page', $this->currentPagePastActivities);
 
-                    $lastpagePastActivities = $PastActivities->lastPage();
+                        $lastpagePastActivities = $PastActivities->lastPage();
 
-                    break;
+                        break;
+                }
             }
         }
         return view('livewire.past-activities', [

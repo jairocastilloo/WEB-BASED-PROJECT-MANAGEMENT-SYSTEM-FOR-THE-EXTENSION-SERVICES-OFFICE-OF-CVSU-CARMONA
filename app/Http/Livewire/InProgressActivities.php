@@ -16,6 +16,7 @@ class InProgressActivities extends Component
     public $perPageInProgressActivities = 5;
     public $currentdate;
     public $activityid;
+    public $showOnlyMyOngoingActivities;
     protected $listeners = ['findInProgressActivities' => 'handleFindInProgressActivities'];
 
     public function mount($projectid, $activityid, $xInProgressActivities)
@@ -49,11 +50,30 @@ class InProgressActivities extends Component
     {
         $this->findInProgressActivities($inputSearchInProgressActivities, $xInProgressActivities);
     }
+    public function toggleSelectionOngoingActivities($isChecked)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($isChecked) {
+
+            $user->update([
+                'showOnlyMyOngoingActivities' => 1,
+            ]);
+        } else {
+            $user->update([
+                'showOnlyMyOngoingActivities' => 0,
+            ]);
+        }
+
+        $this->showOnlyMyOngoingActivities = $user->showOnlyMyOngoingActivities;
+    }
     public function render()
     {
         $user = User::findOrFail(Auth::user()->id);
-        if ($this->projectid == null) {
-            if ($user->role == "Admin") {
+        $this->showOnlyMyOngoingActivities = $user->showOnlyMyOngoingActivities;
+        if ($user->role == "Admin" && $this->showOnlyMyOngoingActivities == 0) {
+            if ($this->projectid == null) {
+
                 switch ($this->xInProgressActivities) {
 
                     case 0:
@@ -97,6 +117,48 @@ class InProgressActivities extends Component
                         break;
                     case 1:
 
+                        $InProgressActivities = Activity::query()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '<=', $this->currentdate)
+                            ->where('actenddate', '>=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
+
+                        $lastpageInProgressActivities = $InProgressActivities->lastPage();
+
+
+                        break;
+
+                    case 2:
+
+                        $InProgressActivities = Activity::query()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '<=', $this->currentdate)
+                            ->where('actenddate', '>=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->where('actname', 'like', "%$this->inputSearchInProgressActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
+
+                        $lastpageInProgressActivities = $InProgressActivities->lastPage();
+
+                        break;
+                }
+            }
+        } else {
+            if ($this->projectid == null) {
+
+                switch ($this->xInProgressActivities) {
+
+                    case 0:
+                        $InProgressActivities = null;
+                        $lastpageInProgressActivities = null;
+                        break;
+                    case 1:
+
                         $InProgressActivities = $user->activities()
                             ->where('actremark', 'Incomplete')
                             ->where('actstartdate', '<=', $this->currentdate)
@@ -123,84 +185,45 @@ class InProgressActivities extends Component
 
                         break;
                 }
-            }
-        } else if ($user->role == 'Admin') {
-            switch ($this->xInProgressActivities) {
+            } else {
+                switch ($this->xInProgressActivities) {
 
-                case 0:
-                    $InProgressActivities = null;
-                    $lastpageInProgressActivities = null;
-                    break;
-                case 1:
+                    case 0:
+                        $InProgressActivities = null;
+                        $lastpageInProgressActivities = null;
+                        break;
+                    case 1:
 
-                    $InProgressActivities = Activity::query()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '<=', $this->currentdate)
-                        ->where('actenddate', '>=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
+                        $InProgressActivities = $user->activities()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '<=', $this->currentdate)
+                            ->where('actenddate', '>=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
 
-                    $lastpageInProgressActivities = $InProgressActivities->lastPage();
-
-
-                    break;
-
-                case 2:
-
-                    $InProgressActivities = Activity::query()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '<=', $this->currentdate)
-                        ->where('actenddate', '>=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->where('actname', 'like', "%$this->inputSearchInProgressActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
-
-                    $lastpageInProgressActivities = $InProgressActivities->lastPage();
-
-                    break;
-            }
-        } else {
-            switch ($this->xInProgressActivities) {
-
-                case 0:
-                    $InProgressActivities = null;
-                    $lastpageInProgressActivities = null;
-                    break;
-                case 1:
-
-                    $InProgressActivities = $user->activities()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '<=', $this->currentdate)
-                        ->where('actenddate', '>=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
-
-                    $lastpageInProgressActivities = $InProgressActivities->lastPage();
+                        $lastpageInProgressActivities = $InProgressActivities->lastPage();
 
 
-                    break;
+                        break;
 
-                case 2:
+                    case 2:
 
-                    $InProgressActivities = $user->activities()
-                        ->where('actremark', 'Incomplete')
-                        ->where('actstartdate', '<=', $this->currentdate)
-                        ->where('actenddate', '>=', $this->currentdate)
-                        ->where('project_id', $this->projectid)
-                        ->whereNotIn('activities.id', [$this->activityid])
-                        ->where('actname', 'like', "%$this->inputSearchInProgressActivities%")
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
+                        $InProgressActivities = $user->activities()
+                            ->where('actremark', 'Incomplete')
+                            ->where('actstartdate', '<=', $this->currentdate)
+                            ->where('actenddate', '>=', $this->currentdate)
+                            ->where('project_id', $this->projectid)
+                            ->whereNotIn('activities.id', [$this->activityid])
+                            ->where('actname', 'like', "%$this->inputSearchInProgressActivities%")
+                            ->orderBy('created_at', 'desc')
+                            ->paginate($this->perPageInProgressActivities, ['*'], 'page', $this->currentPageInProgressActivities);
 
-                    $lastpageInProgressActivities = $InProgressActivities->lastPage();
+                        $lastpageInProgressActivities = $InProgressActivities->lastPage();
 
-                    break;
+                        break;
+                }
             }
         }
         return view('livewire.in-progress-activities', [
