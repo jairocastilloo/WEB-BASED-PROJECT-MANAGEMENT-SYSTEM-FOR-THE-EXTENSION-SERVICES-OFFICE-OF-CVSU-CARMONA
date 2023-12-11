@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\activityContribution;
 use App\Models\Activity;
+use App\Models\Output;
+use App\Models\OutputUser;
 use Livewire\Component;
 
 class ActivityHoursSubmission extends Component
@@ -29,10 +31,20 @@ class ActivityHoursSubmission extends Component
         $activityid = $actcontribution->activity_id;
         $hoursrendered = $actcontribution->hours_rendered;
         Activity::where('id', $activityid)->increment('totalhours_rendered', $hoursrendered);
+        $outputUsers = OutputUser::where('actcontribution_id', $this->actcontributionid)
+        ->get();
+        foreach ($outputUsers as $outputUser){
+            Output::where('id', $outputUser->output_id)->increment('totaloutput_submitted', $outputUser->output_submitted);
+        }
+
+
+
+
+        /*
         activityContribution::where('activity_id', $activityid)
             ->where('approval', null)
             ->delete();
-
+*/
         return redirect()->route('hours.display', ['activityid' => $this->activityid, 'activityname' => $this->activityname]);
     }
     public function rejecthandle($notes)

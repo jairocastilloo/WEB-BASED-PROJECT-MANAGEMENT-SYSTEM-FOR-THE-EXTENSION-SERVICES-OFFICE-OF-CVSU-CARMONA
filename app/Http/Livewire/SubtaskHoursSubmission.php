@@ -26,9 +26,11 @@ class SubtaskHoursSubmission extends Component
         $subtaskid = $contribution->subtask_id;
         $hoursrendered = $contribution->hours_rendered;
         Subtask::where('id', $subtaskid)->increment('hours_rendered', $hoursrendered);
+        /*
         Contribution::where('subtask_id', $subtaskid)
             ->where('approval', null)
             ->delete();
+            */
         return redirect()->route("subtasks.display", ["subtaskid" => $this->subtaskid, "subtaskname" => $this->subtaskname]);
     }
     public function rejecthandle($notes)

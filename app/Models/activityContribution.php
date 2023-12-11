@@ -19,7 +19,10 @@ class activityContribution extends Model
         'hours_rendered',
         'approval',
         'submitter_id',
-        'notes'
+        'notes',
+        'relatedPrograms',
+            'clientNumbers',
+           'agency',
     ];
 
     public function users()

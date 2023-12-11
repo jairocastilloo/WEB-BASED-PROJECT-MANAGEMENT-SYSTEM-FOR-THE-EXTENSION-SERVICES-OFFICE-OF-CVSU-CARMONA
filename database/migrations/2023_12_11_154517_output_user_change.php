@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ContributionChange extends Migration
+class OutputUserChange extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class ContributionChange extends Migration
     public function up()
     {
         //
-        Schema::table("contributions", function (Blueprint $table) {
-            $table->string('relatedPrograms');
-            $table->integer('clientNumbers');
-            $table->string('agency');
+        Schema::table("output_user", function (Blueprint $table) {
+            $table->foreignId('actcontribution_id');
+            $table->foreignId('user_id')->nullable()->change();
+
         });
     }
 

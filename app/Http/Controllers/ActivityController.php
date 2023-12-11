@@ -303,6 +303,11 @@ class ActivityController extends Controller
             'end-date' => 'required|date',
             'contributornumber' => 'required|integer',
             'hours-rendered' => 'required|integer',
+            'outputQuantity.*' => 'required|integer',
+            'outputId.*' => 'required|integer',
+             'related-program' => 'required|max:255',
+            'client-numbers'=> 'required|integer',
+            'agency' => 'required|max:255',
         ]);
 
         $activitycontributions = new activityContribution();
@@ -310,10 +315,19 @@ class ActivityController extends Controller
         $activitycontributions->startdate = $validatedData['start-date'];
         $activitycontributions->enddate = $validatedData['end-date'];
         $activitycontributions->hours_rendered = $validatedData['hours-rendered'];
+        $activitycontributions->relatedPrograms = $validatedData['related-program'];
+        $activitycontributions->clientNumbers = $validatedData['client-numbers'];
+        $activitycontributions->agency = $validatedData['agency'];
         $activitycontributions->submitter_id = Auth::user()->id;
         $activitycontributions->save();
         $newActContri = $activitycontributions->id;
 
+        for ($i = 0; $i < count($validatedData['outputId']); $i++) {
+$outputUser = new OutputUser();
+$outputUser->output_id = $validatedData['outputId'][$i];
+$outputUser->output_submitted = $validatedData['outputQuantity'][$i];
+$outputUser->actcontribution_id = $newActContri;
+}
         for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
 
 
@@ -324,7 +338,7 @@ class ActivityController extends Controller
         }
 
         $request->validate([
-            'activitydocs' => 'required|mimes:docx|max:2048',
+            'activitydocs' => 'required|mimes:docx|max:10240',
         ]);
 
 
@@ -358,6 +372,9 @@ class ActivityController extends Controller
             'enddate' => $activityenddate,
             'submitter_id' => $request->input('submitter-id'),
             'hours_rendered' => $request->input('hours-rendered'),
+            'relatedPrograms' => $request->input('related-program'),
+            'clientNumbers'=> $request->input('client-numbers'),
+            'agency'=> $request->input('agency'),
         ]);
         $activitycontribution->save();
         $activityimplementers = $request->input('activityimplementers');
@@ -368,8 +385,22 @@ class ActivityController extends Controller
                 'user_id' => $activityimplementer,
             ]);
         }
+
+
+        $outputIds = $request->input('outputId.*');
+$outputQuantities = $request->input('outputQuantity.*');
+
+foreach ($outputIds as $i => $outputId) {
+    $outputUser = new OutputUser();
+    $outputUser->output_id = $outputId;
+    $outputUser->output_submitted = $outputQuantities[$i];
+    $outputUser->actcontribution_id = $activitycontribution->id;
+    $outputUser->save(); // Assuming you want to save the new OutputUser
+}
+
+
         $request->validate([
-            'accomplishment_file' => 'required|mimes:docx|max:2048',
+            'accomplishment_file' => 'required|mimes:docx|max:10240',
         ]);
         $file = $request->file('accomplishment_file');
         $originalName = $file->getClientOriginalName();
@@ -380,7 +411,7 @@ class ActivityController extends Controller
         $path = $request->file('accomplishment_file')->storeAs('uploads/' . $currentDateTime, $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
-        /*  
+        /*
         $url = URL::route('projsubmission.display', ['projsubmissionid' => $projectterminal->id, 'projsubmissionname' => "Unevaluated-Submission"]);
         return redirect($url);*/
         return response()->json([

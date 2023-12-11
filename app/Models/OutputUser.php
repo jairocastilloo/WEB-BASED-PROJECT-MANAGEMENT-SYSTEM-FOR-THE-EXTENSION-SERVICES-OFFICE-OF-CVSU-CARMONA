@@ -16,6 +16,7 @@ class OutputUser extends Model
         'user_id',
         'output_submitted',
         'approval',
+        'actcontribution_id'
     ];
 
     public function output()
