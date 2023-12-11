@@ -16,10 +16,13 @@
             @endif
             <div class="form-floating m-3 mb-2 mt-3">
 
-                <select id="sem-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;" aria-label="Select an acadamic year and semster">
+                <select id="sem-select" class="form-select fw-bold"
+                    style="border: 1px solid darkgreen; color:darkgreen; font-size: 18px;"
+                    aria-label="Select an acadamic year and semster">
                     @if ($ayfirstsem)
                     @foreach ($allAY as $ay)
-                    <option data-sem="1STSEM" value="{{ $ay['id'] }}" {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
+                    <option data-sem="1STSEM" value="{{ $ay['id'] }}"
+                        {{ $ay->id == $ayfirstsem->id ? 'selected' : '' }}>
                         {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     <option data-sem="2NDSEM" value="{{ $ay['id'] }}">
@@ -31,7 +34,8 @@
                     <option data-sem="1STSEM" value="{{ $ay['id'] }}">
                         {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
-                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}" {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
+                    <option data-sem="2NDSEM" value="{{ $ay['id'] }}"
+                        {{ $ay->id == $aysecondsem->id ? 'selected' : '' }}>
                         {{ 'SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
                     </option>
                     @endforeach
@@ -63,7 +67,8 @@
                     <div class="card card-size">
                         <div class="row">
                             <div class="col-md-4 card-image">
-                                <img src="{{ asset('images/default-user-image.png')}}" alt="Image" class="img-fluid p-1" width="100">
+                                <img src="{{ asset('images/default-user-image.png')}}" alt="Image" class="img-fluid p-1"
+                                    width="100">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -83,7 +88,8 @@
                     <div class="card card-size">
                         <div class="row">
                             <div class="col-md-4 card-image">
-                                <img src="{{ asset('images/total-hours-image.png')}}" alt="Image" class="img-fluid p-1" width="100">
+                                <img src="{{ asset('images/total-hours-image.png')}}" alt="Image" class="img-fluid p-1"
+                                    width="100">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -103,7 +109,8 @@
                     <div class="card card-size">
                         <div class="row">
                             <div class="col-md-4 card-image">
-                                <img src="{{ asset('images/total-activity-image.png')}}" alt="Image" class="img-fluid p-1" width="100">
+                                <img src="{{ asset('images/total-activity-image.png')}}" alt="Image"
+                                    class="img-fluid p-1" width="100">
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body d-flex flex-column align-items-center justify-content-center">
@@ -135,13 +142,16 @@
                                 <th class="p-1 text-center num">
                                     DATE
                                 </th>
+                                <th class="p-1 text-center role">
+                                    ROLE
+                                </th>
                                 <th class="p-1 text-center majority">
                                     RELATED PROGRAM/S (if any)
                                 </th>
                                 <th class="p-1 text-center num">
                                     TOTAL NUMBERS OF HOURS
                                 </th>
-                                <th class="p-1 text-center majority">
+                                <th class="p-1 text-center num">
                                     NO. OF CLIENTELE/BENEFICIARIES
                                 </th>
                                 <th class="p-1 text-center majority">
@@ -153,9 +163,7 @@
                             </tr>
 
                         </thead>
-                        @php
-                        use App\Models\Project;
-                        @endphp
+
                         <tbody>
                             @foreach ($allactivities as $activity)
                             @php
@@ -180,17 +188,25 @@
                             <tr>
                                 <td class="majority p-1">
                                     @php
-                                    $proj = Project::where('id', $activity['project_id'])->first(['projecttitle', 'department']);
-                                    $projectdept = Project::where('id', $activity['project_id'])->first(['department']);
+                                    $proj = $allprojects->firstWhere('id', $activity->project_id);
                                     @endphp
+
                                     {{ $proj->projecttitle }}
                                 </td>
                                 <td class="extension p-1">
                                     {{ 'Activity: ' . $activity->actname }}
                                 </td>
                                 <td class="num p-1">
-                                    {{ $actcontristartdate . ' - ' . $actcontrienddate }}
+                                    @If ($actcontristartdate && $actcontrienddate)
+                                    {{ date('M d, Y', strtotime($actcontristartdate)) }}
+                                    to
 
+                                    {{ date('M d, Y', strtotime($actcontrienddate)) }}
+                                    @endif
+
+                                </td>
+                                <td class="p-1 role">
+                                    {{ $proj->role }}
                                 </td>
                                 <td class="majority p-1">
                                     N/A
@@ -198,7 +214,7 @@
                                 <td class="num p-1">
                                     {{ $actcontrihours }}
                                 </td>
-                                <td class="majority p-1">
+                                <td class="num p-1">
                                     -
                                 </td>
                                 <td class="majority p-1">
@@ -216,20 +232,18 @@
 
                             @if ($activity->id === $subtask->activity_id)
 
-
-                            @foreach ($subtaskcontributions as $key => $subcontribution)
-                            @if ($subtask->id === $subcontribution->subtask_id)
                             @php
-                            $subdate = $subcontribution->date;
-                            $subenddate = $subcontribution->enddate;
-                            $subcontrihours = $subcontribution->hours_rendered;
-                            unset($subtaskcontributions[$key]); // Remove the processed contribution
+                            $filteredContribution = $subtaskcontributions->filter(function ($contri) use ($subtask) {
+                            return $contri->subtask_id == $subtask->id;
+                            });
                             @endphp
 
-                            @break
-                            @endif
-                            @endforeach
 
+
+                            @php
+                            $filteredContriCount = 0;
+                            @endphp
+                            @foreach ($filteredContribution as $filteredContri)
 
                             <tr>
                                 <td class="majority p-1">
@@ -237,18 +251,28 @@
                                 </td>
                                 <td class="extension p-1">
                                     {{ 'Subtask: ' . $subtask->subtask_name }}
+                                    @if ($filteredContriCount != 0)
+                                    {{ " (" . $filteredContriCount . ")" }}
+                                    @endif
                                 </td>
                                 <td class="num p-1">
-                                    {{ $subdate . ' - ' . $subenddate }}
+                                    {{ date('M d, Y', strtotime($filteredContri->date)) }}
+                                    to
 
+                                    {{ date('M d, Y', strtotime($filteredContri->enddate)) }}
+
+
+                                </td>
+                                <td class="p-1 role">
+                                    {{ $proj->role }}
                                 </td>
                                 <td class="majority p-1">
                                     N/A
                                 </td>
                                 <td class="num p-1">
-                                    {{ $subcontrihours }}
+                                    {{ $filteredContri->hours_rendered }}
                                 </td>
-                                <td class="majority p-1">
+                                <td class="num p-1">
                                     -
                                 </td>
                                 <td class="majority p-1">
@@ -257,10 +281,17 @@
                                 <td class="majority p-1">
                                     {{ $proj->department }}
                                 </td>
+
+
+
+                                @php
+                                $filteredContriCount++;
+                                @endphp
                             </tr>
 
-
+                            @endforeach
                             @php
+
 
                             unset($subtasks[$key]); // Remove the processed contribution
                             @endphp
@@ -287,23 +318,98 @@
 
 </div>
 
+
+
+
 @endsection
 @section('scripts')
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
 
-        $('#sem-select').change(function() {
-            var selectedOption = $(this).find(':selected');
-            var selecteday = selectedOption.val();
-            var selectedsem = selectedOption.attr('data-sem');
+    $('#sem-select').change(function() {
+        var selectedOption = $(this).find(':selected');
+        var selecteday = selectedOption.val();
+        var selectedsem = selectedOption.attr('data-sem');
 
-            var baseUrl = "{{ route('records.select', ['username' => Auth::user()->username, 'ayid' => ':selecteday', 'semester' => ':selectedsem']) }}";
-            var url = baseUrl.replace(':selecteday', selecteday)
-                .replace(':selectedsem', selectedsem);
+        var baseUrl =
+            "{{ route('records.select', ['username' => Auth::user()->username, 'ayid' => ':selecteday', 'semester' => ':selectedsem']) }}";
+        var url = baseUrl.replace(':selecteday', selecteday)
 
-            window.location.href = url;
-        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            .replace(':selectedsem', selectedsem);
+
+        window.location.href = url;
     });
+});
 </script>
 
 @endsection

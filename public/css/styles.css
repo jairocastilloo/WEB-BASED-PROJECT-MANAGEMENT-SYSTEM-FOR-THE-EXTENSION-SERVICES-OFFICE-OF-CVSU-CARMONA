@@ -1,14 +1,14 @@
 * {
   font-family: 'Inter', sans-serif;
-  
-  
+
+
 }
 body {
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
   background-color: #fcfcfc; /* Set a default background color */
   color: #4c4c4c; /* Set a default text color */
-  
+
 }
 
 .nav-pagelink{
@@ -75,7 +75,7 @@ body {
   text-overflow: ellipsis ;
   justify-content: center;
   align-items: center;
- 
+
 }
 
 .card-size {
@@ -160,7 +160,7 @@ body {
 .dropdown-menu {
     display: none;
   }
-  
+
   .shows {
     display: block;
   }
@@ -174,7 +174,7 @@ body {
    /* max-width: 8.33%; */
    /* overflow-wrap: break-word; */
   /* word-wrap: break-word; */
-   
+
   /*}
   .table {
     table-layout: fixed;
@@ -188,24 +188,24 @@ body {
     margin-top:4px;
     margin-bottom:4px;
     overflow-x: scroll;
- 
+
     display: flex;
-    
+
     flex-wrap: nowrap; /* Prevent wrapping */
     width: 100%;
-   
+
   }
-  
+
   .tablecontainer::-webkit-scrollbar {
-    width: 10px; /* Width of the scrollbar */ 
+    width: 10px; /* Width of the scrollbar */
     background-color: #dadadc; /* Background color of the scrollbar */
   }
-  
+
   .tablecontainer::-webkit-scrollbar-thumb {
     background-color: #888; /* Color of the scrollbar thumb */
     border-radius: 5px; /* Rounded corners for the scrollbar thumb */
   }
-  
+
   .tablecontainer::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* Color of the scrollbar thumb on hover */
   }
@@ -213,42 +213,42 @@ body {
   @media (min-width: 576px) {
     .tablecontainer {
       max-width: 540px;
-    
+
     }
   }
-  
+
   @media (min-width: 768px) {
     .tablecontainer {
       max-width: 720px;
-     
+
     }
   }
-  
+
   @media (min-width: 992px) {
     .tablecontainer {
       max-width: 960px;
-    
+
     }
   }
-  
+
     @media (min-width: 1200px) {
       .tablecontainer {
         max-width: 1140px;
-        
+
       }
     }
-    
-  
+
+
   th{
  background-color:#e2ebda;
-    
+
   }
   .recordth th{
     background-color:rgb(233, 233, 233);
      }
-     
+
   .firsttable, .firsttable th, .firsttable td {
-   
+
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
@@ -258,7 +258,7 @@ body {
     height: 0;
   }
   .secondtable, .secondtable th, .secondtable td {
-    
+
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
@@ -278,7 +278,7 @@ body {
     max-width: 187px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-    
+
   }
   .accounttable .actions {
     min-width: 195px;
@@ -315,7 +315,7 @@ body {
   .accounttable {
     flex-shrink: 0;
     }
-  
+
     .firsttable {
      float:left;
     }
@@ -325,17 +325,21 @@ body {
 
     .recordtable, .recordtable th, .recordtable td {
       border: 1px solid #bababa;
-     
+
       overflow-wrap: break-word;
       word-wrap: break-word;
     }
     .recordtable .majority{
-      min-width: 133px;
-      max-width: 133px;
+      min-width: 125px;
+      max-width: 125px;
+    }
+    .recordtable .role{
+      min-width: 111px;
+      max-width: 111px;
     }
     .recordtable .num{
-      min-width: 100px;
-      max-width: 100px;
+      min-width: 85px;
+      max-width: 85px;
       text-align: center;
     }
 
@@ -363,7 +367,7 @@ body {
       max-width: 222px;
       overflow-wrap: break-word;
       word-wrap: break-word;
-      
+
     }
     .approvaltable .name{
       min-width: 220px;
@@ -423,7 +427,7 @@ body {
     .btn-gold {
       color: black;
       background-color: gold;
-      
+
     }
 
   .btn-gold:hover {
@@ -436,7 +440,7 @@ body {
     background-color: transparent;
     border-color: #0dcaf0;
   }
- 
+
   .btn.btn-success:hover {
     background-color: transparent;
     color: #198754;
@@ -479,7 +483,7 @@ body {
   background-color: darkgreen;
   color: gold;
   font-weight: normal;
- 
+
 }
 .darkgreenfont{
   color: darkgreen;
@@ -610,7 +614,7 @@ body {
 }
 .mainnavpassive:hover {
   background-color: rgb(236, 236, 236);
-  color: rgb(39, 39, 39); 
+  color: rgb(39, 39, 39);
   cursor: pointer;
 }
 .sidecont1{
@@ -666,7 +670,7 @@ body {
 }
 div {
   user-select: none;
-  
+
 
 }
 /* Define a CSS keyframes animation for fading in and out */
@@ -742,8 +746,8 @@ div {
   font-size: 1rem;
   line-height: 1.5;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  width: 75px; 
-  text-align: center; 
+  width: 75px;
+  text-align: center;
 }
 
 /* Add a focus style similar to Bootstrap */
@@ -767,9 +771,9 @@ div {
   color: rgb(27, 27, 27);
   background-color: white;
   text-overflow: ellipsis;
-    
 
-  
+
+
   &.highlight {
     color: white;
     background-color: green;
@@ -883,7 +887,7 @@ div {
   border-bottom: 3px solid rgb(255, 255, 255);
 }
 .currentdiv{
-  
+
   color:green;
 }
 /* Add this style to remove hover effect for the specified class */
@@ -902,7 +906,7 @@ div {
   /* ... other print styles ... */
 }
 .border1px{
-  border-bottom: 1px solid #bababa;  
+  border-bottom: 1px solid #bababa;
 }
 
 
