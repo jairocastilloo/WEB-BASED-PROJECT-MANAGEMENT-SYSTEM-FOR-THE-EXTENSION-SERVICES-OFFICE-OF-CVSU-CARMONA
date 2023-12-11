@@ -203,7 +203,31 @@ class RecordController extends Controller
         if ($allactivitiesid) {
             $allactivities = Activity::whereIn('id', $allactivitiesid)
                 ->get();
+         $allprojectIds = $allactivities->pluck('project_id')->unique()->toArray();
+    $allprojects = Project::whereIn('id', $allprojectIds)
+    ->get(['id', 'projecttitle', 'department']);
+
+
         }
+        if ($allprojects) {
+    foreach ($allprojects as $allproject) {
+        $programLeader = ProgramLeader::where('user_id', $user->id)
+            ->where('project_id', $allproject->id)
+            ->first();
+
+        $projectLeader = ProjectLeader::where('user_id', $user->id)
+            ->where('project_id', $allproject->id)
+            ->first();
+
+        if ($programLeader) {
+            $allproject->role = 'Program Leader';
+        } elseif ($projectLeader) {
+            $allproject->role = 'Project Leader';
+        } else {
+            $allproject->role = 'Implementer';
+        }
+    }
+}
 
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');
@@ -222,6 +246,7 @@ class RecordController extends Controller
             'allactivities' => $allactivities,
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
+            'allprojects' => $allprojects
 
         ]);
     }

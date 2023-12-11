@@ -21,6 +21,9 @@ class Contribution extends Model
         'contributor_id',
         'submitter_id',
         'notes',
+        'relatedPrograms',
+            'clientNumbers',
+           'agency',
 
     ];
 

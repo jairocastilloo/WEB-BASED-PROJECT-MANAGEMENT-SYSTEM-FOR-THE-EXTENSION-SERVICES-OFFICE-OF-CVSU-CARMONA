@@ -240,6 +240,9 @@ class SubtaskController extends Controller
             'enddate' => $subtaskenddate,
             'submitter_id' => $request->input('submitter-id'),
             'hours_rendered' => $request->input('hours-rendered'),
+            'relatedPrograms' => $request->input('related-program'),
+            'clientNumbers' => $request->input('client-numbers'),
+            'agency' => $request->input('agency'),
         ]);
         $subtaskcontribution->save();
         $subtaskcontributors = $request->input('subtaskcontributors');
@@ -251,7 +254,7 @@ class SubtaskController extends Controller
             ]);
         }
         $request->validate([
-            'accomplishment_file' => 'required|mimes:docx|max:2048',
+            'accomplishment_file' => 'required|mimes:docx|max:10240',
         ]);
         $file = $request->file('accomplishment_file');
         $originalName = $file->getClientOriginalName();
@@ -262,7 +265,7 @@ class SubtaskController extends Controller
         $path = $request->file('accomplishment_file')->storeAs('uploads/' . $currentDateTime, $fileName);
         // Save the file path to the database or perform any other necessary actions
         // ...
-        /*  
+        /*
         $url = URL::route('projsubmission.display', ['projsubmissionid' => $projectterminal->id, 'projsubmissionname' => "Unevaluated-Submission"]);
         return redirect($url);*/
         return response()->json([

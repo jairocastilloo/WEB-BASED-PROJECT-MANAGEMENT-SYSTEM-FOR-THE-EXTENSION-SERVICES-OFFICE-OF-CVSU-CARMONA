@@ -178,6 +178,7 @@
                             $actcontristartdate = $actcontribution->startdate;
                             $actcontrienddate = $actcontribution->enddate;
                             $actcontrihours = $actcontribution->hours_rendered;
+
                             unset($activityContributions[$key]); // Remove the processed contribution
                             @endphp
 
@@ -267,16 +268,28 @@
                                     {{ $proj->role }}
                                 </td>
                                 <td class="majority p-1">
-                                    N/A
+                                    @if($filteredContri->relatedPrograms)
+                                    {{ $filteredContri->relatedPrograms }}
+                                    @else
+                                    -
+                                    @endif
                                 </td>
                                 <td class="num p-1">
                                     {{ $filteredContri->hours_rendered }}
                                 </td>
                                 <td class="num p-1">
+                                    @if($filteredContri->clientNumber)
+                                    {{ $filteredContri->clientNumbers }}
+                                    @else
                                     -
+                                    @endif
                                 </td>
                                 <td class="majority p-1">
+                                    @if($filteredContri->agency)
+                                    {{ $filteredContri->agency }}
+                                    @else
                                     -
+                                    @endif
                                 </td>
                                 <td class="majority p-1">
                                     {{ $proj->department }}
