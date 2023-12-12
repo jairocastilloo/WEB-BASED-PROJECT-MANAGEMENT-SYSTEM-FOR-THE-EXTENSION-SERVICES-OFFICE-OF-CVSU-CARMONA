@@ -15,7 +15,7 @@
         <p class="ps-4 lh-1"><b>Due Date:</b>
             {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
         </p>
-
+        @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
         <div class="btn-group dropdown ms-3 mb-3 shadow">
             <button type="button"
                 class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
@@ -36,7 +36,7 @@
                     <b class="small">Edit Details</b></a>
             </div>
         </div>
-
+        @endif
 
     </div>
 

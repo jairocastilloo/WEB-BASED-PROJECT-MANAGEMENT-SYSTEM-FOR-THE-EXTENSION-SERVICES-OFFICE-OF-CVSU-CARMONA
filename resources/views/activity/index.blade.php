@@ -381,7 +381,7 @@ $(document).ready(function() {
         var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
         url = url.replace(':activityid', activityid);
         win
-dow.location.href = url;
+        dow.location.href = url;
 
     });
 

@@ -49,7 +49,7 @@ class HoursController extends Controller
             ->pluck('user_id')
             ->toArray();
         $implementers = User::whereIn('id', $implementerIds)
-            ->select('id', 'name', 'last_name')
+            ->select('id', 'name', 'last_name', 'middle_name')
             ->get();
         return view('activity.hours', [
             'activity' => $activity,

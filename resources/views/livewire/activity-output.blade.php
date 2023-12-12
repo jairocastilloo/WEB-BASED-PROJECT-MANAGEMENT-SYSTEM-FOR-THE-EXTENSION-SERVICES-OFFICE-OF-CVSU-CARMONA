@@ -25,6 +25,7 @@
             @endforeach
         </div>
         @endforeach
+        @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
         <div class="dropdown btn-group ms-3 mt-2 mb-3 shadow">
             <button type="button"
                 class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
@@ -42,6 +43,7 @@
 
             </div>
         </div>
+        @endif
         <div class="text-center">
             <div><button type="button" class="btn btn-primary mb-2 d-none mt-2" id="saveOutput">
                     Save

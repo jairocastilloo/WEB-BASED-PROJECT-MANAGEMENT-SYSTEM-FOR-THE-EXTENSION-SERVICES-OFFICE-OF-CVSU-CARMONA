@@ -29,6 +29,7 @@
     @endforeach
     <p class="lh-sm ms-4 me-2"><strong>Source:</strong> {{ $activity['actsource'] }}</p>
     <p class="lh-sm ms-4 me-2"><strong>Participation Hours Rendered:</strong> {{ $activity['totalhours_rendered'] }}</p>
+    @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
     <div class="btn-group dropdown ms-3 mb-3 shadow">
         <button type="button"
             class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
@@ -43,6 +44,7 @@
                     Activity</b></a>
         </div>
     </div>
+    @endif
     <div class="modal fade" id="newactivity" tabindex="-1" aria-labelledby="newactivityModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-xl">
             <div class="modal-content">

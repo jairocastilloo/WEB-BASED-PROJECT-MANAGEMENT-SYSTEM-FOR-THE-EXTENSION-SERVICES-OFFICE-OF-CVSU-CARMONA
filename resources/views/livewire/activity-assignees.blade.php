@@ -19,10 +19,12 @@
 
                     </div>
                     <div class="col-2">
+                        @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
                         <button type="button" class="btn btn-outline-danger fs-5 border float-end"
                             wire:click="unassignAssignees('{{ $assignee->id }}')">
                             <i class="bi bi-person-dash"></i>
                         </button>
+                        @endif
                     </div>
                 </div>
 
@@ -34,7 +36,7 @@
         @php $count++; @endphp
         @endforeach
     </div>
-
+    @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
     <div class="btn-group ms-3 mt-2 mb-3 shadow">
         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
             id="btnAddAssignee" data-bs-toggle="modal" data-bs-target="#addActivityAssigneeModal">
@@ -42,6 +44,7 @@
         </button>
 
     </div>
+    @endif
     <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
 
     <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="emailError"
