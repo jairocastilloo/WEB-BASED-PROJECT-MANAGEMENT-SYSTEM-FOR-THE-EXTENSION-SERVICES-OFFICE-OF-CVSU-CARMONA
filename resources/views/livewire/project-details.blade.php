@@ -334,8 +334,8 @@
 
             // Validation for Project End Date
             if (document.getElementById('currentprojectenddate').value === '') {
-      
-          document.getElementById('currentprojectenddate').parentElement.classList.add('is-invalid');
+
+                document.getElementById('currentprojectenddate').parentElement.classList.add('is-invalid');
                 document.getElementById('currentprojectenddate').parentElement.nextElementSibling.querySelector(
                     '.invalid-feedback strong').textContent = 'Project End Date is required.';
                 hasErrors = true;

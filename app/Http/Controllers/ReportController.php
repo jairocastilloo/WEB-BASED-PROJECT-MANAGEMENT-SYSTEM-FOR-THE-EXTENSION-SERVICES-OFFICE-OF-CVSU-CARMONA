@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class ReportController extends Controller
 {
@@ -53,7 +54,7 @@ class ReportController extends Controller
         $upcomingActivitiesCount = $activitiesQuery->where('actremark', 'Incomplete')
             ->where('actstartdate', '>', $currentDate)
             ->count();
-        
+
         $ongoingActivitiesCount = 0;
         $overdueActivitiesCount = 0;
         $upcomingActivitiesCount = 0;
@@ -236,4 +237,6 @@ class ReportController extends Controller
             'activities' => $activities,
         ]);
     }
+
+
 }

@@ -56,7 +56,8 @@
             </div>
 
         </div>
-        <div class="basiccont shadow">
+
+        <div class="basiccont shadow" id="printableContent">
             <div class="text-center shadow text-white p-2 pt-3 imbentobg">
                 <h5 class="fw-bold">
                     EXTENSION SERVICES RECORDS FOR THE FIRST SEMESTER, AY 2022-2023
@@ -341,8 +342,13 @@
 
                     </table>
                 </div>
+
             </div>
 
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-outline-success px-5 m-2" onclick="generatePDF()">Download
+                Table(pdf)</button>
         </div>
     </div>
 
@@ -353,7 +359,21 @@
 
 @endsection
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
+function generatePDF() {
+    const jsPDF = window.jsPDF = window.jspdf.jsPDF;
+    const printableContent = document.getElementById('printableContent');
+
+    html2canvas(printableContent).then(canvas => {
+        const pdf = new jsPDF();
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal
+            .pageSize.getHeight());
+        pdf.save('download.pdf');
+    });
+}
+
 $(document).ready(function() {
 
     $('#sem-select').change(function() {
@@ -364,77 +384,6 @@ $(document).ready(function() {
         var baseUrl =
             "{{ route('records.select', ['username' => Auth::user()->username, 'ayid' => ':selecteday', 'semester' => ':selectedsem']) }}";
         var url = baseUrl.replace(':selecteday', selecteday)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             .replace(':selectedsem', selectedsem);
 
         window.location.href = url;
