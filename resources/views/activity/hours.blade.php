@@ -90,12 +90,51 @@
             </div>
 
 
-            <div class="btn-group m-2 ms-3 mb-3 shadow">
-                <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
-                    data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal">
-                    <b class="small">Submit Accomplishment Report</b>
+
+            <div class="btn-group dropdown ms-3 mb-3 shadow">
+                <button type="button"
+                    class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <b class="small"> <i class="bi bi-list"></i> Menu</b>
                 </button>
+                <div class="dropdown-menu border border-1 border-warning">
+
+                    <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal"
+                        data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment
+                            Report</b></a>
+                    <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal"
+                        data-bs-target="#completeactivitymodal">
+                        <b class="small">Mark as Completed</b>
+                    </a>
+
+                </div>
             </div>
+            <div class="modal fade" id="completeactivitymodal" tabindex="-1"
+                aria-labelledby="completeactivityModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="completeactivityModalLabel">Complete Activity</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="markcompleteform" data-url="{{ route('activity.markcomplete') }}">
+                                @csrf
+                                <input type="number" class="d-none" id="actid" name="actid"
+                                    value="{{ $activity['id'] }}">
+                                <p> Are you sure you want to mark the Activity: "{{ $activity['actname'] }}" as
+                                    completed?
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="markcomplete-btn">Mark as
+                                Completed</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="accomplishmentReportModal" tabindex="-1"
                 aria-labelledby="accomplishmentReportModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -387,7 +426,7 @@ $(document).ready(function() {
         var activityname = $(this).attr('data-name');
 
         var url =
-            '{{ route("activities.display", ["activityid" => ":activityid", "activityname" => ":activityname"]) }}';
+            '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
         url = url.replace(':activityid', actid);
         url = url.replace(':activityname', activityname);
         window.location.href = url;
@@ -396,8 +435,37 @@ $(document).ready(function() {
         // Add your function here
         $('#account .dropdown-menu').toggleClass('shows');
     });
+    $('#markcomplete-btn').click(function(event) {
+        event.preventDefault();
+        var actid = $('#actid').val();
+
+        var acturl =
+            '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
+        acturl = acturl.replace(':activityid', actid);
+
+        var dataurl = $('#markcompleteform').attr('data-url');
+        // Create a data object with the value you want to send
+        var data1 = $('#markcompleteform').serialize();
+
+        $.ajax({
+            url: dataurl, // Replace with your actual AJAX endpoint URL
+            type: 'POST',
+            data: data1,
+            success: function(response) {
+                console.log(response);
+                window.location.href = acturl;
+            },
+            error: function(xhr, status, error) {
+                // Handle the error here
+                console.log(xhr.responseText);
+                console.error(error);
+            }
+        });
+    });
 });
 </script>
+
+
 
 
 @endsection

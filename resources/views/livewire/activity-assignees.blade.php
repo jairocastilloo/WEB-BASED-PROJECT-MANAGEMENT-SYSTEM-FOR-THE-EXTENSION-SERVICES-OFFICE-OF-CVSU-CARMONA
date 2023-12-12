@@ -167,8 +167,8 @@
                         }
                     }
                 }
-      
-      }
+
+            }
         });
 
         function areAllAddAssigneeChecked() {

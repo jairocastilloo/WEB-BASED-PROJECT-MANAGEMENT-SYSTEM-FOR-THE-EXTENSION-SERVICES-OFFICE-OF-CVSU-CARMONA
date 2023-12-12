@@ -74,7 +74,7 @@ class RecordController extends Controller
         if (!$subtaskcontributions->isEmpty()) {
             $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->toArray();
             $subtasks = Subtask::whereIn('id', $subtaskcontributionsIds)->get();
-            $otheractivities = $subtasks->pluck('activity_id')->toArray();
+            $otheractivities = $subtasks->pluck('activity_id')->unique()->toArray();
         }
 
         $activityContributions = $user->activitycontributions()
@@ -84,7 +84,7 @@ class RecordController extends Controller
             ->get();
 
         if (!$activityContributions->isEmpty()) {
-            $activitiesid = $activityContributions->pluck('activity_id')->toArray();
+            $activitiesid = $activityContributions->pluck('activity_id')->unique()->toArray();
         }
 
         $allactivitiesid = array_unique(array_merge($otheractivities, $activitiesid));
@@ -183,7 +183,7 @@ class RecordController extends Controller
         $allactivities = [];
 
         if (!$subtaskcontributions->isEmpty()) {
-            $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->toArray();
+            $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->unique()->toArray();
             $subtasks = Subtask::whereIn('id', $subtaskcontributionsIds)->get();
             $otheractivities = $subtasks->pluck('activity_id')->toArray();
         }
@@ -195,7 +195,7 @@ class RecordController extends Controller
             ->get();
 
         if (!$activityContributions->isEmpty()) {
-            $activitiesid = $activityContributions->pluck('activity_id')->toArray();
+            $activitiesid = $activityContributions->pluck('activity_id')->unique()->toArray();
         }
 
         $allactivitiesid = array_unique(array_merge($otheractivities, $activitiesid));

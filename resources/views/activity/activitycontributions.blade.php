@@ -65,6 +65,17 @@
                         <div class="p-2 pb-0 border-bottom">
                             <p class="lh-1 ps-4"><b>{{ $activity->actname }}</b></p>
                             <p class="lh-1 ps-5"><b>Hours Rendered:</b> {{ $actcontribution->hours_rendered }}</p>
+                            @foreach ($outputTypes as $outputType)
+
+                            @foreach ($outputs as $output)
+                            @if ($output->output_type == $outputType)
+                            <p class="lh-1 ps-5">
+                                <b>{{ $outputType . ' - ' . $output->output_name . ': '}}</b>
+                                {{ $output->output_submitted }}
+                            </p>
+                            @endif
+                            @endforeach
+                            @endforeach
                             <p class="lh-1 ps-5"><b>Rendered Date:</b>
                                 {{ \Carbon\Carbon::createFromFormat('Y-m-d', $actcontribution->startdate)->format('F d') . ' to ' . \Carbon\Carbon::createFromFormat('Y-m-d', $actcontribution->enddate)->format('F d') }}
                             </p>

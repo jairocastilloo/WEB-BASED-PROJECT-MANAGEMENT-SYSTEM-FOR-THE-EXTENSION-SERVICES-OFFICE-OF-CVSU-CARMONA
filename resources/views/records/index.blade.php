@@ -167,64 +167,81 @@
                         <tbody>
                             @foreach ($allactivities as $activity)
                             @php
-                            $actcontristartdate = null;
-                            $actcontrienddate = null;
-                            $actcontrihours = null;
+                            $filteredActContribution = $activityContributions->filter(function ($actcontri) use
+                            ($activity) {
+                            return $actcontri->activity_id == $activity->id;
+                            });
                             @endphp
 
-                            @foreach ($activityContributions as $key => $actcontribution)
-                            @if ($activity->id === $actcontribution->activity_id)
+
+
                             @php
-                            $actcontristartdate = $actcontribution->startdate;
-                            $actcontrienddate = $actcontribution->enddate;
-                            $actcontrihours = $actcontribution->hours_rendered;
-
-                            unset($activityContributions[$key]); // Remove the processed contribution
+                            $filteredActContriCount = 0;
                             @endphp
-
-                            @break
-                            @endif
-                            @endforeach
+                            @php
+                            $proj = $allprojects->firstWhere('id', $activity->project_id);
+                            @endphp
+                            @foreach ($filteredActContribution as $filteredActContri)
 
                             <tr>
                                 <td class="majority p-1">
-                                    @php
-                                    $proj = $allprojects->firstWhere('id', $activity->project_id);
-                                    @endphp
-
                                     {{ $proj->projecttitle }}
                                 </td>
                                 <td class="extension p-1">
                                     {{ 'Activity: ' . $activity->actname }}
+                                    @if ($filteredActContriCount != 0)
+                                    {{ " (" . $filteredActContriCount . ")" }}
+                                    @endif
                                 </td>
                                 <td class="num p-1">
-                                    @If ($actcontristartdate && $actcontrienddate)
-                                    {{ date('M d, Y', strtotime($actcontristartdate)) }}
+                                    {{ date('M d, Y', strtotime($filteredActContri->startdate)) }}
                                     to
 
-                                    {{ date('M d, Y', strtotime($actcontrienddate)) }}
-                                    @endif
+                                    {{ date('M d, Y', strtotime($filteredActContri->enddate)) }}
+
 
                                 </td>
                                 <td class="p-1 role">
                                     {{ $proj->role }}
                                 </td>
                                 <td class="majority p-1">
-                                    N/A
-                                </td>
-                                <td class="num p-1">
-                                    {{ $actcontrihours }}
-                                </td>
-                                <td class="num p-1">
+                                    @if($filteredActContri->relatedPrograms)
+                                    {{ $filteredActContri->relatedPrograms }}
+                                    @else
                                     -
+                                    @endif
+                                </td>
+                                <td class="num p-1">
+                                    {{ $filteredActContri->hours_rendered }}
+                                </td>
+                                <td class="num p-1">
+                                    @if($filteredActContri->clientNumbers)
+                                    {{ $filteredActContri->clientNumbers }}
+                                    @else
+                                    -
+                                    @endif
                                 </td>
                                 <td class="majority p-1">
+                                    @if($filteredActContri->agency)
+                                    {{ $filteredActContri->agency }}
+                                    @else
                                     -
+                                    @endif
                                 </td>
                                 <td class="majority p-1">
                                     {{ $proj->department }}
                                 </td>
+
+
+
+                                @php
+                                $filteredActContriCount++;
+                                @endphp
                             </tr>
+
+                            @endforeach
+
+
 
                             @if (in_array($activity->id, $otheractivities))
 
@@ -248,7 +265,7 @@
 
                             <tr>
                                 <td class="majority p-1">
-
+                                    {{ $proj->projecttitle }}
                                 </td>
                                 <td class="extension p-1">
                                     {{ 'Subtask: ' . $subtask->subtask_name }}
@@ -278,7 +295,7 @@
                                     {{ $filteredContri->hours_rendered }}
                                 </td>
                                 <td class="num p-1">
-                                    @if($filteredContri->clientNumber)
+                                    @if($filteredContri->clientNumbers)
                                     {{ $filteredContri->clientNumbers }}
                                     @else
                                     -
