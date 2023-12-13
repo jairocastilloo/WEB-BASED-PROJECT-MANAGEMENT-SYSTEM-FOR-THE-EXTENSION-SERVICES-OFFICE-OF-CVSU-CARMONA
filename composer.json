@@ -16,7 +16,9 @@
         "laravel/ui": "^3.4",
         "livewire/livewire": "^2.12",
         "nesbot/carbon": "^2.70",
-        "twbs/bootstrap": "5.3.2"
+        "twbs/bootstrap": "5.3.2",
+        "symfony/css-selector": "^5.0",
+    "tijsverkoyen/css-to-inline-styles": "^2.2.7"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
