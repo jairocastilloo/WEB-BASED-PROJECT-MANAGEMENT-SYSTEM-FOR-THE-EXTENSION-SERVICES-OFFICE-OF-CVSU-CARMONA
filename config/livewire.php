@@ -54,8 +54,8 @@ return [
     |
     */
 
-    //'asset_url' => "http://192.168.158.246",
-    'asset_url' => null,
+    'asset_url' => "https://extension-projectmanager.up.railway.app",
+   // 'asset_url' => null,
     /*
     |--------------------------------------------------------------------------
     | Livewire App URL
