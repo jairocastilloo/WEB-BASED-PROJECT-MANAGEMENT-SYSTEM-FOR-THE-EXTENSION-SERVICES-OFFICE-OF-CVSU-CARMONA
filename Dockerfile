@@ -20,7 +20,4 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port 80 and start Apache
-EXPOSE 80
-CMD ["apache2-foreground"]
 
