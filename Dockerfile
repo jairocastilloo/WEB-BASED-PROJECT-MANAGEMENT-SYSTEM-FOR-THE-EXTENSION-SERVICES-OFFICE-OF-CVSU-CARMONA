@@ -1,10 +1,28 @@
-FROM php:8.1 as php
+# Use the official PHP image
+FROM php:8.1-apache
 
-RUN apt-get update -y
-RUN apt-get install -y unzip libpq-dev libcur14-gnutls-dev
-RUN docker-php-ext-install pdo pdo_mysql bcmatch
+# Set the working directory in the container
+WORKDIR /var/www/html
 
-WORKDIR /var/www
-COPY . .
+# Copy the Laravel application code into the container
+COPY . /var/www/html/
 
-COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
+# Install additional dependencies if needed (e.g., composer)
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install Laravel dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Expose port 80 and start Apache
+EXPOSE 80
+CMD ["apache2-foreground"]
+
