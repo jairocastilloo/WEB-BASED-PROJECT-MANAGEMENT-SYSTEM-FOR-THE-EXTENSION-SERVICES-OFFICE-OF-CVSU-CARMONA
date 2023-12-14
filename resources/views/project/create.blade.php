@@ -125,7 +125,7 @@
                                 <select class="selectpicker w-100 border programleader" name="programleader[]" id="programleader" multiple aria-label="Select Program Leaders" data-live-search="true">
                                     <option value="0" disabled>Select Program Leader</option>
                                     @foreach ($members as $member)
-                                    @if ($member->role === 'Coordinator' || $member->role === 'Admin')
+                                    @if ($member->role === 'Admin')
                                     <option value="{{ $member->id }}">
                                         {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
                                     </option>

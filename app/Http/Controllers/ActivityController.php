@@ -305,8 +305,8 @@ class ActivityController extends Controller
             'hours-rendered' => 'required|integer',
             'outputQuantity.*' => 'required|integer',
             'outputId.*' => 'required|integer',
-             'related-program' => 'required|max:255',
-            'client-numbers'=> 'required|integer',
+            'related-program' => 'required|max:255',
+            'client-numbers' => 'required|integer',
             'agency' => 'required|max:255',
         ]);
 
@@ -323,11 +323,11 @@ class ActivityController extends Controller
         $newActContri = $activitycontributions->id;
 
         for ($i = 0; $i < count($validatedData['outputId']); $i++) {
-$outputUser = new OutputUser();
-$outputUser->output_id = $validatedData['outputId'][$i];
-$outputUser->output_submitted = $validatedData['outputQuantity'][$i];
-$outputUser->actcontribution_id = $newActContri;
-}
+            $outputUser = new OutputUser();
+            $outputUser->output_id = $validatedData['outputId'][$i];
+            $outputUser->output_submitted = $validatedData['outputQuantity'][$i];
+            $outputUser->actcontribution_id = $newActContri;
+        }
         for ($i = 0; $i < $validatedData['contributornumber']; $i++) {
 
 
@@ -373,8 +373,8 @@ $outputUser->actcontribution_id = $newActContri;
             'submitter_id' => $request->input('submitter-id'),
             'hours_rendered' => $request->input('hours-rendered'),
             'relatedPrograms' => $request->input('related-program'),
-            'clientNumbers'=> $request->input('client-numbers'),
-            'agency'=> $request->input('agency'),
+            'clientNumbers' => $request->input('client-numbers'),
+            'agency' => $request->input('agency'),
         ]);
         $activitycontribution->save();
         $activityimplementers = $request->input('activityimplementers');
@@ -388,15 +388,15 @@ $outputUser->actcontribution_id = $newActContri;
 
 
         $outputIds = $request->input('outputId.*');
-$outputQuantities = $request->input('outputQuantity.*');
+        $outputQuantities = $request->input('outputQuantity.*');
 
-foreach ($outputIds as $i => $outputId) {
-    $outputUser = new OutputUser();
-    $outputUser->output_id = $outputId;
-    $outputUser->output_submitted = $outputQuantities[$i];
-    $outputUser->actcontribution_id = $activitycontribution->id;
-    $outputUser->save(); // Assuming you want to save the new OutputUser
-}
+        foreach ($outputIds as $i => $outputId) {
+            $outputUser = new OutputUser();
+            $outputUser->output_id = $outputId;
+            $outputUser->output_submitted = $outputQuantities[$i];
+            $outputUser->actcontribution_id = $activitycontribution->id;
+            $outputUser->save(); // Assuming you want to save the new OutputUser
+        }
 
 
         $request->validate([

@@ -147,7 +147,7 @@ class SubtaskController extends Controller
         }
 
         $request->validate([
-            'subtaskdocs' => 'required|mimes:docx|max:2048',
+            'subtaskdocs' => 'required|mimes:docx|max:10240',
         ]);
 
 
