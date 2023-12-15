@@ -389,13 +389,14 @@ class ActivityController extends Controller
 
         $outputIds = $request->input('outputId.*');
         $outputQuantities = $request->input('outputQuantity.*');
-
-        foreach ($outputIds as $i => $outputId) {
-            $outputUser = new OutputUser();
-            $outputUser->output_id = $outputId;
-            $outputUser->output_submitted = $outputQuantities[$i];
-            $outputUser->actcontribution_id = $activitycontribution->id;
-            $outputUser->save(); // Assuming you want to save the new OutputUser
+        if ($outputIds) {
+            foreach ($outputIds as $i => $outputId) {
+                OutputUser::create([
+                    'output_id' => $outputId,
+                    'output_submitted' => $outputQuantities[$i],
+                    'actcontribution_id' => $activitycontribution->id,
+                ]);
+            }
         }
 
 

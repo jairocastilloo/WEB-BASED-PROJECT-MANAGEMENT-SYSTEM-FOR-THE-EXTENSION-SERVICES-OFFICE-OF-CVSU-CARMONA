@@ -1,254 +1,238 @@
 * {
-  font-family: 'Inter', sans-serif;
-
-
+    font-family: "Inter", sans-serif;
 }
 body {
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  background-color: #fcfcfc; /* Set a default background color */
-  color: #4c4c4c; /* Set a default text color */
-
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    background-color: #fcfcfc; /* Set a default background color */
+    color: #4c4c4c; /* Set a default text color */
 }
 
-.nav-pagelink{
-  margin: 10px;
-}
-
-@media (max-width:600px) {
-  .number-link{
-    display: none;
-  }
-  .nav-pagelink{
-    max-width: fit-content;
+.nav-pagelink {
     margin: 10px;
-  }
 }
 
-@media (max-width:768px) {
-  .number-link{
-    display: none;
-  }
-  .nav-pagelink{
-    max-width: fit-content;
-    margin: 10px;
-  }
+@media (max-width: 600px) {
+    .number-link {
+        display: none;
+    }
+    .nav-pagelink {
+        max-width: fit-content;
+        margin: 10px;
+    }
 }
 
-@media (max-width:1200px) {
-  .number-link{
-    display: none;
-  }
-  .nav-pagelink{
-    max-width: fit-content;
-    margin: 10px;
-  }
+@media (max-width: 768px) {
+    .number-link {
+        display: none;
+    }
+    .nav-pagelink {
+        max-width: fit-content;
+        margin: 10px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .number-link {
+        display: none;
+    }
+    .nav-pagelink {
+        max-width: fit-content;
+        margin: 10px;
+    }
 }
 
 .input-group-append {
-  cursor: pointer;
+    cursor: pointer;
 }
-.login-register-bg{
-  background-image: url("/images/cvsu-carmona-japanese.jpg");
-  background-size: 100% 100%;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-}
-
-.navbar{
-  font-family: 'Lato', sans-serif;
+.login-register-bg {
+    background-image: url("/images/cvsu-carmona-japanese.jpg");
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
-.bg-carmona{
-  display: flex;
-  position: absolute;
-  width: 100%;
-  height: 975px;
-  background-attachment: fixed;
-  object-fit: cover;
+.navbar {
+    font-family: "Lato", sans-serif;
 }
 
-.card-image{
-  display: flex;
-  height: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis ;
-  justify-content: center;
-  align-items: center;
+.bg-carmona {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 975px;
+    background-attachment: fixed;
+    object-fit: cover;
+}
 
+.card-image {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-size {
-  max-width: 450px;
-  height: 150px;
-  margin: 0 auto;
-  max-height: 100%;
-  overflow-y: auto;
+    max-width: 450px;
+    height: 150px;
+    margin: 0 auto;
+    max-height: 100%;
+    overflow-y: auto;
 }
 
-.optional{
-  opacity: 0.5;
+.optional {
+    opacity: 0.5;
 }
 
-
-
-.login-page{
-  background-color: white;
-  border: 1px solid black;
-  position: relative;
+.login-page {
+    background-color: white;
+    border: 1px solid black;
+    position: relative;
 }
 
 .background-image-element {
-  background-image: url('public\images\cvsu-carmona.jpg');
-  background-size: cover;
-  width: 100%;
-  height: 300px;
-  text-align: center; /* Center content within the element */
+    background-image: url("public\images\cvsu-carmona.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 300px;
+    text-align: center; /* Center content within the element */
 }
 
-.dep-choose-container{
-  padding: 5px 20px;
+.dep-choose-container {
+    padding: 5px 20px;
 }
 
 .dep-choose-button {
-  display: block;
-  text-align: center;
-  padding: 20px;
-  background-color: green;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 10px;
-  transition: background-color 0.3s;
-  margin: 10px 0px;
+    display: block;
+    text-align: center;
+    padding: 20px;
+    background-color: green;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    margin: 10px 0px;
 }
 
 .dep-choose-button:hover {
-  background-color: rgb(0, 71, 0);
-  color: white;
-  text-decoration: none;
+    background-color: rgb(0, 71, 0);
+    color: white;
+    text-decoration: none;
 }
 
-
-
-
-.basicrow{
-  background-color: #dadadc;
-  padding: 10px;
+.basicrow {
+    background-color: #dadadc;
+    padding: 10px;
 }
 
-.basiccont{
-  background-color: white;
-  position: relative;
-  margin-bottom: 10px;
-  overflow-wrap: break-word;
+.basiccont {
+    background-color: white;
+    position: relative;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
     word-wrap: break-word;
     border-radius: 5px;
-
 }
 .basiccont .bggreen {
-  background-color: #f2fde8;
-  border-radius: 5px;
+    background-color: #f2fde8;
+    border-radius: 5px;
 }
-.bggold{
-  background-color: gold;
+.bggold {
+    background-color: gold;
 }
 
 .stretch-button {
-  width: 60%; /* Adjust the width as needed */
+    width: 60%; /* Adjust the width as needed */
 }
 
 .dropdown-menu {
     display: none;
-  }
+}
 
-  .shows {
+.shows {
     display: block;
-  }
+}
 
-  .bullet-cell::before {
+.bullet-cell::before {
     content: "\2022"; /* Unicode bullet symbol */
     margin-right: 5px; /* Optional: Add spacing between bullet and content */
-  }
-  /*.fixed-width-column { */
-     /* Adjust the maximum width as per your requirements */
-   /* max-width: 8.33%; */
-   /* overflow-wrap: break-word; */
-  /* word-wrap: break-word; */
+}
+/*.fixed-width-column { */
+/* Adjust the maximum width as per your requirements */
+/* max-width: 8.33%; */
+/* overflow-wrap: break-word; */
+/* word-wrap: break-word; */
 
-  /*}
+/*}
   .table {
     table-layout: fixed;
   } */
-  table {
+table {
     border-collapse: collapse; /* Improve cell spacing */
-  }
-  .tablecontainer {
+}
+.tablecontainer {
     margin-right: 1px;
     margin-left: 4px;
-    margin-top:4px;
-    margin-bottom:4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
     overflow-x: scroll;
 
     display: flex;
 
     flex-wrap: nowrap; /* Prevent wrapping */
     width: 100%;
+}
 
-  }
-
-  .tablecontainer::-webkit-scrollbar {
+.tablecontainer::-webkit-scrollbar {
     width: 10px; /* Width of the scrollbar */
     background-color: #dadadc; /* Background color of the scrollbar */
-  }
+}
 
-  .tablecontainer::-webkit-scrollbar-thumb {
+.tablecontainer::-webkit-scrollbar-thumb {
     background-color: #888; /* Color of the scrollbar thumb */
     border-radius: 5px; /* Rounded corners for the scrollbar thumb */
-  }
+}
 
-  .tablecontainer::-webkit-scrollbar-thumb:hover {
+.tablecontainer::-webkit-scrollbar-thumb:hover {
     background-color: #555; /* Color of the scrollbar thumb on hover */
-  }
+}
 
-  @media (min-width: 576px) {
+@media (min-width: 576px) {
     .tablecontainer {
-      max-width: 540px;
-
+        max-width: 540px;
     }
-  }
+}
 
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
     .tablecontainer {
-      max-width: 720px;
-
+        max-width: 720px;
     }
-  }
+}
 
-  @media (min-width: 992px) {
+@media (min-width: 992px) {
     .tablecontainer {
-      max-width: 960px;
-
+        max-width: 960px;
     }
-  }
+}
 
-    @media (min-width: 1200px) {
-      .tablecontainer {
+@media (min-width: 1200px) {
+    .tablecontainer {
         max-width: 1140px;
-
-      }
     }
+}
 
+th {
+    background-color: #e2ebda;
+}
+.recordth th {
+    background-color: rgb(233, 233, 233);
+}
 
-  th{
- background-color:#e2ebda;
-
-  }
-  .recordth th{
-    background-color:rgb(233, 233, 233);
-     }
-
-  .firsttable, .firsttable th, .firsttable td {
-
+.firsttable,
+.firsttable th,
+.firsttable td {
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
@@ -256,585 +240,594 @@ body {
     word-wrap: break-word;
     border-right: 0;
     height: 0;
-  }
-  .secondtable, .secondtable th, .secondtable td {
-
+}
+.secondtable,
+.secondtable th,
+.secondtable td {
     border: 1px solid #bababa;
     min-width: 130px;
     max-width: 130px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     height: 0;
-  }
-  .firsttable td {
+}
+.firsttable td {
     vertical-align: top;
-  }
-  .secondtable td{
+}
+.secondtable td {
     vertical-align: top;
-  }
-  .accounttable, .accounttable th, .accounttable td {
+}
+.accounttable,
+.accounttable th,
+.accounttable td {
     border: 1px solid #bababa;
     min-width: 187px;
     max-width: 187px;
     overflow-wrap: break-word;
     word-wrap: break-word;
-
-  }
-  .accounttable .actions {
+}
+.accounttable .actions {
     min-width: 195px;
     max-width: 195px;
-  }
-  .accounttable .username {
+}
+.accounttable .username {
     min-width: 108px;
     max-width: 108px;
-  }
-  .accounttable .name {
+}
+.accounttable .name {
     min-width: 120px;
     max-width: 120px;
-  }
-  .accounttable .role {
+}
+.accounttable .role {
     min-width: 100px;
     max-width: 100px;
-  }
-  .accounttable .edit {
+}
+.accounttable .edit {
     min-width: 105px;
     max-width: 105px;
-  }
-  .accounttable .department {
+}
+.accounttable .department {
     min-width: 290px;
     max-width: 290px;
-  }
-  .accounttable .dept {
+}
+.accounttable .dept {
     min-width: 360px;
     max-width: 360px;
-  }
-  .accounttable .cancel {
+}
+.accounttable .cancel {
     min-width: 70px;
     max-width: 70px;
-  }
-  .accounttable {
+}
+.accounttable {
     flex-shrink: 0;
-    }
+}
 
-    .firsttable {
-     float:left;
-    }
-    .secondtable {
+.firsttable {
+    float: left;
+}
+.secondtable {
     flex-shrink: 0;
-    }
+}
 
-    .recordtable, .recordtable th, .recordtable td {
-      border: 1px solid #bababa;
+.recordtable,
+.recordtable th,
+.recordtable td {
+    border: 1px solid #bababa;
 
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-    }
-    .recordtable .majority{
-      min-width: 125px;
-      max-width: 125px;
-    }
-    .recordtable .role{
-      min-width: 111px;
-      max-width: 111px;
-    }
-    .recordtable .num{
-      min-width: 85px;
-      max-width: 85px;
-      text-align: center;
-    }
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.recordtable .majority {
+    min-width: 125px;
+    max-width: 125px;
+}
+.recordtable .role {
+    min-width: 111px;
+    max-width: 111px;
+}
+.recordtable .num {
+    min-width: 85px;
+    max-width: 85px;
+    text-align: center;
+}
 
-    .recordtable .extension{
-      min-width: 240px;
-      max-width: 240px;
-    }
+.recordtable .extension {
+    min-width: 240px;
+    max-width: 240px;
+}
 
-    .approvalcontainer {
-      overflow-x: scroll;
-      display: flex; /* Add flexbox */
-      flex-wrap: nowrap; /* Prevent wrapping */
-    }
-    .fiscalcontainer {
-      overflow-x: scroll;
-      display: flex; /* Add flexbox */
-      flex-wrap: nowrap; /* Prevent wrapping */
-      min-width: 950px;
-      max-width: 950px;
-    }
+.approvalcontainer {
+    overflow-x: scroll;
+    display: flex; /* Add flexbox */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+.fiscalcontainer {
+    overflow-x: scroll;
+    display: flex; /* Add flexbox */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    min-width: 950px;
+    max-width: 950px;
+}
 
-    .approvaltable, .approvaltable th, .approvaltable td {
-      border: 1px solid #bababa;
-      min-width: 222px;
-      max-width: 222px;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
+.approvaltable,
+.approvaltable th,
+.approvaltable td {
+    border: 1px solid #bababa;
+    min-width: 222px;
+    max-width: 222px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.approvaltable .name {
+    min-width: 220px;
+    max-width: 220px;
+}
+.approvaltable .email {
+    min-width: 305px;
+    max-width: 305px;
+}
+.approvaltable .department {
+    min-width: 420px;
+    max-width: 420px;
+}
+.approvaltable .datecreated {
+    min-width: 200px;
+    max-width: 200px;
+}
+.approvaltable .cancel {
+    min-width: 80px;
+    max-width: 80px;
+}
+.approvaltable .editname {
+    min-width: 210px;
+    max-width: 210px;
+}
+.approvaltable .editactions {
+    min-width: 120px;
+    max-width: 120px;
+}
+.approvaltable .editrole {
+    min-width: 112px;
+    max-width: 112px;
+}
+.approvaltable .acadname {
+    min-width: 241px;
+    max-width: 241px;
+}
+.secondtable .taskscount {
+    min-width: 70px;
+    max-width: 70px;
+}
+.secondtable .actname {
+    min-width: 270px;
+    max-width: 270px;
+}
+.secondtable .date {
+    min-width: 100px;
+    max-width: 100px;
+}
+.secondtable .outputprogress {
+    min-width: 160px;
+    max-width: 160px;
+}
+.secondtable .reportsecondtable {
+    background-color: rgb(233, 233, 233);
+}
+.btn-gold {
+    color: black;
+    background-color: gold;
+}
 
-    }
-    .approvaltable .name{
-      min-width: 220px;
-      max-width: 220px;
-    }
-    .approvaltable .email{
-      min-width: 305px;
-      max-width: 305px;
-    }
-    .approvaltable .department{
-      min-width: 420px;
-      max-width: 420px;
-    }
-    .approvaltable .datecreated{
-      min-width: 200px;
-      max-width: 200px;
-    }
-    .approvaltable .cancel{
-      min-width: 80px;
-      max-width: 80px;
-    }
-    .approvaltable .editname{
-      min-width: 210px;
-      max-width: 210px;
-    }
-    .approvaltable .editactions{
-      min-width: 120px;
-      max-width: 120px;
-    }
-    .approvaltable .editrole{
-      min-width: 112px;
-      max-width: 112px;
-    }
-    .approvaltable .acadname{
-      min-width: 241px;
-      max-width: 241px;
-    }
-    .secondtable .taskscount {
-      min-width: 70px;
-      max-width: 70px;
-    }
-    .secondtable .actname {
-      min-width: 270px;
-      max-width: 270px;
-    }
-    .secondtable .date {
-      min-width: 100px;
-      max-width: 100px;
-    }
-    .secondtable .outputprogress {
-      min-width: 160px;
-      max-width: 160px;
-    }
-    .secondtable .reportsecondtable {
-      background-color: rgb(233, 233, 233);
-    }
-    .btn-gold {
-      color: black;
-      background-color: gold;
-
-    }
-
-  .btn-gold:hover {
+.btn-gold:hover {
     color: black;
     background-color: transparent;
     border-color: gold;
-  }
-  .btn-info:hover {
+}
+.btn-info:hover {
     color: black;
     background-color: transparent;
     border-color: #0dcaf0;
-  }
+}
 
-  .btn.btn-success:hover {
+.btn.btn-success:hover {
     background-color: transparent;
     color: #198754;
     border-color: #198754;
-  }
-  .btn-hover-outline-primary:hover {
+}
+.btn-hover-outline-primary:hover {
     background-color: transparent;
     border-color: var(--bs-primary);
     color: var(--bs-primary);
-  }
-  .highlight {
+}
+.highlight {
     background-color: #ffc4ca;
 }
 
 .bi-arrow-up {
-  border: none;
-  outline: none;
-  box-shadow: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
 }
 .container-fluid .vlr-table th,
 .container-fluid .vlr-table td {
-  width: 150px;
-  min-width: 150px;
-  max-width: 150px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
 }
 
 #subtask li:hover {
-  background-color: #f2f2f2; /* Replace with the desired hover background color */
-  cursor: pointer;
+    background-color: #f2f2f2; /* Replace with the desired hover background color */
+    cursor: pointer;
 }
 
-.divhover:hover{
-  background-color: #f2f2f2;
-  cursor: pointer;
+.divhover:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
 }
-.containerhover:hover{
-  cursor: pointer;
+.containerhover:hover {
+    cursor: pointer;
 }
-.hrefnav:hover{
-  background-color: darkgreen;
-  color: gold;
-  font-weight: normal;
-
+.hrefnav:hover {
+    background-color: darkgreen;
+    color: gold;
+    font-weight: normal;
 }
-.darkgreenfont{
-  color: darkgreen;
+.hrefnavDelete {
+    background-color: white;
+    color: red;
+    font-weight: normal;
+}
+.hrefnavDelete:hover {
+    background-color: red;
+    color: white;
+    font-weight: normal;
+}
+.darkgreenfont {
+    color: darkgreen;
 }
 
 .navtohover {
-  position: relative;
+    position: relative;
 }
 .success-circle {
-  display: inline-flex; /* Center horizontally and vertically */
-  align-items: center; /* Center vertically */
-  justify-content: center; /* Center horizontally */
-  width: 25px;
-  height: 25px;
-  background-color: gold;
-  color: rgb(0, 0, 0);
-  border-radius: 50%;
-  font-weight: bold;
-  font-size: 85%;
+    display: inline-flex; /* Center horizontally and vertically */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    width: 25px;
+    height: 25px;
+    background-color: gold;
+    color: rgb(0, 0, 0);
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 85%;
 }
 
 .navtohover::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: white;
-  transform: scaleX(0);
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transform: scaleX(0);
 }
 
 .navtohover:hover::after {
-  transform: scaleX(1);
+    transform: scaleX(1);
 }
 .currenthover {
-  position: relative;
-  border-bottom: 3px solid gold;
+    position: relative;
+    border-bottom: 3px solid gold;
 }
 /*container for a selected activity*/
 .maincontainer {
-  width: 100%;
-  background-color: #f9f9f9;
-  margin-right: auto;
-  margin-left: auto;
-  min-height: 1080px;
+    width: 100%;
+    background-color: #f9f9f9;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 1080px;
 }
 
 @media (min-width: 576px) {
-  .maincontainer {
-    max-width: 540px;
-  }
+    .maincontainer {
+        max-width: 540px;
+    }
 }
 
 @media (min-width: 768px) {
-  .maincontainer {
-    max-width: 720px;
-  }
+    .maincontainer {
+        max-width: 720px;
+    }
 }
 
 @media (min-width: 992px) {
-  .maincontainer {
-    max-width: 960px;
-  }
+    .maincontainer {
+        max-width: 960px;
+    }
 }
 
 @media (min-width: 1200px) {
-  .maincontainer {
-    max-width: 1140px;
-  }
+    .maincontainer {
+        max-width: 1140px;
+    }
 }
 .admincontainer {
-  min-width: 1920px;
-  max-width: 1920px;
-  background-color: #f9f9f9;
-  margin-right: auto;
-  margin-left: auto;
-  min-height: 1080px;
+    min-width: 1920px;
+    max-width: 1920px;
+    background-color: #f9f9f9;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 1080px;
 }
 
 @media (min-width: 576px) {
-  .admincontainer {
-    max-width: 540px;
-  }
+    .admincontainer {
+        max-width: 540px;
+    }
 }
 
 @media (min-width: 768px) {
-  .admincontainer {
-    max-width: 720px;
-  }
+    .admincontainer {
+        max-width: 720px;
+    }
 }
 
 @media (min-width: 992px) {
-  .admincontainer {
-    max-width: 960px;
-  }
+    .admincontainer {
+        max-width: 960px;
+    }
 }
 
 @media (min-width: 1200px) {
-  .admincontainer {
-    max-width: 1140px;
-  }
+    .admincontainer {
+        max-width: 1140px;
+    }
 }
-.mainnav{
-  display: flex;
-  flex-wrap: wrap;
-  background-color: white;
-  color: #1b651b;
+.mainnav {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    color: #1b651b;
 }
 .position-triangle {
-  position: relative;
+    position: relative;
 }
 .position-triangle:after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #ebebeb;
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #ebebeb;
 }
-.mainnavpassive{
-  background-color: #ffffff;
-  color: rgb(68, 68, 68);
+.mainnavpassive {
+    background-color: #ffffff;
+    color: rgb(68, 68, 68);
 }
 .mainnavpassive:hover {
-  background-color: rgb(236, 236, 236);
-  color: rgb(39, 39, 39);
-  cursor: pointer;
+    background-color: rgb(236, 236, 236);
+    color: rgb(39, 39, 39);
+    cursor: pointer;
 }
-.sidecont1{
-  position:relative;
-  border-bottom: 1px solid #dee2e6 !important;
-  padding: 5px;
+.sidecont1 {
+    position: relative;
+    border-bottom: 1px solid #dee2e6 !important;
+    padding: 5px;
 }
 
 .sidecont1::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 4px;
-  background-color: gold;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 4px;
+    background-color: gold;
 }
 
-.sidecont2{
-  position:relative;
-  border-bottom: 1px solid #dee2e6 !important;
-  padding: 5px;
+.sidecont2 {
+    position: relative;
+    border-bottom: 1px solid #dee2e6 !important;
+    padding: 5px;
 }
 
 .sidecont2::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 4px;
-  background-color: #1b651b;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 4px;
+    background-color: #1b651b;
 }
 
 .underline-space {
-  border-bottom: 1px solid #000;
+    border-bottom: 1px solid #000;
 }
 .flex-container {
-  display: flex;
-  align-items: center; /* Optional: Align items vertically in the center */
+    display: flex;
+    align-items: center; /* Optional: Align items vertically in the center */
 }
 .inline-div {
-  flex: 1; /* or inline-block, whichever suits your layout better */
+    flex: 1; /* or inline-block, whichever suits your layout better */
 }
 
 .flexmid {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 .fc-event {
-  background-color: darkgreen; /* Change to your desired color */
-  padding-left: 7px;
+    background-color: darkgreen; /* Change to your desired color */
+    padding-left: 7px;
 }
 div {
-  user-select: none;
-
-
+    user-select: none;
 }
 /* Define a CSS keyframes animation for fading in and out */
 @keyframes fadeInOut {
-  0% {
-      opacity: 0; /* Start with no opacity */
-  }
-  50% {
-      opacity: 1; /* Fade in to full opacity */
-  }
-  100% {
-      opacity: 0; /* Fade out to no opacity */
-  }
+    0% {
+        opacity: 0; /* Start with no opacity */
+    }
+    50% {
+        opacity: 1; /* Fade in to full opacity */
+    }
+    100% {
+        opacity: 0; /* Fade out to no opacity */
+    }
 }
 
 /* Apply the animation to the loading span */
 .loadingMessage {
-  animation: fadeInOut 2s infinite; /* Use fadeInOut animation, 2 seconds duration, infinite loop */
+    animation: fadeInOut 2s infinite; /* Use fadeInOut animation, 2 seconds duration, infinite loop */
 }
 /* Default styles for larger screens */
 /* Default styles for larger screens */
 .custom-dropdown {
-  position: relative;
-  width: 100%;
-  cursor: pointer;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
 }
 
 /* Default styles for larger screens */
 .dropdown-text {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 4px;
-  width: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
 }
 
 /* Default styles for larger screens */
 .dropdown-options {
-  display: none;
-  position: absolute;
-  width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  border-top: none;
-  list-style: none;
-  padding: 0;
-  z-index: 1000;
+    display: none;
+    position: absolute;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-top: none;
+    list-style: none;
+    padding: 0;
+    z-index: 1000;
 }
 
 /* Default styles for larger screens */
 .dropdown-options li {
-  padding: 8px;
-  cursor: pointer;
-  border-top: 1px solid #ccc;
+    padding: 8px;
+    cursor: pointer;
+    border-top: 1px solid #ccc;
 }
 
 .hide-option {
-  display: none;
+    display: none;
 }
 /* Default styles for larger screens */
 .dropdown-options li:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 /* Media query for smaller screens (769px to 991px) */
 
 .numberInput {
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  width: 75px;
-  text-align: center;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    width: 75px;
+    text-align: center;
 }
 
 /* Add a focus style similar to Bootstrap */
 .numberInput:focus {
-  border-color: #007bff;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #007bff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .step-wrapper {
-  display: flex;
+    display: flex;
 }
 
 .step {
-  display: block;
-  padding-top: 8px;
-  padding-left: 26px;
-  position: relative;
-  width: 180px;
-  height: 40px;
-  color: rgb(27, 27, 27);
-  background-color: white;
-  text-overflow: ellipsis;
+    display: block;
+    padding-top: 8px;
+    padding-left: 26px;
+    position: relative;
+    width: 180px;
+    height: 40px;
+    color: rgb(27, 27, 27);
+    background-color: white;
+    text-overflow: ellipsis;
 
+    &.highlight {
+        color: white;
+        background-color: green;
 
-
-  &.highlight {
-    color: white;
-    background-color: green;
+        &:after {
+            background-color: green;
+        }
+    }
 
     &:after {
-      background-color: green;
+        content: "";
+        display: block;
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        left: calc(100% - 15px);
+        top: 50%;
+        margin-top: -14px;
+        background-color: white;
+        transform: rotate(45deg);
+        box-shadow: 1px -1px 0 0 #ccc;
+        z-index: 5;
     }
-  }
-
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 28px;
-    height: 28px;
-    left: calc(100% - 15px);
-    top: 50%;
-    margin-top: -14px;
-    background-color: white;
-    transform: rotate(45deg);
-    box-shadow: 1px -1px 0 0 #ccc;
-    z-index: 5;
-  }
 }
 .message-box {
-  display: none;
-  position: absolute;
-  background-color: #505050;
-  padding: 5px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 1; /* Ensure the message box appears above other content */
-  font-size: 10px;
+    display: none;
+    position: absolute;
+    background-color: #505050;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1; /* Ensure the message box appears above other content */
+    font-size: 10px;
 }
 
 /* Style for the element you want to hover over */
 .hover-element {
-  position: relative; /* Important for positioning the message box */
-  cursor: pointer; /* Change cursor to pointer on hover */
+    position: relative; /* Important for positioning the message box */
+    cursor: pointer; /* Change cursor to pointer on hover */
 }
 
 /* Show the message box on hover */
 .step:hover .message-box {
-  display: block;
+    display: block;
 }
 
 .steps {
-  display: block;
-  padding-top: 8px;
-  padding-left: 26px;
-  position: relative;
-  width: 180px;
-  height: 40px;
-  color: white;
-  background-color: green;
+    display: block;
+    padding-top: 8px;
+    padding-left: 26px;
+    position: relative;
+    width: 180px;
+    height: 40px;
+    color: white;
+    background-color: green;
 }
 
-  .steps:hover .message-box {
+.steps:hover .message-box {
     display: block;
-  }
-  .input-container {
+}
+.input-container {
     display: flex;
     align-items: center;
 }
@@ -845,69 +838,73 @@ div {
 }
 
 .pagination {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
 /* Pagination items */
 .pagination .page-item {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /* Disabled items */
 .pagination .page-item.disabled .page-link {
-  background-color: #f0f0f0; /* Change to your preferred disabled color */
-  border-color: #f0f0f0; /* Change to match the background color */
+    background-color: #f0f0f0; /* Change to your preferred disabled color */
+    border-color: #f0f0f0; /* Change to match the background color */
 }
 
 /* Previous and Next page links */
 .pagination .page-item:not(.disabled) .page-link {
-  color: darkgreen; /* Change to your preferred link color */
+    color: darkgreen; /* Change to your preferred link color */
 }
 .pagination .page-item.active .page-link {
-  background-color: darkgreen; /* Change to your preferred active page color */
-  color: white;
+    background-color: darkgreen; /* Change to your preferred active page color */
+    color: white;
 }
 /* Hover effect for page links */
 .pagination .page-item:not(.disabled) .page-link:hover {
-  background-color: rgb(214, 239, 255); /* Change to your preferred hover background color */
- /* Change to match the background color */
+    background-color: rgb(
+        214,
+        239,
+        255
+    ); /* Change to your preferred hover background color */
+    /* Change to match the background color */
 }
 .pagination .page-item.active .page-link:hover {
-  background-color: rgb(214, 239, 255); /* Change to your preferred active page color */
-  color: black;
+    background-color: rgb(
+        214,
+        239,
+        255
+    ); /* Change to your preferred active page color */
+    color: black;
 }
 .imbentobg {
-  background-color:#1b651b;
+    background-color: #1b651b;
 }
 .walangbg {
-  background-color: transparent;
+    background-color: transparent;
 }
 .logincurrenthover {
-  position: relative;
-  border-bottom: 3px solid rgb(255, 255, 255);
+    position: relative;
+    border-bottom: 3px solid rgb(255, 255, 255);
 }
-.currentdiv{
-
-  color:green;
+.currentdiv {
+    color: green;
 }
 /* Add this style to remove hover effect for the specified class */
 .currentdiv:hover {
-  background-color: initial; /* Set the background color to its initial value */
-  color: green; /* Set the text color to inherit from the parent */
-  text-decoration: none; /* Remove underline or other text decorations */
-  cursor: auto; /* Set the cursor style to default */
+    background-color: initial; /* Set the background color to its initial value */
+    color: green; /* Set the text color to inherit from the parent */
+    text-decoration: none; /* Remove underline or other text decorations */
+    cursor: auto; /* Set the cursor style to default */
 }
 
 @media print {
-  /* Add print-specific styles here */
-  body {
-      font-size: 12pt;
-  }
-  /* ... other print styles ... */
+    /* Add print-specific styles here */
+    body {
+        font-size: 12pt;
+    }
+    /* ... other print styles ... */
 }
-.border1px{
-  border-bottom: 1px solid #bababa;
+.border1px {
+    border-bottom: 1px solid #bababa;
 }
-
-
-

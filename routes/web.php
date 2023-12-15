@@ -138,6 +138,8 @@ Route::get('/activitieslist/{projectid}/{department}', [ProjectController::class
     ->name('projects.activities');
 Route::get('/close/{projectid}/{department}', [ProjectController::class, 'closeProject'])
     ->name('projects.close');
+Route::get('/delete/{projectid}', [ProjectController::class, 'deleteProject'])
+    ->name('projects.delete');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');

@@ -81,9 +81,16 @@
                                 <b class="small">Edit Details</b>
                             </a>
                             @endif
+                            @If(Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Close Project</b>
                             </a>
+                            @endif
+                            @If(Auth::user()->role == "Admin")
+                            <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+                                <b class="small">Delete Project</b>
+                            </a>
+                            @endif
 
 
                             <!-- if included
@@ -448,6 +455,28 @@
     </div>
 </div>
 @endif
+
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProjectModalLabel">Delete Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this project?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="deleteProjectForm" method="get" action="{{ route('projects.delete', $indexproject['id']) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Delete Project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -666,4 +666,14 @@ class ProjectController extends Controller
             'projsubmissionid' => $projectterminal->id,
         ]);
     }
+    public function deleteProject($projectid)
+    {
+
+        $project = Project::findorFail($projectid);
+        $department = $project->department;
+
+        $project->delete();
+
+        return redirect()->route('project.show', ['department' => $department]);
+    }
 }

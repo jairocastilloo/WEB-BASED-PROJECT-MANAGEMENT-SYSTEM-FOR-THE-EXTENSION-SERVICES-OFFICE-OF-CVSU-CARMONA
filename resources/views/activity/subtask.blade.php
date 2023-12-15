@@ -183,9 +183,9 @@
 
         $('.submitAccomplishment').click(function(event) {
             event.preventDefault();
-
-
+            $(this).prop('disabled', true);
             var hasError = submitFileError();
+            $(this).prop('disabled', false);
             if (!hasError) {
                 var dataurl = $('#accomplishmentForm').attr('data-url');
                 // Create a data object with the value you want to send
@@ -216,6 +216,10 @@
 
         function submitFileError() {
             var hasError = false;
+            $('#accomplishmentForm div span.invalid-feedback').hide();
+            $('#accomplishmentForm input').removeClass('is-invalid');
+
+
             // File validation
             var fileInput = $('#accomplishment_file')[0];
 
@@ -235,8 +239,9 @@
                 $('#subtaskenddate').parent().next().text('Please input subtask end date.').show();
                 hasError = true;
             }
+            var selectedOptionsContri = $('#subtaskcontributors :selected');
+            if (selectedOptionsContri.length === 0) {
 
-            if ($('#subtaskcontributors'.length === 0)) {
                 $('#subtaskcontributorserror').text('Please add subtask contributor.').show();
             }
             if (fileInput.files && fileInput.files.length > 0) {

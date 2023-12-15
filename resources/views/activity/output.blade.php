@@ -328,7 +328,7 @@
                 var dataurl = $('#addtooutputform').attr('data-url');
                 var formData = new FormData($("#addtooutputform")[0]);
                 // Serialize the input data
-                /**  
+                /**
                  var data1 = $('#addtooutputform').serialize();
                  var formData = new FormData($("#myForm")[0]);*/
                 // Create FormData object for file data

@@ -28,12 +28,10 @@
 
                     <div class="form-floating m-3 mb-2 mt-2">
 
-                        <select id="year-select" class="form-select fw-bold"
-                            style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a department">
+                        <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen;" aria-label="Select a department">
 
                             @foreach ($alldepartments as $alldepartment)
-                            <option class="p-2" value="{{ $alldepartment}}"
-                                {{ $alldepartment == $department ? 'selected' : '' }}>
+                            <option class="p-2" value="{{ $alldepartment}}" {{ $alldepartment == $department ? 'selected' : '' }}>
                                 &nbsp;&nbsp;&nbsp;{{ $alldepartment }}
                             </option>
                             @endforeach
@@ -45,8 +43,7 @@
                     </div>
                     @if (Auth::user()->role === 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
-                            id="addproj">
+                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
                             <b class="small">Create Project</b>
                         </button>
                     </div>
@@ -58,22 +55,17 @@
                     @livewire('project-details', [ 'indexproject' => $indexproject, 'members' => $members ])
 
                     <div class="btn-group dropdown mt-3 shadow">
-                        <button type="button"
-                            class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <b class="small"> <i class="bi bi-list"></i> Menu</b>
                         </button>
                         <div class="dropdown-menu border-warning">
-                            <a class="dropdown-item small hrefnav border-bottom"
-                                href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.display', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Table</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom"
-                                href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.activities', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Activities</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom"
-                                href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Staff and Leaders</b>
                             </a>
                             <a class="dropdown-item small bg-warning border-bottom">
@@ -84,10 +76,16 @@
                                 <b class="small">Edit Details</b>
                             </a>
                             @endif
-                            <a class="dropdown-item small hrefnav border-bottom"
-                                href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
+                            @If(Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Close Project</b>
                             </a>
+                            @endif
+                            @If(Auth::user()->role == "Admin")
+                            <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+                                <b class="small">Delete Project</b>
+                            </a>
+                            @endif
 
 
                             <!-- if included
@@ -145,13 +143,11 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
-                            type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project
                             Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
-                            role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Objectives</button>
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Objectives</button>
                     </li>
 
                 </ul>
@@ -161,16 +157,14 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
-                            <input type="text" class="d-none" name="department" id="department"
-                                value="{{ $department }}">
+                            <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
                             <label for="projectdetails" class="form-label mt-2">Input all the details of the
                                 project</label>
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
-                                <input type="text" class="form-control autocapital" id="projecttitle"
-                                    name="projecttitle">
+                                <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
@@ -178,9 +172,7 @@
                             </div>
                             <div class="container mb-3 p-0">
                                 <label for="projectleader" class="form-label">Project Leader</label>
-                                <select class="selectpicker w-100 border projectleader" name="projectleader[]"
-                                    id="projectleader" multiple aria-label="Select Project Leaders"
-                                    data-live-search="true">
+                                <select class="selectpicker w-100 border projectleader" name="projectleader[]" id="projectleader" multiple aria-label="Select Project Leaders" data-live-search="true">
                                     <option value="0" disabled>Select Project Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
@@ -196,10 +188,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="programtitle" class="form-label">Program Title <span
-                                        class="text-secondary">( if applicable )</span></label>
-                                <input type="text" class="form-control autocapital" id="programtitle"
-                                    name="programtitle">
+                                <label for="programtitle" class="form-label">Program Title <span class="text-secondary">( if applicable )</span></label>
+                                <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
@@ -207,9 +197,7 @@
                             </div>
                             <div class="container mb-3 p-0 programleaderdiv" style="display:none;">
                                 <label for="programleader" class="form-label">Program Leader</label>
-                                <select class="selectpicker w-100 border programleader" name="programleader[]"
-                                    id="programleader" multiple aria-label="Select Program Leaders"
-                                    data-live-search="true">
+                                <select class="selectpicker w-100 border programleader" name="programleader[]" id="programleader" multiple aria-label="Select Program Leaders" data-live-search="true">
                                     <option value="0" disabled>Select Program Leader</option>
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Coordinator' || $member->role === 'Admin')
@@ -228,8 +216,7 @@
                                 <label for="projectstartdate" class="form-label">Project Start Date</label>
 
                                 <div class="input-group date" id="startDatePicker">
-                                    <input type="text" class="form-control" id="projectstartdate"
-                                        name="projectstartdate" placeholder="mm/dd/yyyy" />
+                                    <input type="text" class="form-control" id="projectstartdate" name="projectstartdate" placeholder="mm/dd/yyyy" />
                                     <span class="invalid-feedback" role="alert">
                                         <strong></strong>
                                     </span>
@@ -251,8 +238,7 @@
                                 <label for="projectenddate" class="form-label">Project End Date</label>
 
                                 <div class="input-group date" id="endDatePicker">
-                                    <input type="text" class="form-control" id="projectenddate" name="projectenddate"
-                                        placeholder="mm/dd/yyyy" />
+                                    <input type="text" class="form-control" id="projectenddate" name="projectenddate" placeholder="mm/dd/yyyy" />
                                     <span class="invalid-feedback" role="alert">
                                         <strong></strong>
                                     </span>
@@ -286,20 +272,14 @@
                                 <div class="container-fluid" id="objectiveset">
                                     <div>
                                         <div class="mb-2 row" id="selectobjectives">
-                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded"
-                                                id="objective-input" name="projectobjective[]"
-                                                placeholder="Enter objective">
-                                            <input type="number" name="objectivesetid[]" value="0"
-                                                class="objectivesetid d-none">
-                                            <button type="button"
-                                                class="remove-objective btn btn-sm btn-outline-danger col-3 m-1"
-                                                id="removeobjective"><b class="small">Remove</b></button>
+                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
+                                            <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
+                                            <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
 
 
                                         </div>
                                     </div>
-                                    <button type="button" class="add-objective btn btn-sm btn-outline-success"
-                                        id="addobjective">
+                                    <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
                                         <b class="small">Add Objective</b>
                                     </button>
                                     <br>
@@ -322,13 +302,11 @@
                     <strong></strong>
                 </span>
                 <span class="ms-2 small" id="loadingSpan" style="display: none;">Sending Email..</span>
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b
-                        class="small">Close</b></button>
+                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary try" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b
-                        class="small">Next</b></button>
+                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
                 <button type="button" class="btn shadow rounded btn-primary" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
@@ -338,8 +316,27 @@
     </div>
 </div>
 @endif
-<div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true"
-    data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProjectModalLabel">Delete Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this project?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="deleteProjectForm" method="get" action="{{ route('projects.delete', $indexproject['id']) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Delete Project</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
@@ -357,476 +354,476 @@
 <script src="{{ asset('js/fullcalendar.global.min.js') }}"></script>
 <script src="{{ asset('js/fullcalendarbootstrap5.global.min.js') }}"></script>
 <script>
-var selectElement = $('#year-select');
-var url = "";
+    var selectElement = $('#year-select');
+    var url = "";
 
-$(document).ready(function() {
-
-
-
-    var currentstep = 0;
-    var setcount = 0;
-
-    $('#addmember').hide();
-
-    $('.projectobjective-error strong').hide();
-
-    $('#navbarDropdown').click(function() {
-        // Add your function here
-        $('#account .dropdown-menu').toggleClass('shows');
-    });
-
-    $('#programtitle').on('keyup', function(e) {
-        if ($('#programtitle').val() === "") {
-            $('.programleaderdiv').css('display', 'none');
-        } else {
-            $('.programleaderdiv').css('display', 'inline-block');
-        }
-    });
-    $('#startDatePicker').datepicker();
-
-    $('#startDatePicker').datepicker().on('change', function(e) {
-        $('#startDatePicker').datepicker('hide');
-    });
-    $('#endDatePicker').datepicker();
-
-    $('#endDatePicker').datepicker().on('change', function(e) {
-        $('#endDatePicker').datepicker('hide');
-    });
+    $(document).ready(function() {
 
 
-    $('#currentstartDatePicker').datepicker();
 
-    $('#currentstartDatePicker').datepicker().on('change', function(e) {
-        $('#currentstartDatePicker').datepicker('hide');
-    });
-    $('#currentendDatePicker').datepicker();
+        var currentstep = 0;
+        var setcount = 0;
 
-    $('#currentendDatePicker').datepicker().on('change', function(e) {
-        $('#currentendDatePicker').datepicker('hide');
-    });
+        $('#addmember').hide();
 
-    $('#searchInputProject').on('keyup', function(e) {
+        $('.projectobjective-error strong').hide();
 
-        var inputData = $('#searchInputProject').val().toLowerCase();
-        var x = 0;
-        $('.projectdiv').each(function() {
-            var projectName = $(this).attr('data-name').toLowerCase();
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('#account .dropdown-menu').toggleClass('shows');
+        });
 
-            if (projectName.includes(inputData)) {
-                $(this).show();
-                x++;
+        $('#programtitle').on('keyup', function(e) {
+            if ($('#programtitle').val() === "") {
+                $('.programleaderdiv').css('display', 'none');
             } else {
-                $(this).hide();
+                $('.programleaderdiv').css('display', 'inline-block');
             }
         });
-        $('.countProjects').text(x);
+        $('#startDatePicker').datepicker();
 
-    });
+        $('#startDatePicker').datepicker().on('change', function(e) {
+            $('#startDatePicker').datepicker('hide');
+        });
+        $('#endDatePicker').datepicker();
 
-    $('.step span').each(function() {
-        var $span = $(this);
-        if ($span.text().length > 16) { // Adjust the character limit as needed
-            $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
-        }
-    });
-
-    $('#editIndexproject').click(function() {
-        $('#editProjectModal').modal('show');
-    });
-    try {
-        var activities = <?php echo json_encode($activityArray); ?>;
-        if (!Array.isArray(activities)) {
-            throw new Error('Invalid activities data');
-        }
-
-        var eventsArray = activities.map(function(activity) {
-            return {
-                title: activity.actname,
-                start: activity.actstartdate,
-                end: activity.actenddate
-            };
+        $('#endDatePicker').datepicker().on('change', function(e) {
+            $('#endDatePicker').datepicker('hide');
         });
 
-        var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            themeSystem: 'bootstrap5',
+        $('#currentstartDatePicker').datepicker();
 
-            dateClick: function(info) {
-                alert('Clicked on: ' + info.dateStr);
-            },
+        $('#currentstartDatePicker').datepicker().on('change', function(e) {
+            $('#currentstartDatePicker').datepicker('hide');
+        });
+        $('#currentendDatePicker').datepicker();
 
-            eventClick: function(info) {
-                alert(info.event.title);
-            },
-
-            events: eventsArray
+        $('#currentendDatePicker').datepicker().on('change', function(e) {
+            $('#currentendDatePicker').datepicker('hide');
         });
 
-        calendar.render();
-    } catch (error) {
-        console.error(error);
-    }
+        $('#searchInputProject').on('keyup', function(e) {
 
-    $(document).on('input', '.autocapital', function() {
-        var inputValue = $(this).val();
-        if (inputValue.length > 0) {
-            $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
-        }
-    });
+            var inputData = $('#searchInputProject').val().toLowerCase();
+            var x = 0;
+            $('.projectdiv').each(function() {
+                var projectName = $(this).attr('data-name').toLowerCase();
 
-    $(document).on('click', '#toggleButton', function(event) {
-        $(this).next().slideToggle("fast");
-    });
-
-    $(document).on('click', '.projectdiv', function(event) {
-        event.preventDefault();
-        var department = $(this).attr('data-dept');
-        var projectid = $(this).attr('data-value');
-
-
-        var url =
-            '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
-        url = url.replace(':projectid', projectid);
-        url = url.replace(':department', encodeURIComponent(department));
-
-        window.location.href = url;
-    });
-
-    // Add an event listener to the select element
-    selectElement.change(function() {
-        var selectedOption = $(this).find(':selected');
-        var department = selectedOption.val();
-
-        var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
-        var url = baseUrl.replace(':department', encodeURIComponent(department))
-
-        window.location.href = url;
-    });
-
-    function updateButtons() {
-        if (currentstep == 0) {
-            $('#prevproject').hide();
-            $('#nextproject').show();
-            $('#createproject').hide();
-            $('#tab1-tab').attr('disabled', true);
-            $('#tab1-tab').tab('show');
-        } else if (currentstep == 1) {
-            $('#prevproject').show();
-            $('#nextproject').hide();
-            $('#createproject').show();
-            $('#tab1-tab').removeAttr('disabled');
-            $('#tab2-tab').tab('show');
-        }
-
-    }
-    $('#tab1-tab').click((event) => {
-
-        event.preventDefault();
-
-
-
-        currentstep--;
-        updateButtons();
-
-
-
-    });
-    $('#nextproject').click((event) => {
-
-        event.preventDefault();
-
-
-        var hasError = handleError();
-
-        if (!hasError) {
-            currentstep++;
-            updateButtons();
-        }
-
-
-    });
-    $('#prevproject').click((event) => {
-
-        event.preventDefault();
-
-
-        currentstep--;
-        updateButtons();
-
-
-    });
-
-    $('#addproj').click((event) => {
-
-        event.preventDefault();
-
-        updateButtons();
-        $('#newproject').modal('show');
-    });
-
-    $('#objectiveset').on('click', '.add-objective', function() {
-        var setid = $(this).prev().find('div:first .objectivesetid').val();
-
-        var $newInput = $(
-            '<input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">'
-        );
-        var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' +
-            setid + '" class="objectivesetid d-none">');
-
-        var $newButton2 = $(
-            '<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>'
-        );
-        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1,
-            $newButton2);
-        $(this).prev().append($newDiv);
-
-    });
-    $('#objform form').on('click', '.remove-objective', function() {
-        $(this).parent().remove();
-    });
-    $('#objform form').on('click', '.edit-objective', function() {
-        $(this).prev().focus();
-    });
-    $('#objform form').on('keydown', '.input-objective', function() {
-        if (event.keyCode === 13) {
-            event.preventDefault();
-
-            $(this).blur();
-
-        }
-    });
-
-
-    $('#addset').click((event) => {
-        event.preventDefault();
-        setcount++;
-        var $newInput = $(
-            '<input type="text" class="col-8 m-1 input-objective p-2 rounded autocapital" id="objective-input" name="projectobjective[]" placeholder="Enter objective">'
-        );
-        var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' +
-            setcount + '" class="objectivesetid d-none">');
-        var $newButton2 = $(
-            '<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>'
-        );
-        var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1,
-            $newButton2);
-        var $newDiv1 = $('<div>').append($newDiv);
-        var $newButton3 = $(
-            '<button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective"><b class="small">Add Objective</b></button><hr>'
-        );
-        $('#objectiveset').append($newDiv1, $newButton3);
-
-    });
-
-    $('#createproject').click((event) => {
-        event.preventDefault();
-
-        var hasError = handleError();
-
-        if (!hasError) {
-            $(this).prop('disabled', true);
-            var department = $('#department').val();
-
-
-            var projecturl =
-                '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
-
-            projecturl = projecturl.replace(':department', encodeURIComponent(department));
-
-            var objectiveindex = $('input[name="projectobjective[]"]').length;
-
-            $('input[name="projectobjective[]"]').each(function(index) {
-                $(this).attr('name', 'projectobjective[' + index + ']');
-
-            });
-
-            $('input[name="objectivesetid[]"]').each(function(index) {
-                $(this).attr('name', 'objectivesetid[' + index + ']');
-
-            });
-
-
-            $('#objectiveindex').val(objectiveindex);
-
-            var dataurl = $('#form1').attr('data-url');
-            var data1 = $('#form1').serialize();
-            var data2 = $('#form2').serialize();
-
-            // concatenate serialized data into a single string
-            var formData = data1 + '&' + data2;
-            $('#loadingSpan').css('display', 'block');
-
-            // send data via AJAX
-            $.ajax({
-                url: dataurl,
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    var projectId = response.projectid;
-                    projecturl = projecturl.replace(':projectid', projectId);
-                    $('#loadingSpan').css('display', 'none');
-                    if (response.isMailSent == 0) {
-                        $('#newproject').modal('hide');
-                        $('#mailNotSent').modal('show');
-
-                        // Set the initial countdown value
-                        let countdownValue = 5;
-
-                        // Function to update the countdown value and redirect
-                        function updateCountdown() {
-                            countdownValue -= 1;
-                            $('#countdown').text(countdownValue);
-
-                            if (countdownValue <= 0) {
-                                // Redirect to your desired URL
-                                window.location.href = projecturl; // Replace with your URL
-                            } else {
-                                // Call the function recursively after 1 second (1000 milliseconds)
-                                setTimeout(updateCountdown, 1000);
-                            }
-                        }
-
-                        // Start the countdown
-                        updateCountdown();
-                    } else {
-
-                        window.location.href = projecturl;
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#createprojectError').text(
-                        "There is a problem with server. Contact Administrator!");
-                    $('#loadingSpan').css('display', 'none');
-                    /*
-                                            console.log(xhr.responseText);
-                                            console.log(status);
-                                            console.log(error);
-                                            */
+                if (projectName.includes(inputData)) {
+                    $(this).show();
+                    x++;
+                } else {
+                    $(this).hide();
                 }
             });
+            $('.countProjects').text(x);
+
+        });
+
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 16) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            }
+        });
+
+        $('#editIndexproject').click(function() {
+            $('#editProjectModal').modal('show');
+        });
+        try {
+            var activities = <?php echo json_encode($activityArray); ?>;
+            if (!Array.isArray(activities)) {
+                throw new Error('Invalid activities data');
+            }
+
+            var eventsArray = activities.map(function(activity) {
+                return {
+                    title: activity.actname,
+                    start: activity.actstartdate,
+                    end: activity.actenddate
+                };
+            });
+
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                themeSystem: 'bootstrap5',
+
+                dateClick: function(info) {
+                    alert('Clicked on: ' + info.dateStr);
+                },
+
+                eventClick: function(info) {
+                    alert(info.event.title);
+                },
+
+                events: eventsArray
+            });
+
+            calendar.render();
+        } catch (error) {
+            console.error(error);
         }
-    });
 
-    function formatDate(inputDate) {
-        // Split the inputDate by the '/' character
-        var parts = inputDate.split('/');
+        $(document).on('input', '.autocapital', function() {
+            var inputValue = $(this).val();
+            if (inputValue.length > 0) {
+                $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+            }
+        });
 
-        // Rearrange the parts into the "YYYY-MM-DD" format
-        var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+        $(document).on('click', '#toggleButton', function(event) {
+            $(this).next().slideToggle("fast");
+        });
 
-        return formattedDate;
-    }
+        $(document).on('click', '.projectdiv', function(event) {
+            event.preventDefault();
+            var department = $(this).attr('data-dept');
+            var projectid = $(this).attr('data-value');
 
-    function handleError() {
 
-        if (currentstep === 0) {
+            var url =
+                '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+            url = url.replace(':projectid', projectid);
+            url = url.replace(':department', encodeURIComponent(department));
 
-            var hasErrors = false;
+            window.location.href = url;
+        });
 
-            $('.invalid-feedback strong').text('');
-            $('.is-invalid').removeClass('is-invalid');
+        // Add an event listener to the select element
+        selectElement.change(function() {
+            var selectedOption = $(this).find(':selected');
+            var department = selectedOption.val();
 
-            var projectTitle = $('#projecttitle').val();
+            var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
+            var url = baseUrl.replace(':department', encodeURIComponent(department))
 
-            var projectLeader = $('#projectleader').val();
+            window.location.href = url;
+        });
 
-            var programTitle = $('#programtitle').val();
-
-            var programLeader = $('#programleader').val();
-
-            var projectStartDate = formatDate($('#projectstartdate').val());
-            var projectEndDate = formatDate($('#projectenddate').val());
-
-            // Validation for Project Title
-            if (projectTitle.trim() === '') {
-                $('#projecttitle').addClass('is-invalid');
-                $('#projecttitle').next('.invalid-feedback').find('strong').text('Project Title is required.');
-                hasErrors = true;
+        function updateButtons() {
+            if (currentstep == 0) {
+                $('#prevproject').hide();
+                $('#nextproject').show();
+                $('#createproject').hide();
+                $('#tab1-tab').attr('disabled', true);
+                $('#tab1-tab').tab('show');
+            } else if (currentstep == 1) {
+                $('#prevproject').show();
+                $('#nextproject').hide();
+                $('#createproject').show();
+                $('#tab1-tab').removeAttr('disabled');
+                $('#tab2-tab').tab('show');
             }
 
-            // Validation for Project Leader
-            if (projectLeader.length === 0) {
-                $('.projectleader').addClass('is-invalid');
-                $('.projectleader').next('.invalid-feedback').find('strong').text(
-                    'Project Leader is required.');
-                hasErrors = true;
-            }
-            /**
-                            // Validation for Program Title
-                            if (programTitle.trim() === '') {
-                                $('#programtitle').addClass('is-invalid');
-                                $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
-                                hasErrors = true;
-                            }
-            */
-            // Validation for Program Leader
-            if (programLeader.length === 0) {
-                $('.programleader').addClass('is-invalid');
-                $('.programleader').next('.invalid-feedback').find('strong').text(
-                    'Program Leader is required.');
-                hasErrors = true;
-            }
-            if ($('#projectstartdate').val() == "") {
-                $('#projectstartdate').parent().addClass('is-invalid');
-                $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text(
-                    'Project Start Date is required.');
+        }
+        $('#tab1-tab').click((event) => {
 
-                hasErrors = true;
-            }
-            if ($('#projectenddate').val() == "") {
-                $('#projectenddate').parent().addClass('is-invalid');
-                $('#projectenddate').parent().next('.invalid-feedback').find('strong').text(
-                    'Project End Date is required.');
-                hasErrors = true;
+            event.preventDefault();
+
+
+
+            currentstep--;
+            updateButtons();
+
+
+
+        });
+        $('#nextproject').click((event) => {
+
+            event.preventDefault();
+
+
+            var hasError = handleError();
+
+            if (!hasError) {
+                currentstep++;
+                updateButtons();
             }
 
-            if (projectEndDate <= projectStartDate) {
-                $('#projectenddate').parent().addClass('is-invalid');
-                $('#projectenddate').parent().next('.invalid-feedback').find('strong').text(
-                    'Project End Date must be after the Start Date.');
-                hasErrors = true;
+
+        });
+        $('#prevproject').click((event) => {
+
+            event.preventDefault();
+
+
+            currentstep--;
+            updateButtons();
+
+
+        });
+
+        $('#addproj').click((event) => {
+
+            event.preventDefault();
+
+            updateButtons();
+            $('#newproject').modal('show');
+        });
+
+        $('#objectiveset').on('click', '.add-objective', function() {
+            var setid = $(this).prev().find('div:first .objectivesetid').val();
+
+            var $newInput = $(
+                '<input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">'
+            );
+            var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' +
+                setid + '" class="objectivesetid d-none">');
+
+            var $newButton2 = $(
+                '<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>'
+            );
+            var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1,
+                $newButton2);
+            $(this).prev().append($newDiv);
+
+        });
+        $('#objform form').on('click', '.remove-objective', function() {
+            $(this).parent().remove();
+        });
+        $('#objform form').on('click', '.edit-objective', function() {
+            $(this).prev().focus();
+        });
+        $('#objform form').on('keydown', '.input-objective', function() {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+
+                $(this).blur();
+
             }
-            /*
-                            // Validation for Project Start Date
-                            if (projectStartDate.getFullYear() !== targetYear) {
-                                $('#projectstartdate').addClass('is-invalid');
-                                $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
-                                hasErrors = true;
-                            }
+        });
 
-                            // Validation for Project End Date
-                            if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
-                                $('#projectenddate').addClass('is-invalid');
-                                $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
-                                hasErrors = true;
-                            }
-            */
-            return hasErrors;
 
-        } else if (currentstep === 1) {
-            var hasErrors = false;
+        $('#addset').click((event) => {
+            event.preventDefault();
+            setcount++;
+            var $newInput = $(
+                '<input type="text" class="col-8 m-1 input-objective p-2 rounded autocapital" id="objective-input" name="projectobjective[]" placeholder="Enter objective">'
+            );
+            var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' +
+                setcount + '" class="objectivesetid d-none">');
+            var $newButton2 = $(
+                '<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>'
+            );
+            var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1,
+                $newButton2);
+            var $newDiv1 = $('<div>').append($newDiv);
+            var $newButton3 = $(
+                '<button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective"><b class="small">Add Objective</b></button><hr>'
+            );
+            $('#objectiveset').append($newDiv1, $newButton3);
 
-            if ($('input[name="projectobjective[]"]').length === 0) {
-                $('.projectobjective-error strong').show();
-                hasErrors = true;
-            } else {
-                $('input[name="projectobjective[]"]').each(function(index, element) {
+        });
 
-                    if ($(element).val() === "") {
-                        $('.projectobjective-error strong').show();
-                        hasErrors = true;
-                    }
+        $('#createproject').click((event) => {
+            event.preventDefault();
+
+            var hasError = handleError();
+
+            if (!hasError) {
+                $(this).prop('disabled', true);
+                var department = $('#department').val();
+
+
+                var projecturl =
+                    '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+
+                projecturl = projecturl.replace(':department', encodeURIComponent(department));
+
+                var objectiveindex = $('input[name="projectobjective[]"]').length;
+
+                $('input[name="projectobjective[]"]').each(function(index) {
+                    $(this).attr('name', 'projectobjective[' + index + ']');
 
                 });
 
+                $('input[name="objectivesetid[]"]').each(function(index) {
+                    $(this).attr('name', 'objectivesetid[' + index + ']');
+
+                });
+
+
+                $('#objectiveindex').val(objectiveindex);
+
+                var dataurl = $('#form1').attr('data-url');
+                var data1 = $('#form1').serialize();
+                var data2 = $('#form2').serialize();
+
+                // concatenate serialized data into a single string
+                var formData = data1 + '&' + data2;
+                $('#loadingSpan').css('display', 'block');
+
+                // send data via AJAX
+                $.ajax({
+                    url: dataurl,
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        var projectId = response.projectid;
+                        projecturl = projecturl.replace(':projectid', projectId);
+                        $('#loadingSpan').css('display', 'none');
+                        if (response.isMailSent == 0) {
+                            $('#newproject').modal('hide');
+                            $('#mailNotSent').modal('show');
+
+                            // Set the initial countdown value
+                            let countdownValue = 5;
+
+                            // Function to update the countdown value and redirect
+                            function updateCountdown() {
+                                countdownValue -= 1;
+                                $('#countdown').text(countdownValue);
+
+                                if (countdownValue <= 0) {
+                                    // Redirect to your desired URL
+                                    window.location.href = projecturl; // Replace with your URL
+                                } else {
+                                    // Call the function recursively after 1 second (1000 milliseconds)
+                                    setTimeout(updateCountdown, 1000);
+                                }
+                            }
+
+                            // Start the countdown
+                            updateCountdown();
+                        } else {
+
+                            window.location.href = projecturl;
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $('#createprojectError').text(
+                            "There is a problem with server. Contact Administrator!");
+                        $('#loadingSpan').css('display', 'none');
+                        /*
+                                                console.log(xhr.responseText);
+                                                console.log(status);
+                                                console.log(error);
+                                                */
+                    }
+                });
             }
-            return hasErrors;
+        });
+
+        function formatDate(inputDate) {
+            // Split the inputDate by the '/' character
+            var parts = inputDate.split('/');
+
+            // Rearrange the parts into the "YYYY-MM-DD" format
+            var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+
+            return formattedDate;
         }
 
-    }
+        function handleError() {
 
-});
+            if (currentstep === 0) {
+
+                var hasErrors = false;
+
+                $('.invalid-feedback strong').text('');
+                $('.is-invalid').removeClass('is-invalid');
+
+                var projectTitle = $('#projecttitle').val();
+
+                var projectLeader = $('#projectleader').val();
+
+                var programTitle = $('#programtitle').val();
+
+                var programLeader = $('#programleader').val();
+
+                var projectStartDate = formatDate($('#projectstartdate').val());
+                var projectEndDate = formatDate($('#projectenddate').val());
+
+                // Validation for Project Title
+                if (projectTitle.trim() === '') {
+                    $('#projecttitle').addClass('is-invalid');
+                    $('#projecttitle').next('.invalid-feedback').find('strong').text('Project Title is required.');
+                    hasErrors = true;
+                }
+
+                // Validation for Project Leader
+                if (projectLeader.length === 0) {
+                    $('.projectleader').addClass('is-invalid');
+                    $('.projectleader').next('.invalid-feedback').find('strong').text(
+                        'Project Leader is required.');
+                    hasErrors = true;
+                }
+                /**
+                                // Validation for Program Title
+                                if (programTitle.trim() === '') {
+                                    $('#programtitle').addClass('is-invalid');
+                                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
+                                    hasErrors = true;
+                                }
+                */
+                // Validation for Program Leader
+                if (programLeader.length === 0) {
+                    $('.programleader').addClass('is-invalid');
+                    $('.programleader').next('.invalid-feedback').find('strong').text(
+                        'Program Leader is required.');
+                    hasErrors = true;
+                }
+                if ($('#projectstartdate').val() == "") {
+                    $('#projectstartdate').parent().addClass('is-invalid');
+                    $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text(
+                        'Project Start Date is required.');
+
+                    hasErrors = true;
+                }
+                if ($('#projectenddate').val() == "") {
+                    $('#projectenddate').parent().addClass('is-invalid');
+                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text(
+                        'Project End Date is required.');
+                    hasErrors = true;
+                }
+
+                if (projectEndDate <= projectStartDate) {
+                    $('#projectenddate').parent().addClass('is-invalid');
+                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text(
+                        'Project End Date must be after the Start Date.');
+                    hasErrors = true;
+                }
+                /*
+                                // Validation for Project Start Date
+                                if (projectStartDate.getFullYear() !== targetYear) {
+                                    $('#projectstartdate').addClass('is-invalid');
+                                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                                    hasErrors = true;
+                                }
+
+                                // Validation for Project End Date
+                                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
+                                    $('#projectenddate').addClass('is-invalid');
+                                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+                                    hasErrors = true;
+                                }
+                */
+                return hasErrors;
+
+            } else if (currentstep === 1) {
+                var hasErrors = false;
+
+                if ($('input[name="projectobjective[]"]').length === 0) {
+                    $('.projectobjective-error strong').show();
+                    hasErrors = true;
+                } else {
+                    $('input[name="projectobjective[]"]').each(function(index, element) {
+
+                        if ($(element).val() === "") {
+                            $('.projectobjective-error strong').show();
+                            hasErrors = true;
+                        }
+
+                    });
+
+                }
+                return hasErrors;
+            }
+
+        }
+
+    });
 </script>
 @endsection
