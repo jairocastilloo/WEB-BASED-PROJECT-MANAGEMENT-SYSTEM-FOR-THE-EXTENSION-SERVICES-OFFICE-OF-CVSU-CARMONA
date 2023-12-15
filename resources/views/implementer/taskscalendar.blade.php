@@ -70,10 +70,11 @@
 
             var eventsArray = subtasksArray.map(function(subtaskArray) {
                 return {
-                    title: subtaskArray.subtask_name,
+                    id: subtaskArray.id,
+                    title: subtaskArray.subtask_name + ' (Due)',
                     start: subtaskArray.subduedate,
                     allDay: true,
-                    backgroundColor: 'green' // Set to-do date color
+                    backgroundColor: '#dc3545' // Set to-do date color
                 };
             });
 
@@ -81,10 +82,11 @@
             scheduledSubtasksArray.forEach(function(scheduledSubtaskArray) {
                 if (scheduledSubtaskArray.subduedate) {
                     eventsArray.push({
-                        title: scheduledSubtaskArray.subduedate + ' (Due Date)',
+                        id: scheduledSubtaskArray.id,
+                        title: scheduledSubtaskArray.subtask_name + ' (To Do)',
                         start: scheduledSubtaskArray.scheduledDate,
                         allDay: true,
-                        backgroundColor: 'red' // Set due date color
+                        backgroundColor: '#0d6efd' // Set due date color
                     });
                 }
             });
@@ -93,17 +95,25 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 themeSystem: 'bootstrap5',
-
-                dateClick: function(info) {
-                    alert('Clicked on: ' + info.dateStr);
-                },
-
+                /*
+                                dateClick: function(info) {
+                                    alert('Clicked on: ' + info.dateStr);
+                                },
+                */
                 eventClick: function(info) {
-                    alert(info.event.title);
+                    var url = '{{ route("subtasks.display", ["subtaskid" => ":subtaskid", "subtaskname" => ":subtaskname"]) }}';
+                    url = url.replace(':subtaskid', info.event.id);
+                    url = url.replace(':subtaskname', info.event.title);
+                    window.location.href = url;
                 },
 
-                eventRender: function(info) {
-                    // Customize event rendering here if needed
+                eventContent: function(arg) {
+                    var maxTitleLength = 17; // Adjust the maximum length as needed
+                    var truncatedTitle = arg.event.title.length > maxTitleLength ? arg.event.title.substring(0, maxTitleLength) + '...' : arg.event.title;
+
+                    return {
+                        html: '<div class="event-content fcnavhoverr" style="color: white;" title="' + arg.event.title + '">' + truncatedTitle + '</div>'
+                    };
                 },
 
                 events: eventsArray

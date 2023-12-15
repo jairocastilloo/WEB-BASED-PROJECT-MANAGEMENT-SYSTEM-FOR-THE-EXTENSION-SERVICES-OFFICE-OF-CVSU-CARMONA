@@ -923,6 +923,9 @@ div {
     color: black;
     cursor: pointer;
 }
+.fcnavhoverr:hover {
+    cursor: pointer;
+}
 /*
 .fc-today {
     background-color: none;

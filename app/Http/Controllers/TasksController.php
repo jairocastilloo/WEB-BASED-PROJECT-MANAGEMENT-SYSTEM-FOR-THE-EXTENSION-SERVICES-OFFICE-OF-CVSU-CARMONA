@@ -23,14 +23,14 @@ class TasksController extends Controller
     {
         /*
         $currentDate = Carbon::now();
-       
+
         $currentfiscalyear = FiscalYear::where('startdate', '<=', $currentDate)
             ->where('enddate', '>=', $currentDate)
             ->first();
         $currentfiscalyearid = $currentfiscalyear->id;
         $inCurrentYear = true;
         $fiscalyears = FiscalYear::all();
-       
+
 
 
         return view('implementer.index', [
@@ -50,6 +50,7 @@ class TasksController extends Controller
         $subtasks = $user->subtasks;
         $subtasksArray = $subtasks->map(function ($subtask) {
             return (object) [
+                'id' => $subtask->id,
                 'subtask_name' => $subtask->subtask_name,
                 'subduedate' => $subtask->subduedate,
             ];
@@ -62,6 +63,7 @@ class TasksController extends Controller
             ->get();
         $scheduledSubtasksArray = $scheduledSubtasks->map(function ($scheduledSubtask) {
             return (object) [
+                'id' => $scheduledSubtask->subtask_id,
                 'subtask_name' => $scheduledSubtask->subtask_name,
                 'subduedate' => $scheduledSubtask->subduedate,
                 'scheduledDate' => $scheduledSubtask->scheduledDate
