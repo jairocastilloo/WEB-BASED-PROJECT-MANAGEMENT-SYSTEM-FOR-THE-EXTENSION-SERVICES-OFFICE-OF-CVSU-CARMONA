@@ -92,6 +92,8 @@ Route::prefix('/subtasks')->group(function () {
     Route::post('/accepthours', [SubtaskController::class, 'accepthours'])->name('hours.accept');
     Route::post('/addsubtaskassignee', [SubtaskController::class, 'addsubtaskassignee'])->name('add.subtaskassignee');
     Route::post('/addtosubtask', [SubtaskController::class, 'addtosubtask'])->name('addto.subtask');
+    Route::post('/delete}', [SubtaskController::class, 'deleteSubtask'])
+        ->name('subtask.delete');
 });
 
 Route::prefix('/activities')->group(function () {
@@ -103,6 +105,8 @@ Route::prefix('/activities')->group(function () {
     Route::post('/setnosubtask', [ActivityController::class, 'setnosubtask'])->name('set.nosubtask');
     Route::get('/{activityid}/{activityname}/complyactivity', [ActivityController::class, 'complyactivity'])->name('comply.activity');
     Route::post('/addtoactivity', [ActivityController::class, 'addtoactivity'])->name('addto.activity');
+    Route::get('/delete/{activityid}', [ActivityController::class, 'deleteActivity'])
+        ->name('activity.delete');
 });
 
 Route::prefix('/participationhours')->group(function () {

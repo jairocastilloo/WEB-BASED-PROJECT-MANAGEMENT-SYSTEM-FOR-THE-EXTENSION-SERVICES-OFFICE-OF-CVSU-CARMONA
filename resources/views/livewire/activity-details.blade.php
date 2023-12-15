@@ -39,6 +39,9 @@
             <!--<a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>-->
             <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Close
                     Activity</b></a>
+            <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-toggle="modal" data-bs-target="#deleteActivityModal">
+                <b class="small">Delete Activity</b>
+            </a>
         </div>
     </div>
     @endif

@@ -272,4 +272,16 @@ class SubtaskController extends Controller
             'submissionid' => $subtaskcontribution->id,
         ]);
     }
+
+    public function deleteSubtask(Request $request)
+    {
+        $subtaskid = $request->input('subtaskId');
+        $subtask = Subtask::findorFail($subtaskid);
+        $activityId = $subtask->activity_id;
+        $subtask->delete();
+
+        return response()->json([
+            'actid' => $activityId,
+        ]);
+    }
 }

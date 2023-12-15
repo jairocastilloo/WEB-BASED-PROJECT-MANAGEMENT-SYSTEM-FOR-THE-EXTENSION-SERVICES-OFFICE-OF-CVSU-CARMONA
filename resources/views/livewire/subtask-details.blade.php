@@ -1,6 +1,5 @@
 <div>
-    <div class="basiccont word-wrap shadow" data-value="{{ $subtask['id'] }}"
-        data-name="{{ $subtask['subtask_name'] }}">
+    <div class="basiccont word-wrap shadow" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
         <div class="border-bottom ps-3 pt-2 bggreen">
             <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
         </div>
@@ -17,23 +16,22 @@
         </p>
         @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
         <div class="btn-group dropdown ms-3 mb-3 shadow">
-            <button type="button"
-                class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
-                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <b class="small"> <i class="bi bi-list"></i> Menu</b>
             </button>
             <div class="dropdown-menu border border-1 border-warning">
                 @If ($subtask['status'] == "Incomplete")
-                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal"
-                    data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment
+                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment
                         Report</b></a>
-                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal"
-                    data-bs-target="#markAsCompletedModal">
+                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#markAsCompletedModal">
                     <b class="small">Mark as Completed</b>
                 </a>
                 @endif
                 <a class="dropdown-item small hrefnav" href="#" id="editdetails-btn">
                     <b class="small">Edit Details</b></a>
+                <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-toggle="modal" data-bs-target="#deleteSubtaskModal">
+                    <b class="small">Delete Subtask</b>
+                </a>
             </div>
         </div>
         @endif
@@ -41,8 +39,7 @@
     </div>
 
 
-    <div class="modal fade" id="markAsCompletedModal" tabindex="-1" aria-labelledby="markAsCompletedModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="markAsCompletedModal" tabindex="-1" aria-labelledby="markAsCompletedModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -53,8 +50,7 @@
                     <p>Are you sure you want to mark "{{ $subtask['subtask_name'] }}" as completed?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                        id="closeModal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Cancel</button>
                     <button type="button" class="btn btn-primary" wire:click="markAsCompleted">Mark Completed</button>
                 </div>
             </div>
@@ -64,11 +60,11 @@
 
 
     <script>
-    document.addEventListener('livewire:load', function() {
-        Livewire.on('closeModal', function() {
-            document.getElementById('closeModal').click();
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('closeModal', function() {
+                document.getElementById('closeModal').click();
+            });
         });
-    });
     </script>
 
 </div>

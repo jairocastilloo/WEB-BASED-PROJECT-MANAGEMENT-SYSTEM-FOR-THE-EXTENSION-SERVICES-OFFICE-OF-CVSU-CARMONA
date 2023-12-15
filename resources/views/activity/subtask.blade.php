@@ -143,6 +143,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="deleteSubtaskModal" tabindex="-1" aria-labelledby="deleteSubtaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteActivitytModalLabel">Delete Subtask</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this subtask?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="deleteSubtaskForm" data-url="{{ route('subtask.delete') }}">
+                    @csrf
+                    <input type="hidden" value="{{ $subtask['id']}}" name="subtaskId">
+                    <button type="button" id="deleteSubtask" class="btn btn-danger">Delete Subtask</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 @section('scripts')
@@ -180,6 +201,37 @@
         });
 
         $('#subtaskcontributors').selectpicker('refresh');
+
+        $('#deleteSubtask').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#deleteSubtaskForm').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#deleteSubtaskForm').serialize();
+
+            var url =
+                '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
+
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+
+                    url = url.replace(':activityid', response.actid);
+                    window.location.href = url;
+
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+
+
+        });
 
         $('.submitAccomplishment').click(function(event) {
             event.preventDefault();

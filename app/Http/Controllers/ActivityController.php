@@ -419,4 +419,18 @@ class ActivityController extends Controller
             'actsubmissionid' => $activitycontribution->id,
         ]);
     }
+
+    public function deleteActivity($activityid)
+    {
+
+        $activity = Activity::findorFail($activityid);
+
+        $project = Project::findOrFail($activity->project_id);
+
+        $department = $project->department;
+
+        $activity->delete();
+
+        return redirect()->route('projects.display', ['projectid' => $project->id, 'department' => $department]);
+    }
 }
