@@ -59,7 +59,7 @@ class TasksController extends Controller
         $scheduledSubtasks = $user->scheduledSubtasks()
             ->join('subtasks as st1', 'scheduled_tasks.subtask_id', '=', 'st1.id')
             ->orderBy('scheduled_tasks.scheduledDate', 'asc')
-            ->select('st1.subtask_name', 'st1.subduedate', 'st1.created_at', 'scheduled_tasks.scheduledDate')
+            ->select('scheduled_tasks.subtask_id', 'st1.subtask_name', 'st1.subduedate', 'st1.created_at', 'scheduled_tasks.scheduledDate')
             ->get();
         $scheduledSubtasksArray = $scheduledSubtasks->map(function ($scheduledSubtask) {
             return (object) [
