@@ -908,3 +908,36 @@ div {
 .border1px {
     border-bottom: 1px solid #bababa;
 }
+
+.fc-event {
+    margin-top: 10px;
+    margin-bottom: 10px; /* Adjust the value as needed */
+}
+
+.fc-daygrid-event,
+.fc-list-event {
+    background-color: #198754;
+}
+.fcnavhover:hover {
+    background-color: darkgreen;
+    color: black;
+    cursor: pointer;
+}
+/*
+.fc-today {
+    background-color: none;
+    border: 1px solid gold;
+}
+.fc-day {
+    background-color: green;
+    color: white;
+}
+
+.fc-day:hover {
+    background-color: green;
+}
+.fc-day-header {
+    background-color: black;
+    color: white;
+}
+*/

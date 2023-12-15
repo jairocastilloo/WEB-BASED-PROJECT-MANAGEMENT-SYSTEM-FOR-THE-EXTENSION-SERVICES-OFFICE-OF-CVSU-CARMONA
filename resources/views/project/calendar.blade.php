@@ -439,6 +439,7 @@
 
             var eventsArray = activities.map(function(activity) {
                 return {
+                    id: activity.id,
                     title: activity.actname,
                     start: activity.actstartdate,
                     end: activity.actenddate
@@ -449,13 +450,21 @@
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 themeSystem: 'bootstrap5',
-
-                dateClick: function(info) {
-                    alert('Clicked on: ' + info.dateStr);
+                /*
+                                dateClick: function(info) {
+                                    alert('Clicked on: ' + info.dateStr);
+                                },
+                */
+                eventClick: function(info) {
+                    var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
+                    url = url.replace(':activityid', info.event.id);
+                    window.location.href = url;
                 },
 
-                eventClick: function(info) {
-                    alert(info.event.title);
+                eventContent: function(arg) {
+                    return {
+                        html: '<div class="event-content fcnavhover" style="color: white;">' + arg.event.title + '</div>'
+                    };
                 },
 
                 events: eventsArray

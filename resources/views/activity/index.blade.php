@@ -355,21 +355,21 @@
             url = url.replace(':department', encodeURIComponent(department));
             window.location.href = url;
         });
+        /*
+                $(document).on('click', '.selectoutputdiv', function() {
+                    if (buttonClicked) {
+                        return; // Skip the handling for .selectoutputdiv
+                    }
+                    var outputtype = $(this).attr('data-value');
+                    var actid = $('#actid').val();
 
-        $(document).on('click', '.selectoutputdiv', function() {
-            if (buttonClicked) {
-                return; // Skip the handling for .selectoutputdiv
-            }
-            var outputtype = $(this).attr('data-value');
-            var actid = $('#actid').val();
-
-            var url =
-                '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
-            url = url.replace(':activityid', actid);
-            url = url.replace(':outputtype', outputtype);
-            window.location.href = url;
-        });
-
+                    var url =
+                        '{{ route("get.output", ["activityid" => ":activityid", "outputtype" => ":outputtype"]) }}';
+                    url = url.replace(':activityid', actid);
+                    url = url.replace(':outputtype', outputtype);
+                    window.location.href = url;
+                });
+        */
         $(document).on('click', '.subtaskdiv', function() {
 
             event.preventDefault();

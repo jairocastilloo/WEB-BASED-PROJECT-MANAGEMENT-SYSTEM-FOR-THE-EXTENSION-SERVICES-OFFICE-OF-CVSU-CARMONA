@@ -304,6 +304,7 @@ class ProjectController extends Controller
         $activities = $indexproject->activities;
         $activityArray = $activities->map(function ($activity) {
             return (object) [
+                'id' => $activity->id,
                 'actname' => $activity->actname,
                 'actstartdate' => $activity->actstartdate,
                 'actenddate' => $activity->actenddate,

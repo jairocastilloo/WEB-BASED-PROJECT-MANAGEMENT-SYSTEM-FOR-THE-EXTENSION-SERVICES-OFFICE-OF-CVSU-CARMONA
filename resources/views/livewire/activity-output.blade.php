@@ -8,7 +8,7 @@
         $outputarray = ['Capacity Building', 'IEC Material', 'Advisory Services', 'Others'];
         @endphp
         @foreach ($outputTypes as $outputType)
-        <div class="border-bottom p-2" data-value="{{ $outputType }}">
+        <div class="border-bottom p-2 selectoutputdiv" data-value="{{ $outputType }}">
             @php
             $outputarray = array_diff($outputarray, [$outputType]);
             @endphp
