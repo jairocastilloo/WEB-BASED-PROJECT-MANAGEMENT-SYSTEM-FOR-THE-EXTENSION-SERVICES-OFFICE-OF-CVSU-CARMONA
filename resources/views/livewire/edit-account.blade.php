@@ -35,8 +35,8 @@
 
     </div>
 
-    <nav class="navbar navbar-expand-lg">
-        <ul class="pagination justify-content-center">
+    <nav class="navbar navbar-expand-lg d-flex justify-content-center">
+        <ul class="pagination">
             <li class="page-item">
                 <a class="page-link" wire:click="changePage(1)">First</a>
             </li>
@@ -75,7 +75,7 @@
     </nav>
 
 
-    <div class="container-fluid approvalcontainer">
+    <div class="tablecontainer">
         <table class="approvaltable">
             <thead>
                 <tr>
@@ -121,6 +121,7 @@
             </tbody>
         </table>
     </div>
+
     <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -325,8 +326,8 @@
                     switch (searchCriteria) {
                         case 'name':
                             Livewire.emit('findAccount', searchInput, 1)
-      
-                      break;
+
+                            break;
                         case 'email':
                             Livewire.emit('findAccount', searchInput, 2)
                             break;

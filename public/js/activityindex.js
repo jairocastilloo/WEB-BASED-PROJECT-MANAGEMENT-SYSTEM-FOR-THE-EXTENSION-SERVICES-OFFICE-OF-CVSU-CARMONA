@@ -44,7 +44,7 @@ $(document).ready(function () {
             <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
         </div>
         <div class="col-3">
-            <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+            <button type="button" class="btn btn-danger btn-sm removeoutput-btn">Remove</button>
         </div>
     </div>`;
 
@@ -53,6 +53,7 @@ $(document).ready(function () {
         } else if (selectedOutputType === "Advisory Services") {
             $(".outputnamediv:first h6").text("Number of Recipients");
         } else if (selectedOutputType === "Others") {
+
             $(".outputnamediv:first h6").text("Untitled Output");
         }
 
@@ -73,13 +74,14 @@ $(document).ready(function () {
         $(this).next().removeClass("d-none");
         $(this).next().find("input").focus();
     });
-
+/*
     $(document).on("click", ".removeoutput-btn", function () {
+        console.log("sadasd");
         var parentElement = $(this).parent().parent();
         parentElement.prev().remove();
         parentElement.remove();
     });
-
+*/
     $(".addmoreoutput-btn").click(function (event) {
         event.preventDefault();
 
@@ -96,7 +98,7 @@ $(document).ready(function () {
     <input type="text" class="form-control w-100" name="newoutput[]" id="output-input">
   </div>
   <div class="col-3">
-    <button type="button" class="btn btn-danger btn-sm" id="removeoutput-btn">Remove</button>
+    <button type="button" class="btn btn-danger btn-sm removeoutput-btn">Remove</button>
   </div>
 </div>`;
 
@@ -117,26 +119,33 @@ $(document).ready(function () {
             $(this).closest(".outputinputdiv").addClass("d-none");
         }
     });
-    $(document).on("focus", ".outputinputdiv input", function (event) {
-        var isClicked = false;
+$(document).on("focus", ".outputinputdiv input", function (event) {
 
-        $(document).on("click", function () {
-            isClicked = true;
-        });
 
-        $(this).on("blur", function () {
-            if (!isClicked) {
-                event.preventDefault();
-                if ($(this).val() === "") {
-                    $(this).val("Untitled Output");
-                }
-                var $outputDiv = $(this).closest(".outputinputdiv").prev();
-                $outputDiv.find("h6").text($(this).val());
-                $outputDiv.removeClass("d-none");
-                $(this).closest(".outputinputdiv").addClass("d-none");
+    $(this).on("blur", function (event) {
+
+            event.preventDefault();
+            if ($(this).val() === "") {
+                $(this).val("Untitled Output");
             }
-        });
+            var $outputDiv = $(this).closest(".outputinputdiv").prev();
+            $outputDiv.find("h6").text($(this).val());
+            $outputDiv.removeClass("d-none");
+            $(this).closest(".outputinputdiv").addClass("d-none");
+
     });
+
+    $(".removeoutput-btn").on("mousedown", function (event) {
+        event.preventDefault();
+        var parentElement = $(this).parent().parent();
+        parentElement.prev().remove();
+        parentElement.remove();
+        isClicked = true;
+    });
+});
+
+
+
     $(document).on("click select", ".outputinputdiv input", function (event) {
         $(this).focus();
     });

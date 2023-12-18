@@ -367,12 +367,25 @@ function generatePDF() {
     const printableContent = document.getElementById('printableContent');
 
     html2canvas(printableContent).then(canvas => {
-        const pdf = new jsPDF();
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal
-            .pageSize.getHeight());
+        const pdf = new jsPDF({
+            orientation: 'landscape',
+            format: 'a4'
+        });
+
+        // Calculate the aspect ratio of A4 landscape
+        const aspectRatio = pdf.internal.pageSize.getWidth() / pdf.internal.pageSize.getHeight();
+
+        // Adjust canvas dimensions to match the aspect ratio
+        const canvasWidth = pdf.internal.pageSize.getWidth();
+        const canvasHeight = canvasWidth / aspectRatio;
+
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, canvasWidth, canvasHeight);
         pdf.save('download.pdf');
     });
 }
+
+
+
 
 $(document).ready(function() {
 

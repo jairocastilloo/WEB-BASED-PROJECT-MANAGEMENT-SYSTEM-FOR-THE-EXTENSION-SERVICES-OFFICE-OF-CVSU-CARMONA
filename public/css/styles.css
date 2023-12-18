@@ -178,9 +178,7 @@ table {
     margin-top: 4px;
     margin-bottom: 4px;
     overflow-x: scroll;
-
     display: flex;
-
     flex-wrap: nowrap; /* Prevent wrapping */
     width: 100%;
 }

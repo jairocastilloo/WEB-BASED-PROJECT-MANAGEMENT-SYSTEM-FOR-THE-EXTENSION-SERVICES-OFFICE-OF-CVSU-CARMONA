@@ -6,36 +6,36 @@
         <div class="row">
             <div class="col-lg-6 forMarginTop-1 p-0">
                 <div id="myCarousel" class="carousel slide d-flex w-100 h-100 borderRadius-1" data-ride="carousel">
-                        
-                        <ol class="carousel-indicators">
-                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                            <li data-target="#myCarousel" data-slide-to="1"></li>
-                            <li data-target="#myCarousel" data-slide-to="2"></li>
-                        </ol>
 
-                        <div class="carousel-inner d-flex w-100 h-100 borderRadius-1">
-                            <div class="carousel-item active">
-                                <img class="w-100 h-100" src="{{ asset('images/Slider4.png')}}" alt="Slide 1">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
-                            </div>
-                            <div class="carousel-item">
-                                <img class="w-100 h-100" src="{{ asset('images/Slider3.png')}}" alt="Slide 3">
-                            </div>
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <div class="carousel-inner d-flex w-100 h-100 borderRadius-1">
+                        <div class="carousel-item active">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider4.png')}}" alt="Slide 1">
                         </div>
+                        <div class="carousel-item">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider2.png')}}" alt="Slide 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="w-100 h-100" src="{{ asset('images/Slider3.png')}}" alt="Slide 3">
+                        </div>
+                    </div>
 
-                            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
+                    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
             </div>
-            
+
             <div class="col-lg-6 borderRadius-2 bg-white">
                 <h1 class="text-center p-5">Login</h1>
 
@@ -45,7 +45,9 @@
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10 main-slider">
                                 <label class="bold-label fw-bold py-2" for="Username1">Username:</label>
-                                <input id="username" type="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                <input id="username" type="username"
+                                    class="form-control @error('username') is-invalid @enderror" name="username"
+                                    value="{{ old('username') }}" required autocomplete="username" autofocus>
                                 @error('username')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -54,10 +56,18 @@
                             </div>
                         </div>
 
-                        <div class="form-group inputlg">
+                        <div class="form-group input-lg">
                             <div class="offset-1 col-lg-10">
-                                <label class="bold-label fw-bold py-2" for="Password1">Password:</label>
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                <label class="bold-label fw-bold py-2" for="password">Password:</label>
+                                <div class="input-group">
+                                    <input id="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        required autocomplete="current-password">
+                                    <button class="btn btn-outline-secondary" type="button" id="showPassword"><i
+                                            class="bi bi-eye-fill"></i></button>
+                                    <button class="btn btn-outline-secondary" type="button" id="hidePassword"><i
+                                            class="bi bi-eye-slash-fill"></i></button>
+                                </div>
                                 @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -66,10 +76,14 @@
                             </div>
                         </div>
 
+
+
+
                         <div class="form-group">
                             <div class="offset-1 col-lg-10">
                                 <div class="form-check py-4">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="remember" id="remember"
+                                        {{ old('remember') ? 'checked' : '' }}>
                                     <label class="form-check-label" for="remember">
                                         {{ __('Remember Me') }}
                                     </label>
@@ -122,4 +136,23 @@
     </div>
 </section>
 </main>
+@endsection
+@section('scripts')
+<script>
+$(document).ready(function() {
+    $('#hidePassword').hide();
+    $('#showPassword').click(function() {
+        $('#password').attr('type', 'text');
+        $('#showPassword').hide();
+        $('#hidePassword').show();
+    });
+
+    $('#hidePassword').click(function() {
+        $('#password').attr('type', 'password');
+        $('#hidePassword').hide();
+        $('#showPassword').show();
+    });
+});
+</script>
+
 @endsection
