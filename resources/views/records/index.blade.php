@@ -1,9 +1,80 @@
 @extends('layouts.app')
 @section('content')
+<div class="pdfReport border border-success">
+    <div class="header">
+        <p>Republic of the Philippines</p>
+        <p><b>CAVITE STATE UNIVERSITY</b></p>
+        <p><b>Carmona Campus</b></p>
+        <p>Market Road, Carmona, Cavite</p>
+        <p><i>(046) 487-6328/cvsucarmona@cvsu.edu.ph</i></p>
+        <p>www.cvsu.edu.ph</p>
+        <br>
+        <br>
+        <p><b>EXTENSION SERVICES OFFICE</b></p>
+        <br>
+        <p><b>ACCOMPLISHMENT REPORT</b></p>
+        <br>
+        <br>
 
-<div class="maincontainer shadow">
-    &nbsp;
-    <div class="container">
+
+    </div>
+    <div class="deptAndPeriod">
+        <div class="row">
+            <div class="col">
+                <div class="flex-container">
+                    <b>Department:</b>
+                    <div class="underline-space inline-div ms-3">
+                        &nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="flex-container">
+                    <b>Period Covered:</b>
+                    <div class="underline-space inline-div ms-3">
+                        &nbsp;&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </br>
+    </br>
+    asd
+</div>
+<table>
+    <thead>
+        <tr>
+            <th class="projectTD">Project</th>
+            <th class="activityTD">Extension Activity</th>
+            <th class="dateTD">Date Conducted</th>
+            <th class="hoursTD">Hours Rendered</th>
+            <th class="involvedTD">Extensionist Involved</th>
+            <th class="clientTD">No. of Clientele/Beneficiaries</th>
+            <th class="partnerTD">Partner Agency</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for ($i = 1; $i <= 50; $i++) <tr>
+            <td>Row {{ $i }}, Cell 1</td>
+            <td>Row {{ $i }}, Cell 2</td>
+            <td>Row {{ $i }}, Cell 3</td>
+            <td>Row {{ $i }}, Cell 4</td>
+            <td>Row {{ $i }}, Cell 5</td>
+            <td>Row {{ $i }}, Cell 6</td>
+            <td>Row {{ $i }}, Cell 7</td>
+            </tr>
+            @endfor
+
+    </tbody>
+</table>
+
+<div class="container">
+
+    <div class="maincontainer shadow">
+        &nbsp;
 
         <div class="basiccont mt-0 mb-4 m-2 pb-2 rounded shadow">
             <div class="border-bottom ps-3 pt-2 bggreen">

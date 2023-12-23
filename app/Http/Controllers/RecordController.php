@@ -171,7 +171,8 @@ class RecordController extends Controller
             $inCurrentYear = true;
         }
 
-        $subtaskcontributions = $user->contributions()
+
+  $subtaskcontributions = $user->contributions()
             ->where('approval', 1)
             ->whereDate('date', '>=', $minSemDate)
             ->whereDate('date', '<=', $maxSemDate)
@@ -181,11 +182,13 @@ class RecordController extends Controller
         $otheractivities = [];
         $activitiesid = [];
         $allactivities = [];
+        $allprojects = [];
+        $allprojectIds = [];
 
         if (!$subtaskcontributions->isEmpty()) {
-            $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->unique()->toArray();
+            $subtaskcontributionsIds = $subtaskcontributions->pluck('subtask_id')->toArray();
             $subtasks = Subtask::whereIn('id', $subtaskcontributionsIds)->get();
-            $otheractivities = $subtasks->pluck('activity_id')->toArray();
+            $otheractivities = $subtasks->pluck('activity_id')->unique()->toArray();
         }
 
         $activityContributions = $user->activitycontributions()
@@ -203,7 +206,7 @@ class RecordController extends Controller
         if ($allactivitiesid) {
             $allactivities = Activity::whereIn('id', $allactivitiesid)
                 ->get();
-         $allprojectIds = $allactivities->pluck('project_id')->unique()->toArray();
+            $allprojectIds = $allactivities->pluck('project_id')->unique()->toArray();
     $allprojects = Project::whereIn('id', $allprojectIds)
     ->get(['id', 'projecttitle', 'department']);
 

@@ -942,3 +942,74 @@ div {
     color: white;
 }
 */
+.pdfReport {
+font-family: 'Calibri', sans-serif;
+    font-size: 11pt;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 67.2px;
+    padding-right: 67.2px;
+    height: 794.88px;
+    width: 1121.44px;
+
+
+}
+.header{
+
+    text-align: center;
+}
+.header p {
+    margin:0;
+}
+
+.pdfReport table td, .pdfReport table th {
+    border: 0.6667px solid #000000;
+overflow-wrap: break-word;
+    word-wrap: break-word;
+    height: 0;
+
+
+}
+.pdfReport table th {
+
+    padding: 8px;
+   text-align: center;
+
+}
+.pdfReport table td {
+
+    padding: 3px;
+
+}
+.projectTD{
+min-width: 79.68px;
+    max-width: 79.68px;
+}
+.activityTD{
+min-width: 180.48px;
+    max-width: 180.48px;
+}
+.dateTD{
+min-width: 90.24px;
+    max-width: 90.24px;
+    text-align: center;
+}
+.hoursTD{
+min-width: 78.72px;
+    max-width: 78.72px;
+    text-align: center;
+}
+.involvedTD{
+min-width: 340.8px;
+    max-width: 340.8px;
+}
+.clientTD{
+min-width: 103.68px;
+    max-width: 103.68px;
+    text-align: center;
+}
+.partnerTD{
+min-width: 94.56px;
+    max-width: 94.56px;
+    text-align: center;
+}
