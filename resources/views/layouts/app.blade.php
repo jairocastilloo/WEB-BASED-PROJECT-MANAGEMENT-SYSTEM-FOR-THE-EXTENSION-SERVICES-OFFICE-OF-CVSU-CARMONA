@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter&family=Roboto&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Calibri:wght@400&display=swap" rel="stylesheet">
+
 
     <!--<link href="{{ mix('css/app.css') }}" rel="stylesheet">-->
     <link href="{{ asset('css/bootstrap.min.css') }}" type="text/css" rel="stylesheet">

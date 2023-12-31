@@ -942,18 +942,26 @@ div {
     color: white;
 }
 */
+
 .pdfReport {
+
 font-family: 'Calibri', sans-serif;
     font-size: 11pt;
+
     padding-top: 60px;
     padding-bottom: 60px;
     padding-left: 67.2px;
     padding-right: 67.2px;
-    height: 794.88px;
+
+
+
+    /** height: 794.88px; */
     width: 1121.44px;
 
 
 }
+
+
 .header{
 
     text-align: center;
@@ -961,22 +969,32 @@ font-family: 'Calibri', sans-serif;
 .header p {
     margin:0;
 }
+.headerSection table {
+    margin-left: auto;
+    margin-right: auto;
+}
 
-.pdfReport table td, .pdfReport table th {
+.headerSection table td, .headerSection table th {
+
+    font-family: 'Calibri', sans-serif;
+    font-size: 11pt;
+
     border: 0.6667px solid #000000;
 overflow-wrap: break-word;
     word-wrap: break-word;
     height: 0;
+    page-break-inside: auto;
 
 
 }
-.pdfReport table th {
+.headerSection table th {
 
-    padding: 8px;
+    padding: 5px;
    text-align: center;
 
+
 }
-.pdfReport table td {
+.headerSection table td {
 
     padding: 3px;
 
@@ -1013,3 +1031,17 @@ min-width: 94.56px;
     max-width: 94.56px;
     text-align: center;
 }
+
+ .print-page {
+      padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 67.2px;
+    padding-right: 67.2px;
+    height: 794.88px;
+    width: 1121.44px;
+                page-break-before: always;
+                display: inline-block;
+                border: 2px solid #000;
+                margin-top: -500px;
+            }
+
