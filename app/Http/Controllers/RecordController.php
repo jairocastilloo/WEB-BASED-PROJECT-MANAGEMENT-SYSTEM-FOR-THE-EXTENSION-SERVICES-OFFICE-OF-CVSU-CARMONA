@@ -93,30 +93,28 @@ class RecordController extends Controller
             $allactivities = Activity::whereIn('id', $allactivitiesid)
                 ->get();
             $allprojectIds = $allactivities->pluck('project_id')->unique()->toArray();
-    $allprojects = Project::whereIn('id', $allprojectIds)
-    ->get(['id', 'projecttitle', 'department']);
-
-
+            $allprojects = Project::whereIn('id', $allprojectIds)
+                ->get(['id', 'projecttitle', 'department']);
         }
         if ($allprojects) {
-    foreach ($allprojects as $allproject) {
-        $programLeader = ProgramLeader::where('user_id', $user->id)
-            ->where('project_id', $allproject->id)
-            ->first();
+            foreach ($allprojects as $allproject) {
+                $programLeader = ProgramLeader::where('user_id', $user->id)
+                    ->where('project_id', $allproject->id)
+                    ->first();
 
-        $projectLeader = ProjectLeader::where('user_id', $user->id)
-            ->where('project_id', $allproject->id)
-            ->first();
+                $projectLeader = ProjectLeader::where('user_id', $user->id)
+                    ->where('project_id', $allproject->id)
+                    ->first();
 
-        if ($programLeader) {
-            $allproject->role = 'Program Leader';
-        } elseif ($projectLeader) {
-            $allproject->role = 'Project Leader';
-        } else {
-            $allproject->role = 'Implementer';
+                if ($programLeader) {
+                    $allproject->role = 'Program Leader';
+                } elseif ($projectLeader) {
+                    $allproject->role = 'Project Leader';
+                } else {
+                    $allproject->role = 'Implementer';
+                }
+            }
         }
-    }
-}
 
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');
@@ -172,7 +170,7 @@ class RecordController extends Controller
         }
 
 
-  $subtaskcontributions = $user->contributions()
+        $subtaskcontributions = $user->contributions()
             ->where('approval', 1)
             ->whereDate('date', '>=', $minSemDate)
             ->whereDate('date', '<=', $maxSemDate)
@@ -207,30 +205,28 @@ class RecordController extends Controller
             $allactivities = Activity::whereIn('id', $allactivitiesid)
                 ->get();
             $allprojectIds = $allactivities->pluck('project_id')->unique()->toArray();
-    $allprojects = Project::whereIn('id', $allprojectIds)
-    ->get(['id', 'projecttitle', 'department']);
-
-
+            $allprojects = Project::whereIn('id', $allprojectIds)
+                ->get(['id', 'projecttitle', 'department']);
         }
         if ($allprojects) {
-    foreach ($allprojects as $allproject) {
-        $programLeader = ProgramLeader::where('user_id', $user->id)
-            ->where('project_id', $allproject->id)
-            ->first();
+            foreach ($allprojects as $allproject) {
+                $programLeader = ProgramLeader::where('user_id', $user->id)
+                    ->where('project_id', $allproject->id)
+                    ->first();
 
-        $projectLeader = ProjectLeader::where('user_id', $user->id)
-            ->where('project_id', $allproject->id)
-            ->first();
+                $projectLeader = ProjectLeader::where('user_id', $user->id)
+                    ->where('project_id', $allproject->id)
+                    ->first();
 
-        if ($programLeader) {
-            $allproject->role = 'Program Leader';
-        } elseif ($projectLeader) {
-            $allproject->role = 'Project Leader';
-        } else {
-            $allproject->role = 'Implementer';
+                if ($programLeader) {
+                    $allproject->role = 'Program Leader';
+                } elseif ($projectLeader) {
+                    $allproject->role = 'Project Leader';
+                } else {
+                    $allproject->role = 'Implementer';
+                }
+            }
         }
-    }
-}
 
         $subhours = $subtaskcontributions->sum('hours_rendered');
         $acthours = $activityContributions->sum('hours_rendered');

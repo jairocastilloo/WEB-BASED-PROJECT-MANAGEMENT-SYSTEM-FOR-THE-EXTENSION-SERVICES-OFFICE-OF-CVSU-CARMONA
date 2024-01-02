@@ -185,3 +185,4 @@ Route::post('/uploadterminalreport', [ProjectController::class, 'uploadTerminalR
 Route::post('/uploadaccomplishmentreport', [ActivityController::class, 'uploadAccomplishmentReport'])->name('activities.uploadaccomplishment');
 Route::post('/uploadsubtaskreport', [SubtaskController::class, 'uploadAccomplishmentReport'])->name('subtasks.uploadaccomplishment');
 Route::post('/updateuseraccount', [SettingsController::class, 'updateUserAccount'])->name('useraccount.update');
+Route::post('/generateaccomplishmentreport', [ReportController::class, 'generateAccomplishmentReport'])->name('report.generateAccomplishmentReport');

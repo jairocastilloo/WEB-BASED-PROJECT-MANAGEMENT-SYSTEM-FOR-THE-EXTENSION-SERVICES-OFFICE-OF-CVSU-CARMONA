@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use App\Models\Activity;
 use App\Models\User;
 use App\Models\Project;
+use App\Models\activityContribution;
+use App\Models\ActivitycontributionsUser;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use PDF;
@@ -237,6 +240,62 @@ class ReportController extends Controller
             'activities' => $activities,
         ]);
     }
+    public function generateAccomplishmentReport(Request $request)
+    {
+        $department = $request->input('department');
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        $projects = Project::where('department', $department)
+            ->get(['id', 'projecttitle']);
+        // Get project IDs based on the provided department
+        $projectIds = $projects->pluck('id')
+            ->toArray();
+
+        // Get activities related to the obtained project IDs
+        $activities = Activity::whereIn('project_id', $projectIds)
+            ->get(['id', 'actname', 'project_id']);
+
+        // Get activity IDs from the obtained activities
+        $activityIds = $activities->pluck('id')->toArray();
+        // Get activity contributions based on the obtained activity IDs
+        $activityContributions = ActivityContribution::whereIn('activity_id', $activityIds)
+            ->whereDate('startdate', '<=', $startDate)
+            ->whereDate('enddate', '>=', $endDate)
+            ->where('approval', 1)
+            ->get();
 
 
+        $activityContributionsIds = $activityContributions->pluck('id')
+            ->toArray();
+
+        // Add the 'actname' to each item in the original collection
+
+        $activityContributionsUsers = ActivitycontributionsUser::whereIn('activitycontribution_id', $activityContributionsIds)
+            ->get();
+        $activityContributions->each(function ($item) use ($activities, $activityContributionsUsers, $projects) {
+            $activity = $activities->where('id', $item->activity_id)->first();
+            $item->actname = $activity->actname;
+
+            $project = $projects->where('id', $activity->project_id)
+                ->first();
+            $item->projecttitle = $project->projecttitle;
+            $userIds = $activityContributionsUsers->where('activitycontribution_id', $item->id)->pluck('user_id')->toArray();
+            $users = [];
+            foreach ($userIds as $userId) {
+                $user = User::where('id', $userId)->first();
+                $name = $user->name . ' ' . $user->last_name;
+                $users[] = $name;
+            }
+            $item->users = $users;
+        });
+
+        // Pass the modified collection to the view
+        return view('report.accomplishment', [
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'department' => $department,
+            'activityContributions' => $activityContributions
+        ]);
+    }
 }
