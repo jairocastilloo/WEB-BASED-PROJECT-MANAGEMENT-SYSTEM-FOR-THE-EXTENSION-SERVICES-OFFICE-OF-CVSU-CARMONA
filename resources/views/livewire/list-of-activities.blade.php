@@ -8,11 +8,9 @@
 
     @foreach ($sortedActivities as $activity)
 
-    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}"
-        data-name="{{ $activity['actname'] }}">
+    <div class="border-bottom ps-4 p-2 divhover actdiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">
 
-        <h6 class="fw-bold small">{{ $activity['actname'] }} - <span
-                class="text-success">{{ $activity['actremark'] }}</span></h6>
+        <h6 class="fw-bold small">{{ $activity['actname'] }} - <span class="text-success">{{ $activity['actremark'] }}</span></h6>
 
         @php
         $startDate = date('M d, Y', strtotime($activity['actstartdate']));
@@ -25,8 +23,7 @@
     @endforeach
     @If(Auth::user()->role == "Coordinator" || Auth::user()->role == "Admin")
     <div class="ms-3 mt-2 btn-group shadow">
-        <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
-            data-bs-toggle="modal" data-bs-target="#newactivity">
+        <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="modal" data-bs-target="#newactivity">
             <b class="small">Add Activity</b>
         </button>
     </div>
@@ -91,8 +88,7 @@
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
-                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i
-                                    class="bi bi-x-lg"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
                         </div>
 
                     </div>
@@ -103,8 +99,7 @@
                         <label for="activitystartdate" class="form-label">Activity Start Date</label>
 
                         <div class="input-group date" id="activitystartDatePicker">
-                            <input type="text" class="form-control" id="activitystartdate" name="activitystartdate"
-                                placeholder="mm/dd/yyyy" />
+                            <input type="text" class="form-control" id="activitystartdate" name="activitystartdate" placeholder="mm/dd/yyyy" />
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -123,8 +118,7 @@
                         <label for="activityenddate" class="form-label">Activity End Date</label>
 
                         <div class="input-group date" id="activityendDatePicker">
-                            <input type="text" class="form-control" id="activityenddate" name="activityenddate"
-                                placeholder="mm/dd/yyyy" />
+                            <input type="text" class="form-control" id="activityenddate" name="activityenddate" placeholder="mm/dd/yyyy" />
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
@@ -150,13 +144,11 @@
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
-                            <input type="number" class="form-control ms-2" min="0" name="budgetPrice[]"
-                                placeholder="Price (PhP)">
+                            <input type="number" class="form-control ms-2" min="0" name="budgetPrice[]" placeholder="Price (PhP)">
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>
-                            <button type="button" class="btn btn-sm btn-outline-danger removeBudget-btn"><i
-                                    class="bi bi-x-lg"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-danger removeBudget-btn"><i class="bi bi-x-lg"></i></button>
                         </div>
 
                     </div>
@@ -174,8 +166,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn shadow rounded border border-1 btn-light" id="closeActivity"
-                        data-bs-dismiss="modal">
+                    <button type="button" class="btn shadow rounded border border-1 btn-light" id="closeActivity" data-bs-dismiss="modal">
                         <b class="small">Close</b>
                     </button>
                     <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
@@ -186,241 +177,241 @@
         </div>
     </div>
     <script>
-    let selectedOptionId = null;
-    var actname;
-    var objectivevalue;
-    var expectedoutput;
-    var actstartdate;
-    var actenddate;
-    var projstartdate = document.getElementById('projsavestartdate').value;
-    var projenddate = document.getElementById('projsaveenddate').value;
-    var actbudget;
-    var actsource;
-    document.addEventListener('livewire:load', function() {
-        var confirmActivityBtn = document.getElementById("confirmactivity");
-        confirmActivityBtn.addEventListener('click', function() {
-            var theresErrors = acthasError();
+        let selectedOptionId = null;
+        var actname;
+        var objectivevalue;
+        var expectedoutput;
+        var actstartdate;
+        var actenddate;
+        var projstartdate = document.getElementById('projsavestartdate').value;
+        var projenddate = document.getElementById('projsaveenddate').value;
+        var actbudget;
+        var actsource;
+        document.addEventListener('livewire:load', function() {
+            var confirmActivityBtn = document.getElementById("confirmactivity");
+            confirmActivityBtn.addEventListener('click', function() {
+                var theresErrors = acthasError();
 
-            if (!theresErrors) {
-                this.disabled = true;
+                if (!theresErrors) {
+                    this.disabled = true;
 
-                var expectedoutput = [];
-                var budgetItem = [];
-                var budgetPrice = [];
+                    var expectedoutput = [];
+                    var budgetItem = [];
+                    var budgetPrice = [];
 
-                document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
-                    expectedoutput.push(element.value);
-                });
-                if (document.querySelectorAll('input[name="budgetItem[]"]').length > 0) {
-                    // Collect values from input elements with name "budgetItem[]"
-                    document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
-                        if (element.value.trim() !== '') {
-                            budgetItem.push(element.value);
-                        }
+                    document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                        expectedoutput.push(element.value);
+                    });
+                    if (document.querySelectorAll('input[name="budgetItem[]"]').length > 0) {
+                        // Collect values from input elements with name "budgetItem[]"
+                        document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                            if (element.value.trim() !== '') {
+                                budgetItem.push(element.value);
+                            }
+                        });
+                    }
+
+                    if (document.querySelectorAll('input[name="budgetPrice[]"]').length > 0) {
+                        // Collect values from input elements with name "budgetPrice[]"
+                        document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                            if (element.value.trim() !== '') {
+                                budgetPrice.push(element.value);
+                            }
+                        });
+                    }
+                    Livewire.emit('saveActivity', {
+                        actname: actname,
+                        objectivevalue: objectivevalue,
+                        expectedoutput: expectedoutput,
+                        actstartdate: actstartdate,
+                        actenddate: actenddate,
+                        actBudgetItem: budgetItem,
+                        actBudgetPrice: budgetPrice,
+                        actsource: actsource
                     });
                 }
+            });
 
-                if (document.querySelectorAll('input[name="budgetPrice[]"]').length > 0) {
-                    // Collect values from input elements with name "budgetPrice[]"
-                    document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
-                        if (element.value.trim() !== '') {
-                            budgetPrice.push(element.value);
-                        }
-                    });
+            Livewire.on('closeActivity', function() {
+                document.getElementById('confirmactivity').disabled = false;
+                document.getElementById('closeActivity').click();
+                document.getElementById('activityname').value = "";
+                selectedOptionId = null;
+
+                var expectedOutputs = document.querySelectorAll('input[name="expectedoutput[]"]');
+                var budgetItem = document.querySelectorAll('input[name="budgetItem[]"]');
+                var budgetPrice = document.querySelectorAll('input[name="budgetPrice[]"]');
+
+                if (expectedOutputs.length > 1) {
+                    for (var i = 1; i < expectedOutputs.length; i++) {
+                        expectedOutputs[i].remove();
+                    }
                 }
-                Livewire.emit('saveActivity', {
-                    actname: actname,
-                    objectivevalue: objectivevalue,
-                    expectedoutput: expectedoutput,
-                    actstartdate: actstartdate,
-                    actenddate: actenddate,
-                    actBudgetItem: budgetItem,
-                    actBudgetPrice: budgetPrice,
-                    actsource: actsource
-                });
-            }
+
+                if (expectedOutputs.length > 0) {
+                    expectedOutputs[0].value = "";
+                }
+
+                if (budgetItem.length > 1) {
+                    for (var i = 1; i < budgetItem.length; i++) {
+                        budgetItem[i].remove();
+                    }
+                }
+
+                if (budgetItem.length > 0) {
+                    budgetItem[0].value = "";
+                }
+                if (budgetPrice.length > 1) {
+                    for (var i = 1; i < budgetPrice.length; i++) {
+                        budgetPrice[i].remove();
+                    }
+                }
+
+                if (budgetPrice.length > 0) {
+                    budgetPrice[0].value = "";
+                }
+
+                document.getElementById('activitystartdate').value = "";
+                document.getElementById('activityenddate').value = "";
+
+                document.getElementById('source').value = "";
+                actname = "";
+                objectivevalue = null;
+                expectedoutput = "";
+                actstartdate = "";
+                actenddate = "";
+                actbudget = "";
+                actsource = "";
+            });
         });
 
-        Livewire.on('closeActivity', function() {
-            document.getElementById('confirmactivity').disabled = false;
-            document.getElementById('closeActivity').click();
-            document.getElementById('activityname').value = "";
-            selectedOptionId = null;
-
-            var expectedOutputs = document.querySelectorAll('input[name="expectedoutput[]"]');
-            var budgetItem = document.querySelectorAll('input[name="budgetItem[]"]');
-            var budgetPrice = document.querySelectorAll('input[name="budgetPrice[]"]');
-
-            if (expectedOutputs.length > 1) {
-                for (var i = 1; i < expectedOutputs.length; i++) {
-                    expectedOutputs[i].remove();
-                }
-            }
-
-            if (expectedOutputs.length > 0) {
-                expectedOutputs[0].value = "";
-            }
-
-            if (budgetItem.length > 1) {
-                for (var i = 1; i < budgetItem.length; i++) {
-                    budgetItem[i].remove();
-                }
-            }
-
-            if (budgetItem.length > 0) {
-                budgetItem[0].value = "";
-            }
-            if (budgetPrice.length > 1) {
-                for (var i = 1; i < budgetPrice.length; i++) {
-                    budgetPrice[i].remove();
-                }
-            }
-
-            if (budgetPrice.length > 0) {
-                budgetPrice[0].value = "";
-            }
-
-            document.getElementById('activitystartdate').value = "";
-            document.getElementById('activityenddate').value = "";
-
-            document.getElementById('source').value = "";
-            actname = "";
-            objectivevalue = null;
-            expectedoutput = "";
-            actstartdate = "";
-            actenddate = "";
-            actbudget = "";
-            actsource = "";
-        });
-    });
-
-    function toggleDropdown() {
-        const dropdown = document.getElementById("dropdown-options");
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    }
-
-    function selectOption(optionId) {
-        selectedOptionId = optionId - 1;
-        const selectedOption = document.getElementById("selected-option");
-        const dropdownText = document.querySelector(".dropdown-text");
-        const option = document.querySelector(`#dropdown-options li:nth-child(${optionId})`);
-
-        selectedOption.value = option.textContent;
-        dropdownText.textContent = option.textContent;
-        toggleDropdown();
-    }
-
-    function acthasError() {
-        var hasErrors = false;
-        document.querySelectorAll('.invalid-feedback strong').forEach(function(element) {
-            element.textContent = '';
-        });
-        document.querySelectorAll('.is-invalid').forEach(function(element) {
-            element.classList.remove('is-invalid');
-        });
-
-        actname = document.getElementById('activityname').value;
-        objectivevalue = selectedOptionId;
-        actstartdate = document.getElementById('activitystartdate').value;
-
-        actenddate = document.getElementById('activityenddate').value;
-        actsource = document.getElementById('source').value;
-
-        // Validation for Project Title
-        if (actname.trim() === '') {
-            document.getElementById('activityname').classList.add('is-invalid');
-            document.querySelector('#activityname + .invalid-feedback strong').textContent =
-                'Activity Name is required.';
-            hasErrors = true;
+        function toggleDropdown() {
+            const dropdown = document.getElementById("dropdown-options");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
 
-        // Validation for Project Leader
-        if (objectivevalue == null) {
-            document.getElementById('objective-select').classList.add('is-invalid');
-            document.querySelector('#objective-select + .invalid-feedback strong').textContent =
-                'Make sure that there is an objective selected.';
-            hasErrors = true;
+        function selectOption(optionId) {
+            selectedOptionId = optionId - 1;
+            const selectedOption = document.getElementById("selected-option");
+            const dropdownText = document.querySelector(".dropdown-text");
+            const option = document.querySelector(`#dropdown-options li:nth-child(${optionId})`);
+
+            selectedOption.value = option.textContent;
+            dropdownText.textContent = option.textContent;
+            toggleDropdown();
         }
 
-        document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
-            if (element.value === "") {
-                element.classList.add('is-invalid');
-                // Fix the line below by removing quotes around 'element'
-                document.querySelector(element + ' + .invalid-feedback strong').textContent =
-                    'Expected Output is required.';
+        function acthasError() {
+            var hasErrors = false;
+            document.querySelectorAll('.invalid-feedback strong').forEach(function(element) {
+                element.textContent = '';
+            });
+            document.querySelectorAll('.is-invalid').forEach(function(element) {
+                element.classList.remove('is-invalid');
+            });
+
+            actname = document.getElementById('activityname').value;
+            objectivevalue = selectedOptionId;
+            actstartdate = document.getElementById('activitystartdate').value;
+
+            actenddate = document.getElementById('activityenddate').value;
+            actsource = document.getElementById('source').value;
+
+            // Validation for Project Title
+            if (actname.trim() === '') {
+                document.getElementById('activityname').classList.add('is-invalid');
+                document.querySelector('#activityname + .invalid-feedback strong').textContent =
+                    'Activity Name is required.';
                 hasErrors = true;
             }
-        });
 
-
-        if (actstartdate === '') {
-            document.getElementById('activitystartdate').classList.add('is-invalid');
-            document.querySelector('#activitystartdate + .invalid-feedback strong').textContent =
-                'Activity Start Date is required.';
-            hasErrors = true;
-        } else if (!((new Date(projstartdate) - (24 * 60 * 60 * 1000)) < new Date(actstartdate))) {
-            document.querySelector('#activitystartdate + .invalid-feedback strong').textContent =
-                'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                }) + '.';
-            hasErrors = true;
-        }
-
-
-        if (actenddate === '') {
-            document.getElementById('activityenddate').classList.add('is-invalid');
-            document.querySelector('#activityenddate + .invalid-feedback strong').textContent =
-                'Activity End Date is required';
-            hasErrors = true;
-        } else if (new Date(actenddate) < new Date(actstartdate)) {
-            document.getElementById('activityenddate').classList.add('is-invalid');
-            document.querySelector('#activityenddate + .invalid-feedback strong').textContent =
-                'Activity End Date must be after ' + new Date(actstartdate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                }) + '.';
-            hasErrors = true;
-        } else if (new Date(projenddate) < new Date(actenddate)) {
-            document.getElementById('activityenddate').classList.add('is-invalid');
-            document.querySelector('#activityenddate + .invalid-feedback strong').textContent =
-                'Activity End Date must be before ' + new Date(projenddate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric'
-                }) + '.';
-            hasErrors = true;
-        }
-
-        document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
-            if (element.value === "") {
-                element.classList.add('is-invalid');
-                // Fix the line below by removing quotes around 'element'
-                document.querySelector(element + ' + .invalid-feedback strong').textContent =
-
-                    'Budget Item is required.';
+            // Validation for Project Leader
+            if (objectivevalue == null) {
+                document.getElementById('objective-select').classList.add('is-invalid');
+                document.querySelector('#objective-select + .invalid-feedback strong').textContent =
+                    'Make sure that there is an objective selected.';
                 hasErrors = true;
             }
-        });
 
-        document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
-            if (element.value === "") {
-                element.classList.add('is-invalid');
-                // Fix the line below by removing quotes around 'element'
-                document.querySelector(element + ' + .invalid-feedback strong').textContent =
-                    'Budget Price is required.';
+            document.querySelectorAll('input[name="expectedoutput[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent =
+                        'Expected Output is required.';
+                    hasErrors = true;
+                }
+            });
+
+
+            if (actstartdate === '') {
+                document.getElementById('activitystartdate').classList.add('is-invalid');
+                document.querySelector('#activitystartdate + .invalid-feedback strong').textContent =
+                    'Activity Start Date is required.';
+                hasErrors = true;
+            } else if (!((new Date(projstartdate) - (24 * 60 * 60 * 1000)) < new Date(actstartdate))) {
+                document.querySelector('#activitystartdate + .invalid-feedback strong').textContent =
+                    'Activity Start Date must be after ' + new Date(projstartdate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    }) + '.';
                 hasErrors = true;
             }
-        });
-        /**
-                    if (actsource.trim() === '') {
-                        document.getElementById('source').classList.add('is-invalid');
-                        document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
-                        hasErrors = true;
-                    }*/
-        return hasErrors;
-    }
+
+
+            if (actenddate === '') {
+                document.getElementById('activityenddate').classList.add('is-invalid');
+                document.querySelector('#activityenddate + .invalid-feedback strong').textContent =
+                    'Activity End Date is required';
+                hasErrors = true;
+            } else if (new Date(actenddate) < new Date(actstartdate)) {
+                document.getElementById('activityenddate').classList.add('is-invalid');
+                document.querySelector('#activityenddate + .invalid-feedback strong').textContent =
+                    'Activity End Date must be after ' + new Date(actstartdate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    }) + '.';
+                hasErrors = true;
+            } else if (new Date(projenddate) < new Date(actenddate)) {
+                document.getElementById('activityenddate').classList.add('is-invalid');
+                document.querySelector('#activityenddate + .invalid-feedback strong').textContent =
+                    'Activity End Date must be before ' + new Date(projenddate).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    }) + '.';
+                hasErrors = true;
+            }
+
+            document.querySelectorAll('input[name="budgetItem[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent =
+
+                        'Budget Item is required.';
+                    hasErrors = true;
+                }
+            });
+
+            document.querySelectorAll('input[name="budgetPrice[]"]').forEach(function(element) {
+                if (element.value === "") {
+                    element.classList.add('is-invalid');
+                    // Fix the line below by removing quotes around 'element'
+                    document.querySelector(element + ' + .invalid-feedback strong').textContent =
+                        'Budget Price is required.';
+                    hasErrors = true;
+                }
+            });
+            /**
+                        if (actsource.trim() === '') {
+                            document.getElementById('source').classList.add('is-invalid');
+                            document.querySelector('#source + .invalid-feedback strong').textContent = 'Source of budget is required.';
+                            hasErrors = true;
+                        }*/
+            return hasErrors;
+        }
     </script>
 </div>
