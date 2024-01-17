@@ -177,7 +177,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="accomplishment_file">Choose File:</label>
-                            <input type="file" class="form-control" id="accomplishment_file" accept=".docx" name="accomplishment_file">
+                            <input type="file" class="form-control" id="accomplishment_file" accept=".pdf, .docx" name="accomplishment_file">
                             <span class="invalid-feedback" role="alert">
                                 <strong></strong>
                             </span>

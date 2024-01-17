@@ -21,8 +21,7 @@
             </button>
             <div class="dropdown-menu border border-1 border-warning">
                 @If ($subtask['status'] == "Incomplete")
-                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment
-                        Report</b></a>
+                <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment Report</b></a>
                 <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#markAsCompletedModal">
                     <b class="small">Mark as Completed</b>
                 </a>

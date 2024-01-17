@@ -398,10 +398,8 @@ class ActivityController extends Controller
                 ]);
             }
         }
-
-
         $request->validate([
-            'accomplishment_file' => 'required|mimes:docx|max:10240',
+            'accomplishment_file' => 'required|mimes:docx, pdf|max:10240',
         ]);
         $file = $request->file('accomplishment_file');
         $originalName = $file->getClientOriginalName();

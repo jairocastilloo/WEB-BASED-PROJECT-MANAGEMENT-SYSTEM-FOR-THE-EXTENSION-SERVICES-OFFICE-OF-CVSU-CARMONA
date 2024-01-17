@@ -100,7 +100,7 @@
                     <div class="mt-2 ms-4 me-4">
                         <label class="form-label" for="customFile">Submit Subtask Report:</label>
 
-                        <input type="file" class="form-control" id="customFile" accept=".docx" name="subtaskdocs">
+                        <input type="file" class="form-control" id="customFile" accept=".pdf, .docx" name="subtaskdocs">
                     </div>
 
                     <div class="d-grid gap-2 p-4">

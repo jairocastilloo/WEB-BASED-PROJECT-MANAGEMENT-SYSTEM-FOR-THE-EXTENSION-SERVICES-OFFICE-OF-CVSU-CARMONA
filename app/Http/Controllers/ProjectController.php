@@ -649,7 +649,7 @@ class ProjectController extends Controller
         $projectterminal->save();
 
         $request->validate([
-            'terminal_file' => 'required|mimes:docx|max:2048',
+            'terminal_file' => 'required|mimes:docx, pdf|max:10240',
         ]);
         $file = $request->file('terminal_file');
         $originalName = $file->getClientOriginalName();

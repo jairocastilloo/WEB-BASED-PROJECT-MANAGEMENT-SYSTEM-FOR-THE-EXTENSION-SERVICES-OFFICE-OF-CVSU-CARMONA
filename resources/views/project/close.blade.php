@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label" for="terminal_file">Choose File:</label>
-                                    <input type="file" class="form-control" id="terminal_file" accept=".docx" name="terminal_file">
+                                    <input type="file" class="form-control" id="terminal_file" accept=".pdf, .docx" name="terminal_file">
                                 </div>
                             </form>
                         </div>
@@ -180,9 +180,6 @@
         $('#endDatePicker').datepicker().on('change', function(e) {
             $('#endDatePicker').datepicker('hide');
         });
-
-
-
 
         $('.submitTerminal').click(function(event) {
             event.preventDefault();

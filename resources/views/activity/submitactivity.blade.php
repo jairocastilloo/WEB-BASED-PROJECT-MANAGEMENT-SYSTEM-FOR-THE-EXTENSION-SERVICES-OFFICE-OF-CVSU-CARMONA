@@ -103,7 +103,7 @@
                     <div class="mt-2 ms-4 me-4">
                         <label class="form-label" for="customFile">Submit Accomplishment Report:</label>
 
-                        <input type="file" class="form-control" id="customFile" accept=".docx" name="activitydocs">
+                        <input type="file" class="form-control" id="customFile" accept=".pdf, .docx" name="activitydocs">
                     </div>
 
                     <div class="d-grid gap-2 p-4">
@@ -113,9 +113,6 @@
             </div>
         </form>
     </div>
-
-
-
 </div>
 
 
