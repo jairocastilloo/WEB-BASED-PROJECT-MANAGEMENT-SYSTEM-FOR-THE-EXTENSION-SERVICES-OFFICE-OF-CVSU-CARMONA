@@ -12,6 +12,8 @@ use App\Models\AcademicYear;
 use App\Models\ProjectLeader;
 use App\Models\ProgramLeader;
 use App\Models\Project;
+use App\Models\Output;
+use Illuminate\Support\Facades\Auth;
 
 class PdfController extends Controller
 {
@@ -274,9 +276,82 @@ class PdfController extends Controller
 
     public function generateReportPdf($projectid, $department)
     {
+        $indexproject = Project::findOrFail($projectid);
+        $department = $indexproject->department;
+        $projecttitle = $indexproject->projecttitle;
+        $currentDate = now();
+
+        $activitiesQuery = $indexproject->activities();
+        $activities = $activitiesQuery->get(['id', 'actname', 'actstartdate', 'actenddate', 'actremark']);
+
+        foreach ($activities as $activity) {
+            $activityId = $activity->id;
+
+            $outputSubmitted = Output::where('activity_id', $activityId)->sum('totaloutput_submitted');
+            $expectedOutput = Output::where('activity_id', $activityId)->sum('expectedoutput');
+
+            $outputPercent = ($expectedOutput !== 0) ? number_format($outputSubmitted / $expectedOutput * 100, 0) : null;
+
+            if ($outputPercent === null) {
+                $outputPercent = 0;
+            }
+
+            $activeTasks = Subtask::where('activity_id', $activityId)
+                ->where('status', 'Incomplete')
+                ->where('subduedate', '>=', $currentDate)
+                ->count();
+            $missingTasks = Subtask::where('activity_id', $activityId)
+                ->where('status', 'Incomplete')
+                ->where('subduedate', '<', $currentDate)
+                ->count();
+            $completedTasks = Subtask::where('activity_id', $activityId)
+                ->where('status', 'Completed')
+                ->count();
+
+            // Create an associative array with additional data
+            $additionalData = [
+                'outputPercent' => $outputPercent,
+                'activeTasks' => $activeTasks,
+                'missingTasks' => $missingTasks,
+                'completedTasks' => $completedTasks,
+            ];
+
+            // Merge the additional data into the $activity object
+            $activity->additionalData = $additionalData;
+        }
 
 
-        $pdf = PDF::loadView('pdf.project_reports', []);
+        if ($indexproject->projectstatus == "Incomplete" && $indexproject->projectstartdate <= now() && $indexproject->projectenddate >= now()) {
+            $status = "Ongoing";
+        } else if ($indexproject->projectstatus == "Incomplete" && $indexproject->projectstartdate > now()) {
+            $status = "Upcoming";
+        } else if ($indexproject->projectstatus == "Incomplete" && $indexproject->projectenddate < now()) {
+            $status = "Overdue";
+        } else if ($indexproject->projectstatus == "Completed") {
+            $status = "Completed";
+        } else {
+            $status = null;
+        }
+
+        $projectLeadersIds = ProjectLeader::where('project_id', $projectid)
+            ->pluck('user_id')
+            ->toArray();
+        $programLeadersIds = ProgramLeader::where('project_id', $projectid)
+            ->pluck('user_id')
+            ->toArray();
+        $projectLeaders = User::whereIn('id', $projectLeadersIds)
+            ->get(['name', 'middle_name', 'last_name']);
+        $programLeaders = User::whereIn('id', $programLeadersIds)
+            ->get(['name', 'middle_name', 'last_name']);
+        $pdf = PDF::loadView('pdf.project_reports', [
+            'indexproject' => $indexproject,
+            'department' => $department,
+            'status' => $status,
+            'activities' => $activities,
+            'projecttitle' => $projecttitle,
+            'projectLeaders' => $projectLeaders,
+            'programLeaders' => $programLeaders
+        ]);
 
 
         // $data = ['records' => $this->getData()];

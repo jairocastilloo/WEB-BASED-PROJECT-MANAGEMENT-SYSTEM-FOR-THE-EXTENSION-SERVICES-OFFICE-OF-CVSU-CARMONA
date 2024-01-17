@@ -34,10 +34,11 @@
 
         .detailsTable td {
 
-            padding: 10px;
+            padding: 2px;
             /* Add padding for spacing if needed */
             box-sizing: border-box;
-
+            text-align: left;
+            vertical-align: top;
 
         }
 
@@ -59,6 +60,7 @@
             /* Add padding for spacing if needed */
             box-sizing: border-box;
             text-align: left;
+            vertical-align: top;
             overflow-wrap: break-word;
             word-wrap: break-word;
 

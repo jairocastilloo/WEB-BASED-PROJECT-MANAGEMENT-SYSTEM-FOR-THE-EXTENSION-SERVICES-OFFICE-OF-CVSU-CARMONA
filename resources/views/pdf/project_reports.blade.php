@@ -23,6 +23,7 @@
 
         .parent header {
             text-align: center;
+            margin: 0 auto;
         }
 
         table {
@@ -34,9 +35,11 @@
 
         .detailsTable td {
 
-            padding: 10px;
+            padding: 2px;
             /* Add padding for spacing if needed */
             box-sizing: border-box;
+            text-align: left;
+            vertical-align: top;
 
 
         }
@@ -58,7 +61,7 @@
             padding: 4px;
             /* Add padding for spacing if needed */
             box-sizing: border-box;
-            text-align: left;
+
             overflow-wrap: break-word;
             word-wrap: break-word;
 
@@ -116,7 +119,7 @@
 
 
             <p><b>PROJECT REPORT</b></p>
-
+            <p><b>Project Details</b></p>
 
 
         </header>
@@ -124,26 +127,33 @@
 
         <table class="detailsTable">
             <tr>
-                <td class="recordDetails"><b>Project Title: </b></td>
-                <td class="recordDetails"><b>Program Title: </b></td>
+                <td class="recordDetails"><b>Project Title: </b>{{ $projecttitle }}</td>
+                <td class="recordDetails"><b>Program Title: </b>{{ $indexproject->programtitle }}</td>
             </tr>
-
-
+            @php
+            $projectStartDate = \Carbon\Carbon::parse($indexproject->projectstartdate)->format('F d, Y');
+            $projectEndDate = \Carbon\Carbon::parse($indexproject->projectenddate)->format('F d, Y');
+            @endphp
+            <tr>
+                <td class="recordDetails">
+                    <b>Project Leader:</b>
+                    {{ implode(', ', $projectLeaders->map(function ($leader) {
+            return $leader->name . ' ' . substr(ucfirst($leader->middle_name), 0, 1) . '. ' . $leader->last_name;
+        })->toArray()) }}
+                </td>
+                <td class="recordDetails">
+                    <b>Program Leader: </b>
+                    {{ implode(', ', $programLeaders->map(function ($leader) {
+            return $leader->name . ' ' . substr(ucfirst($leader->middle_name), 0, 1) . '. ' . $leader->last_name;
+        })->toArray()) }}
+                </td>
+            </tr>
 
             <tr>
-
-
-
-                <td class="recordDetails"><b>Project Leader: </b></td>
-                <td class="recordDetails"><b>Program Leader: </b></td>
+                <td class="recordDetails"><b>Project Start Date: </b>{{ $projectStartDate }}</td>
+                <td class="recordDetails"><b>Project End Date: </b>{{ $projectEndDate }}</b></td>
             </tr>
-            <tr>
 
-
-
-                <td class="recordDetails"><b>Project Start Date: </b></td>
-                <td class="recordDetails"><b>Expected End Date: </b></td>
-            </tr>
         </table>
         <header>
 
@@ -154,38 +164,104 @@
 
 
         </header>
+        @php
+        $completedActivitiesCount = $activities->where('actremark', 'Completed')->count();
 
-        <table class="detailsTable">
+        $overdueActivitiesCount = $activities->where('actremark', 'Incomplete')
+        ->where('actenddate', '<', now()) ->count();
 
-            <tr>
-                <td class="recordDetails"><b>Project Status: </b></td>
-                <td class="recordDetails"><b>Ongoing Activities: </b></td>
-            </tr>
-            <tr>
-                <td class="recordDetails"><b>Total Activities: </b></td>
-                <td class="recordDetails"><b>Upcoming Activities: </b></td>
-            </tr>
-            <tr>
-                <td class="recordDetails"><b>Completed Activities: </b></td>
-                <td class="recordDetails"><b>Overdue Activities: </b></td>
-            </tr>
+            $upcomingActivitiesCount = $activities->where('actremark', 'Incomplete')
+            ->where('actstartdate', '>', now())
+            ->count();
+
+            $ongoingActivitiesCount = $activities->where('actremark', 'Incomplete')
+            ->where('actstartdate', '<=', now()) ->where('actenddate', '>=', now())
+                ->count();
+
+                $totalActivitiesCount = $activities->count();
+                @endphp
+                <table class="detailsTable">
+
+                    <tr>
+                        <td class="recordDetails"><b>Project Status: </b>{{ $status }}</td>
+                        <td class="recordDetails"><b>Ongoing Activities: </b>{{ $ongoingActivitiesCount }}</td>
+                    </tr>
+                    <tr>
+                        <td class="recordDetails"><b>Total Activities: </b>{{ $totalActivitiesCount }}</td>
+                        <td class="recordDetails"><b>Upcoming Activities: </b>{{ $upcomingActivitiesCount }}</td>
+                    </tr>
+                    <tr>
+                        <td class="recordDetails"><b>Completed Activities: </b>{{ $completedActivitiesCount }}</td>
+                        <td class="recordDetails"><b>Overdue Activities: </b>{{ $overdueActivitiesCount }}</td>
+                    </tr>
 
 
-        </table>
+                </table>
 
-        <header>
-
-
-
-            <p><b>Project Activities Table</b></p>
+                <header>
 
 
 
-        </header>
+                    <p><b>Project Activities Table</b></p>
+
+
+
+                </header>
+                <table class="mainTable">
+                    <thead>
+                        <tr>
+                            <th>ACTIVITY</th>
+                            <th style="max-width: 88px; min-width: 88px;">START DATE</th>
+                            <th style="max-width: 88px; min-width: 88px;">END DATE</th>
+                            <th>OUTPUT PROGRESS</th>
+                            <th>TASKS COUNT</th>
+                            <th>ACTIVE TASKS</th>
+                            <th>OVERDUE TASKS</th>
+                            <th>COMPLETED TASKS</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach ($activities as $activity)
+                        @php
+                        $totalTasksCount = $activity->additionalData['activeTasks'] +
+                        $activity->additionalData['missingTasks'] +
+                        $activity->additionalData['completedTasks'];
+                        @endphp
+                        <tr>
+                            <td>{{ $activity->actname }}</td>
+                            <td>
+                                {{ date('M d, Y', strtotime($activity['actstartdate'])) }}
+                            </td>
+                            <td>
+                                {{ date('M d, Y', strtotime($activity['actenddate'])) }}
+                            </td>
+                            <td style="text-align:center;">
+                                {{ $activity->additionalData['outputPercent'] }}%
+
+                            </td>
+                            <td style="text-align:center;">
+                                {{ $totalTasksCount }}
+                            </td>
+                            <td style="text-align:center;">
+                                {{ $activity->additionalData['activeTasks'] }}
+                            </td>
+                            <td style="text-align:center;">
+                                {{ $activity->additionalData['missingTasks'] }}
+                            </td>
+                            <td style="text-align:center;">
+                                {{ $activity->additionalData['completedTasks'] }}
+                            </td>
+
+
+                        </tr>
+
+                        @endforeach
+
+                    </tbody>
+                </table>
     </div>
-    <script>
 
-    </script>
 
 </body>
 
