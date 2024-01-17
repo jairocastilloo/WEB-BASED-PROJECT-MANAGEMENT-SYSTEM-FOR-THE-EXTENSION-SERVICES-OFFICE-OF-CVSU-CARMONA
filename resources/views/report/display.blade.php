@@ -190,10 +190,10 @@
                                                     <td class="p-1 py-2 taskscount">
                                                         {{ $activity->additionalData['activeTasks'] }}
                                                     </td>
-                                                    <td class="p-1 py-2 taskscount">
+                                                    <td class="p-1 py-2 overduetaskscount">
                                                         {{ $activity->additionalData['missingTasks'] }}
                                                     </td>
-                                                    <td class="p-1 py-2 taskscount">
+                                                    <td class="p-1 py-2 completedtaskscount">
                                                         {{ $activity->additionalData['completedTasks'] }}
                                                     </td>
 

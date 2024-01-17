@@ -59,6 +59,7 @@ class ActivityAssignees extends Component
     public function unassignAssignees($selectedAssignee)
     {
         ActivityUser::where('user_id', $selectedAssignee)
+            ->where('activity_id', $this->activity->id)
             ->delete();
         $assigneesIds = ActivityUser::where('activity_id', $this->activity->id)
             ->pluck('user_id');

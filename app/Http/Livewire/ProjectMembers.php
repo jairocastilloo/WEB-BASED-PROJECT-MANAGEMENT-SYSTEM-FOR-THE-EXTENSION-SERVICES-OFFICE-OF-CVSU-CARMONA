@@ -72,6 +72,7 @@ class ProjectMembers extends Component
     public function unassignMembers($selectedMember)
     {
         ProjectUser::where('user_id', $selectedMember)
+            ->where('project_id', $this->project->id)
             ->delete();
         $memberIds = ProjectUser::where('project_id', $this->project->id)->pluck('user_id');
 

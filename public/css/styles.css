@@ -393,12 +393,23 @@ th {
     max-width: 241px;
 }
 .secondtable .taskscount {
+    text-align: center;
     min-width: 70px;
     max-width: 70px;
 }
+.secondtable .overduetaskscount {
+    text-align: center;
+    min-width: 75px;
+    max-width: 75px;
+}
+.secondtable .completedtaskscount {
+    text-align: center;
+    min-width: 95px;
+    max-width: 95px;
+}
 .secondtable .actname {
-    min-width: 270px;
-    max-width: 270px;
+    min-width: 240px;
+    max-width: 240px;
 }
 .secondtable .date {
     min-width: 100px;

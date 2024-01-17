@@ -70,6 +70,7 @@ class SubtaskAssignees extends Component
     public function unassignAssignees($selectedAssignee)
     {
         SubtaskUser::where('user_id', $selectedAssignee)
+            ->where('subtask_id', $this->subtask->id)
             ->delete();
 
         $assigneesIds = SubtaskUser::where('subtask_id', $this->subtask->id)
