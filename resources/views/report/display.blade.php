@@ -210,8 +210,8 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center align-items-center">
-                                <button class="btn btn-outline-success px-5 m-2" onclick="generatePDF()">Download
-                                    Table(pdf)</button>
+                                <button class="btn btn-outline-success px-5 m-2" type="button" id="generateReportPdf" data-projectid="{{ $projectid }}" data-department="{{ $department }}">
+                                    Download Table(pdf)</button>
                             </div>
                         </div>
 
@@ -242,6 +242,7 @@
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <script>
+    /*
     function generatePDF() {
         const jsPDF = window.jsPDF = window.jspdf.jsPDF;
         const printableContent = document.getElementById('printableContent');
@@ -271,7 +272,7 @@
             pdf.save('download.pdf');
         });
     }
-
+*/
     var selectElement = $('#year-select');
     var url = "";
 
@@ -327,7 +328,17 @@
     $(document).ready(function() {
 
 
+        $('#generateReportPdf').click(function() {
+            var randomNumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
 
+            var url = "{{ route('reportPdf.generate', ['projectid' => ':projectid', 'department' => ':department', 'random' => 'randomNumber']) }}";
+            url = url.replace(':projectid', $(this).attr('data-projectid'));
+
+            url = url.replace(':department', encodeURIComponent($(this).attr('data-department')));
+            url = url.replace('randomNumber', randomNumber);
+
+            window.location.href = url;
+        });
         // Add an event listener to the select element
         selectElement.change(function() {
             var

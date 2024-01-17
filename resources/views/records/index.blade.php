@@ -61,7 +61,31 @@
         <div class="basiccont shadow" id="printableContent">
             <div class="text-center shadow text-white p-2 pt-3 imbentobg">
                 <h5 class="fw-bold">
-                    EXTENSION SERVICES RECORDS FOR THE FIRST SEMESTER, AY 2022-2023
+                    @if ($ayfirstsem)
+                    @foreach ($allAY as $ay)
+                    @if( $ay->id == $ayfirstsem->id )
+                    {{ 'EXTENSION SERVICES RECORD FOR THE FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    @break
+                    @endif
+
+                    @endforeach
+                    @elseif ($aysecondsem)
+                    @foreach ($allAY as $ay)
+                    @if($ay->id == $aysecondsem->id)
+
+                    {{ 'EXTENSION SERVICES RECORD FOR THE SECOND SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    @break
+                    @endif
+                    @endforeach
+                    @elseif ($latestAy)
+                    @foreach ($allAY as $ay)
+                    @if( $ay->id == $latestAy->id )
+                    {{ 'FIRST SEMESTER, AY ' . \Carbon\Carbon::parse($ay->acadstartdate)->format('Y') . '-' . \Carbon\Carbon::parse($ay->acadenddate)->format('Y') }}
+                    @break
+                    @endif
+
+                    @endforeach
+                    @endif
                 </h5>
             </div>
             <div class="row m-1">
@@ -346,8 +370,13 @@
 
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            <button class="btn btn-outline-success px-5 m-2" onclick="generatePDF()">Download
-                Table(pdf)</button>
+            @if (!$ayid)
+            <button type="button" class="btn btn-outline-success px-5 m-2" id="generatePdf">
+                Download Table(pdf)</button>
+            @else
+            <button type="button" class="btn btn-outline-success px-5 m-2" id="generateSelectedPdf" data-ayid="{{ $ayid }}" data-semester="{{ $semester }}">
+                Download Table(pdf)</button>
+            @endif
         </div>
     </div>
 
@@ -358,14 +387,15 @@
 
 @endsection
 @section('scripts')
-
+<!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> -->
 <!--
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
                         -->
 <script>
+    /*
     function generatePDF() {
         const jsPDF = window.jsPDF = window.jspdf.jsPDF;
         const printableContent = document.getElementById('printableContent');
@@ -398,10 +428,32 @@
 
 
 
-
+*/
     $(document).ready(function() {
 
 
+        $('#generatePdf').click(function() {
+            var randomNumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
+            var url = "{{ route('pdf.generate', ['username' => Auth::user()->username, 'random' => 'randomNumber' ]) }}";
+
+            // Replace 'randomNumber' in the URL with the actual random number
+            url = url.replace('randomNumber', randomNumber);
+
+            // Use window.location.href to navigate to the generated URL
+            window.location.href = url;
+        });
+        $('#generateSelectedPdf').click(function() {
+
+            var randomNumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
+            var url = "{{ route('selectedPdf.generate', ['username' => Auth::user()->username, 'ayid' => ':ayid', 'semester' => ':semester', 'random' => 'randomNumber' ]) }}";
+
+            // Replace 'randomNumber' in the URL with the actual random number
+            url = url.replace('randomNumber', randomNumber);
+            url = url.replace(':ayid', $(this).attr('data-ayid'));
+            url = url.replace(':semester', $(this).attr('data-semester'));
+            // Use window.location.href to navigate to the generated URL
+            window.location.href = url;
+        });
 
         $('#sem-select').change(function() {
             var selectedOption = $(this).find(':selected');

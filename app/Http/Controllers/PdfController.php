@@ -2,28 +2,20 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Notification;
-use App\Models\SubtaskcontributionsUser;
 use Illuminate\Http\Request;
+use PDF;
 use App\Models\User;
-use App\Models\SubtaskContributor;
 use App\Models\Subtask;
 use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\AcademicYear;
-use App\Models\activityContribution;
-use App\Models\ActivitycontributionsUser;
-use App\Models\Contribution;
 use App\Models\ProjectLeader;
 use App\Models\ProgramLeader;
 use App\Models\Project;
-use Illuminate\Support\Facades\Auth;
 
-class RecordController extends Controller
+class PdfController extends Controller
 {
-    //
-    public function showrecords($username)
+    public function generatePdf($username, $random)
     {
 
         $user = User::where('username', $username)->firstOrFail();
@@ -120,7 +112,7 @@ class RecordController extends Controller
         $acthours = $activityContributions->sum('hours_rendered');
         $totalhoursrendered = $subhours + $acthours;
 
-        return view('records.index', [
+        $pdf = PDF::loadView('pdf.dynamic_multi_page', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
             'aysecondsem' => $aysecondsem,
@@ -134,13 +126,25 @@ class RecordController extends Controller
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
             'allprojects' => $allprojects,
-            'ayid' => false,
-            'semester' => false,
+            'minSemDate' => $minSemDate,
+            'maxSemDate' => $maxSemDate
 
         ]);
+        // $data = ['records' => $this->getData()];
+
+        // $pdf = PDF::loadView('pdf.dynamic_multi_page', $data);
+
+        // Set PDF options (page size and margins)
+        $pdf->setPaper('A4', 'landscape'); // 'portrait' for vertical orientation, 'landscape' for horizontal
+        $pdf->setOption('margin-top', 0); // 1 inch in millimeters
+        $pdf->setOption('margin-right', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+
+        return $pdf->download('asdasd.pdf');
     }
 
-    public function selectrecords($username, $ayid, $semester)
+    public function generateSelectedPdf($username, $ayid, $semester, $random)
     {
 
         $user = User::where('username', $username)->firstOrFail();
@@ -234,7 +238,7 @@ class RecordController extends Controller
         $acthours = $activityContributions->sum('hours_rendered');
         $totalhoursrendered = $subhours + $acthours;
 
-        return view('records.index', [
+        $pdf = PDF::loadView('pdf.dynamic_multi_page', [
             'user' => $user,
             'ayfirstsem' => $ayfirstsem,
             'aysecondsem' => $aysecondsem,
@@ -248,9 +252,44 @@ class RecordController extends Controller
             'otheractivities' => $otheractivities,
             'totalhoursrendered' => $totalhoursrendered,
             'allprojects' => $allprojects,
-            'ayid' => $ayid,
-            'semester' => $semester
+            'minSemDate' => $minSemDate,
+            'maxSemDate' => $maxSemDate
 
         ]);
+
+
+        // $data = ['records' => $this->getData()];
+
+        // $pdf = PDF::loadView('pdf.dynamic_multi_page', $data);
+
+        // Set PDF options (page size and margins)
+        $pdf->setPaper('A4', 'landscape'); // 'portrait' for vertical orientation, 'landscape' for horizontal
+        $pdf->setOption('margin-top', 0); // 1 inch in millimeters
+        $pdf->setOption('margin-right', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+
+        return $pdf->download('asdasd.pdf');
+    }
+
+    public function generateReportPdf($projectid, $department)
+    {
+
+
+        $pdf = PDF::loadView('pdf.project_reports', []);
+
+
+        // $data = ['records' => $this->getData()];
+
+        // $pdf = PDF::loadView('pdf.dynamic_multi_page', $data);
+
+        // Set PDF options (page size and margins)
+        $pdf->setPaper('A4', 'landscape'); // 'portrait' for vertical orientation, 'landscape' for horizontal
+        $pdf->setOption('margin-top', 0); // 1 inch in millimeters
+        $pdf->setOption('margin-right', 0);
+        $pdf->setOption('margin-bottom', 0);
+        $pdf->setOption('margin-left', 0);
+
+        return $pdf->download('asdasd.pdf');
     }
 }

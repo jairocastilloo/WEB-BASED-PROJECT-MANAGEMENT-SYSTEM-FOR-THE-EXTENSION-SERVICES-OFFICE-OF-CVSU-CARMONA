@@ -20,6 +20,7 @@ use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Livewire\AccountApproval;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\PdfController;
 use App\Models\AcademicYear;
 use App\Models\Activity;
 use App\Http\Livewire\Notifications;
@@ -186,3 +187,7 @@ Route::post('/uploadaccomplishmentreport', [ActivityController::class, 'uploadAc
 Route::post('/uploadsubtaskreport', [SubtaskController::class, 'uploadAccomplishmentReport'])->name('subtasks.uploadaccomplishment');
 Route::post('/updateuseraccount', [SettingsController::class, 'updateUserAccount'])->name('useraccount.update');
 Route::post('/generateaccomplishmentreport', [ReportController::class, 'generateAccomplishmentReport'])->name('report.generateAccomplishmentReport');
+
+Route::get('/get-pdf/{username}/{random}', [PdfController::class, 'generatePdf'])->name('pdf.generate');
+Route::get('/get-selectedPdf/{username}/{ayid}/{semester}/{random}', [PdfController::class, 'generateSelectedPdf'])->name('selectedPdf.generate');
+Route::get('/get-reportPdf/{projectid}/{department}/{random}', [PdfController::class, 'generateReportPdf'])->name('reportPdf.generate');

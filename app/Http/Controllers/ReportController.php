@@ -120,6 +120,7 @@ class ReportController extends Controller
         }
 
         return view('report.display', [
+            'projectid' => $projectid,
             'department' => $department,
             'alldepartments' => $alldepartments,
             'status' => $status,
