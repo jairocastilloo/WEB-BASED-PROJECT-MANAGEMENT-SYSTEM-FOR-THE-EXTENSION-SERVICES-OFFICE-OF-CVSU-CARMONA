@@ -75,7 +75,10 @@ class ProjectMembers extends Component
             ->where('project_id', $this->project->id)
             ->delete();
         $memberIds = ProjectUser::where('project_id', $this->project->id)->pluck('user_id');
-
+        Notification::where('task_id', $this->project->id)
+            ->where('user_id', $selectedMember)
+            ->where('task_type', 'project')
+            ->delete();
         // Fetch the members using the retrieved IDs
         $this->members = User::whereIn('id', $memberIds)->get();
         $department = $this->department;

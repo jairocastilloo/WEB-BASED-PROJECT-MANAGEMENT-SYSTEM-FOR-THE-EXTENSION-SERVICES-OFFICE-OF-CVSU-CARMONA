@@ -279,7 +279,9 @@ class SubtaskController extends Controller
         $subtask = Subtask::findorFail($subtaskid);
         $activityId = $subtask->activity_id;
         $subtask->delete();
-
+        Notification::where('task_id', $subtaskid)
+            ->where('task_type', 'subtask')
+            ->delete();
         return response()->json([
             'actid' => $activityId,
         ]);

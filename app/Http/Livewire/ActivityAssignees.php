@@ -63,7 +63,10 @@ class ActivityAssignees extends Component
             ->delete();
         $assigneesIds = ActivityUser::where('activity_id', $this->activity->id)
             ->pluck('user_id');
-
+        Notification::where('task_id', $this->activity->id)
+            ->where('user_id', $selectedAssignee)
+            ->where('task_type', 'activity')
+            ->delete();
         // Fetch the members using the retrieved IDs
         $this->assignees = User::whereIn('id', $assigneesIds)->get();
 

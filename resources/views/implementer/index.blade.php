@@ -71,7 +71,7 @@
                     @endif
                 </label>
                 @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
-                @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 0])
+                @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
                 @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
                 @livewire('completed-activities', ['projectid' => null, 'activityid' => null, 'xCompletedActivities' => 0])
                 @livewire('check-output')
@@ -86,7 +86,7 @@
                     @endif
                 </label>
                 @livewire('more-projects', ['department' => null, 'projectid' => null, 'x' => 1])
-                @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 0])
+                @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 1])
                 @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
                 @livewire('completed-projects', ['department' => null, 'projectid' => null, 'xCompletedProjects' => 0])
             </div>

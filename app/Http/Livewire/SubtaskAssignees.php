@@ -76,7 +76,10 @@ class SubtaskAssignees extends Component
         $assigneesIds = SubtaskUser::where('subtask_id', $this->subtask->id)
             ->pluck('user_id')
             ->toArray();
-
+        Notification::where('task_id', $this->subtask->id)
+            ->where('user_id', $selectedAssignee)
+            ->where('task_type', 'subtask')
+            ->delete();
         // Fetch the members using the retrieved IDs
         $this->assignees = User::whereIn('id', $assigneesIds)->get();
 

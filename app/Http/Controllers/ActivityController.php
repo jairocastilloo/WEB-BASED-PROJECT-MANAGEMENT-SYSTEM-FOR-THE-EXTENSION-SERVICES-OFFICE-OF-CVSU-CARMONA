@@ -430,7 +430,9 @@ class ActivityController extends Controller
         $department = $project->department;
 
         $activity->delete();
-
+        Notification::where('task_id', $activityid)
+            ->where('task_type', 'activity')
+            ->delete();
         return redirect()->route('projects.display', ['projectid' => $project->id, 'department' => $department]);
     }
 }

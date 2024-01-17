@@ -674,7 +674,9 @@ class ProjectController extends Controller
         $department = $project->department;
 
         $project->delete();
-
+        Notification::where('task_id', $projectid)
+            ->where('task_type', 'project')
+            ->delete();
         return redirect()->route('project.show', ['department' => $department]);
     }
 }
