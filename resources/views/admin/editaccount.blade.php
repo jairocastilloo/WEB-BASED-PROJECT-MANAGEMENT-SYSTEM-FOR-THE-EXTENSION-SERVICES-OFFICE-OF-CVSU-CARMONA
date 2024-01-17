@@ -32,8 +32,7 @@
 
     @else
 
-    <h1>Sorry, this is exclusive for admin. <a
-            href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}">Go back</a></h1>
+    <h1>Sorry, this is exclusive for admin. <a href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}">Go back</a></h1>
 
     @endif
 </div>
@@ -41,35 +40,35 @@
 @section('scripts')
 
 <script>
-$(document).ready(function() {
-    $('#navbarDropdown').click(function() {
-        // Add your function here
-        $('.dropdown-menu').toggleClass('shows');
-    });
-    $('#accountapproval').click(function() {
-        window.location.href = "{{ route('admin.manage') }}";
-    });
-    $(document).on('click', '.editdetails', function() {
-        var parentdiv = $(this).closest('tr');
+    $(document).ready(function() {
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('.dropdown-menu').toggleClass('shows');
+        });
+        $('#accountapproval').click(function() {
+            window.location.href = "{{ route('admin.manage') }}";
+        });
+        $(document).on('click', '.editdetails', function() {
+            var parentdiv = $(this).closest('tr');
 
-        var firstname = parentdiv.find('.firstname').text();
-        var middlename = parentdiv.find('.middlename').text();
-        var lastname = parentdiv.find('.lastname').text();
-        var username = parentdiv.find('.username').text();
-        var email = parentdiv.find('.email').text();
-        var department = parentdiv.find('.dept').text();
-        var role = parentdiv.find('.role').text();
-        $('#userid').val(parentdiv.attr('data-value'));
-        $('#firstname').val(firstname);
-        $('#middlename').val(middlename);
-        $('#lastname').val(lastname);
-        $('#username').val(username);
-        $('#email').val(email);
-        $('#department').val(department);
-        $('#role').val(role);
-        $('#registrationModal').modal('show');
+            var firstname = parentdiv.find('.firstname').text();
+            var middlename = parentdiv.find('.middlename').text();
+            var lastname = parentdiv.find('.lastname').text();
+            var username = parentdiv.find('.username').text();
+            var email = parentdiv.find('.email').text();
+            var department = parentdiv.find('.dept').text();
+            var role = parentdiv.find('.role').text();
+            $('#userid').val(parentdiv.attr('data-value'));
+            $('#firstname').val(firstname);
+            $('#middlename').val(middlename);
+            $('#lastname').val(lastname);
+            $('#username').val(username);
+            $('#email').val(email);
+            $('#department').val(department);
+            $('#role').val(role);
+            $('#registrationModal').modal('show');
+        });
     });
-});
 </script>
 
 @endsection
