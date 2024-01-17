@@ -63,7 +63,7 @@
                 @endphp
                 <h6 class="text-secondary small">{{ 'Created ' . date('M d, Y', strtotime($activity['created_at'])) }}</h6>
                 <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
-                @if(in_array(Route::currentRouteName(), ['tasks.show']))
+
                 <div class="btn-group" style="position: absolute; top: 0; right: 0;">
                     <button type="button" class="btn btn-sm btn-outline-success fs-6 px-1 border me-1 mt-1" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-three-dots-vertical"></i>
@@ -73,7 +73,7 @@
                         <!-- Add more dropdown items here -->
                     </ul>
                 </div>
-                @endif
+
             </div>
 
             @endforeach

@@ -64,6 +64,7 @@
                 @livewire('missing-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xMissingTasks' => 1])
                 @livewire('completed-tasks', ['activityid' => $activity->id, 'subtaskid' => null, 'xCompletedTasks' =>
                 0])
+                @livewire('check-output')
             </div>
 
 
@@ -457,6 +458,22 @@
 
 
         });
+
+
+        $(document).on('click', '.activitydiv button', function(event) {
+            event.stopPropagation(); // Prevent the click event from propagating to the parent .subtaskdiv
+            // Add your button click logic here
+        });
+
+        $(document).on('click', '.activitydiv .dropdown-menu', function(event) {
+            event.stopPropagation();
+        });
+        $(document).on('click', '.checkOutput', function(event) {
+            $('#checkActId').val($(this).attr('data-id'));
+            $('#checkActName').text($(this).attr('data-name'));
+            $('#outputCheckModal').modal('show');
+        });
+
     });
 </script>
 <script src="{{ asset('js/activityindex.js') }}"></script>
