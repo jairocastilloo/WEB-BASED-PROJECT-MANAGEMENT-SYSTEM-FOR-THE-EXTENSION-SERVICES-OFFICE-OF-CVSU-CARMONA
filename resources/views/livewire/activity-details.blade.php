@@ -184,8 +184,7 @@
                         </div>
                         @endforeach
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add
-                        Budget</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add Budget</button>
                     <!--
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>

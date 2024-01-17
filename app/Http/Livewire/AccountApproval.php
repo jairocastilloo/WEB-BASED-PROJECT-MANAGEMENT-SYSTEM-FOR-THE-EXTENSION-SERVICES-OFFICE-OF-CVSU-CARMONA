@@ -113,12 +113,14 @@ class AccountApproval extends Component
             case 0:
                 $pendingusers = User::query()
                     ->where('approval', 0)
+                    ->whereNotNull('email_verified_at')
                     ->orderBy('created_at', 'desc')
                     ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
                 break;
             case 1:
                 $pendingusers = User::query()
                     ->where('approval', 0)
+                    ->whereNotNull('email_verified_at')
                     ->where('name', 'like', "%$this->inputSearch%")
                     ->orWhere('middle_name', 'like', "%$this->inputSearch%")
                     ->orWhere('last_name', 'like', "%$this->inputSearch%")
@@ -129,6 +131,7 @@ class AccountApproval extends Component
             case 2:
                 $pendingusers = User::query()
                     ->where('approval', 0)
+                    ->whereNotNull('email_verified_at')
                     ->where('email', 'like', "%$this->inputSearch%")
                     ->orderBy('created_at', 'desc')
                     ->paginate($this->perPage, ['*'], 'page', $this->currentPage);
@@ -136,6 +139,7 @@ class AccountApproval extends Component
             case 3:
                 $pendingusers = User::query()
                     ->where('approval', 0)
+                    ->whereNotNull('email_verified_at')
                     ->where('department', 'like', "%$this->inputSearch%")
                     ->orderBy('created_at', 'desc')
                     ->paginate($this->perPage, ['*'], 'page', $this->currentPage);

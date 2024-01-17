@@ -426,8 +426,7 @@
 
             var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
             url = url.replace(':activityid', activityid);
-            win
-            dow.location.href = url;
+            window.location.href = url;
 
         });
 
@@ -440,6 +439,23 @@
             $('#assigneedataid').val($(this).attr('data-id'));
             // Open the modal or perform other actions
             $('#assigneedetails').modal('show');
+        });
+        $('#addExpectedOutput-btn').click(function() {
+
+            $('#outputContainer').append(`<div class="input-group mb-1 expectedOutput-input">
+                <input type="text" class="form-control" name="expectedoutput[]">
+                <span class="invalid-feedback" role="alert">
+                <strong></strong>
+            </span>
+                <button type="button" class="btn btn-sm btn-outline-danger removeExpectedOutput-btn"><i class="bi bi-x-lg"></i></button>
+            </div>`);
+        });
+        $(document).on('click', '.removeExpectedOutput-btn', function() {
+            if ($('.expectedOutput-input').length > 1) {
+                $(this).parent().remove();
+            }
+
+
         });
     });
 </script>

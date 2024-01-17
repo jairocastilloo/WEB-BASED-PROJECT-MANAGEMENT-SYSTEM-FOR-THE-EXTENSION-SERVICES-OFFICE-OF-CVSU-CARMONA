@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             @foreach ($allusers as $alluser)
-            @if ($alluser->role !== 'Admin' && $alluser->approval !== 1)
+            @if ($alluser->role !== 'Admin')
             <tr>
                 <td>{{ $alluser->name . " " . $alluser->middle_name . " " . $alluser->last_name }}</td>
                 <td>{{ $alluser->email }}</td>

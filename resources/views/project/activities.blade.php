@@ -791,8 +791,7 @@
         $(document).on('click', '.actdiv', function() {
             event.preventDefault();
 
-            var
-                activityid = $(this).attr('data-value');
+            var activityid = $(this).attr('data-value');
 
             var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
             url = url.replace(':activityid', activityid);

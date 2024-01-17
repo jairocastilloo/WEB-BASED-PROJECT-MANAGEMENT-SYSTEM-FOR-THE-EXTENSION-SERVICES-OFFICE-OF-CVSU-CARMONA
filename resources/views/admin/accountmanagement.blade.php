@@ -32,8 +32,7 @@
 
     @else
 
-    <h1>Sorry, this is exclusive for admin. <a
-            href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}">Go back</a></h1>
+    <h1>Sorry, this is exclusive for admin. <a href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}">Go back</a></h1>
 
     @endif
 </div>
@@ -41,26 +40,26 @@
 @section('scripts')
 
 <script>
-$(document).ready(function() {
-    $('#navbarDropdown').click(function() {
-        // Add your function here
-        $('.dropdown-menu').toggleClass('shows');
+    $(document).ready(function() {
+        $('#navbarDropdown').click(function() {
+            // Add your function here
+            $('.dropdown-menu').toggleClass('shows');
+        });
+
+
+        $('.declineAccount').click(function() {
+            var userId = $(this).closest('tr').data('id');
+            $('#declineId').val(userId);
+            $('#myModal').modal('show');
+        });
+
+
+
+        $('#editAccounts').click(function() {
+            window.location.href = "{{ route('admin.editaccount') }}";
+        });
+
     });
-
-
-    $('.declineAccount').click(function() {
-        var userId = $(this).closest('tr').data('id');
-        $('#declineId').val(userId);
-        $('#myModal').modal('show');
-    });
-
-
-
-    $('#editAccounts').click(function() {
-        window.location.href = "{{ route('admin.editaccount') }}";
-    });
-
-});
 </script>
 
 
