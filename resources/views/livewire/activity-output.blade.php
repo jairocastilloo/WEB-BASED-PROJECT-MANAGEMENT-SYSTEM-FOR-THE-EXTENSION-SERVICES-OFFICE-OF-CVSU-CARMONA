@@ -40,10 +40,10 @@
         </div>
         @endif
         <div class="text-center">
-            <div><button type="button" class="btn btn-primary mb-2 d-none mt-2" id="saveOutput">
+            <div><button type="button" class="btn btn-md rounded btn-gold shadow mb-2 d-none mt-2" id="saveOutput">
                     Save
                 </button></div>
-            <div> <button type="button" class="btn btn-secondary mb-2 d-none" id="cancelOutput">
+            <div> <button type="button" class="btn btn-md rounded border border-1 btn-light mb-2 d-none" id="cancelOutput">
                     Cancel
                 </button></div>
 
@@ -116,8 +116,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="cancelAddOutput" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="btnAddOutput">Add Output</button>
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light" id="cancelAddOutput" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-md rounded btn-gold shadow" id="btnAddOutput">Add Output</button>
                 </div>
             </div>
         </div>
