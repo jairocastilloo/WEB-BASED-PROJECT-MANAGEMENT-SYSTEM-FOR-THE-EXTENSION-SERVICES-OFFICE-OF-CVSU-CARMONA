@@ -137,7 +137,7 @@
                         </div>
                         <div class="basiccont rounded shadow">
                             <div class="border-bottom ps-3 pt-2 bggreen mb-1">
-                                <h6 class="fw-bold small" style="color:darkgreen;">Project Activities Data Table
+                                <h6 class="fw-bold small" style="color:darkgreen;">Project's Activities Data Table
                                 </h6>
                             </div>
                             <div id="printableContent">

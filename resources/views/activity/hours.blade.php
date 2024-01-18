@@ -335,9 +335,9 @@
                 var fileSize = fileInput.files[0].size;
                 var fileType = fileInput.files[0].type;
 
-                if (fileType !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                if (fileType !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && fileType !== 'application/pdf') {
                     $('#accomplishment_file').addClass('is-invalid');
-                    $('#accomplishment_file').next().text('Please upload a .docx file.').show();
+                    $('#accomplishment_file').next().text('Please upload a .docx or .pdf file.').show();
 
                     hasError = true;
                 }

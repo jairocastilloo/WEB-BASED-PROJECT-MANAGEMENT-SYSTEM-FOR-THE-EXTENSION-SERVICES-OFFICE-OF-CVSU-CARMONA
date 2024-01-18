@@ -146,6 +146,9 @@ class SubtaskController extends Controller
             $subtaskcontributor->save();
         }
 
+
+
+
         $request->validate([
             'subtaskdocs' => 'required|mimes:docx|max:10240',
         ]);
@@ -253,9 +256,33 @@ class SubtaskController extends Controller
                 'user_id' => $subtaskcontributors,
             ]);
         }
+
+        $selectedAssignees = User::where('role', 'Admin')
+            ->get(['id']);
+        $subtask = Subtask::where('id', $request->input('subtask-id'))->first();
+        $subtaskname = $subtask ? $subtask->subtask_name : 'Unknown Subtask';
+
+        $message = Auth::user()->name . ' ' . Auth::user()->last_name . ' submitted an accomplishment report for subtask: ' . $subtaskname . '.';
+
+        foreach ($selectedAssignees as $selectedAssignee) {
+
+
+
+
+            $notification = new Notification([
+                'user_id' => $selectedAssignee->id,
+                'task_id' => $subtaskcontribution->id,
+                'task_type' => "subtaskcontribution",
+                'task_name' => $subtaskname,
+                'message' => $message,
+            ]);
+            $notification->save();
+        }
+
         $request->validate([
-            'accomplishment_file' => 'required|mimes:docx, pdf|max:10240',
+            'accomplishment_file' => 'required|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf|max:10240',
         ]);
+
         $file = $request->file('accomplishment_file');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();

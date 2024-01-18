@@ -50,13 +50,54 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'username' => ['required', 'string', 'max:255', 'unique:users', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/'],
-            'name' => ['required', 'string', 'max:255', 'alpha'],
-            'middle_name' => ['nullable', 'string', 'max:255', 'alpha'],
-            'last_name' => ['required', 'string', 'max:255', 'alpha'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'department' => ['required', 'string', 'max:255'],
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:users',
+                'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/'
+            ],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
+            'middle_name' => [
+                'nullable',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
+            'last_name' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users'
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed'
+            ],
+            'department' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+        ], [
+            'username.regex' => 'The :attribute must contain at least one letter and one number.',
+            'name.regex' => 'The first name can only contain letters and spaces.',
+            'middle_name.regex' => 'The middle name can only contain letters and spaces.',
+            'last_name.regex' => 'The last name can only contain letters and spaces.',
         ]);
     }
 

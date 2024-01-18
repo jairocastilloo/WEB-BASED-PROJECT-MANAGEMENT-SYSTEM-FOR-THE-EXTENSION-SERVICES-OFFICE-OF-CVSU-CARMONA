@@ -46,6 +46,12 @@ class NotificationIndex extends Component
             return redirect()->route('activities.display', ["activityid" => $taskid]);
         } elseif ($tasktype === 'subtask') {
             return redirect()->route('subtasks.display', ["subtaskid" => $taskid,  "subtaskname" => $taskname,]);
+        } elseif ($tasktype === 'projectcontribution') {
+            return redirect()->route('projsubmission.display', ["projsubmissionid" => $taskid,  "projsubmissionname" => $taskname,]);
+        } elseif ($tasktype === 'activitycontribution') {
+            return redirect()->route('actsubmission.display', ["actsubmissionid" => $taskid,  "actsubmissionname" => $taskname,]);
+        } elseif ($tasktype === 'subtaskcontribution') {
+            return redirect()->route('submission.display', ["submissionid" => $taskid,  "submissionname" => $taskname,]);
         }
     }
     public function handleshowTask($notificationid, $taskid, $tasktype, $taskname)

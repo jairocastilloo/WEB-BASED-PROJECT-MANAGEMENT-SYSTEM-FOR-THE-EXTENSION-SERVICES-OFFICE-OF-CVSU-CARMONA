@@ -648,9 +648,30 @@ class ProjectController extends Controller
         ]);
         $projectterminal->save();
 
+        $selectedAssignees = User::where('role', 'Admin')
+            ->get(['id']);
+        $project = Project::where('id', $request->input('project-id'))->first();
+        $projectname = $project ? $project->projecttitle : 'Unknown Project';
+
+        $message = Auth::user()->name . ' ' . Auth::user()->last_name . ' submitted an terminal report for project: ' . $projectname . '.';
+
+        foreach ($selectedAssignees as $selectedAssignee) {
+
+
+            $notification = new Notification([
+                'user_id' => $selectedAssignee->id,
+                'task_id' => $projectterminal->id,
+                'task_type' => "projectcontribution",
+                'task_name' => $projectname,
+                'message' => $message,
+            ]);
+            $notification->save();
+        }
+
         $request->validate([
-            'terminal_file' => 'required|mimes:docx, pdf|max:10240',
+            'accomplishment_file' => 'required|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf|max:10240',
         ]);
+
         $file = $request->file('terminal_file');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();

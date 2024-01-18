@@ -201,8 +201,8 @@
                 <header>
 
 
-
-                    <p><b>Project Activities Table</b></p>
+                    <p><b>PROJECT'S ACTIVITIES REPORT</b></p>
+                    <p><b>Project's Activities Data Table</b></p>
 
 
 

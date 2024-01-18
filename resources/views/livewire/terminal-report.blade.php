@@ -17,7 +17,7 @@
                         <!-- File Upload for Terminal Report -->
                         <div class="mb-3">
                             <label for="terminalReport" class="form-label">Terminal Report</label>
-                            <input type="file" class="form-control" id="terminalReport" name="terminal_report" accept=".pdf, .doc, .docx">
+                            <input type="file" class="form-control" id="terminalReport" name="terminal_report" accept=".pdf, .docx">
                         </div>
 
                         <div class="modal-footer">

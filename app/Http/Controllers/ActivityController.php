@@ -385,6 +385,25 @@ class ActivityController extends Controller
                 'user_id' => $activityimplementer,
             ]);
         }
+        $selectedAssignees = User::where('role', 'Admin')
+            ->get(['id']);
+        $activity = Activity::where('id', $request->input('activity-id'))->first();
+        $activityname = $activity ? $activity->actname : 'Unknown Activity';
+
+        $message = Auth::user()->name . ' ' . Auth::user()->last_name . ' submitted an accomplishment report for activity: ' . $activityname . '.';
+
+        foreach ($selectedAssignees as $selectedAssignee) {
+
+
+            $notification = new Notification([
+                'user_id' => $selectedAssignee->id,
+                'task_id' => $activitycontribution->id,
+                'task_type' => "activitycontribution",
+                'task_name' => $activityname,
+                'message' => $message,
+            ]);
+            $notification->save();
+        }
 
 
         $outputIds = $request->input('outputId.*');
@@ -399,8 +418,10 @@ class ActivityController extends Controller
             }
         }
         $request->validate([
-            'accomplishment_file' => 'required|mimes:docx, pdf|max:10240',
+            'accomplishment_file' => 'required|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf|max:10240',
         ]);
+
+
         $file = $request->file('accomplishment_file');
         $originalName = $file->getClientOriginalName();
         $extension = $file->getClientOriginalExtension();

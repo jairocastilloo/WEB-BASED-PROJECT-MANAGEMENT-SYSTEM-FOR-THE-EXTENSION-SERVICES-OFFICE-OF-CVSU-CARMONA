@@ -48,7 +48,9 @@
 
     <div class="flex-container">
         <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-        <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
+        <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}
+            <b class="text-success"><i>{{ ' (' . $indexproject->projectstatus . ') ' }}</i></b>
+        </div>
     </div>
     <div class="flex-container">
         <strong><em>Project Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
