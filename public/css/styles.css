@@ -425,13 +425,36 @@ th {
 .btn-gold {
     color: black;
     background-color: gold;
+    border-color: gold;
 }
-
 .btn-gold:hover {
-    color: black;
+    color: rgb(0, 0, 0);
     background-color: transparent;
     border-color: gold;
 }
+
+.btn-green  {
+    padding: 4px;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    background-color: green;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    color: white;
+    border: none;
+}
+.btn-green:hover{
+    background-color: rgb(0, 71, 0);
+    color: white;
+}
+
+.btn-red {
+    color: white;
+    background-color: red;
+}
+
+
 .btn-info:hover {
     color: black;
     background-color: transparent;
