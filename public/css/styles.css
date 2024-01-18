@@ -426,6 +426,7 @@ th {
     color: black;
     background-color: gold;
     border-color: gold;
+    transition: background-color 0.3s;
 }
 .btn-gold:hover {
     color: rgb(0, 0, 0);
