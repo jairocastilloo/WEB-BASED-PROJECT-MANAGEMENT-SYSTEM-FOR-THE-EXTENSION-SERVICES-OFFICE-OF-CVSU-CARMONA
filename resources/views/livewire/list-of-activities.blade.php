@@ -92,7 +92,7 @@
                         </div>
 
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addExpectedOutput-btn">Add
+                    <button type="button" class="btn btn-sm btn-green mb-3" id="addExpectedOutput-btn">Add
                         Expected Output</button>
 
                     <div class="mb-3">
@@ -152,7 +152,7 @@
                         </div>
 
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add
+                    <button type="button" class="btn btn-sm btn-green mb-3" id="addBudget-btn">Add
                         Budget</button>
 
 
@@ -166,11 +166,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn shadow rounded border border-1 btn-light" id="closeActivity" data-bs-dismiss="modal">
-                        <b class="small">Close</b>
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light" id="closeActivity" data-bs-dismiss="modal"><b class="small">Close</b>
                     </button>
-                    <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
-                        <b class="small">Add activity</b>
+                    <button type="button" class="btn btn-md rounded btn-gold shadow" id="confirmactivity"><b class="small">Add activity</b>
                     </button>
                 </div>
             </div>
