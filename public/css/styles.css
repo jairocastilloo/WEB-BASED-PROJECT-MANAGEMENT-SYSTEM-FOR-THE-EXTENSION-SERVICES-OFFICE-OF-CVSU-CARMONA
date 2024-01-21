@@ -521,7 +521,9 @@ th {
 .darkgreenfont {
     color: darkgreen;
 }
-
+.darkolivegreenfont {
+    color: darkolivegreen;
+}
 .navtohover {
     position: relative;
 }
