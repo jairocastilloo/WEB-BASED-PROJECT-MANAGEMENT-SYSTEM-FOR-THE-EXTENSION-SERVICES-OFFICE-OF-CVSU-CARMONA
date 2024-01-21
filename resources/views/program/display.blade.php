@@ -89,7 +89,7 @@
                             <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Projects</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('programs.members', ['programid' => $indexprogram->id, 'department' => $department ]) }}">
                                 <b class="small">Members And Leaders</b>
                             </a>
 

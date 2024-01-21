@@ -153,6 +153,8 @@ Route::post('/createprogram', [ProjectController::class, 'createProgram'])
     ->name('programs.create');
 Route::post('/storeProject', [ProjectController::class, 'storeProject'])
     ->name('programs.storeProject');
+Route::get('/programMembers/{programid}/{department}', [ProjectController::class, 'programMembers'])
+    ->name('programs.members');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
