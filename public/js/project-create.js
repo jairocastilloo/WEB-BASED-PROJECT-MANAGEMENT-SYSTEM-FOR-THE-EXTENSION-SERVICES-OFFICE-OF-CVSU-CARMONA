@@ -55,16 +55,7 @@ var selectElement = $('#year-select');
                 $('.programleaderdiv').css('display', 'inline-block');
             }
         });
-        $('#startDatePicker').datepicker();
-
-        $('#startDatePicker').datepicker().on('change', function(e) {
-            $('#startDatePicker').datepicker('hide');
-        });
-        $('#endDatePicker').datepicker();
-
-        $('#endDatePicker').datepicker().on('change', function(e) {
-            $('#endDatePicker').datepicker('hide');
-        });
+       
         $(document).on('input', '.autocapital', function() {
             var inputValue = $(this).val();
             if (inputValue.length > 0) {
@@ -225,6 +216,8 @@ var selectElement = $('#year-select');
                     $(this).attr('name', 'objectiveSetNumber[' + index + ']');
 
                 });
+// Remove 'disabled' attribute from all disabled options
+$('#programleader option:disabled').prop('disabled', false);
 
 
 
@@ -292,13 +285,14 @@ var selectElement = $('#year-select');
                     },
                     error: function(xhr, status, error) {
                         //$('#createprojectError').text(xhr.responseText);
+                        /*
                         $('#createprojectError').text("There is a problem with server. Contact Administrator!");
                         $('#loadingSpan').css('display', 'none');
-                        /*
-                                                console.log(xhr.responseText);
-                                                console.log(status);
-                                                console.log(error);
-                                                */
+                        */
+                        console.log(xhr.responseText);
+                        console.log(status);
+                        console.log(error);
+                                                
                     }
                 });
             }
@@ -327,9 +321,9 @@ var selectElement = $('#year-select');
 
                 var projectLeader = $('#projectleader').val();
 
-                var programTitle = $('#programtitle').val();
+                //var programTitle = $('#programtitle').val();
 
-                var programLeader = $('#programleader').val();
+                //var programLeader = $('#programleader').val();
 
                 var projectStartDate = formatDate($('#projectstartdate').val());
                 var projectEndDate = formatDate($('#projectenddate').val());

@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Models\CalendarYear;
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\ProgramUser;
 use App\Models\Subtask;
 use App\Models\Activity;
 use Illuminate\Support\Facades\URL;
@@ -31,6 +32,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\MyMail;
 use App\Models\ActivityBudget;
 use App\Models\ExpectedOutput;
+use App\Models\Program;
 use App\Models\FiscalYear;
 use Illuminate\Support\Facades\Redirect;
 
@@ -42,6 +44,7 @@ class ProjectController extends Controller
     {
         $role = Auth::user()->role;
         $userDepartment = Auth::user()->department;
+
         if ($role == "Admin") {
             $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
         } else {
@@ -49,6 +52,10 @@ class ProjectController extends Controller
         }
 
         $department = str_replace('+', ' ', $department);
+        $allPrograms = Program::where('department', $department)
+            ->get();
+        $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
+            ->get();
 
         if ($role == 'Admin') {
             if ($department == 'All') {
@@ -75,6 +82,8 @@ class ProjectController extends Controller
             'members' => $users,
             'department' => $department,
             'alldepartments' => $alldepartments,
+            'allPrograms' => $allPrograms,
+            'programLeaders' => $programLeaders
         ]);
     }
     /*
@@ -156,6 +165,8 @@ class ProjectController extends Controller
 
         $department = str_replace('+', ' ', $department);
 
+
+
         if ($role == 'Admin') {
             if ($department == 'All') {
                 $users = User::where('approval', 1)
@@ -184,13 +195,27 @@ class ProjectController extends Controller
 
         $allfiscalyears = FiscalYear::all();
         */
+
+        $allPrograms = Program::where('department', $department)
+            ->get();
+        $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
+            ->get();
+
+        $program = [];
+        $programId = $indexproject->program_id;
+        if ($programId != null) {
+            $program = Program::findOrFail($programId);
+        }
         return view('project.select', [
             'members' => $users,
             'indexproject' => $indexproject,
             'alldepartments' => $alldepartments,
+            'allPrograms' => $allPrograms,
+            'programLeaders' => $programLeaders,
             'objectives' => $objectives,
             'activities' => $activities,
             'department' => $department,
+            'program' => $program
         ]);
     }
     public function displayActivities($projectid, $department)
@@ -327,7 +352,6 @@ class ProjectController extends Controller
     {
         $isMailSendable = 1;
 
-
         $projecttitle = $request->input('projecttitle');
         //$projectleaderid = $request->input('projectleader');
         $projectstartdate = date("Y-m-d", strtotime($request->input('projectstartdate')));
@@ -335,21 +359,24 @@ class ProjectController extends Controller
 
         $projectleaders = $request->input('projectleader');
 
-        $programleaders = $request->input('programleader');
 
         $project = new Project([
             'projecttitle' => $projecttitle,
-            //'projectleader' => $request->input('projectleader'),
-            'programtitle' => $request->input('programtitle'),
-            //'programleader' => $request->input('programleader'),
             'projectstartdate' => $projectstartdate,
             'projectenddate' => $projectenddate,
             'department' => $request->input('department'),
-            //'fiscalyear' => $request->input('fiscalyear'),
         ]);
 
+        $programId = $request->input('programtitle');
+
+        if ($programId != 0) {
+            $project->program_id = $programId;
+        }
+
         $project->save();
+
         $newProjectId = $project->id;
+
         /**if (!is_array($projectleaders)) {
             // Convert a string to an array if needed, assuming it's a comma-separated list
             $projectleaders = explode(',', $projectleaders);
@@ -404,7 +431,7 @@ class ProjectController extends Controller
                 }
             }
         }
-
+        /*
         if ($programleaders) {
             foreach ($programleaders as $userId) {
                 $appointedUser = User::findOrFail($userId);
@@ -450,7 +477,7 @@ class ProjectController extends Controller
                 }
             }
         }
-
+*/
         $validatedData = $request->validate([
             'objectiveName.*' => 'required|string',
             'objectiveindex' => 'required|integer',
@@ -699,5 +726,270 @@ class ProjectController extends Controller
             ->where('task_type', 'project')
             ->delete();
         return redirect()->route('project.show', ['department' => $department]);
+    }
+    public function selectProgram($department)
+    {
+
+        $role = Auth::user()->role;
+        $userDepartment = Auth::user()->department;
+        if ($role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [$userDepartment, 'All'];
+        }
+
+        $department = str_replace('+', ' ', $department);
+
+        if ($role == 'Admin') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->where('username', '!=', 'admin')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('username', '!=', 'admin')
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
+
+
+        return view('project.select_program', [
+            'members' => $users,
+            'department' => $department,
+            'alldepartments' => $alldepartments,
+        ]);
+    }
+    public function displayProgram($programid, $department)
+    {
+        $role = Auth::user()->role;
+        $userDepartment = Auth::user()->department;
+        $indexprogram = Program::findOrFail($programid);
+        if ($role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [$userDepartment, 'All'];
+        }
+
+        $department = str_replace('+', ' ', $department);
+
+        if ($role == 'Admin') {
+            if ($department == 'All') {
+                $users = User::where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->where('username', '!=', 'admin')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            } else {
+                $users = User::where(function ($query) use ($department) {
+                    $query->where('department', $department)
+                        ->orWhere('department', 'All');
+                })
+                    ->where('username', '!=', 'admin')
+                    ->where('approval', 1)
+                    ->where('role', '!=', 'Implementer')
+                    ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
+            }
+        } else {
+            $users = null;
+        }
+        return view('project.display_program', [
+            'members' => $users,
+            'indexprogram' => $indexprogram,
+            'department' => $department,
+            'alldepartments' => $alldepartments,
+        ]);
+    }
+    public function createProgram(Request $request)
+    {
+        $isMailSendable = 1;
+
+
+        $programtitle = $request->input('programtitle-1');
+        //$projectleaderid = $request->input('projectleader');
+        $programstartdate = date("Y-m-d", strtotime($request->input('programstartdate-1')));
+        $programenddate = date("Y-m-d", strtotime($request->input('programenddate-1')));
+
+        $programleaders = $request->input('programleader-1');
+
+
+        $program = new Program([
+            'programName' => $programtitle,
+            'startDate' => $programstartdate,
+            'endDate' => $programenddate,
+            'department' => $request->input('department'),
+            //'fiscalyear' => $request->input('fiscalyear'),
+        ]);
+
+        $program->save();
+        $newProgramId = $program->id;
+
+        /**if (!is_array($projectleaders)) {
+            // Convert a string to an array if needed, assuming it's a comma-separated list
+            $projectleaders = explode(',', $projectleaders);
+        }*/
+        foreach ($programleaders as $userId) {
+
+            $appointedUser = User::where('id', $userId)
+                ->first(['id', 'name', 'last_name', 'notifyProgramAdded', 'emailProgramAdded', 'email']);
+
+            ProgramLeader::create([
+                'program_id' => $newProgramId,
+                'user_id' => $userId,
+            ]);
+            ProgramUser::create([
+                'program_id' => $newProgramId,
+                'user_id' => $userId,
+            ]);
+
+
+            if ($appointedUser->notifyProgramAdded == 1) {
+                $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
+                $message =  $sendername . ' appointed you as a Program Leader to a new program: "' . $programtitle . '".';
+
+                $notification = new Notification([
+                    'user_id' => $userId,
+                    'task_id' => $newProgramId,
+                    'task_type' => "program",
+                    'task_name' => $programtitle,
+                    'message' => $message,
+                ]);
+                $notification->save();
+            }
+            if ($appointedUser->emailProgramAdded == 1) {
+                if ($isMailSendable === 1) {
+                    try {
+
+                        $email = $appointedUser->email;
+                        $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                        $taskname = $programtitle;
+                        $tasktype = "program";
+                        $startDate = date('F d, Y', strtotime($programstartdate));
+                        $endDate = date('F d, Y', strtotime($programenddate));
+
+                        $taskdeadline = $startDate . ' - ' . $endDate;
+                        $senderemail = Auth::user()->email;
+
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+
+                        $isMailSendable = 0;
+                    }
+                }
+            }
+        }
+
+        return response()->json([
+            'programid' => $newProgramId,
+            'isMailSent' => $isMailSendable,
+        ]);
+    }
+    public function storeProject(Request $request)
+    {
+        $isMailSendable = 1;
+
+        $projecttitle = $request->input('projecttitle');
+        //$projectleaderid = $request->input('projectleader');
+        $projectstartdate = date("Y-m-d", strtotime($request->input('projectstartdate')));
+        $projectenddate = date("Y-m-d", strtotime($request->input('projectenddate')));
+
+        $projectleaders = $request->input('projectleader');
+
+
+
+        $project = new Project([
+            'projecttitle' => $projecttitle,
+            //'projectleader' => $request->input('projectleader'),
+            'program_id' => $request->input('programindex'),
+            //'programleader' => $request->input('programleader'),
+            'projectstartdate' => $projectstartdate,
+            'projectenddate' => $projectenddate,
+            'department' => $request->input('department'),
+            //'fiscalyear' => $request->input('fiscalyear'),
+        ]);
+
+        $project->save();
+        $newProjectId = $project->id;
+        /**if (!is_array($projectleaders)) {
+            // Convert a string to an array if needed, assuming it's a comma-separated list
+            $projectleaders = explode(',', $projectleaders);
+        }*/
+        foreach ($projectleaders as $userId) {
+
+            $appointedUser = User::findOrFail($userId);
+
+            ProjectLeader::create([
+                'project_id' => $newProjectId,
+                'user_id' => $userId,
+            ]);
+            ProjectUser::create([
+                'project_id' => $newProjectId,
+                'user_id' => $userId,
+            ]);
+
+
+
+            if ($appointedUser->notifyProjectAdded == 1) {
+                $sendername = Auth::user()->name . ' ' . Auth::user()->last_name;
+                $message =  $sendername . ' appointed you as a Project Leader to a new project: "' . $projecttitle . '".';
+
+                $notification = new Notification([
+                    'user_id' => $userId,
+                    'task_id' => $newProjectId,
+                    'task_type' => "project",
+                    'task_name' => $projecttitle,
+                    'message' => $message,
+                ]);
+                $notification->save();
+            }
+            if ($appointedUser->emailProjectAdded == 1) {
+                if ($isMailSendable === 1) {
+                    try {
+
+                        $email = $appointedUser->email;
+                        $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                        $taskname = $projecttitle;
+                        $tasktype = "project";
+                        $startDate = date('F d, Y', strtotime($projectstartdate));
+                        $endDate = date('F d, Y', strtotime($projectenddate));
+
+                        $taskdeadline = $startDate . ' - ' . $endDate;
+                        $senderemail = Auth::user()->email;
+
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+
+                        $isMailSendable = 0;
+                    }
+                }
+            }
+        }
+
+
+
+        $validatedData = $request->validate([
+            'objectiveName.*' => 'required|string',
+            'objectiveindex' => 'required|integer',
+            'objectiveSetNumber.*' => 'required|integer',
+        ]);
+
+        for ($i = 0; $i < $validatedData['objectiveindex']; $i++) {
+            $projectobjective = new Objective;
+            $projectobjective->name = $validatedData['objectiveName'][$i];
+            $projectobjective->project_id = $newProjectId;
+            $projectobjective->objectiveset_id = $validatedData['objectiveSetNumber'][$i];
+            $projectobjective->save();
+        }
+
+        return response()->json([
+            'projectid' => $newProjectId,
+            'isMailSent' => $isMailSendable,
+        ]);
     }
 }

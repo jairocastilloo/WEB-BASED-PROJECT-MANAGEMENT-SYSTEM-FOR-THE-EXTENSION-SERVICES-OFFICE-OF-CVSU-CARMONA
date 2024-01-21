@@ -6,7 +6,18 @@
     @php
     $userRole = Auth::user()->role;
     @endphp
+
     <div class="mainnav border-bottom mb-3 shadow-sm">
+        @if($program != [])
+        <div class="step-wrapper">
+            <div class="step divhover programDiv" data-value="{{ $program['id'] }}" data-dept="{{ $program['department'] }}">
+                <span class="fw-bold">Program: {{ $program['programName'] }}</span>
+                <div class="message-box text-white">
+                    {{ $program['programName'] }}
+                </div>
+            </div>
+        </div>
+        @endif
         <div class="step-wrapper">
             <div class="step highlight">
                 <span class="fw-bold">Project: {{ $indexproject['projecttitle'] }}</span>
@@ -278,8 +289,7 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project
-                            Details</button>
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Objectives</button>
@@ -295,8 +305,10 @@
                             <input type="text" class="d-none" name="department" id="department" value="{{ $department }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
-                            <label for="projectdetails" class="form-label mt-2">Input all the details of the
-                                project</label>
+                            <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
+
+
+
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
                                 <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
@@ -322,23 +334,30 @@
                                 </span>
                             </div>
 
+
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title <span class="text-secondary">( if applicable )</span></label>
-                                <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
+                                <select class="form-select" name="programtitle" id="programtitle">
+                                    <option value="0" selected>Not Assigned to Any Program</option>
+                                    @foreach ($allPrograms as $program)
 
-                                <span class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
+                                    <option value="{{ $program->id }}">
+                                        {{ $program->programName }}
+                                    </option>
+
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="container mb-3 p-0 programleaderdiv" style="display:none;">
+
+                            <!--<div class="container mb-3 p-0 programleaderdiv" style="display:none;">-->
+                            <div class="container mb-3 p-0">
                                 <label for="programleader" class="form-label">Program Leader</label>
                                 <select class="selectpicker w-100 border programleader" name="programleader[]" id="programleader" multiple aria-label="Select Program Leaders" data-live-search="true">
-                                    <option value="0" disabled>Select Program Leader</option>
+
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Admin')
-                                    <option value="{{ $member->id }}">
+                                    <option value="{{ $member->id }}" disabled>
                                         {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
-
                                     </option>
                                     @endif
                                     @endforeach
@@ -385,7 +404,9 @@
                                     </span>
                                 </div>
 
-
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
 
                                 <!--<input type="date" class="form-control" id="projectenddate" name="projectenddate">-->
 
@@ -404,8 +425,7 @@
                             <form id="form2">
                                 @csrf
 
-                                <label for="projectobjectives" class="form-label mt-2">List all objectives of the
-                                    project</label>
+                                <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
                                 <div class="container-fluid objectiveSetContainer mb-2 p-2" data-value="0">
                                     <div>
                                         <div class="input-group mb-2 objectiveName-input">
@@ -429,11 +449,9 @@
                             <button type="button" class="btn btn-outline-primary w-100" id="addObjectiveSet-btn">
                                 <b class="small">Add Objective Set</b>
                             </button>
-                            <span class="text-danger small fw-bold" id="objectiveInput-error">Please ensure that there
-                                is objective in every input.</span>
+                            <span class="text-danger small fw-bold" id="objectiveInput-error">Please ensure that there is objective in every input.</span>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="modal-footer">
@@ -456,6 +474,20 @@
 </div>
 @endif
 
+
+<div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Modal content goes here -->
+                <h4>Project Created, but Email Not Sent Due to Internet Issue!</h4>
+                <p>Redirecting in <span id="countdown">5</span> seconds...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -476,18 +508,6 @@
         </div>
     </div>
 </div>
-
-<div class="modal" id="mailNotSent" tabindex="-1" aria-labelledby="mailNotSentLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <!-- Modal content goes here -->
-                <h4>Project Created, but Email Not Sent Due to Internet Issue!</h4>
-                <p>Redirecting in <span id="countdown">5</span> seconds...</p>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -499,7 +519,9 @@
     var selectElement = $('#year-select');
     var url = "";
     var objoption = 1;
-
+    var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+    var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
+    var programLeaders = <?php echo json_encode($programLeaders); ?>;
     $(document).ready(function() {
 
         var lastItemId = objectives[objectives.length - 1].objectiveset_id;
@@ -508,64 +530,15 @@
         var rowcount = <?php echo $x; ?>;
         var currentrow = 0;
 
-
-
-
-        var currentstep = 0;
-        var setcount = 0;
-
-
-        $('#objectiveInput-error').hide();
-        $('#addObjectiveSet-btn').click(function() {
-            $('#form2').append(`<div class="container-fluid objectiveSetContainer mb-2 p-2" data-value="0">
-                                    <div>
-                                        <div class="input-group mb-2 objectiveName-input">
-
-                                            <textarea class="form-control" aria-label="With textarea" name="objectiveName[]" placeholder="Write objective here.."></textarea>
-
-                                            <input type="number" name="objectiveSetNumber[]" class="objectiveSetNumber d-none" value="0">
-                                            <button type="button" class="btn btn-sm btn-outline-danger removeObjectiveName-btn"><i class="bi bi-x-lg"></i></button>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="addObjective-btn btn btn-sm btn-outline-success">
-                                        <b class="small">Add Objective</b>
-                                    </button>
-                                    <button type="button" class="removeObjectiveSet-btn btn btn-sm btn-outline-danger px-5 d-block mx-auto">
-                                        <b class="small">Remove Objective Set</b>
-                                    </button>
-
-
-                                </div>`);
-        });
-        $(document).on('click', '.addObjective-btn', function() {
-            $(this).prev().append(`<div class="input-group mb-2 objectiveName-input">
-
-<textarea class="form-control" aria-label="With textarea" name="objectiveName[]" placeholder="Write objective here.."></textarea>
-
-<input type="number" name="objectiveSetNumber[]" class="objectiveSetNumber d-none" value="0">
-<button type="button" class="btn btn-sm btn-outline-danger removeObjectiveName-btn"><i class="bi bi-x-lg"></i></button>
-</div>`);
-        });
-        $(document).on('click', '.removeObjectiveName-btn', function() {
-            if ($(this).parent().parent().find('.objectiveName-input').length > 1) {
-                $(this).parent().remove();
-            }
-        });
-        $(document).on('click', '.removeObjectiveSet-btn', function() {
-            if ($(this).parent().parent().find('.objectiveSetContainer').length > 1) {
-                $(this).parent().remove();
-            }
+        $('.programDiv').click(function() {
+            var department = $(this).attr('data-dept');
+            var programId = $(this).attr('data-value');
+            var url = '{{ route("programs.display", ["programid" => ":programid", "department" => ":department" ]) }}';
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':programid', programId);
+            window.location.href = url;
         });
 
-
-
-        $('#programtitle').on('keyup', function(e) {
-            if ($('#programtitle').val() === "") {
-                $('.programleaderdiv').css('display', 'none');
-            } else {
-                $('.programleaderdiv').css('display', 'inline-block');
-            }
-        });
         $('#startDatePicker').datepicker();
 
         $('#startDatePicker').datepicker().on('change', function(e) {
@@ -607,7 +580,23 @@
 
         });
 */
+        $('#programtitle').change(function() {
+            var selectedOptionValue = $(this).find('option:selected').val();
 
+            var userIDs = programLeaders
+                .filter(function(leader) {
+                    return leader.program_id == selectedOptionValue;
+                })
+                .map(function(leader) {
+                    return leader.user_id.toString(); // Convert to string if needed
+                });
+
+            // Now you have an array of user_ids for the selected program_id
+
+            // Select all options in #programleader with values in userIDs
+            $('#programleader').val(userIDs);
+            $('#programleader').selectpicker('refresh');
+        });
         $('.step span').each(function() {
             var $span = $(this);
             if ($span.text().length > 16) { // Adjust the character limit as needed
@@ -738,386 +727,16 @@
             var projectid = $(this).attr('data-value');
 
 
-            var url =
-                '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
+            var url = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
             url = url.replace(':projectid', projectid);
             url = url.replace(':department', encodeURIComponent(department));
 
             window.location.href = url;
         });
 
-        // Add an event listener to the select element
-        selectElement.change(function() {
-            var selectedOption = $(this).find(':selected');
-            var department = selectedOption.val();
-
-            var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
-            var url = baseUrl.replace(':department', encodeURIComponent(department))
-
-            window.location.href = url;
-        });
-
-        function updateButtons() {
-            if (currentstep == 0) {
-                $('#prevproject').hide();
-                $('#nextproject').show();
-                $('#createproject').hide();
-                $('#tab1-tab').attr('disabled', true);
-                $('#tab1-tab').tab('show');
-            } else if (currentstep == 1) {
-                $('#prevproject').show();
-                $('#nextproject').hide();
-                $('#createproject').show();
-                $('#tab1-tab').removeAttr('disabled');
-                $('#tab2-tab').tab('show');
-            }
-
-        }
-        $('#tab1-tab').click((event) => {
-
-            event.preventDefault();
-
-
-
-            currentstep--;
-            updateButtons();
-
-
-
-        });
-        $('#nextproject').click((event) => {
-
-            event.preventDefault();
-
-
-            var hasError = handleError();
-
-            if (!hasError) {
-                currentstep++;
-                updateButtons();
-            }
-
-
-        });
-        $('#prevproject').click((event) => {
-
-            event.preventDefault();
-
-
-            currentstep--;
-            updateButtons();
-
-
-        });
-
-        $('#addproj').click((event) => {
-
-            event.preventDefault();
-
-            updateButtons();
-            $('#newproject').modal('show');
-        });
-
-        $('#objectiveset').on('click', '.add-objective', function() {
-            var setid = $(this).prev().find('div:first .objectivesetid').val();
-
-            var $newInput = $(
-                '<input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">'
-            );
-            var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' +
-                setid + '" class="objectivesetid d-none">');
-
-            var $newButton2 = $(
-                '<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>'
-            );
-            var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1,
-                $newButton2);
-            $(this).prev().append($newDiv);
-
-        });
-        $('#objform form').on('click', '.remove-objective', function() {
-            $(this).parent().remove();
-        });
-        $('#objform form').on('click', '.edit-objective', function() {
-            $(this).prev().focus();
-        });
-        $('#objform form').on('keydown', '.input-objective', function() {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-
-                $(this).blur();
-
-            }
-        });
-
-
-
-        $('#addset').click((event) => {
-            event.preventDefault();
-            setcount++;
-            var $newInput = $(
-                '<input type="text" class="col-8 m-1 input-objective p-2 rounded autocapital" id="objective-input" name="projectobjective[]" placeholder="Enter objective">'
-            );
-            var $newInput1 = $('<input type="number" id="objectivesetid" name="objectivesetid[]" value="' +
-                setcount + '" class="objectivesetid d-none">');
-            var $newButton2 = $(
-                '<button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>'
-            );
-            var $newDiv = $('<div class="mb-2 row" id="selectobjectives">').append($newInput, $newInput1,
-                $newButton2);
-            var $newDiv1 = $('<div>').append($newDiv);
-            var $newButton3 = $(
-                '<button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective"><b class="small">Add Objective</b></button><hr>'
-            );
-            $('#objectiveset').append($newDiv1, $newButton3);
-
-        });
-
-        $('#createproject').click((event) => {
-            event.preventDefault();
-
-            var hasError = handleError();
-
-            if (!hasError) {
-                $(this).prop('disabled', true);
-                var department = $('#department').val();
-
-
-                var projecturl =
-                    '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
-
-                projecturl = projecturl.replace(':department', encodeURIComponent(department));
-
-                $('#objectiveindex').val($('textarea[name="objectiveName[]"]').length);
-
-                $('div.objectiveSetContainer').each(function(index) {
-                    $(this).attr("data-value", index);
-
-                });
-
-                $('textarea[name="objectiveName[]"]').each(function(index) {
-                    $(this).attr('name', 'objectiveName[' + index + ']');
-
-                });
-                $('input[name="objectiveSetNumber[]"]').each(function(index) {
-                    var id = $(this).parent().parent().parent().attr('data-value');
-
-                    $(this).val(id);
-                    $(this).attr('name', 'objectiveSetNumber[' + index + ']');
-
-                });
-
-
-
-                /**
-                                var objectiveindex = $('input[name="projectobjective[]"]').length;
-
-                                $('input[name="projectobjective[]"]').each(function(index) {
-                                    $(this).attr('name', 'projectobjective[' + index + ']');
-
-                                });
-
-                                $('input[name="objectivesetid[]"]').each(function(index) {
-                                    $(this).attr('name', 'objectivesetid[' + index + ']');
-
-                                });
-
-
-                                $('#objectiveindex').val(objectiveindex);
-                */
-
-                var dataurl = $('#form1').attr('data-url');
-                var data1 = $('#form1').serialize();
-                var data2 = $('#form2').serialize();
-
-                // concatenate serialized data into a single string
-                var formData = data1 + '&' + data2;
-                $('#loadingSpan').css('display', 'block');
-
-                // send data via AJAX
-                $.ajax({
-                    url: dataurl,
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        var projectId = response.projectid;
-                        projecturl = projecturl.replace(':projectid', projectId);
-                        $('#loadingSpan').css('display', 'none');
-
-
-                        if (response.isMailSent == 0) {
-                            $('#newproject').modal('hide');
-                            $('#mailNotSent').modal('show');
-
-                            // Set the initial countdown value
-                            let countdownValue = 5;
-
-                            // Function to update the countdown value and redirect
-                            function updateCountdown() {
-                                countdownValue -= 1;
-                                $('#countdown').text(countdownValue);
-
-                                if (countdownValue <= 0) {
-                                    // Redirect to your desired URL
-                                    window.location.href = projecturl; // Replace with your URL
-                                } else {
-                                    // Call the function recursively after 1 second (1000 milliseconds)
-                                    setTimeout(updateCountdown, 1000);
-                                }
-                            }
-
-                            // Start the countdown
-                            updateCountdown();
-                        } else {
-
-                            window.location.href = projecturl;
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        $('#createprojectError').text(
-                            "There is a problem with server. Contact Administrator!");
-                        $('#loadingSpan').css('display', 'none');
-                        /*
-                                                console.log(xhr.responseText);
-                                                console.log(status);
-                                                console.log(error);
-                                                */
-                    }
-                });
-            }
-        });
-
-        function formatDate(inputDate) {
-            // Split the inputDate by the '/' character
-            var parts = inputDate.split('/');
-
-            // Rearrange the parts into the "YYYY-MM-DD" format
-            var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
-
-            return formattedDate;
-        }
-
-        function handleError() {
-
-            if (currentstep === 0) {
-
-                var hasErrors = false;
-
-                $('.invalid-feedback strong').text('');
-                $('.is-invalid').removeClass('is-invalid');
-
-                var projectTitle = $('#projecttitle').val();
-
-                var projectLeader = $('#projectleader').val();
-
-                var programTitle = $('#programtitle').val();
-
-                var programLeader = $('#programleader').val();
-
-                var projectStartDate = formatDate($('#projectstartdate').val());
-                var projectEndDate = formatDate($('#projectenddate').val());
-
-                // Validation for Project Title
-                if (projectTitle.trim() === '') {
-                    $('#projecttitle').addClass('is-invalid');
-                    $('#projecttitle').next('.invalid-feedback').find('strong').text('Project Title is required.');
-                    hasErrors = true;
-                }
-
-                // Validation for Project Leader
-                if (projectLeader.length === 0) {
-                    $('.projectleader').addClass('is-invalid');
-                    $('.projectleader').next('.invalid-feedback').find('strong').text(
-                        'Project Leader is required.');
-                    hasErrors = true;
-                }
-                /**
-                                // Validation for Program Title
-                                if (programTitle.trim() === '') {
-                                    $('#programtitle').addClass('is-invalid');
-                                    $('#programtitle').next('.invalid-feedback').find('strong').text('Program Title is required.');
-                                    hasErrors = true;
-                                }
-                */
-                // Validation for Program Leader
-                /**
-                if (programLeader.length === 0) {
-                    $('.programleader').addClass('is-invalid');
-                    $('.programleader').next('.invalid-feedback').find('strong').text('Program Leader is required.');
-                    hasErrors = true;
-                }*/
-                if ($('#projectstartdate').val() == "") {
-                    $('#projectstartdate').parent().addClass('is-invalid');
-                    $('#projectstartdate').parent().next('.invalid-feedback').find('strong').text(
-                        'Project Start Date is required.');
-                    hasErrors = true;
-                }
-                if ($('#projectenddate').val() == "") {
-
-                    $('#projectenddate').parent().addClass('is-invalid');
-                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text(
-                        'Project End Date is required.');
-                    hasErrors = true;
-                }
-
-                if (projectEndDate <= projectStartDate) {
-                    $('#projectenddate').parent().addClass('is-invalid');
-                    $('#projectenddate').parent().next('.invalid-feedback').find('strong').text(
-                        'Project End Date must be after the Start Date.');
-                    hasErrors = true;
-                }
-                /*
-                                // Validation for Project Start Date
-                                if (projectStartDate.getFullYear() !== targetYear) {
-                                    $('#projectstartdate').addClass('is-invalid');
-                                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
-                                    hasErrors = true;
-                                }
-
-                                // Validation for Project End Date
-                                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
-                                    $('#projectenddate').addClass('is-invalid');
-                                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
-                                    hasErrors = true;
-                                }
-                */
-                return hasErrors;
-
-            }
-            e
-            lse
-            if (currentstep === 1) {
-                var hasErrors = false;
-                $('textarea[name="objectiveName[]"]').each(function(index, element) {
-
-                    if ($(element).val() === "") {
-                        $('#objectiveInput-error').show();
-                        hasErrors = true;
-                    }
-
-                });
-                /**
-                if ($('input[name="projectobjective[]"]').length === 0) {
-                    $('.projectobjective-error strong').show();
-                    hasErrors = true;
-                } else {
-                    $('input[name="projectobjective[]"]').each(function(index, element) {
-
-                        if ($(element).val() === "") {
-                            $('.projectobjective-error strong').show();
-                            hasErrors = true;
-                        }
-
-                    });
-
-                }
-                */
-                return hasErrors;
-            }
-
-        }
 
 
     });
 </script>
+<script src="{{ asset('js/project-create.js') }}"></script>
 @endsection

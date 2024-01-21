@@ -55,6 +55,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'showOnlyMyUpcomingProjects',
         'showOnlyMyOverdueProjects',
         'showOnlyMyCompletedProjects',
+        'showOnlyMyOngoingPrograms',
+        'notifyProgramAdded',
+        'emailProgramAdded'
 
     ];
 
@@ -79,6 +82,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function projects()
     {
         return $this->belongsToMany(Project::class, 'project_user');
+    }
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'program_users');
     }
     public function activities()
     {

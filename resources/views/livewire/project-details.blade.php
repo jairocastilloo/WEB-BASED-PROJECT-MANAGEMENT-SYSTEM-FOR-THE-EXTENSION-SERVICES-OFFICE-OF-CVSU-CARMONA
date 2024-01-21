@@ -15,13 +15,13 @@
 
     </div>
 
-    @if ($indexproject['programtitle'] != "")
+    @if ($program != null)
     <div class="flex-container">
         <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-        <div class="underline-space inline-div ps-2">{{ $indexproject['programtitle'] }}</div>
+        <div class="underline-space inline-div ps-2">{{ $program['programName'] }}</div>
     </div>
     @endif
-    @if ($programleaders->isNotEmpty())
+    @if ($programleaders != null)
     <div class="flex-container">
         <strong><em>Program Leader:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
         <div class="underline-space inline-div ps-2">
@@ -93,17 +93,17 @@
                     <label for="currentprojectdetails" class="form-label mt-2 mx-auto">
                         Input all the changes for project details.
                     </label>
-                    @if ($indexproject->programtitle != null)
+                    @if ($program != null)
                     <div class="mb-3">
                         <label for="programtitle" class="form-label">Program Title</label>
-                        <input type="text" class="form-control autocapital" id="currentprogramtitle" name="currentprogramtitle" value="{{ $indexproject->programtitle }}">
+                        <input type="text" class="form-control autocapital" id="currentprogramtitle" name="currentprogramtitle" value="{{ $program->programName }}">
 
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
                     </div>
                     @endif
-                    @if ($programleaders->isNotEmpty())
+                    @if ($programleaders != null)
                     <div class="container mb-3 p-0">
                         <label for="programleader" class="form-label">Program Leader</label>
                         <select class="selectpicker w-100 border currentprogramleader" name="currentprogramleader[]" id="currentprogramleader" multiple aria-label="Select Program Leaders" data-live-search="true">
@@ -215,8 +215,11 @@
         </div>
     </div>
     @endif
+    @if ($program != null)
+    <input value="{{ $program['programName'] }}" id="progTitle" name="progTitle" type="hidden">
+    @endif
     <script>
-        var titleNgProgram = <?php echo json_encode($indexproject['programtitle']); ?>;
+        var titleNgProgram = document.getElementById('progTitle').value;
         document.addEventListener('livewire:load', function() {
             btnConfirmDetails = document.getElementById('btn-confirmDetails');
 

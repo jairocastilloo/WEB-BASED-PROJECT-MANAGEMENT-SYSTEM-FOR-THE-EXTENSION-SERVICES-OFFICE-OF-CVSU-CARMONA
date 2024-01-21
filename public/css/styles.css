@@ -1068,5 +1068,9 @@ min-width: 94.56px;
              
                 
 }
+.datepicker-days .day {
+    padding: 10px; /* Adjust the padding as needed */
+  
+  }
 
 

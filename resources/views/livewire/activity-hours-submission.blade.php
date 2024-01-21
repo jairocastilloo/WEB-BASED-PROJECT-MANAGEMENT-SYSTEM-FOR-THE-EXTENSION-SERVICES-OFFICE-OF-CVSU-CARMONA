@@ -15,8 +15,7 @@
 
                 <div class="modal-body">
                     <label class="form-label">Notes:</label>
-                    <textarea class="form-control" id="notes" rows="5"
-                        placeholder="Input your notes here ..."></textarea>
+                    <textarea class="form-control" id="notes" rows="5" placeholder="Input your notes here ..."></textarea>
 
                 </div>
                 <div class="modal-footer">
@@ -28,13 +27,12 @@
     </div>
 
     <script>
-    document.addEventListener('livewire:load', function() {
+        document.addEventListener('livewire:load', function() {
 
-        document.getElementById('submitBtn').addEventListener('click', function() {
-            var notes = document.getElementById('notes').value;
-            Livewire.emit('reject', notes);
+            document.getElementById('submitBtn').addEventListener('click', function() {
+                var notes = document.getElementById('notes').value;
+                Livewire.emit('reject', notes);
+            });
         });
-    })
-;
     </script>
 </div>

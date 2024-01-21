@@ -2,41 +2,26 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\FiscalYear;
-use App\Models\ProgramLeader;
-use App\Models\Project;
-use App\Models\Program;
-use App\Models\ProjectLeader;
 use Livewire\Component;
+use App\Models\Program;
 
-class ProjectDetails extends Component
+class ProgramDetails extends Component
 {
-    public $indexproject;
+    public $indexprogram;
     public $members;
     public $department;
-    public $projectleaders;
-    public $program;
     public $programleaders;
-    public $allfiscalyears;
-    protected $listeners = ['saveProjectDetails' => 'handleSaveProjectDetails'];
-    public function mount($indexproject, $members)
-    {
-        $this->indexproject = $indexproject;
-        $this->members = $members;
-        $this->department = $indexproject->department;
-        $this->projectleaders = $indexproject->projectleaders;
 
-        $this->allfiscalyears = FiscalYear::all();
-        $programId = $indexproject->program_id;
-        if ($programId != null) {
-            $this->program = Program::findOrFail($programId);
-            $this->programleaders = $this->program->programleaders;
-        } else {
-            $this->program = null;
-            $this->programleaders = null;
-        }
+
+    protected $listeners = ['saveProjectDetails' => 'handleSaveProjectDetails'];
+    public function mount($indexprogram, $members)
+    {
+        $this->indexprogram = $indexprogram;
+        $this->members = $members;
+        $this->department = $indexprogram->department;
+        $this->programleaders = $indexprogram->programleaders;
     }
-    public function saveProjectDetails($projectDetails)
+    /* public function saveProjectDetails($projectDetails)
     {
         $projectstartdate = date("Y-m-d", strtotime($projectDetails[2]));
         $projectenddate = date("Y-m-d", strtotime($projectDetails[3]));
@@ -70,13 +55,16 @@ class ProjectDetails extends Component
         $this->indexproject = Project::findOrFail($this->indexproject->id);
         $this->programleaders = $this->indexproject->programleaders;
         $this->projectleaders = $this->indexproject->projectleaders;
+
     }
-    public function handleSaveProjectDetails($projectDetails)
+     public function handleSaveProjectDetails($projectDetails)
     {
         $this->saveProjectDetails($projectDetails);
     }
+   */
+
     public function render()
     {
-        return view('livewire.project-details');
+        return view('livewire.program-details');
     }
 }

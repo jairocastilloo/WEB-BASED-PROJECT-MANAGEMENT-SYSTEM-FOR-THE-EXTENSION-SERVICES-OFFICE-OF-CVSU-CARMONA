@@ -6,6 +6,30 @@
     @php
     $userRole = Auth::user()->role;
     @endphp
+    <div class="container p-0">
+        <div class="mainnav border-1 border-bottom shadow-sm px-2 small">
+            <nav class="navbar navbar-expand-sm p-0">
+                <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMonitoring">
+                    <ul class="navbar-nav me-auto">
+
+                        <a class="nav-link border border-1 p-2 px-4 currentdiv fw-bold small">
+                            Projects
+                        </a>
+
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Programs
+                        </a>
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
     <div class="container pt-3">
         <div class="row">
             <div class="col-lg-10">
@@ -112,21 +136,29 @@
                                 </span>
                             </div>
 
+
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title <span class="text-secondary">( if applicable )</span></label>
-                                <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
+                                <select class="form-select" name="programtitle" id="programtitle">
+                                    <option value="0" selected>Not Assigned to Any Program</option>
+                                    @foreach ($allPrograms as $program)
 
-                                <span class="invalid-feedback" role="alert">
-                                    <strong></strong>
-                                </span>
+                                    <option value="{{ $program->id }}">
+                                        {{ $program->programName }}
+                                    </option>
+
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="container mb-3 p-0 programleaderdiv" style="display:none;">
+
+                            <!--<div class="container mb-3 p-0 programleaderdiv" style="display:none;">-->
+                            <div class="container mb-3 p-0">
                                 <label for="programleader" class="form-label">Program Leader</label>
                                 <select class="selectpicker w-100 border programleader" name="programleader[]" id="programleader" multiple aria-label="Select Program Leaders" data-live-search="true">
-                                    <option value="0" disabled>Select Program Leader</option>
+
                                     @foreach ($members as $member)
                                     @if ($member->role === 'Admin')
-                                    <option value="{{ $member->id }}">
+                                    <option value="{{ $member->id }}" disabled>
                                         {{ $member->last_name . ', ' . $member->name . ' ' . ($member->middle_name ? $member->middle_name[0] : 'N/A') . '.' }}
                                     </option>
                                     @endif
@@ -260,6 +292,39 @@
 <script>
     var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
     var baseUrl = "{{ route('project.show', ['department' => ':department']) }}";
+    var programLeaders = <?php echo json_encode($programLeaders); ?>;
+
+    $(document).ready(function() {
+        // select program when there's a selection
+        $('#startDatePicker').datepicker();
+
+        $('#startDatePicker').datepicker().on('change', function(e) {
+            $('#startDatePicker').datepicker('hide');
+        });
+        $('#endDatePicker').datepicker();
+
+        $('#endDatePicker').datepicker().on('change', function(e) {
+            $('#endDatePicker').datepicker('hide');
+        });
+
+        $('#programtitle').change(function() {
+            var selectedOptionValue = $(this).find('option:selected').val();
+
+            var userIDs = programLeaders
+                .filter(function(leader) {
+                    return leader.program_id == selectedOptionValue;
+                })
+                .map(function(leader) {
+                    return leader.user_id.toString(); // Convert to string if needed
+                });
+
+            // Now you have an array of user_ids for the selected program_id
+
+            // Select all options in #programleader with values in userIDs
+            $('#programleader').val(userIDs);
+            $('#programleader').selectpicker('refresh');
+        });
+    });
 </script>
 <script src="{{ asset('js/project-create.js') }}"></script>
 

@@ -47,6 +47,26 @@
     <p>Cavite State University-Carmona Extension Services Office</p>
     <p>{{ $senderemail }}</p>
 
+    @elseif ($tasktype === 'program')
+    <p>Dear {{ $name }},</p>
+
+    <p>We are pleased to inform you that you have been assigned to a new program on our platform. Here are the details:</p>
+
+    <p><strong>Project Name:</strong> {{ $taskname }}</p>
+    <p><strong>Assigned By:</strong> {{ $sendername }}</p>
+    <p><strong>Deadline:</strong> {{ $taskdeadline }}</p>
+
+    <p>You can access the program by logging into your account on our platform. Once logged in, you will find the program on your home page.</p>
+
+    <p>This assignment may require your attention, and we trust that you will complete it with your usual dedication and expertise. If you have any questions or need further assistance, please do not hesitate to reach out to us.</p>
+
+    <p>Thank you for your commitment to our programs. We appreciate your contributions to our team's success.</p>
+
+    <p>Best regards,</p>
+    <p>{{ $sendername }}</p>
+    <p>Cavite State University-Carmona Extension Services Office</p>
+    <p>{{ $senderemail }}</p>
+
     @elseif ($tasktype === 'subtask')
     <p>Dear {{ $name }},</p>
 

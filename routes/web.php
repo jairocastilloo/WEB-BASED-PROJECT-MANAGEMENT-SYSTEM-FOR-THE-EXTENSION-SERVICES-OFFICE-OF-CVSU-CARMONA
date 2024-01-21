@@ -145,6 +145,14 @@ Route::get('/close/{projectid}/{department}', [ProjectController::class, 'closeP
     ->name('projects.close');
 Route::get('/delete/{projectid}', [ProjectController::class, 'deleteProject'])
     ->name('projects.delete');
+Route::get('/selectprogram/{department}', [ProjectController::class, 'selectProgram'])
+    ->name('programs.select');
+Route::get('/displayprogram/{programid}/{department}', [ProjectController::class, 'displayProgram'])
+    ->name('programs.display');
+Route::post('/createprogram', [ProjectController::class, 'createProgram'])
+    ->name('programs.create');
+Route::post('/storeProject', [ProjectController::class, 'storeProject'])
+    ->name('programs.storeProject');
 
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');

@@ -14,8 +14,7 @@ class Project extends Model
     protected $fillable = [
         'projecttitle',
         'projectleader',
-        'programtitle',
-        'programleader',
+        'program_id',
         'projectstartdate',
         'projectenddate',
         'department',
