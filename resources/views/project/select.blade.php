@@ -6,6 +6,30 @@
     @php
     $userRole = Auth::user()->role;
     @endphp
+    <div class="container p-0">
+        <div class="mainnav border-1 border-bottom shadow-sm px-2 small">
+            <nav class="navbar navbar-expand-sm p-0">
+                <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMonitoring">
+                    <ul class="navbar-nav me-auto">
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Projects
+                        </a>
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Programs
+                        </a>
+
+
+
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+    </div>
 
     <div class="mainnav border-bottom mb-3 shadow-sm">
         @if($program != [])
@@ -59,7 +83,7 @@
                     @if ($userRole == 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
-                            <b class="small">Create Project</b>
+                            <b class="small">Create New Project</b>
                         </button>
                     </div>
                     @endif

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Program;
+use App\Models\ProgramLeader;
 
 class ProgramDetails extends Component
 {
@@ -13,7 +14,7 @@ class ProgramDetails extends Component
     public $programleaders;
 
 
-    protected $listeners = ['saveProjectDetails' => 'handleSaveProjectDetails'];
+    protected $listeners = ['saveProgramDetails' => 'handleSaveProgramDetails'];
     public function mount($indexprogram, $members)
     {
         $this->indexprogram = $indexprogram;
@@ -21,47 +22,35 @@ class ProgramDetails extends Component
         $this->department = $indexprogram->department;
         $this->programleaders = $indexprogram->programleaders;
     }
-    /* public function saveProjectDetails($projectDetails)
+    public function saveProgramDetails($programDetails)
     {
-        $projectstartdate = date("Y-m-d", strtotime($projectDetails[2]));
-        $projectenddate = date("Y-m-d", strtotime($projectDetails[3]));
-        Project::where('id', $this->indexproject->id)
+        $programstartdate = date("Y-m-d", strtotime($programDetails[2]));
+        $programenddate = date("Y-m-d", strtotime($programDetails[3]));
+        Program::where('id', $this->indexprogram->id)
             ->update([
-                'programtitle' => $projectDetails[0],
-                'projecttitle' => $projectDetails[1],
-                'projectstartdate' => $projectstartdate,
-                'projectenddate' => $projectenddate
+                'programName' => $programDetails[0],
+
+                'startDate' => $programstartdate,
+                'endDate' => $programenddate
             ]);
-        if (!empty($projectDetails[4])) {
-            ProgramLeader::where('project_id', $this->indexproject->id)->delete();
-            foreach ($projectDetails[4] as $userid) {
-                ProgramLeader::create(
-                    [
-                        'project_id' => $this->indexproject->id,
-                        'user_id' => $userid,
-                    ]
-                );
-            }
-        }
-        ProjectLeader::where('project_id', $this->indexproject->id)->delete();
-        foreach ($projectDetails[5] as $userid) {
-            ProjectLeader::create(
+        ProgramLeader::where('program_id', $this->indexprogram->id)->delete();
+
+        foreach ($programDetails[1] as $userid) {
+            ProgramLeader::create(
                 [
-                    'project_id' => $this->indexproject->id,
+                    'program_id' => $this->indexprogram->id,
                     'user_id' => $userid,
                 ]
             );
         }
-        $this->indexproject = Project::findOrFail($this->indexproject->id);
-        $this->programleaders = $this->indexproject->programleaders;
-        $this->projectleaders = $this->indexproject->projectleaders;
-
+        $this->indexprogram = Program::findOrFail($this->indexprogram->id);
+        $this->programleaders = $this->indexprogram->programleaders;
     }
-     public function handleSaveProjectDetails($projectDetails)
+    public function handleSaveProgramDetails($programDetails)
     {
-        $this->saveProjectDetails($projectDetails);
+        $this->saveProgramDetails($programDetails);
     }
-   */
+
 
     public function render()
     {

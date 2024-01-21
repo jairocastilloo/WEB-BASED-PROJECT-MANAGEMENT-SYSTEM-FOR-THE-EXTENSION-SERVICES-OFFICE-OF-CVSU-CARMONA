@@ -18,7 +18,7 @@
                         <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Projects
                         </a>
-                        <a class="nav-link border border-1 p-2 px-4 currentdiv fw-bold small">
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Programs
                         </a>
 
@@ -28,9 +28,24 @@
                 </div>
             </nav>
         </div>
+
+    </div>
+    <div class="mainnav border-bottom mb-3 shadow-sm">
+
+        <div class="step-wrapper">
+            <div class="step highlight">
+                <span class="fw-bold">Program: {{ $indexprogram['programName'] }}</span>
+                <div class="message-box">
+                    {{ $indexprogram['programName'] }}
+                </div>
+            </div>
+
+
+        </div>
+
     </div>
 
-    <div class="container pt-3">
+    <div class="container">
         <div class="row">
             <div class="col-lg-10">
                 <div class="basiccont rounded shadow pb-2">
@@ -79,7 +94,7 @@
                             </a>
 
                             @If(Auth::user()->role == "Admin")
-                            <a class="dropdown-item small hrefnav border-bottom" id="editProgram">
+                            <a class="dropdown-item small hrefnav border-bottom" id="editIndexProgram">
                                 <b class="small">Edit Details</b>
                             </a>
                             @endif
@@ -420,6 +435,19 @@
     var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
     var baseUrl = "{{ route('programs.select', ['department' => ':department']) }}";
     $(document).ready(function() {
+        $('#editIndexProgram').click(function() {
+            $('#editProgramModal').modal('show');
+        });
+        $('#currentprogramstartDatePicker').datepicker();
+
+        $('#currentprogramstartDatePicker').datepicker().on('change', function(e) {
+            $('#currentprogramstartDatePicker').datepicker('hide');
+        });
+        $('#currentprogramendDatePicker').datepicker();
+
+        $('#currentprogramendDatePicker').datepicker().on('change', function(e) {
+            $('#currentprogramendDatePicker').datepicker('hide');
+        });
         $('#programstartDatePicker').datepicker();
 
         $('#programstartDatePicker').datepicker().on('change', function(e) {
@@ -440,7 +468,12 @@
         $('#endDatePicker').datepicker().on('change', function(e) {
             $('#endDatePicker').datepicker('hide');
         });
-
+        $('.step span').each(function() {
+            var $span = $(this);
+            if ($span.text().length > 14) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 14) + '...'); // Truncate and add ellipsis
+            }
+        });
         $('.programDiv').click(function() {
             var department = $(this).attr('data-dept');
             var programId = $(this).attr('data-value');

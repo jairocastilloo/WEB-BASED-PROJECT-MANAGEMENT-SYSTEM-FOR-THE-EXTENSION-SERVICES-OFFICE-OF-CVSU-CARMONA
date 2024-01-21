@@ -761,7 +761,7 @@ class ProjectController extends Controller
         }
 
 
-        return view('project.select_program', [
+        return view('program.select', [
             'members' => $users,
             'department' => $department,
             'alldepartments' => $alldepartments,
@@ -799,7 +799,7 @@ class ProjectController extends Controller
         } else {
             $users = null;
         }
-        return view('project.display_program', [
+        return view('program.display', [
             'members' => $users,
             'indexprogram' => $indexprogram,
             'department' => $department,

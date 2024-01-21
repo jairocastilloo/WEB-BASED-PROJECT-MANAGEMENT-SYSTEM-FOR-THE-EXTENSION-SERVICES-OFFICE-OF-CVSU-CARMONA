@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="container pt-3">
+    <div class="container">
         <div class="row">
             <div class="col-lg-10">
                 <div class="basiccont rounded shadow pb-2">
