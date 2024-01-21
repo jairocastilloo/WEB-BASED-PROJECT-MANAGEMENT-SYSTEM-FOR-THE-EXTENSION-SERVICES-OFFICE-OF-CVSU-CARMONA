@@ -109,7 +109,7 @@
                         </div>
                         @endforeach
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addExpectedOutput-btn">Add
+                    <button type="button" class="btn btn-sm btn-green mb-3" id="addExpectedOutput-btn">Add
                         Expected Output</button>
                     <!--
                     <div class="mb-3">
@@ -184,7 +184,7 @@
                         </div>
                         @endforeach
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline-secondary mb-3" id="addBudget-btn">Add Budget</button>
+                    <button type="button" class="btn btn-sm btn-green mb-3" id="addBudget-btn">Add Budget</button>
                     <!--
                     <div class="mb-3">
                         <label for="budget" class="form-label">Budget</label>
@@ -206,7 +206,7 @@
                     <button type="button" class="btn shadow rounded border border-1 btn-light" id="closeActivity" data-bs-dismiss="modal">
                         <b class="small">Close</b>
                     </button>
-                    <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
+                    <button type="button" class="btn btn-md rounded btn-gold shadow" id="confirmactivity">
                         <b class="small">Edit activity</b>
                     </button>
                 </div>

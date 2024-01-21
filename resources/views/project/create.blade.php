@@ -238,18 +238,15 @@
                                             <button type="button" class="btn btn-sm btn-outline-danger removeObjectiveName-btn"><i class="bi bi-x-lg"></i></button>
                                         </div>
                                     </div>
-                                    <button type="button" class="addObjective-btn btn btn-sm btn-outline-success">
-                                        <b class="small">Add Objective</b>
+                                    <button type="button" class="addObjective-btn btn btn-sm btn-green"><b class="small">Add Objective</b>
                                     </button>
-                                    <button type="button" class="removeObjectiveSet-btn btn btn-sm btn-outline-danger px-5 d-block mx-auto">
-                                        <b class="small">Remove Objective Set</b>
+                                    <button type="button" class="removeObjectiveSet-btn btn btn-sm btn-red px-5 d-block mx-auto"><b class="small">Remove Objective Set</b>
                                     </button>
 
 
                                 </div>
                             </form>
-                            <button type="button" class="btn btn-outline-primary w-100" id="addObjectiveSet-btn">
-                                <b class="small">Add Objective Set</b>
+                            <button type="button" class="btn btn-md btn-green w-100" id="addObjectiveSet-btn"><b class="small">Add Objective Set</b>
                             </button>
                             <span class="text-danger small fw-bold" id="objectiveInput-error">Please ensure that there is objective in every input.</span>
                         </div>
@@ -261,13 +258,11 @@
                     <strong></strong>
                 </span>
                 <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
-                <button type="button" class="btn shadow rounded btn-outline-primary try" id="prevproject">
-                    <b class="small">Previous</b>
+                <button type="button" class="btn btn-md rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject"><b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
-                    <b class="small">Create Project</b>
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="nextproject"><b class="small">Next</b></button>
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createproject"><b class="small">Create Project</b>
                 </button>
 
             </div>

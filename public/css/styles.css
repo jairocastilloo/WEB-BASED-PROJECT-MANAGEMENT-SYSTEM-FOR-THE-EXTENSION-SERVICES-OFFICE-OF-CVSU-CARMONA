@@ -425,13 +425,40 @@ th {
 .btn-gold {
     color: black;
     background-color: gold;
+    border-color: gold;
+    transition: background-color 0.3s;
 }
-
 .btn-gold:hover {
-    color: black;
+    color: rgb(0, 0, 0);
     background-color: transparent;
     border-color: gold;
 }
+
+.btn-green  {
+    color: white;
+    background-color: green;
+    border-color: green;
+    transition: background-color 0.3s;
+}
+.btn-green:hover{
+    color: black;
+    background-color: transparent;
+    border-color: green;
+}
+
+.btn-red {
+    color: white;
+    background-color: red;
+    border-color: red;
+    transition: background-color 0.3s;
+}
+.btn-red:hover{
+    color: black;
+    background-color: transparent;
+    border-color: red;
+}
+
+
 .btn-info:hover {
     color: black;
     background-color: transparent;

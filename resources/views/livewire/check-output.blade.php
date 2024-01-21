@@ -13,8 +13,9 @@
                 </div>
                 <div class="modal-footer">
                     <span class="ms-2 small" id="loadingSpanOutput" style="display: none;">Searching for output..</span>
-                    <button type="button" class="btn btn-primary" id="confirmCheckOutput">Yes, Check Output</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelCheckOutput">Cancel</button>
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light" data-bs-dismiss="modal" id="cancelCheckOutput">Cancel</button>
+                    <button type="button" class="btn btn-md rounded btn-gold shadow" id="confirmCheckOutput">Yes, Check Output</button>
+                    
                 </div>
             </div>
         </div>
@@ -59,7 +60,7 @@
 
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
