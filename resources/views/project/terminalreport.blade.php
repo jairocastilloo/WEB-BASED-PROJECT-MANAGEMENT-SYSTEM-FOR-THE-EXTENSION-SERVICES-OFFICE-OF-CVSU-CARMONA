@@ -54,6 +54,7 @@
                             <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Submitted By:</b> {{ $submitter->name . ' ' . $submitter->last_name }}</p>
 
                             <p class="lh-1">&nbsp;&nbsp;&nbsp;<b>Submission Attachment:</b></p>
+                            @if ( $uploadedFiles != null)
                             <div class="mb-2 text-center">
                                 <a href="{{ route('downloadterminal.file', ['projcontributionid' => $projcontribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded w-50">
                                     <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
@@ -61,7 +62,15 @@
                                 </a>
 
                             </div>
+                            @else
+                            <div class="mb-2 text-center">
+                                <a class="btn btn-outline-success shadow rounded w-50">
+                                    <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>No Files Detected.</b>
 
+                                </a>
+
+                            </div>
+                            @endif
 
                         </div>
                         @if( $projcontribution['approval'] != 1)

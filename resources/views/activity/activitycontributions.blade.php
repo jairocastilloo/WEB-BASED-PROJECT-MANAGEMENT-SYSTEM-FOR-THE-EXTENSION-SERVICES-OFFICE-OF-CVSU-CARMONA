@@ -95,6 +95,7 @@
                                 @endforeach
                             </p>
                             <p class="lh-1 ps-5"><b>Submission Attachment:</b></p>
+                            @if ( $uploadedFiles != null)
                             <div class="mb-2 text-center">
                                 <a href="{{ route('downloadactivity.file', ['actcontributionid' => $actcontribution->id, 'filename' => basename($uploadedFiles[0])]) }}" class="btn btn-outline-success shadow rounded w-50">
                                     <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>{{ basename($uploadedFiles[0]) }}</b>
@@ -102,6 +103,16 @@
                                 </a>
 
                             </div>
+                            @else
+                            <div class="mb-2 text-center">
+                                <a class="btn btn-outline-success shadow rounded w-50">
+                                    <i class="bi bi-file-earmark-arrow-down-fill me-2 fs-3"></i><b>No Files Detected.</b>
+
+                                </a>
+
+                            </div>
+                            @endif
+
 
                             @if( $actcontribution['approval'] != 1)
                             <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
