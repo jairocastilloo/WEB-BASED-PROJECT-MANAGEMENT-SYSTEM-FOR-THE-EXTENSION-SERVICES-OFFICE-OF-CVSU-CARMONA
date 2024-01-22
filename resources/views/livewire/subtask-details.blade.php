@@ -49,8 +49,8 @@
                     <p>Are you sure you want to mark "{{ $subtask['subtask_name'] }}" as completed?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModal">Cancel</button>
-                    <button type="button" class="btn btn-primary" wire:click="markAsCompleted">Mark Completed</button>
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light" data-bs-dismiss="modal" id="closeModal">Cancel</button>
+                    <button type="button" class="btn btn-md rounded btn-gold shadow" wire:click="markAsCompleted">Mark Completed</button>
                 </div>
             </div>
         </div>
