@@ -422,6 +422,11 @@ th {
 .secondtable .reportsecondtable {
     background-color: rgb(233, 233, 233);
 }
+.btn-no-animation:active{
+    outline: none;
+    box-shadow: none;
+}
+
 .btn-gold {
     color: black;
     background-color: gold;

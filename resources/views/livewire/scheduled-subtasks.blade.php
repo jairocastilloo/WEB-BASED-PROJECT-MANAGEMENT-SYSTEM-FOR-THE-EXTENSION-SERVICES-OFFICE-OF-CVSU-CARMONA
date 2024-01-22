@@ -13,19 +13,27 @@
             </h6>
         </div>
 
-        <div class="m-2 mb-0 text-center" @if ($xScheduledTasks==0)style="display: none;" @endif>
-            <input type="text" class="form-control border border-2 mb-2" id="inputSearchScheduledTasks" placeholder="Enter name...">
+        <div class="m-2 mb-0 text-center" @if ($xScheduledTasks == 0) style="display: none;" @endif>
+            <div class="input-group">
+                <input type="text" class="form-control flex border border-2 mb-2" id="inputSearchScheduledTasks" placeholder="Enter name...">
+                <div class="iconCustom">
+                <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
+                    <i wire:click="refreshDataScheduledTasks" type="button" class="bi bi-arrow-clockwise"></i>
+                </button>
+                </div>
+            </div>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
                 Please enter a subtask name.
             </span>
-            <button type="button" class="btn btn-sm btn-outline-success px-3" id="btnSearchScheduledTasks">Search Task</button>
-
+            <button type="button" class="btn btn-sm btn-green px-3" id="btnSearchScheduledTasks">Search Task</button>
         </div>
-        <div class="text-center m-1" @if ($xScheduledTasks==0)style="display: none;" @endif>
+
+        <!-- <div class="text-center m-1" @if ($xScheduledTasks==0)style="display: none;" @endif>
             <button wire:click="refreshDataScheduledTasks" type="button" class="btn btn-sm btn-light border small">
                 Refresh
             </button>
-        </div>
+        </div> -->
+
         @if ($xScheduledTasks == 0)
         <div class="shadow text-center p-2">
             <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showScheduledTasks(1)">
