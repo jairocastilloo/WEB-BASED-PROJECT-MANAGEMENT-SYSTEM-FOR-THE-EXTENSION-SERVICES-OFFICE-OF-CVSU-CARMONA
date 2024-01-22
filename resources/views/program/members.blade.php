@@ -86,10 +86,10 @@
                         </button>
                         <div class="dropdown-menu border-warning">
 
-                            <a class="dropdown-item small bg-warning border-bottom">
+                            <a class="dropdown-item small hrefnav border-bottom" href="{{ route('programs.display', ['programid' => $indexprogram->id, 'department' => $indexprogram->department ]) }}">
                                 <b class="small">Projects</b>
                             </a>
-                            <a class="dropdown-item small hrefnav border-bottom" href="">
+                            <a class="dropdown-item small bg-warning border-bottom">
                                 <b class="small">Members And Leaders</b>
                             </a>
 

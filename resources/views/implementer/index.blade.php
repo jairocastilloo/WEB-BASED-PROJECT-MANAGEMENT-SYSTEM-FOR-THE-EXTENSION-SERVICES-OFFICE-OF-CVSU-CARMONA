@@ -44,7 +44,7 @@
 
         <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
 
                 <label class="ms-3 small form-label text-secondary fw-bold">
                     @if($role == "Admin")
@@ -89,6 +89,16 @@
                 @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 1])
                 @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
                 @livewire('completed-projects', ['department' => null, 'projectid' => null, 'xCompletedProjects' => 0])
+            </div>
+            <div class="col-lg-3">
+                <label class="ms-3 small form-label text-secondary fw-bold">
+                    @if($role == "Admin")
+                    Programs
+                    @else
+                    My Program
+                    @endif
+                </label>
+                @livewire('ongoing-program', ['department' => null, 'programid' => null, 'xOngoingPrograms' => 1])
             </div>
         </div>
 

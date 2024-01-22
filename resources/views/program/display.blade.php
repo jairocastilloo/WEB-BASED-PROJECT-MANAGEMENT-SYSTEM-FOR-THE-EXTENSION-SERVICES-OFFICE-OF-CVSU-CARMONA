@@ -136,7 +136,7 @@
             </div>
 
             <div class="col-lg-2">
-                @livewire('ongoing-program', ['department' => $department, 'programid' => null, 'xOngoingPrograms' => 1])
+                @livewire('ongoing-program', ['department' => $department, 'programid' => $indexprogram->id, 'xOngoingPrograms' => 1])
             </div>
 
         </div>
