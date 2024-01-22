@@ -20,7 +20,7 @@ class OngoingProgram extends Component
     public $perPageOngoingPrograms = 5;
     public $currentdate;
     public $showOnlyMyOngoingPrograms;
-    protected $listeners = ['findProgram' => 'handleFindProgram'];
+    protected $listeners = ['findOngoingPrograms' => 'handleFindOngoingPrograms'];
     public function mount($department, $programid, $xOngoingPrograms)
 
     {
@@ -42,15 +42,15 @@ class OngoingProgram extends Component
     {
         $this->currentPageOngoingPrograms = $pageOngoingPrograms;
     }
-    public function findProgramOngoingPrograms($inputSearchOngoingPrograms, $xOngoingPrograms)
+    public function findOngoingPrograms($inputSearchOngoingPrograms, $xOngoingPrograms)
     {
         $this->inputSearchOngoingPrograms = $inputSearchOngoingPrograms;
         $this->xOngoingPrograms = $xOngoingPrograms;
         $this->currentPageOngoingPrograms = 1;
     }
-    public function handleFindProgram($inputSearchOngoingPrograms, $xOngoingPrograms)
+    public function handleFindOngoingPrograms($inputSearchOngoingPrograms, $xOngoingPrograms)
     {
-        $this->findProgram($inputSearchOngoingPrograms, $xOngoingPrograms);
+        $this->findOngoingPrograms($inputSearchOngoingPrograms, $xOngoingPrograms);
     }
     public function toggleSelectionOngoingPrograms($isCheckedOngoingPrograms)
     {

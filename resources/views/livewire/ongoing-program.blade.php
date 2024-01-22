@@ -134,7 +134,7 @@
                 if (searchInputOngoingPrograms != "") {
                     inputSearchOngoingPrograms.classList.remove('is-invalid');
 
-                    Livewire.emit('findProgramOngoingPrograms', searchInputOngoingPrograms, 2);
+                    Livewire.emit('findOngoingPrograms', searchInputOngoingPrograms, 2);
 
                 } else {
                     inputSearchOngoingPrograms.classList.add('is-invalid');
@@ -148,7 +148,7 @@
                     if (searchInputOngoingPrograms != "") {
                         inputSearchOngoingPrograms.classList.remove('is-invalid');
 
-                        Livewire.emit('findProgramOngoingPrograms', searchInputOngoingPrograms, 2);
+                        Livewire.emit('findOngoingPrograms', searchInputOngoingPrograms, 2);
 
                     } else {
                         inputSearchOngoingPrograms.classList.add('is-invalid');

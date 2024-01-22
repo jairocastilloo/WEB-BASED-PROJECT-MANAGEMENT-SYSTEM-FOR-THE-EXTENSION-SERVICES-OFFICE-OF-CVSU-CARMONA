@@ -99,6 +99,7 @@
                     @endif
                 </label>
                 @livewire('ongoing-program', ['department' => null, 'programid' => null, 'xOngoingPrograms' => 1])
+                @livewire('upcoming-program', ['department' => null, 'programid' => null, 'yUpcomingPrograms' => 1])
             </div>
         </div>
 
@@ -154,7 +155,14 @@
             event.stopPropagation(); // Prevent the click event from propagating to the parent .subtaskdiv
             // Add your button click logic here
         });
-
+        $('.programDiv').click(function() {
+            var department = $(this).attr('data-dept');
+            var programId = $(this).attr('data-value');
+            var url = '{{ route("programs.display", ["programid" => ":programid", "department" => ":department" ]) }}';
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':programid', programId);
+            window.location.href = url;
+        });
         $(document).on('click', '.activitydiv .dropdown-menu', function(event) {
             event.stopPropagation();
         });

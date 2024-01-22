@@ -68,6 +68,7 @@
             </div>
 
             <div class="col-lg-2">
+                @livewire('upcoming-program', ['department' => $department, 'programid' => null, 'yUpcomingPrograms' => 1])
             </div>
 
         </div>
