@@ -101,6 +101,7 @@
                 @livewire('ongoing-program', ['department' => null, 'programid' => null, 'xOngoingPrograms' => 1])
                 @livewire('upcoming-program', ['department' => null, 'programid' => null, 'yUpcomingPrograms' => 1])
                 @livewire('overdue-program', ['department' => null, 'programid' => null, 'zOverduePrograms' => 0])
+                @livewire('completed-program', ['department' => null, 'programid' => null, 'xCompletedPrograms' => 0])
             </div>
         </div>
 

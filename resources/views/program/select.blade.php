@@ -70,6 +70,7 @@
             <div class="col-lg-2">
                 @livewire('upcoming-program', ['department' => $department, 'programid' => null, 'yUpcomingPrograms' => 1])
                 @livewire('overdue-program', ['department' => $department, 'programid' => null, 'zOverduePrograms' => 0])
+                @livewire('completed-program', ['department' => $department, 'programid' => null, 'xCompletedPrograms' => 0])
             </div>
 
         </div>
