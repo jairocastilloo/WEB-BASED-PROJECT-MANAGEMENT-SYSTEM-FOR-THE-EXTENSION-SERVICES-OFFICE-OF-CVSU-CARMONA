@@ -132,7 +132,7 @@
             <div class="col-lg-2">
                 @livewire('ongoing-program', ['department' => $department, 'programid' => $indexprogram->id, 'xOngoingPrograms' => 1])
                 @livewire('upcoming-program', ['department' => $department, 'programid' => $indexprogram->id, 'yUpcomingPrograms' => 1])
-                @livewire('overdue-program', ['department' => $department, 'programid' => $indexprogram->id, 'zOverduePrograms' => 1])
+                @livewire('overdue-program', ['department' => $department, 'programid' => $indexprogram->id, 'zOverduePrograms' => 0])
             </div>
 
         </div>

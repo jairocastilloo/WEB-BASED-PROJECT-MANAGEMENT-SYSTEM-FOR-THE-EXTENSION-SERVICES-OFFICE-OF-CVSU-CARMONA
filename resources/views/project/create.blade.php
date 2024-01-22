@@ -137,9 +137,10 @@
                             </div>
 
 
-                            <div class="mb-3">
+                            <div class="container mb-3 p-0">
                                 <label for="programtitle" class="form-label">Program Title <span class="text-secondary">( if applicable )</span></label>
-                                <select class="form-select" name="programtitle" id="programtitle">
+                                <select class="selectpicker w-100 border" name="programtitle" id="programtitle" aria-label="Enter Program Title" data-live-search="true">
+
                                     <option value="0" selected>Not Assigned to Any Program</option>
                                     @foreach ($allPrograms as $program)
 
@@ -149,6 +150,9 @@
 
                                     @endforeach
                                 </select>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong></strong>
+                                </span>
                             </div>
 
                             <!--<div class="container mb-3 p-0 programleaderdiv" style="display:none;">-->
