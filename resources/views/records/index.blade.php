@@ -434,7 +434,8 @@
 
         $('#generatePdf').click(function() {
             var randomNumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
-            var url = "{{ route('pdf.generate', ['username' => Auth::user()->username, 'random' => 'randomNumber' ]) }}";
+            var url =
+                "{{ route('pdf.generate', ['username' => Auth::user()->username, 'random' => 'randomNumber' ]) }}";
 
             // Replace 'randomNumber' in the URL with the actual random number
             url = url.replace('randomNumber', randomNumber);
@@ -445,7 +446,8 @@
         $('#generateSelectedPdf').click(function() {
 
             var randomNumber = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1;
-            var url = "{{ route('selectedPdf.generate', ['username' => Auth::user()->username, 'ayid' => ':ayid', 'semester' => ':semester', 'random' => 'randomNumber' ]) }}";
+            var url =
+                "{{ route('selectedPdf.generate', ['username' => Auth::user()->username, 'ayid' => ':ayid', 'semester' => ':semester', 'random' => 'randomNumber' ]) }}";
 
             // Replace 'randomNumber' in the URL with the actual random number
             url = url.replace('randomNumber', randomNumber);

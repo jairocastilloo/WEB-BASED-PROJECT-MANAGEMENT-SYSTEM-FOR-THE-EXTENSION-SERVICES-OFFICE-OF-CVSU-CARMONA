@@ -235,10 +235,11 @@
 
         $('.submitAccomplishment').click(function(event) {
             event.preventDefault();
-            $(this).prop('disabled', true);
+
             var hasError = submitFileError();
-            $(this).prop('disabled', false);
+
             if (!hasError) {
+                $(this).prop('disabled', true);
                 var dataurl = $('#accomplishmentForm').attr('data-url');
                 // Create a data object with the value you want to send
                 var formData = new FormData($("#accomplishmentForm")[0]);
