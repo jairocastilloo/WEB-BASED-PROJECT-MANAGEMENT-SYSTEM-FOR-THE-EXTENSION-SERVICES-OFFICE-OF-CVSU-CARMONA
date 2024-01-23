@@ -57,6 +57,11 @@ class RegisterController extends Controller
                 'unique:users',
                 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/'
             ],
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+            ],
             'name' => [
                 'required',
                 'string',
@@ -111,7 +116,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'username' => $data['username'],
-            'name' => $data['name'],
+            'name' => $data['title'] . ' ' . $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'department' => $data['department'],

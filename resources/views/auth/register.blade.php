@@ -40,6 +40,27 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group inputlg">
+
+
+                            <div class="offset-1 col-lg-10">
+                                <label class="bold-label fw-bold py-1" for="Title1">Abbreviated Title <span class="darkolivegreenfont"><b>*</b></span></label>
+                                <select name="title" id="title" class="form-select @error('title') is-invalid @enderror" value="{{ old('title') }}" required autocomplete="title" autofocus>
+                                    <option value="" disabled selected>Select Title</option>
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Ms.">Ms.</option>
+                                    <option value="Prof.">Prof.</option>
+                                    <option value="Dr.">Dr.</option>
+                                </select>
+
+                                @error('title')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
 
                         <div class="form-group inputlg">
                             <div class="offset-1 col-lg-10">

@@ -54,6 +54,7 @@ class ProjectController extends Controller
 
         $department = str_replace('+', ' ', $department);
         $allPrograms = Program::where('department', $department)
+        ->where('department', 'All')
             ->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
@@ -198,6 +199,7 @@ class ProjectController extends Controller
         */
 
         $allPrograms = Program::where('department', $department)
+        ->where('department', 'All')
             ->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
@@ -273,6 +275,7 @@ class ProjectController extends Controller
         */
 
         $allPrograms = Program::where('department', $department)
+        ->where('department', 'All')
             ->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
@@ -334,6 +337,7 @@ class ProjectController extends Controller
         }
 
         $allPrograms = Program::where('department', $department)
+        ->where('department', 'All')
             ->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
@@ -393,6 +397,7 @@ class ProjectController extends Controller
         }
 
         $allPrograms = Program::where('department', $department)
+        ->where('department', 'All')
             ->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
