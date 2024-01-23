@@ -99,7 +99,7 @@
                     <div class="mb-3">
                         <label for="programtitle" class="form-label">Program Title</label>
                         <input type="text" class="form-control autocapital" id="currentprogramtitle"
-                            name="currentprogramtitle" value="{{ $program->programName }}">
+                            name="currentprogramtitle" value="{{ $program->programName }}" disabled>
 
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>

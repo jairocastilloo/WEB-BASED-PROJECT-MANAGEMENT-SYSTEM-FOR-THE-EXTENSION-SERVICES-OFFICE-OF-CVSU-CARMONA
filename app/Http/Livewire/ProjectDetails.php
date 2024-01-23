@@ -42,22 +42,12 @@ class ProjectDetails extends Component
         $projectenddate = date("Y-m-d", strtotime($projectDetails[3]));
         Project::where('id', $this->indexproject->id)
             ->update([
-                'programtitle' => $projectDetails[0],
+                'program_id' => $this->program->id,
                 'projecttitle' => $projectDetails[1],
                 'projectstartdate' => $projectstartdate,
                 'projectenddate' => $projectenddate
             ]);
-        if (!empty($projectDetails[4])) {
-            ProgramLeader::where('project_id', $this->indexproject->id)->delete();
-            foreach ($projectDetails[4] as $userid) {
-                ProgramLeader::create(
-                    [
-                        'project_id' => $this->indexproject->id,
-                        'user_id' => $userid,
-                    ]
-                );
-            }
-        }
+
         ProjectLeader::where('project_id', $this->indexproject->id)->delete();
         foreach ($projectDetails[5] as $userid) {
             ProjectLeader::create(
@@ -68,7 +58,7 @@ class ProjectDetails extends Component
             );
         }
         $this->indexproject = Project::findOrFail($this->indexproject->id);
-        $this->programleaders = $this->indexproject->programleaders;
+
         $this->projectleaders = $this->indexproject->projectleaders;
     }
     public function handleSaveProjectDetails($projectDetails)

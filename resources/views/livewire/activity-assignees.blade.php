@@ -90,10 +90,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="addAssigneesCloseButton"
-                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light"
+                        id="addAssigneesCloseButton" data-bs-dismiss="modal">Cancel</button>
 
-                    <button type="button" id="saveAssigneesButton" class="btn btn-primary"
+                    <button type="button" id="saveAssigneesButton" class="btn btn-md rounded btn-gold shadow"
                         @if($addassignees->isEmpty())style="display:none"@endif>Add Assignees</button>
 
 
