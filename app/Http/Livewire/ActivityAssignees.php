@@ -122,11 +122,35 @@ class ActivityAssignees extends Component
                             'sendername' => $sendername,
                             'taskname' => $taskname,
                             'taskdeadline' => $taskdeadline,
+                            'tasktype' => $tasktype,
                             'senderemail' => $senderemail
                         ]);
                         $failedEmail->save();
                         $isMailSendable = 0;
                     }
+                } else {
+                    $email = $assignee->email;
+                    $name = $assignee->name . ' ' . $assignee->last_name;
+                    $taskname = $this->activity->actname;
+                    $tasktype = "activity";
+                    $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
+                    $endDate = date('F d, Y', strtotime($this->activity->actenddate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+
+
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'tasktype' => $tasktype,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
                 }
             }
         }

@@ -116,6 +116,7 @@ class ProgramMembers extends Component
                     'task_name' => $this->program->programName,
                     'message' => $message,
                 ]);
+                $notification->save();
             }
 
             if ($assignee->emailProgramAdded == 1) {
@@ -140,11 +141,34 @@ class ProgramMembers extends Component
                             'sendername' => $sendername,
                             'taskname' => $taskname,
                             'taskdeadline' => $taskdeadline,
+                            'tasktype' => $tasktype,
                             'senderemail' => $senderemail
                         ]);
                         $failedEmail->save();
                         $isMailSendable = 0;
                     }
+                } else {
+                    $email = $assignee->email;
+                    $name = $assignee->name . ' ' . $assignee->last_name;
+                    $taskname = $this->program->programName;
+                    $tasktype = "program";
+                    $startDate = date('F d, Y', strtotime($this->program->startDate));
+                    $endDate = date('F d, Y', strtotime($this->program->endDate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'tasktype' => $tasktype,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
                 }
             }
         }

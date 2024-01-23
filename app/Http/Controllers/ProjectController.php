@@ -432,6 +432,7 @@ class ProjectController extends Controller
                         'name' => $name,
                         'sendername' => $sendername,
                         'taskname' => $taskname,
+                        'tasktype' => $tasktype,
                         'taskdeadline' => $taskdeadline,
                         'senderemail' => $senderemail
                     ]);
@@ -893,11 +894,35 @@ class ProjectController extends Controller
                         'sendername' => $sendername,
                         'taskname' => $taskname,
                         'taskdeadline' => $taskdeadline,
+                        'tasktype' => $tasktype,
                         'senderemail' => $senderemail
                     ]);
                     $failedEmail->save();
                     $isMailSendable = 0;
                 }
+            } else {
+                $email = $appointedUser->email;
+                $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                $taskname = $programtitle;
+                $tasktype = "program";
+                $startDate = date('F d, Y', strtotime($programstartdate));
+                $endDate = date('F d, Y', strtotime($programenddate));
+
+                $taskdeadline = $startDate . ' - ' . $endDate;
+                $senderemail = Auth::user()->email;
+
+
+                $failedEmail = new EmailLogs([
+                    'email' => $email,
+                    'message' => $message,
+                    'name' => $name,
+                    'sendername' => $sendername,
+                    'taskname' => $taskname,
+                    'taskdeadline' => $taskdeadline,
+                    'tasktype' => $tasktype,
+                    'senderemail' => $senderemail
+                ]);
+                $failedEmail->save();
             }
         }
 
@@ -986,11 +1011,35 @@ class ProjectController extends Controller
                             'sendername' => $sendername,
                             'taskname' => $taskname,
                             'taskdeadline' => $taskdeadline,
+                            'tasktype' => $tasktype,
                             'senderemail' => $senderemail
                         ]);
                         $failedEmail->save();
                         $isMailSendable = 0;
                     }
+                } else {
+                    $email = $appointedUser->email;
+                    $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                    $taskname = $projecttitle;
+                    $tasktype = "project";
+                    $startDate = date('F d, Y', strtotime($projectstartdate));
+                    $endDate = date('F d, Y', strtotime($projectenddate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+
+
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'tasktype' => $tasktype,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
                 }
             }
         }

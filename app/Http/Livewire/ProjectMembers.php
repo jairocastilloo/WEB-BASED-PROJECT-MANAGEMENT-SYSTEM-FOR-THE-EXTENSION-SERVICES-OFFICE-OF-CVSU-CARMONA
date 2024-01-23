@@ -140,11 +140,34 @@ class ProjectMembers extends Component
                             'sendername' => $sendername,
                             'taskname' => $taskname,
                             'taskdeadline' => $taskdeadline,
-                            'senderemail' => $senderemail
+                            'senderemail' => $senderemail,
+                            'tasktype' => $tasktype
                         ]);
                         $failedEmail->save();
                         $isMailSendable = 0;
                     }
+                } else {
+                    $email = $assignee->email;
+                    $name = $assignee->name . ' ' . $assignee->last_name;
+                    $taskname = $this->project->projecttitle;
+                    $tasktype = "project";
+                    $startDate = date('F d, Y', strtotime($this->project->projectstartdate));
+                    $endDate = date('F d, Y', strtotime($this->project->projectenddate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'tasktype' => $tasktype,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
                 }
             }
         }

@@ -16,5 +16,6 @@ class EmailLogs extends Model
         'taskname',
         'taskdeadline',
         'senderemail',
+        'tasktype'
     ];
 }
