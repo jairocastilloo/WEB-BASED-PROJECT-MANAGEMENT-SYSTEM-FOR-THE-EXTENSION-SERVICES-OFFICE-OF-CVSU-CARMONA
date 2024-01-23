@@ -66,8 +66,8 @@
             </div>
             @if ($countAccepted == 0)
             <div class="btn-group m-2 ms-3 mb-3 shadow">
-                <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
-                    data-bs-toggle="modal" data-bs-target="#terminalReportModal">
+                <button type="button" class="btn btn-sm rounded btn-gold shadow" data-bs-toggle="modal"
+                    data-bs-target="#terminalReportModal">
                     <b class="small">Submit Terminal Report</b>
                 </button>
             </div>
