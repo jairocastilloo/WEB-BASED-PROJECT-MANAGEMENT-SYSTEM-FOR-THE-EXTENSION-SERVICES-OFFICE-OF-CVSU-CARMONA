@@ -219,13 +219,14 @@
 
         inputSearchScheduledTasks.addEventListener('keydown', function(event) {
             // Check if the pressed key is "Enter" (key code 13)
+
             if (event.keyCode === 13) {
                 var searchInputScheduledTasks = inputSearchScheduledTasks.value;
                 if (searchInputScheduledTasks != "") {
-                    inputSearchScheduledasks.classList.remove('is-invalid');
+                    inputSearchScheduledTasks.classList.remove('is-invalid');
 
-      
-              Livewire.emit('findScheduledTasks', searchInputScheduledTasks, 2);
+
+                    Livewire.emit('findScheduledTasks', searchInputScheduledTasks, 2);
 
                 } else {
                     inputSearchScheduledTasks.classList.add('is-invalid');
