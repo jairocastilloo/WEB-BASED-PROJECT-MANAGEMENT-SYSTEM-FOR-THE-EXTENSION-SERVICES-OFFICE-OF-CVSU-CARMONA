@@ -33,6 +33,7 @@ use App\Mail\MyMail;
 use App\Models\ActivityBudget;
 use App\Models\ExpectedOutput;
 use App\Models\Program;
+use App\Models\EmailLogs;
 use App\Models\FiscalYear;
 use Illuminate\Support\Facades\Redirect;
 
@@ -410,24 +411,32 @@ class ProjectController extends Controller
                 $notification->save();
             }
             if ($appointedUser->emailProjectAdded == 1) {
-                if ($isMailSendable === 1) {
-                    try {
+                $email = $appointedUser->email;
+                $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                $taskname = $projecttitle;
+                $tasktype = "project";
+                $startDate = date('F d, Y', strtotime($projectstartdate));
+                $endDate = date('F d, Y', strtotime($projectenddate));
 
-                        $email = $appointedUser->email;
-                        $name = $appointedUser->name . ' ' . $appointedUser->last_name;
-                        $taskname = $projecttitle;
-                        $tasktype = "project";
-                        $startDate = date('F d, Y', strtotime($projectstartdate));
-                        $endDate = date('F d, Y', strtotime($projectenddate));
+                $taskdeadline = $startDate . ' - ' . $endDate;
+                $senderemail = Auth::user()->email;
+                try {
 
-                        $taskdeadline = $startDate . ' - ' . $endDate;
-                        $senderemail = Auth::user()->email;
 
-                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                    } catch (\Exception $e) {
 
-                        $isMailSendable = 0;
-                    }
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
+                    $isMailSendable = 0;
                 }
             }
         }
@@ -863,24 +872,31 @@ class ProjectController extends Controller
                 $notification->save();
             }
             if ($appointedUser->emailProgramAdded == 1) {
-                if ($isMailSendable === 1) {
-                    try {
 
-                        $email = $appointedUser->email;
-                        $name = $appointedUser->name . ' ' . $appointedUser->last_name;
-                        $taskname = $programtitle;
-                        $tasktype = "program";
-                        $startDate = date('F d, Y', strtotime($programstartdate));
-                        $endDate = date('F d, Y', strtotime($programenddate));
+                $email = $appointedUser->email;
+                $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                $taskname = $programtitle;
+                $tasktype = "program";
+                $startDate = date('F d, Y', strtotime($programstartdate));
+                $endDate = date('F d, Y', strtotime($programenddate));
 
-                        $taskdeadline = $startDate . ' - ' . $endDate;
-                        $senderemail = Auth::user()->email;
+                $taskdeadline = $startDate . ' - ' . $endDate;
+                $senderemail = Auth::user()->email;
 
-                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                    } catch (\Exception $e) {
-
-                        $isMailSendable = 0;
-                    }
+                try {
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
+                    $isMailSendable = 0;
                 }
             }
         }
@@ -949,24 +965,31 @@ class ProjectController extends Controller
                 $notification->save();
             }
             if ($appointedUser->emailProjectAdded == 1) {
-                if ($isMailSendable === 1) {
-                    try {
 
-                        $email = $appointedUser->email;
-                        $name = $appointedUser->name . ' ' . $appointedUser->last_name;
-                        $taskname = $projecttitle;
-                        $tasktype = "project";
-                        $startDate = date('F d, Y', strtotime($projectstartdate));
-                        $endDate = date('F d, Y', strtotime($projectenddate));
+                $email = $appointedUser->email;
+                $name = $appointedUser->name . ' ' . $appointedUser->last_name;
+                $taskname = $projecttitle;
+                $tasktype = "project";
+                $startDate = date('F d, Y', strtotime($projectstartdate));
+                $endDate = date('F d, Y', strtotime($projectenddate));
 
-                        $taskdeadline = $startDate . ' - ' . $endDate;
-                        $senderemail = Auth::user()->email;
+                $taskdeadline = $startDate . ' - ' . $endDate;
+                $senderemail = Auth::user()->email;
 
-                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                    } catch (\Exception $e) {
-
-                        $isMailSendable = 0;
-                    }
+                try {
+                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                } catch (\Exception $e) {
+                    $failedEmail = new EmailLogs([
+                        'email' => $email,
+                        'message' => $message,
+                        'name' => $name,
+                        'sendername' => $sendername,
+                        'taskname' => $taskname,
+                        'taskdeadline' => $taskdeadline,
+                        'senderemail' => $senderemail
+                    ]);
+                    $failedEmail->save();
+                    $isMailSendable = 0;
                 }
             }
         }

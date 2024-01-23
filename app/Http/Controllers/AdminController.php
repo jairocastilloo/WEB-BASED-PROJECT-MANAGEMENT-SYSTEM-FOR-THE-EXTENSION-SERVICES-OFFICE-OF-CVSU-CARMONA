@@ -32,6 +32,11 @@ class AdminController extends Controller
         return view('admin.editaccount');
     }
 
+    public function failedEmailTransmission()
+    {
+        return view('admin.failed-email-transmission');
+    }
+
     public function approveaccount($id)
     {
         $user = User::findOrFail($id);

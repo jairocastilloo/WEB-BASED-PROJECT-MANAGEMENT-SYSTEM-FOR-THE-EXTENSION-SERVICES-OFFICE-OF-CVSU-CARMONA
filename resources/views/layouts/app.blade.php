@@ -131,8 +131,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal">
-                                        Generate Accomplishment Report
+                                    <a class="dropdown-item" href="{{ route('email.failedTransmission') }}">
+                                        Failed Email Transmission
                                     </a>
                                 </li>
 

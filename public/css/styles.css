@@ -1112,5 +1112,8 @@ min-width: 94.56px;
     padding: 10px; /* Adjust the padding as needed */
   
   }
-
+  .approvaltable .subject {
+    min-width: 300px;
+    max-width: 300px;
+}
 
