@@ -29,29 +29,41 @@
     }
     @endphp
     @foreach ($notifications as $notification)
-    <div class="p-3 border-bottom divhover taskdiv @if($notification->clicked_at == null) text-dark @else text-secondary @endif" data-notificationid="{{ $notification->id }}" data-taskid="{{ $notification->task_id }}" data-tasktype="{{ $notification->task_type }}" data-taskname="{{ $notification->task_name }}">
+    <div class="p-3 border-bottom divhover taskdiv @if($notification->clicked_at == null) text-dark @else text-secondary @endif"
+        data-notificationid="{{ $notification->id }}" data-taskid="{{ $notification->task_id }}"
+        data-tasktype="{{ $notification->task_type }}" data-taskname="{{ $notification->task_name }}">
         {{ $notification->message }}
-        <span class="text-end @if($notification->clicked_at == null) text-primary @else text-secondary @endif small">{{ timeAgo($notification->created_at) }}</span>
+        <span
+            class="text-end @if($notification->clicked_at == null) text-primary @else text-secondary @endif small">{{ timeAgo($notification->created_at) }}</span>
     </div>
     @endforeach
     <div class="py-2 text-center">
-        <button wire:click="showMore({{ $notificationcount }})" type="button" class="btn btn-outline-secondary">Load more</button>
+        <button wire:click="showMore({{ $notificationcount }})" type="button"
+            class="btn btn-md rounded btn-gold shadow">Load more</button>
     </div>
-    <button wire:click="notify()" type="button" class="btn btn-outline-primary">Notify (for developer)</button>
-    <script>
-        document.addEventListener('livewire:load', function() {
-            document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('taskdiv')) {
-                    event.preventDefault();
-                    var notificationid = event.target.getAttribute('data-notificationid');
-                    var taskid = event.target.getAttribute('data-taskid');
-                    var tasktype = event.target.getAttribute('data-tasktype');
-                    var taskname = event.target.getAttribute('data-taskname');
-                    Livewire.emit('showTask', notificationid, taskid, tasktype, taskname);
-                }
-            });
+    <div class="container-fluid">
+        <div class="notifyCustom d-flex justify-content-center">
+            <div class="mx-auto">
+                <button wire:click="notify()" type="button" class="btn btn-green btn-block">Notify (for
+                    developer)</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+    document.addEventListener('livewire:load', function() {
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('taskdiv')) {
+                event.preventDefault();
+                var notificationid = event.target.getAttribute('data-notificationid');
+                var taskid = event.target.getAttribute('data-taskid');
+                var tasktype = event.target.getAttribute('data-tasktype');
+                var taskname = event.target.getAttribute('data-taskname');
+                Livewire.emit('showTask', notificationid, taskid, tasktype, taskname);
+            }
         });
+
+    });
     </script>
 
 

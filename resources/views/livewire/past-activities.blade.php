@@ -15,7 +15,9 @@
             <div class="mb-1 d-flex justify-content-start small">
 
                 <div class="form-check">
-                    <input class="form-check-input small" type="checkbox" wire:click="toggleSelectionOverdueActivities($event.target.checked)" @if($showOnlyMyOverdueActivities==1) checked @endif>
+                    <input class="form-check-input small" type="checkbox"
+                        wire:click="toggleSelectionOverdueActivities($event.target.checked)"
+                        @if($showOnlyMyOverdueActivities==1) checked @endif>
                     <label class="form-check-label d-block small" for="showOnlyMyOverdueActivities">
                         Show only the ones I'm involved in.
                     </label>
@@ -23,20 +25,30 @@
 
             </div>
             @endif
-            <input type="text" class="form-control border border-2 mb-2" id="inputSearchPastActivities" placeholder="Enter title...">
-            <button type="button" class="btn btn-sm btn-outline-success px-3" id="btnSearchPastActivities">Search Activity</button>
+            <div class="input-group">
+                <input type="text" class="form-control border border-2 mb-2" id="inputSearchPastActivities"
+                    placeholder="Enter title...">
+                <div class="iconCustom">
+                    <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
+                        <i wire:click="refreshDataPastActivities" type="button" class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-green px-3" id="btnSearchPastActivities">Search
+                Activity</button>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
                 Please enter a activity title.
             </span>
         </div>
-        <div class="text-center m-1" @if ($xPastActivities==0)style="display: none;" @endif>
+        <!--<div class="text-center m-1" @if ($xPastActivities==0)style="display: none;" @endif>
             <button wire:click="refreshDataPastActivities" type="button" class="btn btn-sm btn-light border small">
                 Refresh
             </button>
-        </div>
+        </div>-->
         @if ($xPastActivities == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showPastActivities(1)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="showPastActivities(1)">
                 <b class="small">Show Activities</b>
             </button>
 
@@ -53,7 +65,8 @@
         <div class="container p-0">
 
             @foreach ($PastActivities as $activity)
-            <div class="border-bottom ps-3 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}" style="position: relative;">
+            <div class="border-bottom ps-3 p-2 divhover activitydiv" data-value="{{ $activity['id'] }}"
+                data-name="{{ $activity['actname'] }}" style="position: relative;">
 
                 <h6 class="fw-bold small" style="color: #4A4A4A;">{{ $activity['actname'] }}</h6>
 
@@ -61,14 +74,17 @@
                 $startDate = date('M d, Y', strtotime($activity['actstartdate']));
                 $endDate = date('M d, Y', strtotime($activity['actenddate']));
                 @endphp
-                <h6 class="text-secondary small">{{ 'Created ' . date('M d, Y', strtotime($activity['created_at'])) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created ' . date('M d, Y', strtotime($activity['created_at'])) }}
+                </h6>
                 <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
                 <div class="btn-group" style="position: absolute; top: 0; right: 0;">
-                    <button type="button" class="btn btn-sm btn-outline-success fs-6 px-1 border me-1 mt-1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-sm btn-outline-success fs-6 px-1 border me-1 mt-1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item small checkOutput" href="#" data-id="{{ $activity['id'] }}" data-name="{{ $activity['actname'] }}">Check Output</a></li>
+                        <li><a class="dropdown-item small checkOutput" href="#" data-id="{{ $activity['id'] }}"
+                                data-name="{{ $activity['actname'] }}">Check Output</a></li>
                         <!-- Add more dropdown items here -->
                     </ul>
                 </div>
@@ -84,12 +100,14 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePagePastActivities({{ $currentPagePastActivities - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
+                        <a class="page-link" wire:click="changePagePastActivities({{ $currentPagePastActivities - 1 }})"
+                            rel="prev"><i class="bi bi-caret-left-fill"></i></a>
                     </li>
                     @endif
 
                     <li class="page-item text-center mx-2">
-                        <h6 class="fw-bold my-0 mt-2 small">{{ $currentPagePastActivities . ' of ' . $totalPagesPastActivities }}</h6>
+                        <h6 class="fw-bold my-0 mt-2 small">
+                            {{ $currentPagePastActivities . ' of ' . $totalPagesPastActivities }}</h6>
                         <span class="m-0 text-secondary fw-bold" style="font-size: 12px;">Pages</span>
                     </li>
 
@@ -102,7 +120,9 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePagePastActivities({{ $currentPagePastActivities + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
+                        <a class="page-link"
+                            wire:click="changePagePastActivities({{ $currentPagePastActivities + 1 }})"><i
+                                class="bi bi-caret-right-fill"></i></i></a>
                     </li>
                     @endif
 
@@ -113,7 +133,8 @@
 
         @endif
         <div class="text-center p-2 border border-bottom-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showPastActivities(0)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="showPastActivities(0)">
                 <b class="small">Hide Activities</b>
             </button>
 
@@ -124,36 +145,36 @@
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <script>
-        document.addEventListener('livewire:load', function() {
-            const btnSearchPastActivities = document.getElementById('btnSearchPastActivities');
-            const inputSearchPastActivities = document.getElementById('inputSearchPastActivities');
-            btnSearchPastActivities.addEventListener('click', function() {
+    document.addEventListener('livewire:load', function() {
+        const btnSearchPastActivities = document.getElementById('btnSearchPastActivities');
+        const inputSearchPastActivities = document.getElementById('inputSearchPastActivities');
+        btnSearchPastActivities.addEventListener('click', function() {
 
+            var searchInputPastActivities = inputSearchPastActivities.value;
+            if (searchInputPastActivities != "") {
+                inputSearchPastActivities.classList.remove('is-invalid');
+
+                Livewire.emit('findPastActivities', searchInputPastActivities, 2);
+
+            } else {
+                inputSearchPastActivities.classList.add('is-invalid');
+            }
+        });
+
+        inputSearchPastActivities.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "Enter" (key code 13)
+            if (event.keyCode === 13) {
                 var searchInputPastActivities = inputSearchPastActivities.value;
                 if (searchInputPastActivities != "") {
                     inputSearchPastActivities.classList.remove('is-invalid');
 
-                    Livewire.emit('findPastActivities', searchInputPastActivities, 2);
+                    Livewire.emit('findPastActivities', searchPastActivities, 2);
 
                 } else {
                     inputSearchPastActivities.classList.add('is-invalid');
                 }
-            });
-
-            inputSearchPastActivities.addEventListener('keydown', function(event) {
-                // Check if the pressed key is "Enter" (key code 13)
-                if (event.keyCode === 13) {
-                    var searchInputPastActivities = inputSearchPastActivities.value;
-                    if (searchInputPastActivities != "") {
-                        inputSearchPastActivities.classList.remove('is-invalid');
-
-                        Livewire.emit('findPastActivities', searchPastActivities, 2);
-
-                    } else {
-                        inputSearchPastActivities.classList.add('is-invalid');
-                    }
-                }
-            });
+            }
         });
+    });
     </script>
 </div>

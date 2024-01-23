@@ -15,7 +15,9 @@
             <div class="mb-1 d-flex justify-content-start small">
 
                 <div class="form-check">
-                    <input class="form-check-input small" type="checkbox" wire:click="toggleSelectionOngoingPrograms($event.target.checked)" @if($showOnlyMyOngoingPrograms==1) checked @endif>
+                    <input class="form-check-input small" type="checkbox"
+                        wire:click="toggleSelectionOngoingPrograms($event.target.checked)"
+                        @if($showOnlyMyOngoingPrograms==1) checked @endif>
                     <label class="form-check-label d-block small" for="showOnlyMyOngoingPrograms">
                         Show only the ones I'm involved in.
                     </label>
@@ -23,20 +25,30 @@
 
             </div>
             @endif
-            <input type="text" class="form-control border border-2 mb-2" id="inputSearchOngoingPrograms" placeholder="Enter title...">
-            <button type="button" class="btn btn-sm btn-outline-success px-3" id="btnSearchOngoingPrograms">Search Program</button>
+            <div class="input-group">
+                <input type="text" class="form-control border border-2 mb-2" id="inputSearchOngoingPrograms"
+                    placeholder="Enter title...">
+                <div class="iconCustom">
+                    <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
+                        <i wire:click="refreshDataOngoingPrograms" type="button" class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-green px-3" id="btnSearchOngoingPrograms">Search
+                Program</button>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccountOngoingPrograms">
                 Please enter a program title.
             </span>
         </div>
-        <div class="text-center m-1" @if ($xOngoingPrograms==0)style="display: none;" @endif>
+        <!--<div class="text-center m-1" @if ($xOngoingPrograms==0)style="display: none;" @endif>
             <button wire:click="refreshDataOngoingPrograms" type="button" class="btn btn-sm btn-light border small">
                 Refresh
             </button>
-        </div>
+        </div>-->
         @if ($xOngoingPrograms == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showOngoingPrograms(1)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="showOngoingPrograms(1)">
                 <b class="small">Show Programs</b>
             </button>
 
@@ -56,7 +68,8 @@
 
 
             @foreach ($ongoingPrograms as $program)
-            <div class="border-bottom ps-3 p-2 divhover programDiv" data-value="{{ $program['id'] }}" data-name="{{ $program['programName'] }}" data-dept="{{ $program['department'] }}">
+            <div class="border-bottom ps-3 p-2 divhover programDiv" data-value="{{ $program['id'] }}"
+                data-name="{{ $program['programName'] }}" data-dept="{{ $program['department'] }}">
 
                 <h6 class="fw-bold small" style="color: #4A4A4A;">
 
@@ -68,7 +81,8 @@
                 $endDate = date('M d, Y', strtotime($program['endDate']));
 
                 @endphp
-                <h6 class="text-secondary small">{{ 'Created ' . date('M d Y', strtotime($program['created_at'])) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created ' . date('M d Y', strtotime($program['created_at'])) }}
+                </h6>
                 <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
 
 
@@ -85,12 +99,15 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageOngoingPrograms({{ $currentPageOngoingPrograms - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
+                        <a class="page-link"
+                            wire:click="changePageOngoingPrograms({{ $currentPageOngoingPrograms - 1 }})" rel="prev"><i
+                                class="bi bi-caret-left-fill"></i></a>
                     </li>
                     @endif
 
                     <li class="page-item text-center mx-2">
-                        <h6 class="fw-bold my-0 mt-2 small">{{ $currentPageOngoingPrograms . ' of ' . $totalPagesOngoingPrograms }}</h6>
+                        <h6 class="fw-bold my-0 mt-2 small">
+                            {{ $currentPageOngoingPrograms . ' of ' . $totalPagesOngoingPrograms }}</h6>
                         <span class="m-0 text-secondary fw-bold" style="font-size: 12px;">Pages</span>
                     </li>
 
@@ -103,7 +120,9 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageOngoingPrograms({{ $currentPageOngoingPrograms + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
+                        <a class="page-link"
+                            wire:click="changePageOngoingPrograms({{ $currentPageOngoingPrograms + 1 }})"><i
+                                class="bi bi-caret-right-fill"></i></i></a>
                     </li>
                     @endif
 
@@ -115,7 +134,8 @@
 
         @endif
         <div class="text-center p-2 border border-bottom-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showOngoingPrograms(0)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="showOngoingPrograms(0)">
                 <b class="small">Hide Programs</b>
             </button>
 
@@ -125,11 +145,25 @@
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <script>
-        document.addEventListener('livewire:load', function() {
-            const btnSearchOngoingPrograms = document.getElementById('btnSearchOngoingPrograms');
-            const inputSearchOngoingPrograms = document.getElementById('inputSearchOngoingPrograms');
-            btnSearchOngoingPrograms.addEventListener('click', function() {
+    document.addEventListener('livewire:load', function() {
+        const btnSearchOngoingPrograms = document.getElementById('btnSearchOngoingPrograms');
+        const inputSearchOngoingPrograms = document.getElementById('inputSearchOngoingPrograms');
+        btnSearchOngoingPrograms.addEventListener('click', function() {
 
+            var searchInputOngoingPrograms = inputSearchOngoingPrograms.value;
+            if (searchInputOngoingPrograms != "") {
+                inputSearchOngoingPrograms.classList.remove('is-invalid');
+
+                Livewire.emit('findOngoingPrograms', searchInputOngoingPrograms, 2);
+
+            } else {
+                inputSearchOngoingPrograms.classList.add('is-invalid');
+            }
+        });
+
+        inputSearchOngoingPrograms.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "Enter" (key code 13)
+            if (event.keyCode === 13) {
                 var searchInputOngoingPrograms = inputSearchOngoingPrograms.value;
                 if (searchInputOngoingPrograms != "") {
                     inputSearchOngoingPrograms.classList.remove('is-invalid');
@@ -139,22 +173,8 @@
                 } else {
                     inputSearchOngoingPrograms.classList.add('is-invalid');
                 }
-            });
-
-            inputSearchOngoingPrograms.addEventListener('keydown', function(event) {
-                // Check if the pressed key is "Enter" (key code 13)
-                if (event.keyCode === 13) {
-                    var searchInputOngoingPrograms = inputSearchOngoingPrograms.value;
-                    if (searchInputOngoingPrograms != "") {
-                        inputSearchOngoingPrograms.classList.remove('is-invalid');
-
-                        Livewire.emit('findOngoingPrograms', searchInputOngoingPrograms, 2);
-
-                    } else {
-                        inputSearchOngoingPrograms.classList.add('is-invalid');
-                    }
-                }
-            });
+            }
         });
+    });
     </script>
 </div>

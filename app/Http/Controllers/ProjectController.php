@@ -706,7 +706,7 @@ class ProjectController extends Controller
         }
 
         $request->validate([
-            'accomplishment_file' => 'required|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf|max:10240',
+            'terminal_file' => 'required|mimetypes:application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf|max:10240',
         ]);
 
         $file = $request->file('terminal_file');
