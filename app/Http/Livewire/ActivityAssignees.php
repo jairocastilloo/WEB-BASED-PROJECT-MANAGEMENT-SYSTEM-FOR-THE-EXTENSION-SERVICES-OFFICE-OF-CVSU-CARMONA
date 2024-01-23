@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use App\Models\ActivityUser;
 use App\Models\Notification;
+use App\Models\EmailLogs;
 
 class ActivityAssignees extends Component
 {
@@ -101,21 +102,30 @@ class ActivityAssignees extends Component
             }
             if ($assignee->emailActivityAdded == 1) {
                 if ($isMailSendable === 1) {
+                    $email = $assignee->email;
+                    $name = $assignee->name . ' ' . $assignee->last_name;
+                    $taskname = $this->activity->actname;
+                    $tasktype = "activity";
+                    $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
+                    $endDate = date('F d, Y', strtotime($this->activity->actenddate));
+
+                    $taskdeadline = $startDate . ' - ' . $endDate;
+                    $senderemail = Auth::user()->email;
+
                     try {
-
-                        $email = $assignee->email;
-                        $name = $assignee->name . ' ' . $assignee->last_name;
-                        $taskname = $this->activity->actname;
-                        $tasktype = "activity";
-                        $startDate = date('F d, Y', strtotime($this->activity->actstartdate));
-                        $endDate = date('F d, Y', strtotime($this->activity->actenddate));
-
-                        $taskdeadline = $startDate . ' - ' . $endDate;
-                        $senderemail = Auth::user()->email;
                         Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
                     } catch (\Exception $e) {
+                        $failedEmail = new EmailLogs([
+                            'email' => $email,
+                            'message' => $message,
+                            'name' => $name,
+                            'sendername' => $sendername,
+                            'taskname' => $taskname,
+                            'taskdeadline' => $taskdeadline,
+                            'senderemail' => $senderemail
+                        ]);
+                        $failedEmail->save();
                         $isMailSendable = 0;
-                        $error = $e;
                     }
                 }
             }

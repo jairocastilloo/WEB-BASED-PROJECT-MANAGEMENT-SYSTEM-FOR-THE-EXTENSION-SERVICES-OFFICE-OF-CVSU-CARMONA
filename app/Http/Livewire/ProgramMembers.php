@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MyMail;
 use Livewire\Component;
-
+use App\Models\EmailLogs;
 
 class ProgramMembers extends Component
 {
@@ -106,30 +106,45 @@ class ProgramMembers extends Component
         $error = null;
         $message =  $sendername . ' added you as a team member to a program: "' . $this->program->programName . '".';
         foreach ($selectedMembers as $selectedMember) {
-            $notification = new Notification([
-                'user_id' => $selectedMember,
-                'task_id' => $this->program->id,
-                'task_type' => "program",
-                'task_name' => $this->program->programName,
-                'message' => $message,
-            ]);
-            $notification->save();
-            if ($isMailSendable === 1) {
-                try {
-                    $assignee = User::findorFail($selectedMember);
+            $assignee = User::findorFail($selectedMember);
+
+            if ($assignee->notifyProgramAdded == 1) {
+                $notification = new Notification([
+                    'user_id' => $selectedMember,
+                    'task_id' => $this->program->id,
+                    'task_type' => "program",
+                    'task_name' => $this->program->programName,
+                    'message' => $message,
+                ]);
+            }
+
+            if ($assignee->emailProgramAdded == 1) {
+                if ($isMailSendable === 1) {
                     $email = $assignee->email;
                     $name = $assignee->name . ' ' . $assignee->last_name;
                     $taskname = $this->program->programName;
                     $tasktype = "program";
-                    $startDate = date('F d, Y', strtotime($this->program->programName));
-                    $endDate = date('F d, Y', strtotime($this->program->programName));
+                    $startDate = date('F d, Y', strtotime($this->program->startDate));
+                    $endDate = date('F d, Y', strtotime($this->program->endDate));
 
                     $taskdeadline = $startDate . ' - ' . $endDate;
                     $senderemail = Auth::user()->email;
-                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                } catch (\Exception $e) {
-                    $isMailSendable = 0;
-                    $error = $e;
+
+                    try {
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+                        $failedEmail = new EmailLogs([
+                            'email' => $email,
+                            'message' => $message,
+                            'name' => $name,
+                            'sendername' => $sendername,
+                            'taskname' => $taskname,
+                            'taskdeadline' => $taskdeadline,
+                            'senderemail' => $senderemail
+                        ]);
+                        $failedEmail->save();
+                        $isMailSendable = 0;
+                    }
                 }
             }
         }

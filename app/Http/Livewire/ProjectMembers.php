@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MyMail;
 use Livewire\Component;
+use App\Models\EmailLogs;
 
 class ProjectMembers extends Component
 {
@@ -104,17 +105,21 @@ class ProjectMembers extends Component
         $error = null;
         $message =  $sendername . ' added you as a team member to a project: "' . $this->project->projecttitle . '".';
         foreach ($selectedMembers as $selectedMember) {
-            $notification = new Notification([
-                'user_id' => $selectedMember,
-                'task_id' => $this->project->id,
-                'task_type' => "project",
-                'task_name' => $this->project->projecttitle,
-                'message' => $message,
-            ]);
-            $notification->save();
-            if ($isMailSendable === 1) {
-                try {
-                    $assignee = User::findorFail($selectedMember);
+            $assignee = User::findorFail($selectedMember);
+            if ($assignee->notifyProjectAdded == 1) {
+                $notification = new Notification([
+                    'user_id' => $selectedMember,
+                    'task_id' => $this->project->id,
+                    'task_type' => "project",
+                    'task_name' => $this->project->projecttitle,
+                    'message' => $message,
+                ]);
+
+                $notification->save();
+            }
+            if ($assignee->emailProjectAdded == 1) {
+                if ($isMailSendable === 1) {
+
                     $email = $assignee->email;
                     $name = $assignee->name . ' ' . $assignee->last_name;
                     $taskname = $this->project->projecttitle;
@@ -124,10 +129,22 @@ class ProjectMembers extends Component
 
                     $taskdeadline = $startDate . ' - ' . $endDate;
                     $senderemail = Auth::user()->email;
-                    Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
-                } catch (\Exception $e) {
-                    $isMailSendable = 0;
-                    $error = $e;
+
+                    try {
+                        Mail::to($email)->send(new MyMail($message, $name, $sendername, $taskname, $tasktype, $taskdeadline, $senderemail));
+                    } catch (\Exception $e) {
+                        $failedEmail = new EmailLogs([
+                            'email' => $email,
+                            'message' => $message,
+                            'name' => $name,
+                            'sendername' => $sendername,
+                            'taskname' => $taskname,
+                            'taskdeadline' => $taskdeadline,
+                            'senderemail' => $senderemail
+                        ]);
+                        $failedEmail->save();
+                        $isMailSendable = 0;
+                    }
                 }
             }
         }
