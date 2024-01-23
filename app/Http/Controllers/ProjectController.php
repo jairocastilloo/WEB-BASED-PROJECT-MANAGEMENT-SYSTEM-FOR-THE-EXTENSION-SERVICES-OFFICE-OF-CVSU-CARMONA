@@ -224,23 +224,37 @@ class ProjectController extends Controller
 
         $indexproject = Project::findOrFail($projectid);
 
-        if (Auth::user()->role == "Admin") {
-            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
-        } else {
-            $alldepartments = [Auth::user()->department, 'All'];
-        }
 
         $department = $indexproject->department;
-        if (Auth::user()->role == 'Admin') {
+
+
+
+
+
+        $role = Auth::user()->role;
+        $userDepartment = Auth::user()->department;
+        if ($role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [$userDepartment, 'All'];
+        }
+
+        $department = str_replace('+', ' ', $department);
+
+
+
+        if ($role == 'Admin') {
             if ($department == 'All') {
                 $users = User::where('approval', 1)
                     ->where('role', '!=', 'Implementer')
+                    ->where('username', '!=', 'admin')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
             } else {
                 $users = User::where(function ($query) use ($department) {
                     $query->where('department', $department)
                         ->orWhere('department', 'All');
                 })
+                    ->where('username', '!=', 'admin')
                     ->where('approval', 1)
                     ->where('role', '!=', 'Implementer')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
@@ -249,6 +263,25 @@ class ProjectController extends Controller
             $users = null;
         }
 
+
+        /*
+        $projectleaders = $indexproject->projectleaders;
+        $programleaders = $indexproject->programleaders;
+
+
+        $allfiscalyears = FiscalYear::all();
+        */
+
+        $allPrograms = Program::where('department', $department)
+            ->get();
+        $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
+            ->get();
+
+        $program = [];
+        $programId = $indexproject->program_id;
+        if ($programId != null) {
+            $program = Program::findOrFail($programId);
+        }
         $activities = $indexproject->activities;
 
         return view('project.activities', [
@@ -256,7 +289,11 @@ class ProjectController extends Controller
             'indexproject' => $indexproject,
             'alldepartments' => $alldepartments,
             'activities' => $activities,
-            'department' => $department
+            'department' => $department,
+
+            'allPrograms' => $allPrograms,
+            'programLeaders' => $programLeaders,
+            'program' => $program
         ]);
     }
     public function displayMembers($projectid, $department)
@@ -264,23 +301,30 @@ class ProjectController extends Controller
 
         $indexproject = Project::findOrFail($projectid);
 
-        if (Auth::user()->role == "Admin") {
+        $department = $indexproject->department;
+
+        $role = Auth::user()->role;
+        $userDepartment = Auth::user()->department;
+        if ($role == "Admin") {
             $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
         } else {
-            $alldepartments = [Auth::user()->department, 'All'];
+            $alldepartments = [$userDepartment, 'All'];
         }
 
-        $department = $indexproject->department;
-        if (Auth::user()->role == 'Admin') {
+        $department = str_replace('+', ' ', $department);
+
+        if ($role == 'Admin') {
             if ($department == 'All') {
                 $users = User::where('approval', 1)
                     ->where('role', '!=', 'Implementer')
+                    ->where('username', '!=', 'admin')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
             } else {
                 $users = User::where(function ($query) use ($department) {
                     $query->where('department', $department)
                         ->orWhere('department', 'All');
                 })
+                    ->where('username', '!=', 'admin')
                     ->where('approval', 1)
                     ->where('role', '!=', 'Implementer')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
@@ -289,12 +333,25 @@ class ProjectController extends Controller
             $users = null;
         }
 
+        $allPrograms = Program::where('department', $department)
+            ->get();
+        $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
+            ->get();
+
+        $program = [];
+        $programId = $indexproject->program_id;
+        if ($programId != null) {
+            $program = Program::findOrFail($programId);
+        }
 
         return view('project.members', [
             'members' => $users,
             'indexproject' => $indexproject,
             'alldepartments' => $alldepartments,
-            'department' => $department
+            'department' => $department,
+            'allPrograms' => $allPrograms,
+            'programLeaders' => $programLeaders,
+            'program' => $program
         ]);
     }
 
@@ -302,29 +359,48 @@ class ProjectController extends Controller
     {
 
         $indexproject = Project::findOrFail($projectid);
-        if (Auth::user()->role == "Admin") {
-            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
-        } else {
-            $alldepartments = [Auth::user()->department, 'All'];
-        }
 
         $department = $indexproject->department;
-        if (Auth::user()->role == 'Admin') {
+
+        $role = Auth::user()->role;
+        $userDepartment = Auth::user()->department;
+        if ($role == "Admin") {
+            $alldepartments = ['Department of Management', 'Department of Industrial and Information Technology', 'Department of Teacher Education', 'Department of Arts and Science', 'All'];
+        } else {
+            $alldepartments = [$userDepartment, 'All'];
+        }
+
+        $department = str_replace('+', ' ', $department);
+
+        if ($role == 'Admin') {
             if ($department == 'All') {
                 $users = User::where('approval', 1)
                     ->where('role', '!=', 'Implementer')
+                    ->where('username', '!=', 'admin')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
             } else {
                 $users = User::where(function ($query) use ($department) {
                     $query->where('department', $department)
                         ->orWhere('department', 'All');
                 })
+                    ->where('username', '!=', 'admin')
                     ->where('approval', 1)
                     ->where('role', '!=', 'Implementer')
                     ->get(['id', 'name', 'middle_name', 'last_name', 'role']);
             }
         } else {
             $users = null;
+        }
+
+        $allPrograms = Program::where('department', $department)
+            ->get();
+        $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
+            ->get();
+
+        $program = [];
+        $programId = $indexproject->program_id;
+        if ($programId != null) {
+            $program = Program::findOrFail($programId);
         }
 
         $activities = $indexproject->activities;
@@ -344,6 +420,9 @@ class ProjectController extends Controller
             'department' => $department,
             'activities' => $activities,
             'activityArray' => $activityArray,
+            'allPrograms' => $allPrograms,
+            'programLeaders' => $programLeaders,
+            'program' => $program
 
         ]);
     }
@@ -654,7 +733,11 @@ class ProjectController extends Controller
             ->count();
         $projectTerminal = ProjectTerminal::where('project_id', $projectid)
             ->get();
-
+        $program = [];
+        $programId = $project->program_id;
+        if ($programId != null) {
+            $program = Program::findOrFail($programId);
+        }
         return view('project.close', [
             'project' => $project,
             'allActivities' => $allActivities,
@@ -662,7 +745,8 @@ class ProjectController extends Controller
             'inProgressActivities' => $inProgressActivities,
             'completedActivities' => $completedActivities,
             'overdueActivities' => $overdueActivities,
-            'projectTerminal' => $projectTerminal
+            'projectTerminal' => $projectTerminal,
+            'program' => $program
         ]);
     }
     public function uploadTerminalReport(Request $request)
