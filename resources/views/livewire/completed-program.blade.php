@@ -47,8 +47,7 @@
         </div>-->
         @if ($xCompletedPrograms == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
-                wire:click="showCompletedPrograms(1)">
+            <button type="button" class="btn btn-sm rounded btn-gold shadow" wire:click="showCompletedPrograms(1)">
                 <b class="small">Show Programs</b>
             </button>
 
@@ -131,8 +130,7 @@
 
         @endif
         <div class="text-center p-2 border border-bottom-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
-                wire:click="showCompletedPrograms(0)">
+            <button type="button" class="btn btn-sm rounded btn-gold shadow" wire:click="showCompletedPrograms(0)">
                 <b class="small">Hide Programs</b>
             </button>
 

@@ -14,15 +14,18 @@
         </span>
         <div class="mt-2 text-center">
             <div class="form-check form-check-inline">
-                <input class="form-check-input border border-success" type="radio" name="searchCriteria" id="searchByName" value="name" checked>
+                <input class="form-check-input border border-success" type="radio" name="searchCriteria"
+                    id="searchByName" value="name" checked>
                 <label class="form-check-label" for="searchByName">Name</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input border border-success" type="radio" name="searchCriteria" id="searchByEmail" value="email">
+                <input class="form-check-input border border-success" type="radio" name="searchCriteria"
+                    id="searchByEmail" value="email">
                 <label class="form-check-label" for="searchByEmail">Email</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input border border-success" type="radio" name="searchCriteria" id="searchByDepartment" value="department">
+                <input class="form-check-input border border-success" type="radio" name="searchCriteria"
+                    id="searchByDepartment" value="department">
                 <label class="form-check-label" for="searchByDepartment">Department</label>
             </div>
         </div>
@@ -43,11 +46,14 @@
             </li>
             @else
             <li class="page-item">
-                <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i class="bi bi-chevron-compact-left"></i></a>
+                <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i
+                        class="bi bi-chevron-compact-left"></i></a>
             </li>
             @endif
 
-            @for ($i = 1; $i <= $totalPages; $i++) <li class="page-item {{ $i === $currentPage ? 'active disabled' : '' }}" aria-current="{{ $i === $currentPage ? 'page' : '' }}">
+            @for ($i = 1; $i <= $totalPages; $i++) <li
+                class="page-item {{ $i === $currentPage ? 'active disabled' : '' }}"
+                aria-current="{{ $i === $currentPage ? 'page' : '' }}">
                 <a class="page-link" wire:click="changePage({{ $i }})">{{ $i }}</a>
                 </li>
                 @endfor
@@ -58,7 +64,8 @@
                 </li>
                 @else
                 <li class="page-item">
-                    <a class="page-link" wire:click="changePage({{ $currentPage + 1 }})"><i class="bi bi-chevron-compact-right"></i></a>
+                    <a class="page-link" wire:click="changePage({{ $currentPage + 1 }})"><i
+                            class="bi bi-chevron-compact-right"></i></a>
                 </li>
                 @endif
                 <li class="page-item">
@@ -97,14 +104,15 @@
                     <td class="p-2 editactions">
                         <div class="text-center">
 
-                            <button type="button" class="btn btn-sm btn-outline-primary border editdetails">
+                            <button type="button" class="btn btn-sm rounded btn-gold shadow editdetails">
                                 <b class="small">Edit Details</b>
                             </button>
 
                         </div>
                     </td>
                     <td class="p-2 cancel text-center">
-                        <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="decline('{{ $alluser->id }}')">
+                        <button type="button" class="btn btn-sm btn-outline-danger border"
+                            wire:click="decline('{{ $alluser->id }}')">
                             <i class="bi bi-trash fs-5"></i>
                         </button>
                     </td>
@@ -113,7 +121,8 @@
             </tbody>
         </table>
     </div>
-    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -157,7 +166,8 @@
                         <select class="form-select" id="department" name="department">
                             <option value="" disabled selected>Select your Department</option>
                             <option value="Department of Management">Department of Management</option>
-                            <option value="Department of Industrial and Information Technology">Department of Industrial and Information Technology</option>
+                            <option value="Department of Industrial and Information Technology">Department of Industrial
+                                and Information Technology</option>
                             <option value="Department of Teacher Education">Department of Teacher Education</option>
                             <option value="Department of Arts and Science">Department of Arts and Science</option>
                         </select>
@@ -175,36 +185,63 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEdit">Close</button>
-                    <button type="submit" class="btn btn-primary" id="confirmEdit">Confirm</button>
+                    <button type="button" class="btn btn-sm rounded border border-1 btn-light shadow"
+                        data-bs-dismiss="modal" id="closeEdit">Close</button>
+                    <button type="submit" class="btn btn-sm rounded btn-gold shadow" id="confirmEdit">Confirm</button>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        document.addEventListener('livewire:load', function() {
-            const confirmEdit = document.getElementById('confirmEdit');
-            const btnSearch = document.getElementById('btnSearch');
-            const inputSearch = document.getElementById('inputSearch');
-            confirmEdit.addEventListener('click', function() {
-                var data = {
-                    'id': document.getElementById('userid').value,
-                    'firstname': document.getElementById('firstname').value,
-                    'middlename': document.getElementById('middlename').value,
-                    'lastname': document.getElementById('lastname').value,
-                    'username': document.getElementById('username').value,
-                    'email': document.getElementById('email').value,
-                    'department': document.getElementById('department').value,
-                    'role': document.getElementById('role').value,
-                };
-                Livewire.emit('updateData', data);
-            });
-            Livewire.on('afterUpdateData', function() {
-                document.getElementById('closeEdit').click();
-            });
+    document.addEventListener('livewire:load', function() {
+        const confirmEdit = document.getElementById('confirmEdit');
+        const btnSearch = document.getElementById('btnSearch');
+        const inputSearch = document.getElementById('inputSearch');
+        confirmEdit.addEventListener('click', function() {
+            var data = {
+                'id': document.getElementById('userid').value,
+                'firstname': document.getElementById('firstname').value,
+                'middlename': document.getElementById('middlename').value,
+                'lastname': document.getElementById('lastname').value,
+                'username': document.getElementById('username').value,
+                'email': document.getElementById('email').value,
+                'department': document.getElementById('department').value,
+                'role': document.getElementById('role').value,
+            };
+            Livewire.emit('updateData', data);
+        });
+        Livewire.on('afterUpdateData', function() {
+            document.getElementById('closeEdit').click();
+        });
 
-            btnSearch.addEventListener('click', function() {
-                const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
+        btnSearch.addEventListener('click', function() {
+            const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
+            var searchInput = inputSearch.value;
+            if (searchInput != "") {
+                inputSearch.classList.remove('is-invalid');
+                switch (searchCriteria) {
+                    case 'name':
+                        Livewire.emit('findAccount', searchInput, 1)
+                        break;
+                    case 'email':
+                        Livewire.emit('findAccount', searchInput, 2)
+                        break;
+                    case 'department':
+                        Livewire.emit('findAccount', searchInput, 3)
+                        break;
+                    default:
+                        // Handle the default case or show an error message
+                        break;
+                }
+            } else {
+                inputSearch.classList.add('is-invalid');
+            }
+        });
+        inputSearch.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "Enter" (key code 13)
+            if (event.keyCode === 13) {
+                const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked')
+                    .value;
                 var searchInput = inputSearch.value;
                 if (searchInput != "") {
                     inputSearch.classList.remove('is-invalid');
@@ -225,33 +262,8 @@
                 } else {
                     inputSearch.classList.add('is-invalid');
                 }
-            });
-            inputSearch.addEventListener('keydown', function(event) {
-                // Check if the pressed key is "Enter" (key code 13)
-                if (event.keyCode === 13) {
-                    const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;
-                    var searchInput = inputSearch.value;
-                    if (searchInput != "") {
-                        inputSearch.classList.remove('is-invalid');
-                        switch (searchCriteria) {
-                            case 'name':
-                                Livewire.emit('findAccount', searchInput, 1)
-                                break;
-                            case 'email':
-                                Livewire.emit('findAccount', searchInput, 2)
-                                break;
-                            case 'department':
-                                Livewire.emit('findAccount', searchInput, 3)
-                                break;
-                            default:
-                                // Handle the default case or show an error message
-                                break;
-                        }
-                    } else {
-                        inputSearch.classList.add('is-invalid');
-                    }
-                }
-            });
+            }
         });
+    });
     </script>
 </div>

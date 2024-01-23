@@ -422,9 +422,15 @@ th {
 .secondtable .reportsecondtable {
     background-color: rgb(233, 233, 233);
 }
-.btn-no-animation:active{
+.btn-no-animation:active {
     outline: none;
     box-shadow: none;
+}
+
+.addsubtask-btn:hover {
+    background-color: green;
+    color: white;
+    transition: 0.3s;
 }
 
 .btn-gold {
@@ -434,20 +440,19 @@ th {
     transition: background-color 0.3s;
 }
 .btn-gold:hover {
-    color: rgb(0, 0, 0);
-    background-color: transparent;
-    border-color: gold;
+    color: gold;
+    background-color: black;
+    border-color: black;
 }
-
-.btn-green  {
+.btn-green {
     color: white;
     background-color: green;
     border-color: green;
     transition: background-color 0.3s;
 }
-.btn-green:hover{
-    color: black;
-    background-color: transparent;
+.btn-green:hover {
+    color: green;
+    background-color: white;
     border-color: green;
 }
 
@@ -457,12 +462,11 @@ th {
     border-color: red;
     transition: background-color 0.3s;
 }
-.btn-red:hover{
+.btn-red:hover {
     color: black;
     background-color: transparent;
     border-color: red;
 }
-
 
 .btn-info:hover {
     color: black;
@@ -947,7 +951,6 @@ div {
     cursor: pointer;
 }
 
-
 .border1px {
     border-bottom: 1px solid #bababa;
 }
@@ -989,13 +992,11 @@ div {
 */
 
 .pdfReport {
-   
-font-family: 'Calibri', sans-serif;
+    font-family: "Calibri", sans-serif;
     font-size: 11pt;
     width: 987.04px;
-   
-    
-/*
+
+    /*
     padding-top: 60px;
     padding-bottom: 60px;
     padding-left: 67.2px;
@@ -1003,98 +1004,86 @@ font-family: 'Calibri', sans-serif;
 
 
 
-   height: 794.88px; 
+   height: 794.88px;
     width: 1121.44px;
 */
-
 }
 
-
-.header{
-   
+.header {
     text-align: center;
 }
 .header p {
-    margin:0;
+    margin: 0;
 }
 
 .headerSection table {
- margin-top: 43px;  
+    margin-top: 43px;
     margin-left: auto;
     margin-right: auto;
 }
 
-.headerSection table td, .headerSection table th {
-
-    font-family: 'Calibri', sans-serif;
+.headerSection table td,
+.headerSection table th {
+    font-family: "Calibri", sans-serif;
     font-size: 11pt;
 
     border: 0.6667px solid #000000;
-overflow-wrap: break-word;
+    overflow-wrap: break-word;
     word-wrap: break-word;
     height: 0;
     page-break-inside: auto;
-
-
 }
 .headerSection table th {
-
     padding-left: 5px;
     padding-right: 5px;
- 
-   text-align: center;
 
-
+    text-align: center;
 }
 .headerSection table td {
     vertical-align: top;
     text-align: left;
     padding: 3px;
-
 }
-.projectTD{
-min-width: 79.68px;
+.projectTD {
+    min-width: 79.68px;
     max-width: 79.68px;
 }
-.activityTD{
-min-width: 180.48px;
+.activityTD {
+    min-width: 180.48px;
     max-width: 180.48px;
 }
-.dateTD{
-min-width: 90.24px;
+.dateTD {
+    min-width: 90.24px;
     max-width: 90.24px;
     text-align: center;
 }
-.hoursTD{
-min-width: 78.72px;
+.hoursTD {
+    min-width: 78.72px;
     max-width: 78.72px;
     text-align: center;
 }
-.involvedTD{
-min-width: 340.8px;
+.involvedTD {
+    min-width: 340.8px;
     max-width: 340.8px;
 }
-.clientTD{
-min-width: 103.68px;
+.clientTD {
+    min-width: 103.68px;
     max-width: 103.68px;
     text-align: center;
 }
-.partnerTD{
-min-width: 94.56px;
+.partnerTD {
+    min-width: 94.56px;
     max-width: 94.56px;
     text-align: center;
 }
-.beforeprint-page{
-  
+.beforeprint-page {
     max-height: 674px;
     overflow: hidden;
     width: 987.04px;
-
-
 }
- .print-page {
+.print-page {
     border: 1px solid #000000;
-      padding-top: 60px;
+    padding-top: 60px;
     padding-bottom: 60px;
     padding-left: 67.2px;
     padding-right: 67.2px;
@@ -1105,15 +1094,11 @@ min-width: 94.56px;
                 page-break-before: always;
                 display: inline-block;
 */
-             
-                
 }
 .datepicker-days .day {
     padding: 10px; /* Adjust the padding as needed */
-  
-  }
-  .approvaltable .subject {
+}
+.approvaltable .subject {
     min-width: 300px;
     max-width: 300px;
 }
-

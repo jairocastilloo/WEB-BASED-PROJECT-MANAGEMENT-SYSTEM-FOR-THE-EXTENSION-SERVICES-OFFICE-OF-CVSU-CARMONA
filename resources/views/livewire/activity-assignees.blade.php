@@ -38,8 +38,8 @@
     </div>
     @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
     <div class="btn-group ms-3 mt-2 mb-3 shadow">
-        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
-            id="btnAddAssignee" data-bs-toggle="modal" data-bs-target="#addActivityAssigneeModal">
+        <button type="button" class="btn btn-sm rounded btn-gold shadow" id="btnAddAssignee" data-bs-toggle="modal"
+            data-bs-target="#addActivityAssigneeModal">
             <b class="small">Add Implementer</b>
         </button>
 
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-md rounded border border-1 btn-light"
+                    <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
                         id="addAssigneesCloseButton" data-bs-dismiss="modal">Cancel</button>
 
                     <button type="button" id="saveAssigneesButton" class="btn btn-md rounded btn-gold shadow"

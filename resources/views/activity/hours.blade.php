@@ -92,8 +92,7 @@
 
 
             <div class="btn-group dropdown ms-3 mb-3 shadow">
-                <button type="button"
-                    class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
+                <button type="button" class="btn btn-sm rounded btn-gold shadow dropdown-toggle"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <b class="small"> <i class="bi bi-list"></i> Menu</b>
                 </button>

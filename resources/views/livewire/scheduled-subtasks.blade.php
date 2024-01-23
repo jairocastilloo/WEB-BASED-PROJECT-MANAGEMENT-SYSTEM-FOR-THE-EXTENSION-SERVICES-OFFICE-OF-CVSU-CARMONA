@@ -13,13 +13,14 @@
             </h6>
         </div>
 
-        <div class="m-2 mb-0 text-center" @if ($xScheduledTasks == 0) style="display: none;" @endif>
+        <div class="m-2 mb-0 text-center" @if ($xScheduledTasks==0) style="display: none;" @endif>
             <div class="input-group">
-                <input type="text" class="form-control flex border border-2 mb-2" id="inputSearchScheduledTasks" placeholder="Enter name...">
+                <input type="text" class="form-control flex border border-2 mb-2" id="inputSearchScheduledTasks"
+                    placeholder="Enter name...">
                 <div class="iconCustom">
-                <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
-                    <i wire:click="refreshDataScheduledTasks" type="button" class="bi bi-arrow-clockwise"></i>
-                </button>
+                    <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
+                        <i wire:click="refreshDataScheduledTasks" type="button" class="bi bi-arrow-clockwise"></i>
+                    </button>
                 </div>
             </div>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
@@ -36,7 +37,7 @@
 
         @if ($xScheduledTasks == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showScheduledTasks(1)">
+            <button type="button" class="btn btn-sm rounded btn-gold shadow" wire:click="showScheduledTasks(1)">
                 <b class="small">Show Tasks</b>
             </button>
 
@@ -52,7 +53,8 @@
 
         <div class="container p-0">
             @foreach($ScheduledTasks as $subtask)
-            <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}" style="position: relative;">
+            <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}"
+                style="position: relative;">
                 @php
                 $subduedate = strtotime($subtask['subduedate']);
                 $subcreatedat = strtotime($subtask['created_at']);
@@ -101,12 +103,14 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageScheduledTasks({{ $currentPageScheduledTasks - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
+                        <a class="page-link" wire:click="changePageScheduledTasks({{ $currentPageScheduledTasks - 1 }})"
+                            rel="prev"><i class="bi bi-caret-left-fill"></i></a>
                     </li>
                     @endif
 
                     <li class="page-item text-center mx-2">
-                        <h6 class="fw-bold my-0 mt-2 small">{{ $currentPageScheduledTasks . ' of ' . $totalPagesScheduledTasks }}</h6>
+                        <h6 class="fw-bold my-0 mt-2 small">
+                            {{ $currentPageScheduledTasks . ' of ' . $totalPagesScheduledTasks }}</h6>
                         <span class="m-0 text-secondary fw-bold" style="font-size: 12px;">Pages</span>
                     </li>
 
@@ -119,7 +123,9 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageScheduledTasks({{ $currentPageScheduledTasks + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
+                        <a class="page-link"
+                            wire:click="changePageScheduledTasks({{ $currentPageScheduledTasks + 1 }})"><i
+                                class="bi bi-caret-right-fill"></i></i></a>
                     </li>
                     @endif
 
@@ -131,14 +137,15 @@
 
         @endif
         <div class="text-center p-2 border border-bottom-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showScheduledTasks(0)">
+            <button type="button" class="btn btn-sm rounded btn-gold shadow" wire:click="showScheduledTasks(0)">
                 <b class="small">Hide Tasks</b>
             </button>
 
         </div>
         @endif
 
-        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -157,7 +164,8 @@
                         <div class="mb-3">
                             <label for="scheduleDate" class="form-label">Date To Do:</label>
                             <div class="input-group date" id="scheduleDatePicker">
-                                <input type="text" class="form-control" id="scheduleDate" name="scheduleDate" placeholder="mm/dd/yyyy" />
+                                <input type="text" class="form-control" id="scheduleDate" name="scheduleDate"
+                                    placeholder="mm/dd/yyyy" />
                                 <span class="input-group-append">
                                     <span class="input-group-text bg-light d-block">
                                         <i class="bi bi-calendar-event-fill"></i>
@@ -166,7 +174,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closesaveSchedule">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                id="closesaveSchedule">Close</button>
                             <button type="submit" class="btn btn-primary" id="saveScheduleBtn">Save Schedule</button>
                         </div>
 
@@ -178,50 +187,51 @@
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <script>
-        document.addEventListener('livewire:load', function() {
-            const btnSearchScheduledTasks = document.getElementById('btnSearchScheduledTasks');
-            const inputSearchScheduledTasks = document.getElementById('inputSearchScheduledTasks');
-            const saveScheduleBtn = document.getElementById('saveScheduleBtn');
+    document.addEventListener('livewire:load', function() {
+        const btnSearchScheduledTasks = document.getElementById('btnSearchScheduledTasks');
+        const inputSearchScheduledTasks = document.getElementById('inputSearchScheduledTasks');
+        const saveScheduleBtn = document.getElementById('saveScheduleBtn');
 
-            saveScheduleBtn.addEventListener('click', function() {
-                var toDoDate = document.getElementById('scheduleDate').value;
-                var subtaskId = document.getElementById('scheduleSubtaskId').value;
+        saveScheduleBtn.addEventListener('click', function() {
+            var toDoDate = document.getElementById('scheduleDate').value;
+            var subtaskId = document.getElementById('scheduleSubtaskId').value;
 
-                Livewire.emit('saveScheduledTasks', subtaskId, toDoDate);
-            });
+            Livewire.emit('saveScheduledTasks', subtaskId, toDoDate);
+        });
 
-            Livewire.on('updatesaveScheduledTasks', function() {
-                document.getElementById('closesaveSchedule').click();
-            });
+        Livewire.on('updatesaveScheduledTasks', function() {
+            document.getElementById('closesaveSchedule').click();
+        });
 
 
-            btnSearchScheduledTasks.addEventListener('click', function() {
+        btnSearchScheduledTasks.addEventListener('click', function() {
 
+            var searchInputScheduledTasks = inputSearchScheduledTasks.value;
+            if (searchInputScheduledTasks != "") {
+                inputSearchScheduledTasks.classList.remove('is-invalid');
+
+                Livewire.emit('findScheduledTasks', searchInputScheduledTasks, 2);
+
+            } else {
+                inputSearchScheduledTasks.classList.add('is-invalid');
+            }
+        });
+
+        inputSearchScheduledTasks.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "Enter" (key code 13)
+            if (event.keyCode === 13) {
                 var searchInputScheduledTasks = inputSearchScheduledTasks.value;
                 if (searchInputScheduledTasks != "") {
-                    inputSearchScheduledTasks.classList.remove('is-invalid');
+                    inputSearchScheduledasks.classList.remove('is-invalid');
 
-                    Livewire.emit('findScheduledTasks', searchInputScheduledTasks, 2);
+      
+              Livewire.emit('findScheduledTasks', searchInputScheduledTasks, 2);
 
                 } else {
                     inputSearchScheduledTasks.classList.add('is-invalid');
                 }
-            });
-
-            inputSearchScheduledTasks.addEventListener('keydown', function(event) {
-                // Check if the pressed key is "Enter" (key code 13)
-                if (event.keyCode === 13) {
-                    var searchInputScheduledTasks = inputSearchScheduledTasks.value;
-                    if (searchInputScheduledTasks != "") {
-                        inputSearchScheduledasks.classList.remove('is-invalid');
-
-                        Livewire.emit('findScheduledTasks', searchInputScheduledTasks, 2);
-
-                    } else {
-                        inputSearchScheduledTasks.classList.add('is-invalid');
-                    }
-                }
-            });
+            }
         });
+    });
     </script>
 </div>

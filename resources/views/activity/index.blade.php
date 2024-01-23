@@ -148,7 +148,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-md rounded border border-1 btn-light"
+                <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
                     data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-md rounded btn-gold shadow" id="createsubtask-btn">Add
                     Subtask</button>
