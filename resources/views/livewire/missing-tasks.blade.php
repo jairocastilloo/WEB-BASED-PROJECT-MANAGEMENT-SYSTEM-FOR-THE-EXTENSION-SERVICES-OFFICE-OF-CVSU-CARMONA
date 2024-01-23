@@ -18,7 +18,9 @@
             <div class="mb-1 d-flex justify-content-start small">
 
                 <div class="form-check">
-                    <input class="form-check-input small" type="checkbox" wire:click="toggleSelection($event.target.checked)" @if($showOnlyMyOverdueTasks==1) checked @endif>
+                    <input class="form-check-input small" type="checkbox"
+                        wire:click="toggleSelection($event.target.checked)" @if($showOnlyMyOverdueTasks==1) checked
+                        @endif>
                     <label class="form-check-label d-block small" for="showOnlyMyOverdueTasks">
                         Show only the ones I'm involved in.
                     </label>
@@ -26,23 +28,32 @@
 
             </div>
             @endif
-            <input type="text" class="form-control border border-2 mb-2" id="inputSearchMissingTasks" placeholder="Enter name...">
+            <div class="input-group">
+                <input type="text" class="form-control border border-2 mb-2" id="inputSearchMissingTasks"
+                    placeholder="Enter name...">
+                <div class="iconCustom">
+                    <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
+                        <i wire:click="refreshDataMissingTasks" type="button" class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
             <span class="invalid-feedback small fw-bold text-end" id="errorAccount">
                 Please enter a subtask name.
             </span>
 
-            <button type="button" class="btn btn-sm btn-outline-success px-3" id="btnSearchMissingTasks">Search Task</button>
+            <button type="button" class="btn btn-sm btn-green px-3" id="btnSearchMissingTasks">Search Task</button>
         </div>
-        <div class="text-center m-1" @if ($xMissingTasks==0)style="display: none;" @endif>
+        <!--<div class="text-center m-1" @if ($xMissingTasks==0)style="display: none;" @endif>
             <button wire:click="refreshDataMissingTasks" type="button" class="btn btn-sm btn-light border small">
                 Refresh
             </button>
-        </div>
+        </div>-->
 
 
         @if ($xMissingTasks == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showMissingTasks(1)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="showMissingTasks(1)">
                 <b class="small">Show Tasks</b>
             </button>
 
@@ -102,12 +113,14 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageMissingTasks({{ $currentPageMissingTasks - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
+                        <a class="page-link" wire:click="changePageMissingTasks({{ $currentPageMissingTasks - 1 }})"
+                            rel="prev"><i class="bi bi-caret-left-fill"></i></a>
                     </li>
                     @endif
 
                     <li class="page-item text-center mx-2">
-                        <h6 class="fw-bold my-0 mt-2 small">{{ $currentPageMissingTasks . ' of ' . $totalPagesMissingTasks }}</h6>
+                        <h6 class="fw-bold my-0 mt-2 small">
+                            {{ $currentPageMissingTasks . ' of ' . $totalPagesMissingTasks }}</h6>
                         <span class="m-0 text-secondary fw-bold" style="font-size: 12px;">Pages</span>
                     </li>
 
@@ -120,7 +133,8 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePageMissingTasks({{ $currentPageMissingTasks + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
+                        <a class="page-link" wire:click="changePageMissingTasks({{ $currentPageMissingTasks + 1 }})"><i
+                                class="bi bi-caret-right-fill"></i></i></a>
                     </li>
                     @endif
 
@@ -132,7 +146,8 @@
 
         @endif
         <div class="text-center p-2 border border-bottom-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="showMissingTasks(0)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="showMissingTasks(0)">
                 <b class="small">Hide Tasks</b>
             </button>
 
@@ -142,11 +157,25 @@
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <script>
-        document.addEventListener('livewire:load', function() {
-            const btnSearchMissingTasks = document.getElementById('btnSearchMissingTasks');
-            const inputSearchMissingTasks = document.getElementById('inputSearchMissingTasks');
-            btnSearchMissingTasks.addEventListener('click', function() {
+    document.addEventListener('livewire:load', function() {
+        const btnSearchMissingTasks = document.getElementById('btnSearchMissingTasks');
+        const inputSearchMissingTasks = document.getElementById('inputSearchMissingTasks');
+        btnSearchMissingTasks.addEventListener('click', function() {
 
+            var searchInputMissingTasks = inputSearchMissingTasks.value;
+            if (searchInputMissingTasks != "") {
+                inputSearchMissingTasks.classList.remove('is-invalid');
+
+                Livewire.emit('findMissingTasks', searchInputMissingTasks, 2);
+
+            } else {
+                inputSearchMissingTasks.classList.add('is-invalid');
+            }
+        });
+
+        inputSearchMissingTasks.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "Enter" (key code 13)
+            if (event.keyCode === 13) {
                 var searchInputMissingTasks = inputSearchMissingTasks.value;
                 if (searchInputMissingTasks != "") {
                     inputSearchMissingTasks.classList.remove('is-invalid');
@@ -156,22 +185,8 @@
                 } else {
                     inputSearchMissingTasks.classList.add('is-invalid');
                 }
-            });
-
-            inputSearchMissingTasks.addEventListener('keydown', function(event) {
-                // Check if the pressed key is "Enter" (key code 13)
-                if (event.keyCode === 13) {
-                    var searchInputMissingTasks = inputSearchMissingTasks.value;
-                    if (searchInputMissingTasks != "") {
-                        inputSearchMissingTasks.classList.remove('is-invalid');
-
-                        Livewire.emit('findMissingTasks', searchInputMissingTasks, 2);
-
-                    } else {
-                        inputSearchMissingTasks.classList.add('is-invalid');
-                    }
-                }
-            });
+            }
         });
+    });
     </script>
 </div>

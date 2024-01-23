@@ -2,9 +2,11 @@
 
 @section('content')
 
-<input class="d-none" type="number" id="acturl" data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
+<input class="d-none" type="number" id="acturl"
+    data-url="{{ route('activities.display', ['activityid' => ':activityid', 'department' => ':department', 'activityname' => ':activityname']) }}">
 
-<input class="d-none" type="number" id="projecturl" data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
+<input class="d-none" type="number" id="projecturl"
+    data-url="{{ route('projects.display', ['projectid' => ':projectid', 'department' => ':department', 'projectname' => ':projectname']) }}">
 
 <input class="d-none" type="date" id="projsavestartdate" value="{{ $indexproject['projectstartdate'] }}">
 <input class="d-none" type="date" id="projsaveenddate" value="{{ $indexproject['projectenddate'] }}">
@@ -36,7 +38,9 @@
                 @endif
                 <div class="form-floating m-3 mb-2 mt-2">
 
-                    <select id="year-select" class="form-select fw-bold" style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;" aria-label="Select an calendar year">
+                    <select id="year-select" class="form-select fw-bold"
+                        style="border: 1px solid darkgreen; color:darkgreen; font-size: 21px;"
+                        aria-label="Select an calendar year">
 
                         @foreach ($calendaryears as $calendaryear)
                         <option value="{{ $calendaryear }}" {{ $calendaryear == $currentyear ? 'selected' : '' }}>
@@ -50,7 +54,8 @@
                     </label>
                 </div>
                 <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
+                        id="addproj">
                         <b class="small">Create Project</b>
                     </button>
                 </div>
@@ -69,8 +74,10 @@
                     <div class="underline-space inline-div ps-2">
                         @php
                         use App\Models\User;
-                        $programleader = User::where('id', $indexproject['programleader'])->first(['name', 'middle_name', 'last_name']);
-                        $projectleader = User::where('id', $indexproject['projectleader'])->first(['name', 'middle_name', 'last_name']);
+                        $programleader = User::where('id', $indexproject['programleader'])->first(['name',
+                        'middle_name', 'last_name']);
+                        $projectleader = User::where('id', $indexproject['projectleader'])->first(['name',
+                        'middle_name', 'last_name']);
                         @endphp
 
                         @if ($programleader)
@@ -85,7 +92,8 @@
 
                 </div>
                 <div class="flex-container">
-                    <strong><em>Project Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
+                    <strong><em>Project
+                            Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
                     <div class="underline-space inline-div ps-2">{{ $indexproject['projecttitle'] }}</div>
                 </div>
                 <div class="flex-container">
@@ -103,26 +111,35 @@
                 </div>
                 <div class="flex-container">
                     <strong><em>Duration:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-                    <div class="underline-space inline-div ps-2">{{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}</div>
+                    <div class="underline-space inline-div ps-2">
+                        {{ date('F Y', strtotime($indexproject['projectstartdate'])) . '-' . date('F Y', strtotime($indexproject['projectenddate'])) }}
+                    </div>
                 </div>
 
                 <div class="btn-group dropdown mt-3 shadow">
-                    <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button"
+                        class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <b class="small">Menu</b>
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav"
+                            href="{{ route('projects.details', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Edit Details</b>
                         </a>
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.objectives', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav"
+                            href="{{ route('projects.objectives', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Edit Objectives</b>
                         </a>
-                        <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav" href="#" id="addactivity" data-bs-toggle="modal"
+                            data-bs-target="#newactivity"><b class="small">Add Activity</b></a>
+                        <a class="dropdown-item small hrefnav"
+                            href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">View Activity Calendar</b>
                         </a>
                         <a class="dropdown-item small hrefnav" href="#"><b class="small">Close Project</b></a>
-                        <a class="dropdown-item small hrefnav" href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
+                        <a class="dropdown-item small hrefnav"
+                            href="{{ route('projects.members', ['projectid' => $indexproject->id, 'department' => Auth::user()->department ]) }}">
                             <b class="small">Team Members</b>
                         </a>
                         x
@@ -181,7 +198,8 @@
                     <h6 class="fw-bold small" style="color:darkgreen;">In Progress Projects</h6>
                 </div>
                 @foreach ($inProgressProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}"
+                    data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
@@ -202,7 +220,8 @@
                     <h6 class="fw-bold small" style="color:darkgreen;">Scheduled Projects</h6>
                 </div>
                 @foreach ($scheduledProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}"
+                    data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
@@ -223,7 +242,8 @@
                     <h6 class="fw-bold small" style="color:darkgreen;">Completed Projects</h6>
                 </div>
                 @foreach ($completedProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}"
+                    data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold ">{{ $project['projecttitle'] }}</h6>
 
@@ -244,7 +264,8 @@
                     <h6 class="fw-bold small" style="color:darkgreen;">Incomplete Projects</h6>
                 </div>
                 @foreach ($overdueProjects as $project)
-                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}">
+                <div class="border-bottom ps-4 p-2 divhover projectdiv" data-value="{{ $project['id'] }}"
+                    data-name="{{ $project['projecttitle'] }}">
 
                     <h6 class="fw-bold">{{ $project['projecttitle'] }}</h6>
 
@@ -277,13 +298,17 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
+                            type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project
+                            Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Members</button>
+                        <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
+                            role="tab" aria-controls="tab2" aria-selected="false" disabled>Project Members</button>
                     </li>.
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="tab3" aria-selected="false" disabled>Project Objectives</button>
+                        <button class="nav-link" id="tab3-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button"
+                            role="tab" aria-controls="tab3" aria-selected="false" disabled>Project Objectives</button>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -292,14 +317,18 @@
                         <!-- Form for tab 1 -->
                         <form id="form1" data-url="{{ route('project.store') }}">
                             @csrf
-                            <input type="text" class="d-none" name="department" id="department" value="{{ Auth::user()->department }}">
-                            <input type="text" class="d-none" name="currentyear" id="currentyear" value="{{ $currentyear }}">
+                            <input type="text" class="d-none" name="department" id="department"
+                                value="{{ Auth::user()->department }}">
+                            <input type="text" class="d-none" name="currentyear" id="currentyear"
+                                value="{{ $currentyear }}">
                             <input type="number" class="d-none" id="memberindex" name="memberindex">
                             <input type="number" class="d-none" id="objectiveindex" name="objectiveindex">
-                            <label for="projectdetails" class="form-label mt-2">Input all the details of the project</label>
+                            <label for="projectdetails" class="form-label mt-2">Input all the details of the
+                                project</label>
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
-                                <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
+                                <input type="text" class="form-control autocapital" id="projecttitle"
+                                    name="projecttitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
@@ -319,7 +348,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="programtitle" class="form-label">Program Title</label>
-                                <input type="text" class="form-control autocapital" id="programtitle" name="programtitle">
+                                <input type="text" class="form-control autocapital" id="programtitle"
+                                    name="programtitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
@@ -363,13 +393,17 @@
                         <div class="container-fluid" id="memberform">
                             <form id="form2">
                                 @csrf
-                                <label for="projectmember" class="form-label mt-2">Assign Members for the Project</label>
+                                <label for="projectmember" class="form-label mt-2">Assign Members for the
+                                    Project</label>
                                 <div class="mb-2 row rounded" id="selectmember">
-                                    <select class="col-7 m-1 member-select p-2 rounded is-invalid" id="member-select" name="projectmember[]">
+                                    <select class="col-7 m-1 member-select p-2 rounded is-invalid" id="member-select"
+                                        name="projectmember[]">
                                         <option value="0" selected disabled>Select a Member</option>
                                     </select>
 
-                                    <button type="button" class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end" id="removemember">
+                                    <button type="button"
+                                        class="remove-member btn btn-sm btn-outline-danger col-2 m-1 float-end"
+                                        id="removemember">
                                         <b class="small">Remove</b>
                                     </button>
 
@@ -379,7 +413,9 @@
                             </form>
 
 
-                            <button type="button" class="addmember-button btn btn-sm btn-gold border border-2 border-warning" id="addmember">
+                            <button type="button"
+                                class="addmember-button btn btn-sm btn-gold border border-2 border-warning"
+                                id="addmember">
                                 <b class="small">Add Member</b>
                             </button>
                             <br>
@@ -401,20 +437,27 @@
                         <div class="container-fluid" id="objform">
                             <form id="form3">
                                 @csrf
-                                <label for="projectobjectives" class="form-label mt-2">List all objectives of the project</label>
+                                <label for="projectobjectives" class="form-label mt-2">List all objectives of the
+                                    project</label>
                                 <div class="container-fluid" id="objectiveset">
                                     <div>
                                         <div class="mb-2 row" id="selectobjectives">
-                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded" id="objective-input" name="projectobjective[]" placeholder="Enter objective">
-                                            <input type="number" name="objectivesetid[]" value="0" class="objectivesetid d-none">
-                                            <button type="button" class="remove-objective btn btn-sm btn-outline-danger col-3 m-1" id="removeobjective"><b class="small">Remove</b></button>
+                                            <input type="text" class="col-8 m-1 input-objective autocapital p-2 rounded"
+                                                id="objective-input" name="projectobjective[]"
+                                                placeholder="Enter objective">
+                                            <input type="number" name="objectivesetid[]" value="0"
+                                                class="objectivesetid d-none">
+                                            <button type="button"
+                                                class="remove-objective btn btn-sm btn-outline-danger col-3 m-1"
+                                                id="removeobjective"><b class="small">Remove</b></button>
 
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>Make</strong>
                                             </span>
                                         </div>
                                     </div>
-                                    <button type="button" class="add-objective btn btn-sm btn-outline-success" id="addobjective">
+                                    <button type="button" class="add-objective btn btn-sm btn-outline-success"
+                                        id="addobjective">
                                         <b class="small">Add Objective</b>
                                     </button>
                                     <br>
@@ -433,11 +476,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b class="small">Close</b></button>
+                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b
+                        class="small">Close</b></button>
                 <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
+                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b
+                        class="small">Next</b></button>
                 <button type="button" class="btn shadow rounded btn-primary" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
@@ -461,7 +506,8 @@
                 <form id="act1" data-url="{{ route('activity.store') }}">
                     @csrf
 
-                    <input type="number" id="projectindex" name="projectindex" value="{{ $indexproject['id'] }}" class="d-none">
+                    <input type="number" id="projectindex" name="projectindex" value="{{ $indexproject['id'] }}"
+                        class="d-none">
                     <input type="text" class="d-none" id="assigneesname" name="assigneesname[0]">
                     <div class="mb-3">
                         <label for="activityname" class="form-label">Activity Name</label>
@@ -520,10 +566,11 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
+                    data-bs-dismiss="modal">
                     <b class="small">Close</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="confirmactivity">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="confirmactivity">
                     <b class="small">Add activity</b>
                 </button>
             </div>

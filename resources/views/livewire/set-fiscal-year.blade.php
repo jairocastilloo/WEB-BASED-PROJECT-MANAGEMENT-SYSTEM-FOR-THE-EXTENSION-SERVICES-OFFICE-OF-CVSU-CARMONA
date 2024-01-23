@@ -47,11 +47,14 @@
                 </li>
                 @else
                 <li class="page-item">
-                    <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i class="bi bi-chevron-compact-left"></i></a>
+                    <a class="page-link" wire:click="changePage({{ $currentPage - 1 }})" rel="prev"><i
+                            class="bi bi-chevron-compact-left"></i></a>
                 </li>
                 @endif
 
-                @for ($i = 1; $i <= $totalPages; $i++) <li class="page-item {{ $i === $currentPage ? 'active disabled' : '' }}" aria-current="{{ $i === $currentPage ? 'page' : '' }}">
+                @for ($i = 1; $i <= $totalPages; $i++) <li
+                    class="page-item {{ $i === $currentPage ? 'active disabled' : '' }}"
+                    aria-current="{{ $i === $currentPage ? 'page' : '' }}">
                     <a class="page-link" wire:click="changePage({{ $i }})">{{ $i }}</a>
                     </li>
                     @endfor
@@ -62,7 +65,8 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="changePage({{ $currentPage + 1 }})"><i class="bi bi-chevron-compact-right"></i></a>
+                        <a class="page-link" wire:click="changePage({{ $currentPage + 1 }})"><i
+                                class="bi bi-chevron-compact-right"></i></a>
                     </li>
                     @endif
                     <li class="page-item">
@@ -88,9 +92,13 @@
                     @foreach($fiscalyears as $fiscalyear)
                     <tr data-id="{{ $fiscalyear->id }}">
 
-                        <td class="p-2 acadname fiscalyear">{{ date('Y', strtotime($fiscalyear->startdate)) . ' - ' . date('Y', strtotime($fiscalyear->enddate)) }}</td>
-                        <td class="p-2 acadname fiscalyearstartdate">{{ date('m/d/Y', strtotime($fiscalyear->startdate)) }}</td>
-                        <td class="p-2 acadname fiscalyearenddate">{{ date('m/d/Y', strtotime($fiscalyear->enddate)) }}</td>
+                        <td class="p-2 acadname fiscalyear">
+                            {{ date('Y', strtotime($fiscalyear->startdate)) . ' - ' . date('Y', strtotime($fiscalyear->enddate)) }}
+                        </td>
+                        <td class="p-2 acadname fiscalyearstartdate">
+                            {{ date('m/d/Y', strtotime($fiscalyear->startdate)) }}</td>
+                        <td class="p-2 acadname fiscalyearenddate">{{ date('m/d/Y', strtotime($fiscalyear->enddate)) }}
+                        </td>
 
                         <td class="p-2 editactions">
 
@@ -103,7 +111,8 @@
                             </div>
                         </td>
                         <td class="p-2 cancel text-center">
-                            <button type="button" class="btn btn-sm btn-outline-danger border" wire:click="decline('{{ $fiscalyear->id }}')">
+                            <button type="button" class="btn btn-sm btn-outline-danger border"
+                                wire:click="decline('{{ $fiscalyear->id }}')">
                                 <i class="bi bi-trash fs-5"></i>
                             </button>
                         </td>
@@ -116,7 +125,8 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="fiscalModalLabel">Edit Dates for </h5><span class="fs-4" id="fiscalyear"></span>
+                        <h5 class="modal-title" id="fiscalModalLabel">Edit Dates for </h5><span class="fs-4"
+                            id="fiscalyear"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -127,7 +137,8 @@
                         <label class="form-label">Fiscal Year Start Date</label>
                         <div class="input-group date datepicker mb-2" id="fiscalStartDatePicker">
 
-                            <input type="text" class="form-control" id="fiscalstartdate" name="fiscalstartdate" placeholder="mm/dd/yyyy" />
+                            <input type="text" class="form-control" id="fiscalstartdate" name="fiscalstartdate"
+                                placeholder="mm/dd/yyyy" />
                             <span class="input-group-append">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="bi bi-calendar-event-fill"></i>
@@ -138,7 +149,8 @@
                         <label class="form-label">Fiscal Year End Date</label>
                         <div class="input-group date datepicker mb-2" id="fiscalEndDatePicker">
 
-                            <input type="text" class="form-control" id="fiscalenddate" name="fiscalenddate" placeholder="mm/dd/yyyy" />
+                            <input type="text" class="form-control" id="fiscalenddate" name="fiscalenddate"
+                                placeholder="mm/dd/yyyy" />
                             <span class="input-group-append">
                                 <span class="input-group-text bg-light d-block">
                                     <i class="bi bi-calendar-event-fill"></i>
@@ -148,79 +160,96 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeEdit">Close</button>
-                        <button type="submit" class="btn btn-primary" id="confirmEditDates">Confirm</button>
+                        <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
+                            data-bs-dismiss="modal" id="closeEdit">Close</button>
+                        <button type="submit" class="btn btn-md rounded btn-gold shadow"
+                            id="confirmEditDates">Confirm</button>
                     </div>
                 </div>
             </div>
         </div>
         <script>
-            document.addEventListener('livewire:load', function() {
+        document.addEventListener('livewire:load', function() {
 
-                const confirmEditDates = document.getElementById('confirmEditDates');
-                const searchDate = document.getElementById('searchDate');
-                const btnSearch = document.getElementById('btnSearch');
-                confirmEditDates.addEventListener('click', function() {
-                    var editOrAdd = document.getElementById('editOrAdd').value;
-                    switch (editOrAdd) {
-                        case 'edit':
-                            var fiscalStartDateInput = document.getElementById('fiscalstartdate');
-                            var fiscalStartDateValue = fiscalStartDateInput.value;
-                            var fiscalStartDate = formatDate(fiscalStartDateValue);
+            const confirmEditDates = document.getElementById('confirmEditDates');
+            const searchDate = document.getElementById('searchDate');
+            const btnSearch = document.getElementById('btnSearch');
+            confirmEditDates.addEventListener('click', function() {
+                var editOrAdd = document.getElementById('editOrAdd').value;
+                switch (editOrAdd) {
+                    case 'edit':
+                        var fiscalStartDateInput = document.getElementById('fiscalstartdate');
+                        var fiscalStartDateValue = fiscalStartDateInput.value;
+                        var fiscalStartDate = formatDate(fiscalStartDateValue);
 
-                            var fiscalEndDateInput = document.getElementById('fiscalenddate');
-                            var fiscalEndDateValue = fiscalEndDateInput.value;
-                            var fiscalEndDate = formatDate(fiscalEndDateValue);
-
-
-
-                            var data = {
-                                'id': document.getElementById('fiscalyearid').value,
-                                'fiscalstartdate': fiscalStartDate,
-                                'fiscalenddate': fiscalEndDate,
-
-                            };
-                            Livewire.emit('updateData', data, editOrAdd);
-                            break;
-                        case 'add':
-                            var fiscalStartDateInput = document.getElementById('fiscalstartdate');
-                            var fiscalStartDateValue = fiscalStartDateInput.value;
-                            var fiscalStartDate = formatDate(fiscalStartDateValue);
-
-                            var fiscalEndDateInput = document.getElementById('fiscalenddate');
-                            var fiscalEndDateValue = fiscalEndDateInput.value;
-                            var fiscalEndDate = formatDate(fiscalEndDateValue);
+                        var fiscalEndDateInput = document.getElementById('fiscalenddate');
+                        var fiscalEndDateValue = fiscalEndDateInput.value;
+                        var fiscalEndDate = formatDate(fiscalEndDateValue);
 
 
-                            var data = {
-                                'fiscalstartdate': fiscalStartDate,
-                                'fiscalenddate': fiscalEndDate,
 
-                            };
-                            Livewire.emit('updateData', data, editOrAdd);
-                            break;
+                        var data = {
+                            'id': document.getElementById('fiscalyearid').value,
+                            'fiscalstartdate': fiscalStartDate,
+                            'fiscalenddate': fiscalEndDate,
 
-                    }
-                });
+                        };
+                        Livewire.emit('updateData', data, editOrAdd);
+                        break;
+                    case 'add':
+                        var fiscalStartDateInput = document.getElementById('fiscalstartdate');
+                        var fiscalStartDateValue = fiscalStartDateInput.value;
+                        var fiscalStartDate = formatDate(fiscalStartDateValue);
 
-                function formatDate(inputDate) {
-                    // Split the inputDate by the '/' character
-                    var parts = inputDate.split('/');
+                        var fiscalEndDateInput = document.getElementById('fiscalenddate');
+                        var fiscalEndDateValue = fiscalEndDateInput.value;
+                        var fiscalEndDate = formatDate(fiscalEndDateValue);
 
-                    // Rearrange the parts into the "YYYY-MM-DD" format
-                    var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
 
-                    return formattedDate;
+                        var data = {
+                            'fiscalstartdate': fiscalStartDate,
+                            'fiscalenddate': fiscalEndDate,
+
+                        };
+                        Livewire.emit('updateData', data, editOrAdd);
+                        break;
+
                 }
-                Livewire.on('afterUpdateData', function() {
-                    document.getElementById('closeEdit').click();
-                });
+            });
 
-                btnSearch.addEventListener('click', function() {
+            function formatDate(inputDate) {
+                // Split the inputDate by the '/' character
+                var parts = inputDate.split('/');
 
+                // Rearrange the parts into the "YYYY-MM-DD" format
+                var formattedDate = parts[2] + '-' + parts[0] + '-' + parts[1];
+
+                return formattedDate;
+            }
+            Livewire.on('afterUpdateData', function() {
+                document.getElementById('closeEdit').click();
+            });
+
+            btnSearch.addEventListener('click', function() {
+
+
+                var searchDateData = formatDate(searchDate.value);
+
+
+                if (searchDateData != "") {
+                    searchDate.classList.remove('is-invalid');
+
+                    Livewire.emit('findAccount', searchDateData, 1)
+
+                } else {
+                    searchDate.classList.add('is-invalid');
+                }
+            });
+            searchDate.addEventListener('keydown', function(event) {
+                // Check if the pressed key is "Enter" (key code 13)
+                if (event.keyCode === 13) {
 
                     var searchDateData = formatDate(searchDate.value);
-
 
                     if (searchDateData != "") {
                         searchDate.classList.remove('is-invalid');
@@ -230,24 +259,9 @@
                     } else {
                         searchDate.classList.add('is-invalid');
                     }
-                });
-                searchDate.addEventListener('keydown', function(event) {
-                    // Check if the pressed key is "Enter" (key code 13)
-                    if (event.keyCode === 13) {
-
-                        var searchDateData = formatDate(searchDate.value);
-
-                        if (searchDateData != "") {
-                            searchDate.classList.remove('is-invalid');
-
-                            Livewire.emit('findAccount', searchDateData, 1)
-
-                        } else {
-                            searchDate.classList.add('is-invalid');
-                        }
-                    }
-                });
+                }
             });
+        });
         </script>
     </div>
 </div>

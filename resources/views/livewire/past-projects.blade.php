@@ -19,7 +19,9 @@
             <div class="mb-1 d-flex justify-content-start small">
 
                 <div class="form-check">
-                    <input class="form-check-input small" type="checkbox" wire:click="toggleSelectionOverdueProjects($event.target.checked)" @if($showOnlyMyOverdueProjects==1) checked @endif>
+                    <input class="form-check-input small" type="checkbox"
+                        wire:click="toggleSelectionOverdueProjects($event.target.checked)"
+                        @if($showOnlyMyOverdueProjects==1) checked @endif>
                     <label class="form-check-label d-block small" for="showOnlyMyOverdueProjects">
                         Show only the ones I'm involved in.
                     </label>
@@ -27,20 +29,29 @@
 
             </div>
             @endif
-            <input type="text" class="form-control border border-2 mb-1" id="pastinputSearch" placeholder="Enter title...">
-            <button type="button" class="btn btn-sm btn-outline-success px-3" id="pastbtnSearch">Search Project</button>
+            <div class="input-group">
+                <input type="text" class="form-control border border-2 mb-1" id="pastinputSearch"
+                    placeholder="Enter title...">
+                <div class="iconCustom">
+                    <button type="button" class="btn btn-no-animation" id="btnRefreshInput">
+                        <i wire:click="pastrefreshData" type="button" class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-green px-3" id="pastbtnSearch">Search Project</button>
             <span class="invalid-feedback small fw-bold text-end" id="pasterrorAccount">
                 Please enter a project title.
             </span>
         </div>
-        <div class="text-center m-1" @if ($z==0)style="display: none;" @endif>
+        <!--<div class="text-center m-1" @if ($z==0)style="display: none;" @endif>
             <button wire:click="pastrefreshData" type="button" class="btn btn-sm btn-light border small">
                 Refresh
             </button>
-        </div>
+        </div>-->
         @if ($z == 0)
         <div class="shadow text-center p-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="pastshow(1)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="pastshow(1)">
                 <b class="small">Show Projects</b>
             </button>
 
@@ -60,7 +71,8 @@
 
 
             @foreach ($pastmoreprojects as $project)
-            <div class="border-bottom ps-3 p-2 divhover projectdiv reportdiv" data-value="{{ $project['id'] }}" data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
+            <div class="border-bottom ps-3 p-2 divhover projectdiv reportdiv" data-value="{{ $project['id'] }}"
+                data-name="{{ $project['projecttitle'] }}" data-dept="{{ $project['department'] }}">
 
                 <h6 class="fw-bold small" style="color: #4A4A4A;">
                     @if(in_array(Route::currentRouteName(), ['reports.show', 'reports.display']))
@@ -76,7 +88,8 @@
                 $endDate = date('M d, Y', strtotime($project['projectenddate']));
 
                 @endphp
-                <h6 class="text-secondary small">{{ 'Created ' . date('M d Y', strtotime($project['created_at'])) }}</h6>
+                <h6 class="text-secondary small">{{ 'Created ' . date('M d Y', strtotime($project['created_at'])) }}
+                </h6>
                 <h6 class="ps-2 text-success fw-bold small"> {{ $startDate }} - {{ $endDate }}</h6>
 
 
@@ -93,7 +106,8 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="pastchangePage({{ $pastcurrentPage - 1 }})" rel="prev"><i class="bi bi-caret-left-fill"></i></a>
+                        <a class="page-link" wire:click="pastchangePage({{ $pastcurrentPage - 1 }})" rel="prev"><i
+                                class="bi bi-caret-left-fill"></i></a>
                     </li>
                     @endif
 
@@ -111,7 +125,8 @@
                     </li>
                     @else
                     <li class="page-item">
-                        <a class="page-link" wire:click="pastchangePage({{ $pastcurrentPage + 1 }})"><i class="bi bi-caret-right-fill"></i></i></a>
+                        <a class="page-link" wire:click="pastchangePage({{ $pastcurrentPage + 1 }})"><i
+                                class="bi bi-caret-right-fill"></i></i></a>
                     </li>
                     @endif
 
@@ -123,7 +138,8 @@
 
         @endif
         <div class="text-center p-2 border border-bottom-2">
-            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body" wire:click="pastshow(0)">
+            <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
+                wire:click="pastshow(0)">
                 <b class="small">Hide Projects</b>
             </button>
 
@@ -133,11 +149,24 @@
     </div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
     <script>
-        document.addEventListener('livewire:load', function() {
-            const pastbtnSearch = document.getElementById('pastbtnSearch');
-            const pastinputSearch = document.getElementById('pastinputSearch');
-            pastbtnSearch.addEventListener('click', function() {
+    document.addEventListener('livewire:load', function() {
+        const pastbtnSearch = document.getElementById('pastbtnSearch');
+        const pastinputSearch = document.getElementById('pastinputSearch');
+        pastbtnSearch.addEventListener('click', function() {
 
+            var pastsearchInput = pastinputSearch.value;
+            if (pastsearchInput != "") {
+                pastinputSearch.classList.remove('is-invalid');
+
+                Livewire.emit('pastfindProject', pastsearchInput, 2);
+
+            } else {
+                pastinputSearch.classList.add('is-invalid');
+            }
+        });
+        pastinputSearch.addEventListener('keydown', function(event) {
+            // Check if the pressed key is "Enter" (key code 13)
+            if (event.keyCode === 13) {
                 var pastsearchInput = pastinputSearch.value;
                 if (pastsearchInput != "") {
                     pastinputSearch.classList.remove('is-invalid');
@@ -147,21 +176,8 @@
                 } else {
                     pastinputSearch.classList.add('is-invalid');
                 }
-            });
-            pastinputSearch.addEventListener('keydown', function(event) {
-                // Check if the pressed key is "Enter" (key code 13)
-                if (event.keyCode === 13) {
-                    var pastsearchInput = pastinputSearch.value;
-                    if (pastsearchInput != "") {
-                        pastinputSearch.classList.remove('is-invalid');
-
-                        Livewire.emit('pastfindProject', pastsearchInput, 2);
-
-                    } else {
-                        pastinputSearch.classList.add('is-invalid');
-                    }
-                }
-            });
+            }
         });
+    });
     </script>
 </div>
