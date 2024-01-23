@@ -235,9 +235,9 @@
 
         $('.submitAccomplishment').click(function(event) {
             event.preventDefault();
-          
+
             var hasError = submitFileError();
-           
+
             if (!hasError) {
                 $(this).prop('disabled', true);
                 var dataurl = $('#accomplishmentForm').attr('data-url');
