@@ -59,7 +59,7 @@
                 @endphp
 
 
-                @livewire('subtask-details', ['subtask' => $subtask ])
+                @livewire('subtask-details', ['subtask' => $subtask, 'activity' => $activity ])
                 <!--
                     <div class="btn-group m-2 ms-3 mb-3 shadow">
                         <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal">
