@@ -54,7 +54,7 @@
                     </label>
                 </div>
                 <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                    <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
+                    <button type="button" class="bbtn btn-sm rounded btn-gold shadow"
                         id="addproj">
                         <b class="small">Create Project</b>
                     </button>
@@ -118,7 +118,7 @@
 
                 <div class="btn-group dropdown mt-3 shadow">
                     <button type="button"
-                        class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
+                        class="btn btn-md rounded btn-gold shadow dropdown-toggle"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <b class="small">Menu</b>
                     </button>
@@ -476,14 +476,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b
+                <button type="button" class="btn shadow rounded border border-1 btn-light shadow" data-bs-dismiss="modal"><b
                         class="small">Close</b></button>
-                <button type="button" class="btn shadow rounded btn-outline-primary" id="prevproject">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="nextproject"><b
                         class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 
