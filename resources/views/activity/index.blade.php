@@ -47,11 +47,13 @@
                     <div class="col-6">
                         <label class="ms-3 small form-label text-secondary fw-bold">Subtasks</label>
                     </div>
+                    @if (Auth::user()->role == 'Admin')
                     <div class="col-6 text-end">
                         <button type="button" class="btn btn-sm rounded btn-outline-secondary addsubtask-btn me-2">
                             <b class="small"><i class="bi bi-plus-lg"></i> Add Subtask</b>
                         </button>
                     </div>
+                    @endif
                 </div>
 
                 <!--

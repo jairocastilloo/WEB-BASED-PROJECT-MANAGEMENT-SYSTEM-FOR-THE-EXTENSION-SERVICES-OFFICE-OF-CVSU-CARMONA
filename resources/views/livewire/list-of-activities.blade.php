@@ -23,7 +23,7 @@
     </div>
 
     @endforeach
-    @If(Auth::user()->role == "Coordinator" || Auth::user()->role == "Admin")
+    @If(Auth::user()->role == "Admin")
     <div class="ms-3 mt-2 btn-group shadow">
         <button type="button" class="btn btn-sm rounded btn-gold shadow" data-bs-toggle="modal"
             data-bs-target="#newactivity">

@@ -74,9 +74,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="addMembersCloseButton" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn bt-md rounded border border-1 btn-light shadow" id="addMembersCloseButton" data-bs-dismiss="modal">Cancel</button>
 
-                    <button type="button" id="saveMembersButton" class="btn btn-primary" @if($addmembers->isEmpty())style="display:none"@endif>Add Members</button>
+                    <button type="button" id="saveMembersButton" class="btn btn-md rounded btn-gold shadow" @if($addmembers->isEmpty())style="display:none"@endif>Add Members</button>
 
 
                 </div>

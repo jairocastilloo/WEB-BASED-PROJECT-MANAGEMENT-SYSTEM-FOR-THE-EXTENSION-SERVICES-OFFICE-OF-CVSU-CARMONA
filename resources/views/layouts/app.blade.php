@@ -44,7 +44,22 @@
     <!--<script src="{{ mix('js/app.js') }}"></script>-->
 
     @livewireStyles
+<style>
+    .login-register-bg {
+    background-image: url("{{ asset('images/cvsu-carmona-japanese.jpg') }}");
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+.background-image-element {
+    background-image: url("{{ asset('images/cvsu-carmona.jpg') }}");
+    background-size: cover;
+    width: 100%;
+    height: 300px;
+    text-align: center; /* Center content within the element */
+}
 
+</style>
 </head>
 
 <body @if(in_array(Route::currentRouteName(), ['login', 'register' , 'password.request' , 'password.reset' ])) class="login-register-bg" @else style="font-size:{{ Auth::user()->fontSize }}px;" @endif>

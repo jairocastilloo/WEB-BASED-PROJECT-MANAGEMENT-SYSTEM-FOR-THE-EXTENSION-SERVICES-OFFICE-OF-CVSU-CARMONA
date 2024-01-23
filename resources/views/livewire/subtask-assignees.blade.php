@@ -36,7 +36,7 @@
         @php $count++; @endphp
         @endforeach
     </div>
-    @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
+    @If (Auth::user()->role == "Admin")
     <div class="btn-group ms-3 mt-2 mb-3 shadow">
         <button type="button" class="btn btn-sm rounded btn-gold shadow" id="btnAddAssignee" data-bs-toggle="modal"
             data-bs-target="#addActivityAssigneeModal">
