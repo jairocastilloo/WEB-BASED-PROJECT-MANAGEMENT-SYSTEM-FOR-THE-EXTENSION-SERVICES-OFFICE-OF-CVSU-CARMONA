@@ -81,7 +81,7 @@
                     </div>
                     @if (Auth::user()->role === 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow" id="addproj">
+                        <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addproj">
                             <b class="small">Create Project</b>
                         </button>
                     </div>
@@ -92,7 +92,7 @@
                     <div class="flexmid"><strong>WORK AND FINANCIAL PLAN</strong></div>
                     @livewire('project-details', [ 'indexproject' => $indexproject, 'members' => $members ])
                     <div class="btn-group dropdown mt-3 shadow">
-                        <button type="button" class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn btn-sm rounded btn-gold shadow" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <b class="small"> <i class="bi bi-list"></i> Menu</b>
                         </button>
                         <div class="dropdown-menu border-warning">
@@ -358,8 +358,8 @@
                 <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="nextproject"><b class="small">Next</b></button>
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 

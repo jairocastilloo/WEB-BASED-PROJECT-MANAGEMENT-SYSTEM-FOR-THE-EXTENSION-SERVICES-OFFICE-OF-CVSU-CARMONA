@@ -368,8 +368,8 @@
                 <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="nextproject"><b class="small">Next</b></button>
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 
