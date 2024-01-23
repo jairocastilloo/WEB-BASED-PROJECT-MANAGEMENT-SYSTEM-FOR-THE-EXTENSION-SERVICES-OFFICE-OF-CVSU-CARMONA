@@ -632,8 +632,8 @@
         });
         $('.step span').each(function() {
             var $span = $(this);
-            if ($span.text().length > 16) { // Adjust the character limit as needed
-                $span.text($span.text().substring(0, 16) + '...'); // Truncate and add ellipsis
+            if ($span.text().length > 15) { // Adjust the character limit as needed
+                $span.text($span.text().substring(0, 15) + '...'); // Truncate and add ellipsis
             }
         });
 
