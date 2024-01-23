@@ -37,8 +37,10 @@
         <div class="dropdown-menu border border-1 border-warning">
             <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#newactivity"><b class="small">Edit Details</b></a>
             <!--<a class="dropdown-item small hrefnav" href="#" id="completeactivity-btn"><b class="small">Mark as Completed</b></a>-->
+            @if($activity->actremark == 'Incomplete')
             <a class="dropdown-item small hrefnav" href="#" id="activityhours-btn"><b class="small">Close
                     Activity</b></a>
+            @endif
             <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-toggle="modal" data-bs-target="#deleteActivityModal">
                 <b class="small">Delete Activity</b>
             </a>

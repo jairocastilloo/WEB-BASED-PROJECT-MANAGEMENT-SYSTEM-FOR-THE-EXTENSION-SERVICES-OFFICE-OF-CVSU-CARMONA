@@ -103,6 +103,7 @@
 
                 </div>
             </div>
+
             <div class="modal fade" id="completeactivitymodal" tabindex="-1" aria-labelledby="completeactivityModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
