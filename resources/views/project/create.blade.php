@@ -98,9 +98,7 @@
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1"
-                            type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project
-                            Details</button>
+                        <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true" disabled>Project Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button"
@@ -125,8 +123,7 @@
 
                             <div class="mb-3">
                                 <label for="projecttitle" class="form-label">Project Title</label>
-                                <input type="text" class="form-control autocapital" id="projecttitle"
-                                    name="projecttitle">
+                                <input type="text" class="form-control autocapital" id="projecttitle" name="projecttitle">
 
                                 <span class="invalid-feedback" role="alert">
                                     <strong></strong>
