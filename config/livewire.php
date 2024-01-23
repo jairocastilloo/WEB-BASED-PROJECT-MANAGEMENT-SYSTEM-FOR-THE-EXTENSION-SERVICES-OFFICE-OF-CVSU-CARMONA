@@ -54,7 +54,7 @@ return [
     |
     */
 
-    // 'asset_url' => "https://extension-projectmanager.up.railway.app",
+   //'asset_url' => "http://192.168.1.4/extensionpms",
     'asset_url' => null,
     /*
     |--------------------------------------------------------------------------
