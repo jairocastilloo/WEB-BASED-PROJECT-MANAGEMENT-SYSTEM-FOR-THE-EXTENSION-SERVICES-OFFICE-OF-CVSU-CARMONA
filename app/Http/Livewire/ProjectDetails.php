@@ -40,13 +40,23 @@ class ProjectDetails extends Component
     {
         $projectstartdate = date("Y-m-d", strtotime($projectDetails[2]));
         $projectenddate = date("Y-m-d", strtotime($projectDetails[3]));
-        Project::where('id', $this->indexproject->id)
+        if ($this->program){
+            Project::where('id', $this->indexproject->id)
             ->update([
                 'program_id' => $this->program->id,
                 'projecttitle' => $projectDetails[1],
                 'projectstartdate' => $projectstartdate,
                 'projectenddate' => $projectenddate
             ]);
+        } else {
+            Project::where('id', $this->indexproject->id)
+            ->update([
+                'projecttitle' => $projectDetails[1],
+                'projectstartdate' => $projectstartdate,
+                'projectenddate' => $projectenddate
+            ]);
+        }
+
 
         ProjectLeader::where('project_id', $this->indexproject->id)->delete();
         foreach ($projectDetails[5] as $userid) {

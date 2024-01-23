@@ -230,6 +230,8 @@
     @endif
     @if ($program != null)
     <input value="{{ $program['programName'] }}" id="progTitle" name="progTitle" type="hidden">
+    @else
+    <input value="" id="progTitle" name="progTitle" type="hidden">
     @endif
     <script>
     var titleNgProgram = document.getElementById('progTitle').value;
