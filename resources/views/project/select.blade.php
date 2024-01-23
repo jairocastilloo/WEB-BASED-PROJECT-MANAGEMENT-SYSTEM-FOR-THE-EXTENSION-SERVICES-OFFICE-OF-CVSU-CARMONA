@@ -528,12 +528,12 @@
                 <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
                 <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
                     data-bs-dismiss="modal"><b class="small">Close</b></button>
-                <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject">
+                <button type="button" class="btn btn- md rounded btn-gold shadow" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b
+                <button type="button" class="btn btn- md rounded btn-gold shadow" id="nextproject"><b
                         class="small">Next</b></button>
-                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
+                <button type="button" class="btn btn- md rounded btn-gold shadow" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 
@@ -776,8 +776,7 @@ $(document).ready(function() {
         var activityid = $(this).data('value');
 
 
-        if 
-(activityid != 0) {
+        if (activityid != 0) {
 
             var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
             url = url.replace(':activityid', activityid);

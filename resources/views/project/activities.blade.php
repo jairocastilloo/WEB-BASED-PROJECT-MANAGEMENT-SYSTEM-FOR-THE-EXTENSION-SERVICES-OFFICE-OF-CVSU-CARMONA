@@ -9,16 +9,22 @@
     <div class="container p-0">
         <div class="mainnav border-1 border-bottom shadow-sm px-2 small">
             <nav class="navbar navbar-expand-sm p-0">
-                <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler btn btn-sm m-2" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarMonitoring" aria-controls="navbarMonitoring" aria-expanded="false"
+                    aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarMonitoring">
                     <ul class="navbar-nav me-auto">
-                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small"
+                            href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button"
+                            aria-haspopup="true" aria-expanded="false" v-pre>
                             Projects
                         </a>
-                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small"
+                            href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}"
+                            role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Programs
                         </a>
 
@@ -34,7 +40,8 @@
     <div class="mainnav border-bottom mb-3 shadow-sm">
         @if($program != [])
         <div class="step-wrapper">
-            <div class="step divhover programDiv" data-value="{{ $program['id'] }}" data-dept="{{ $program['department'] }}">
+            <div class="step divhover programDiv" data-value="{{ $program['id'] }}"
+                data-dept="{{ $program['department'] }}">
                 <span class="fw-bold">Program: {{ $program['programName'] }}</span>
                 <div class="message-box text-white">
                     {{ $program['programName'] }}
@@ -884,8 +891,7 @@ $(document).ready(function() {
 
 
     });
-    $('#add
-        Budget - btn ').click(function() {
+    $('#addBudget - btn ').click(function() {
         if (!$('#tinipid').hasClass('d-none')) {
             $('#tinipid').addClass('d-none');
         }
@@ -903,16 +909,18 @@ $(document).ready(function() {
                             </span>
                             <button type="button" class="btn btn-sm btn-outline-danger removeBudget-btn"><i class="bi bi-x-lg"></i></button>
                         </div>`);
-    }); $(document).on('click', '.removeBudget-btn', function() {
-    if ($('.budget-input').length == 1) {
-        $('#tinipid').removeClass('d-none');
-        $('#source').val("");
-        $('#sourceDiv').hide();
-    }
-    $(this).parent().remove();
+    });
+    $(document).on('click', '.removeBudget-btn', function() {
+        if ($('.budget-input').length == 1) {
+            $('#tinipid').removeClass('d-none');
+            $('#source').val("");
+            $('#sourceDiv').hide();
+        }
+        $(this).parent().remove();
 
-});
+    });
 
 });
 </script>
+
 @endsection
