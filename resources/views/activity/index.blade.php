@@ -204,8 +204,10 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="markcomplete-btn">Mark as Completed</button>
+                <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
+                    data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="markcomplete-btn">Mark as
+                    Completed</button>
             </div>
         </div>
     </div>

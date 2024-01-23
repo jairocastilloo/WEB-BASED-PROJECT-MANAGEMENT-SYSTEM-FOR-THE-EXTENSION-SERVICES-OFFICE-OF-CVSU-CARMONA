@@ -294,8 +294,8 @@
                     <strong></strong>
                 </span>
                 <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
-                <button type="button" class="btn btn-md rounded border border-1 btn-light" data-bs-dismiss="modal"><b
-                        class="small">Close</b></button>
+                <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
+                    data-bs-dismiss="modal"><b class="small">Close</b></button>
                 <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject"><b
                         class="small">Previous</b>
                 </button>
