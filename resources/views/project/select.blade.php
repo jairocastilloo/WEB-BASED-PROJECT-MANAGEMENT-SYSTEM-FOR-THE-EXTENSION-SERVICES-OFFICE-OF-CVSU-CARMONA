@@ -648,10 +648,6 @@
         });
 
 
-        $(document).on('click', '#toggleButton', function(event) {
-            $(this).next().slideToggle("fast");
-        });
-
         $('#objheader').height($('#actheader').height());
 
         while (currentrow < rowcount) {
