@@ -61,8 +61,8 @@
                     </div>
                     @if ($userRole == 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
-                            id="addProgram" data-bs-toggle="modal" data-bs-target="#createProgramModal">
+                        <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addProgram"
+                            data-bs-toggle="modal" data-bs-target="#createProgramModal">
                             <b class="small">Create New Program</b>
                         </button>
                     </div>
@@ -182,10 +182,10 @@
                 </span>
                 <span class="ms-2 small loadingMessage" id="programloadingSpan" style="display: none;">Sending
                     Email..</span>
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b
-                        class="small">Close</b></button>
+                <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
+                    data-bs-dismiss="modal"><b class="small">Close</b></button>
 
-                <button type="button" class="btn shadow rounded btn-primary" id="createProgram">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createProgram">
                     <b class="small">Create Program</b>
                 </button>
 

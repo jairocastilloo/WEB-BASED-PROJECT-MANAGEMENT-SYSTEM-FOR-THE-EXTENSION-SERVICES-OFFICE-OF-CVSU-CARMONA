@@ -25,8 +25,8 @@
     @endforeach
     @If(Auth::user()->role == "Coordinator" || Auth::user()->role == "Admin")
     <div class="ms-3 mt-2 btn-group shadow">
-        <button type="button" class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
-            data-bs-toggle="modal" data-bs-target="#newactivity">
+        <button type="button" class="btn btn-sm rounded btn-gold shadow" data-bs-toggle="modal"
+            data-bs-target="#newactivity">
             <b class="small">Add Activity</b>
         </button>
     </div>

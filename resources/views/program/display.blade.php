@@ -78,8 +78,8 @@
                     </div>
                     @if ($userRole == 'Admin')
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
-                        <button type="button" class="btn btn-sm rounded border border-1 border-warning btn-gold shadow"
-                            id="addProgram" data-bs-toggle="modal" data-bs-target="#createProgramModal">
+                        <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addProgram"
+                            data-bs-toggle="modal" data-bs-target="#createProgramModal">
                             <b class="small">Create New Program</b>
                         </button>
                     </div>
@@ -90,8 +90,7 @@
                     <div class="flexmid"><strong>PROGRAM DETAILS</strong></div>
                     @livewire('program-details', [ 'indexprogram' => $indexprogram, 'members' => $members ])
                     <div class="btn-group dropdown mt-3 shadow">
-                        <button type="button"
-                            class="btn btn-sm dropdown-toggle shadow rounded border border-1 btn-gold border-warning text-body"
+                        <button type="button" class="btn btn-sm rounded btn-gold shadow dropdown-toggle"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <b class="small"> <i class="bi bi-list"></i> Menu</b>
                         </button>
@@ -136,9 +135,7 @@
                     @livewire('list-of-projects', ['indexprogram' => $indexprogram ])
                     @If(Auth::user()->role == "Coordinator" || Auth::user()->role == "Admin")
                     <div class="ms-3 mt-2 btn-group shadow">
-                        <button type="button"
-                            class="btn btn-sm shadow rounded border border-1 btn-gold border-warning text-body"
-                            id="addproj">
+                        <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addproj">
                             <b class="small">Add New Project</b>
                         </button>
                     </div>
@@ -393,7 +390,7 @@
                     <div class="mb-3">
                         <label for="programstartdate" class="form-label">Program Start Date</label>
 
-                        <div class="input-group date" id="programstartDatePicker">
+                        <div class="input-group date" id="programstartDatePicker-1">
                             <input type="text" class="form-control" id="programstartdate-1" name="programstartdate-1"
                                 placeholder="mm/dd/yyyy" />
 
@@ -417,7 +414,7 @@
                     <div class="mb-3">
                         <label for="programenddate" class="form-label">Program End Date</label>
 
-                        <div class="input-group date" id="programendDatePicker">
+                        <div class="input-group date" id="programendDatePicker-1">
                             <input type="text" class="form-control" id="programenddate-1" name="programenddate-1"
                                 placeholder="mm/dd/yyyy" />
                             <span class="invalid-feedback" role="alert">
@@ -443,10 +440,10 @@
                 </span>
                 <span class="ms-2 small loadingMessage" id="programloadingSpan" style="display: none;">Sending
                     Email..</span>
-                <button type="button" class="btn shadow rounded border border-1 btn-light" data-bs-dismiss="modal"><b
-                        class="small">Close</b></button>
+                <button type="button" class="btn btn-md rounded border border-1 btn-light shadow"
+                    data-bs-dismiss="modal"><b class="small">Close</b></button>
 
-                <button type="button" class="btn shadow rounded btn-primary" id="createProgram">
+                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createProgram">
                     <b class="small">Create Program</b>
                 </button>
 
@@ -518,6 +515,16 @@ $(document).ready(function() {
 
     $('#endDatePicker').datepicker().on('change', function(e) {
         $('#endDatePicker').datepicker('hide');
+    });
+    $('#programstartDatePicker-1').datepicker();
+
+    $('#programstartDatePicker-1').datepicker().on('change', function(e) {
+        $('#programstartDatePicker-1').datepicker('hide');
+    });
+    $('#programendDatePicker-1').datepicker();
+
+    $('#programendDatePicker-1').datepicker().on('change', function(e) {
+        $('#programendDatePicker-1').datepicker('hide');
     });
     $('.step span').each(function() {
         var $span = $(this);
