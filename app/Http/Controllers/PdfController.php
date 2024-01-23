@@ -93,7 +93,7 @@ class PdfController extends Controller
         if ($allprojects) {
             foreach ($allprojects as $allproject) {
                 $programLeader = ProgramLeader::where('user_id', $user->id)
-                    ->where('project_id', $allproject->id)
+                    ->where('program_id', $allproject->id)
                     ->first();
 
                 $projectLeader = ProjectLeader::where('user_id', $user->id)
@@ -219,7 +219,7 @@ class PdfController extends Controller
         if ($allprojects) {
             foreach ($allprojects as $allproject) {
                 $programLeader = ProgramLeader::where('user_id', $user->id)
-                    ->where('project_id', $allproject->id)
+                    ->where('program_id', $allproject->id)
                     ->first();
 
                 $projectLeader = ProjectLeader::where('user_id', $user->id)
@@ -336,7 +336,7 @@ class PdfController extends Controller
         $projectLeadersIds = ProjectLeader::where('project_id', $projectid)
             ->pluck('user_id')
             ->toArray();
-        $programLeadersIds = ProgramLeader::where('project_id', $projectid)
+        $programLeadersIds = ProgramLeader::where('program_id', $projectid)
             ->pluck('user_id')
             ->toArray();
         $projectLeaders = User::whereIn('id', $projectLeadersIds)

@@ -531,9 +531,9 @@
                 <button type="button" class="btn btn-md rounded btn-gold shadow" id="prevproject">
                     <b class="small">Previous</b>
                 </button>
-                <button type="button" class="btn btn-md rounded btn-gold shadow" id="nextproject"><b
+                <button type="button" class="btn shadow rounded btn-primary" id="nextproject"><b
                         class="small">Next</b></button>
-                <button type="button" class="btn btn-md rounded btn-gold shadow" id="createproject">
+                <button type="button" class="btn shadow rounded btn-primary" id="createproject">
                     <b class="small">Create Project</b>
                 </button>
 
@@ -776,7 +776,8 @@ $(document).ready(function() {
         var activityid = $(this).data('value');
 
 
-        if (activityid != 0) {
+        if 
+(activityid != 0) {
 
             var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
             url = url.replace(':activityid', activityid);

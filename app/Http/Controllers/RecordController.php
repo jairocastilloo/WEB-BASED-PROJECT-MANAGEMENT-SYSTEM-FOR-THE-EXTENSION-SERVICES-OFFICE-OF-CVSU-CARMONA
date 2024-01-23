@@ -99,7 +99,7 @@ class RecordController extends Controller
         if ($allprojects) {
             foreach ($allprojects as $allproject) {
                 $programLeader = ProgramLeader::where('user_id', $user->id)
-                    ->where('project_id', $allproject->id)
+                    ->where('program_id', $allproject->id)
                     ->first();
 
                 $projectLeader = ProjectLeader::where('user_id', $user->id)
@@ -213,7 +213,7 @@ class RecordController extends Controller
         if ($allprojects) {
             foreach ($allprojects as $allproject) {
                 $programLeader = ProgramLeader::where('user_id', $user->id)
-                    ->where('project_id', $allproject->id)
+                    ->where('program_id', $allproject->id)
                     ->first();
 
                 $projectLeader = ProjectLeader::where('user_id', $user->id)
