@@ -213,7 +213,7 @@ $(document).ready(function () {
         var hasError = handleError();
 
         if (!hasError) {
-            $(this).prop("disabled", true);
+            $("#createproject").prop("disabled", true);
             var department = $("#department").val();
 
             projecturl = projecturl.replace(
