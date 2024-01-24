@@ -44,26 +44,21 @@
             });
             @endphp
 
-                    @foreach ($activityContribution as $submission)
+@foreach ($activityContribution as $submission)
+    <div class="p-2 pb-1 ps-3 divhover border-bottom actsubmission-div small" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
+        <p class="lh-sm fw-bold @if($submission->submission_remark == 'For Approval') text-success @elseif($submission->submission_remark == 'For Revision') text-danger @else text-primary @endif">
+            <em>{{ $submission->submission_remark }}</em>
+        </p>
+        <p class="lh-sm pl-3">Activity Hours: {{ $submission->hours_rendered }}</p>
+        <p class="lh-sm pl-3">Actual Duration: {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }}</p>
+        <p class="lh-sm pl-3">Submitted in: {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }}</p>
+        @if ($submission->notes != null)
+            <p class="lh-sm pl-3"><em>Notes: {{ $submission->notes }}</em></p>
+        @endif
+    </div>
+@endforeach
 
-                    <div class="p-2 pb-1 ps-3 divhover border-bottom actsubmission-div small" data-id="{{ $submission->id }}" data-approval="{{ $submission->approval }}">
 
-                        <p class="lh-1 fw-bold @if($submission->submission_remark == 'For Approval') text-success @elseif($submission->submission_remark == 'For Revision') text-danger @else text-primary @endif">
-                            <em>{{ $submission->submission_remark  }}</em>
-                        </p>
-                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;Activity Hours: {{ $submission->hours_rendered }} </p>
-                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;Actual Duration:
-                            {{ \Carbon\Carbon::parse($submission->startdate)->format('F d, Y') . ' to ' . \Carbon\Carbon::parse($submission->enddate)->format('F d, Y') }}
-                        </p>
-                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;Submitted in:
-                            {{ \Carbon\Carbon::parse($submission->created_at)->format('F d, Y') }}
-                        </p>
-                        @if ( $submission->notes != null)
-                        <p class="lh-1"> &nbsp;&nbsp;&nbsp;<em>Notes: {{ $submission->notes }} </em></p>
-                        @endif
-                    </div>
-
-                    @endforeach
 
 
 

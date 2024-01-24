@@ -43,7 +43,7 @@
     @if ($indexprogram != null)
     <input value="{{ $indexprogram['programName'] }}" id="progTitle" name="progTitle" type="hidden">
     @endif
-
+@if( Auth::user()->role == "Admin" )
     <div class="modal fade" id="editProgramModal" tabindex="-1" aria-labelledby="editProgramModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -155,7 +155,7 @@
         </div>
     </div>
 
-
+@endif
     <script>
     var titleNgProgram = document.getElementById('progTitle').value;
     document.addEventListener('livewire:load', function() {
