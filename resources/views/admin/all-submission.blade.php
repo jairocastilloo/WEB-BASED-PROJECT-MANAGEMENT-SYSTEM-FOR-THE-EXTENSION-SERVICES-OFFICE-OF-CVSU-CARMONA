@@ -52,6 +52,74 @@
 <script>
     $(document).ready(function() {
 
+        $(document).on('click', '.projsubmission-div', function() {
+            event.preventDefault();
+
+            var projsubmissionid = $(this).attr("data-id");
+            var projapproval = $(this).attr("data-approval");
+            var projsubmission;
+
+            if (projapproval === "") {
+                projsubmission = "For Evaluation";
+            } else if (projapproval == 0) {
+                projsubmission = "For Revision";
+            } else if (projapproval == 1) {
+                projsubmission = "Accepted";
+            }
+
+
+            var url =
+                '{{ route("projsubmission.display", ["projsubmissionid" => ":projsubmissionid", "projsubmissionname" => ":projsubmissionname"]) }}';
+            url = url.replace(':projsubmissionid', projsubmissionid);
+            url = url.replace(':projsubmissionname', projsubmission);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.actsubmission-div', function() {
+            event.preventDefault();
+
+            var actsubmissionid = $(this).attr("data-id");
+            var actapproval = $(this).attr("data-approval");
+            var actsubmission;
+
+            if (actapproval === "") {
+                actsubmission = "For Evaluation";
+            } else if (actapproval == 0) {
+                actsubmission = "For Revision";
+            } else if (actapproval == 1) {
+                actsubmission = "Accepted";
+            }
+
+
+            var url =
+                '{{ route("actsubmission.display", ["actsubmissionid" => ":actsubmissionid", "actsubmissionname" => ":actsubmissionname"]) }}';
+            url = url.replace(':actsubmissionid', actsubmissionid);
+            url = url.replace(':actsubmissionname', actsubmission);
+            window.location.href = url;
+        });
+
+        $(document).on('click', '.submission-div', function() {
+            event.preventDefault();
+
+            var submissionid = $(this).attr("data-id");
+            var approval = $(this).attr("data-approval");
+            var submission;
+            console.log(approval);
+            if (approval === "") {
+                submission = "For Evaluation";
+            } else if (approval == 0) {
+                submission = "For Revision";
+            } else if (approval == 1) {
+                submission = "Accepted";
+            }
+
+
+            var url =
+                '{{ route("submission.display", ["submissionid" => ":submissionid", "submissionname" => ":submissionname"]) }}';
+            url = url.replace(':submissionid', submissionid);
+            url = url.replace(':submissionname', submission);
+            window.location.href = url;
+        });
 
     });
 </script>

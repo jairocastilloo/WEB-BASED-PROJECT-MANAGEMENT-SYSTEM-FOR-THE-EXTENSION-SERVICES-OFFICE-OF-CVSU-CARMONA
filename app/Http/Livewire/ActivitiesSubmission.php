@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class ActivitiesSubmission extends Component
 {
     public $currentPageActivityContribution = 1; // The current page number
-    public $perPageActivityContribution = 5;
+    public $perPageActivityContribution = 10;
     public function changePageActivityContribution($page)
     {
         $this->currentPageActivityContribution = $page;

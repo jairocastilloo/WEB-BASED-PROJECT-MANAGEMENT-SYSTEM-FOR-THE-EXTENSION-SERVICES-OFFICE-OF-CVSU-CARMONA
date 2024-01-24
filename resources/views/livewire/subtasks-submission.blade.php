@@ -26,9 +26,9 @@
 
 
             @php
-            $countAccepted = 0;
 
-            $subtaskContributions = $subtaskContributions->map(function ($contri) use (&$countAccepted) {
+
+            $subtaskContribution = $subtaskContribution->map(function ($contri) use (&$countAccepted) {
             if ($contri['approval'] === null) {
             $contri['submission_remark'] = 'For Evaluation';
             } elseif ($contri['approval'] === 1) {
