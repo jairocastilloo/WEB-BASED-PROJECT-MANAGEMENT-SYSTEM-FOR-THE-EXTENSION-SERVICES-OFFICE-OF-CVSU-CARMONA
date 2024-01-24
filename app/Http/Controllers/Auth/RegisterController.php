@@ -55,7 +55,7 @@ class RegisterController extends Controller
                 'string',
                 'max:255',
                 'unique:users',
-                'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/'
+                'regex:/^(?=.*[a-zA-Z0-9])[\p{L}a-zA-Z0-9]+$/u',
             ],
             'title' => [
                 'required',
