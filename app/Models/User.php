@@ -57,7 +57,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'showOnlyMyCompletedProjects',
         'showOnlyMyOngoingPrograms',
         'notifyProgramAdded',
-        'emailProgramAdded'
+        'emailProgramAdded',
+        'showOnlyMyTerminatedPrograms',
+        'showOnlyMyUpcomingPrograms',
+        'showOnlyMyCompletedPrograms',
+        'showOnlyMyOverduePrograms'
 
     ];
 

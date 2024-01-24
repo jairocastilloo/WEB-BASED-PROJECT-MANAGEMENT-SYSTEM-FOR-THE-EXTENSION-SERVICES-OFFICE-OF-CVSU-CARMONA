@@ -56,6 +56,7 @@
                 @livewire('upcoming-program', ['department' => null, 'programid' => null, 'yUpcomingPrograms' => 1])
                 @livewire('overdue-program', ['department' => null, 'programid' => null, 'zOverduePrograms' => 0])
                 @livewire('completed-program', ['department' => null, 'programid' => null, 'xCompletedPrograms' => 0])
+                @livewire('terminated-program', ['department' => null, 'programid' => null, 'xTerminatedPrograms' => 0])
             </div>
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">
@@ -69,6 +70,7 @@
                 @livewire('not-started-projects', ['department' => null, 'projectid' => null, 'y' => 1])
                 @livewire('past-projects', ['department' => null, 'projectid' => null, 'z' => 0])
                 @livewire('completed-projects', ['department' => null, 'projectid' => null, 'xCompletedProjects' => 0])
+                
             </div>
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">
@@ -160,7 +162,7 @@
             event.stopPropagation(); // Prevent the click event from propagating to the parent .subtaskdiv
             // Add your button click logic here
         });
-        $('.programDiv').click(function() {
+        $(document).on('click', '.programDiv', function(event) {
             var department = $(this).attr('data-dept');
             var programId = $(this).attr('data-value');
             var url = '{{ route("programs.display", ["programid" => ":programid", "department" => ":department" ]) }}';

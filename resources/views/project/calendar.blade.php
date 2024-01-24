@@ -539,6 +539,7 @@ document.body.appendChild(messageBox);
                 },
 
                 eventContent: function(arg) {
+                   
                     var status = arg.event.extendedProps.status;
         var backgroundColor;
 

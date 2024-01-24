@@ -205,6 +205,7 @@
                 'zOverduePrograms' => 0])
                 @livewire('completed-program', ['department' => $department, 'programid' => $indexprogram->id,
                 'xCompletedPrograms' => 0])
+                @livewire('terminated-program', ['department' => $department, 'programid' => $indexprogram->id, 'xTerminatedPrograms' => 0])
             </div>
 
         </div>
@@ -628,15 +629,14 @@ $(document).ready(function() {
                 }
             });
         });
-    $('.programDiv').click(function() {
-        var department = $(this).attr('data-dept');
-        var programId = $(this).attr('data-value');
-        var url =
-            '{{ route("programs.display", ["programid" => ":programid", "department" => ":department" ]) }}';
-        url = url.replace(':department', encodeURIComponent(department));
-        url = url.replace(':programid', programId);
-        window.location.href = url;
-    });
+        $(document).on('click', '.programDiv', function(event) {
+            var department = $(this).attr('data-dept');
+            var programId = $(this).attr('data-value');
+            var url = '{{ route("programs.display", ["programid" => ":programid", "department" => ":department" ]) }}';
+            url = url.replace(':department', encodeURIComponent(department));
+            url = url.replace(':programid', programId);
+            window.location.href = url;
+        });
     $('#createProgram').click(function() {
         event.preventDefault();
         var hasError = handleProgramError();

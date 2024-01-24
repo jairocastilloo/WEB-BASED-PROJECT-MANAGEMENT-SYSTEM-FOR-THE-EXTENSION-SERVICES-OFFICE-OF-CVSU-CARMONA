@@ -56,7 +56,8 @@ class ProjectController extends Controller
         $allPrograms = Program::where(function ($query) use ($department) {
             $query->where('department', $department)
                   ->orWhere('department', 'All');
-        })->get();
+        })
+        ->where('status', '!=', 'Terminated')->get();
 
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
@@ -522,7 +523,7 @@ class ProjectController extends Controller
             'programLeaders' => $programLeaders,
             'program' => $program,
             'isALeader' => $isALeader,
-            'isTermianted' => $isTerminated
+            'isTerminated' => $isTerminated
 
         ]);
     }
