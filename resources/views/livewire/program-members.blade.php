@@ -41,7 +41,7 @@
         </button>
 
     </div>
-    @endif
+   
     <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
     <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="emailError"
         style="display: none;">
@@ -93,7 +93,7 @@
             </div>
         </div>
     </div>
-
+    @endif
     <script>
     document.addEventListener('livewire:load', function() {
         var selectAllMembers;
