@@ -83,6 +83,7 @@
 
                         </div>
                         @if( $projcontribution['approval'] != 1)
+                        @if( Auth::user()->role === 'Admin')
                         <div class="btn-group dropdown m-2 mb-3 shadow">
                             <button type="button" class="btn btn-sm rounded btn-gold shadow dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -93,6 +94,7 @@
                             'project' => $project ])
 
                         </div>
+                        @endif
                         @endif
 
                     </div>

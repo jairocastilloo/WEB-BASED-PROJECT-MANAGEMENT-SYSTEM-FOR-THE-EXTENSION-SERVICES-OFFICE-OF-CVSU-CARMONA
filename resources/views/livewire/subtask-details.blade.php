@@ -1,5 +1,5 @@
 <div>
-    <div class="basiccont word-wrap shadow" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
+    <div class="basiccont word-wrap shadow pb-2" data-value="{{ $subtask['id'] }}" data-name="{{ $subtask['subtask_name'] }}">
         <div class="border-bottom ps-3 pt-2 bggreen">
             <h6 class="fw-bold small" style="color:darkgreen;">Subtask</h6>
         </div>
@@ -14,17 +14,19 @@
         <p class="ps-4 lh-1"><b>Due Date:</b>
             {{ \Carbon\Carbon::parse($subtask->subduedate)->format('F d, Y') }}
         </p>
-        @If (Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
-        <div class="btn-group dropdown ms-3 mb-3 shadow">
+
+        <div class="btn-group dropdown ms-3 shadow">
             <button type="button" class="btn btn-sm rounded btn-gold shadow dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <b class="small"> <i class="bi bi-list"></i> Menu</b>
             </button>
             <div class="dropdown-menu border border-1 border-warning">
                 @If ($subtask['status'] == "Incomplete")
                 <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment Report</b></a>
+                @If (Auth::user()->role == "Admin")
                 <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#markAsCompletedModal">
                     <b class="small">Mark as Completed</b>
                 </a>
+                @endif
                 @endif
                 <a class="dropdown-item small hrefnav" href="#" id="editdetails-btn" data-bs-toggle="modal" data-bs-target="#subtask-modal">
                     <b class="small">Edit Details</b></a>
@@ -77,7 +79,7 @@
                 </div>
             </div>
         </div>
-        @endif
+
 
     </div>
 

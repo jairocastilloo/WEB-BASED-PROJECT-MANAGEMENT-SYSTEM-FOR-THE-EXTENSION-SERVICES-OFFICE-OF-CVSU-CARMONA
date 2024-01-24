@@ -18,15 +18,17 @@
                 <div class="collapse navbar-collapse" id="navbarMonitoring">
                     <ul class="navbar-nav me-auto">
 
+
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small"
+                        href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}"
+                        role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        Programs
+                    </a>
                         <a class="nav-link border border-1 p-2 px-4 currentdiv fw-bold small">
                             Projects
                         </a>
 
-                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small"
-                            href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}"
-                            role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Programs
-                        </a>
+
 
                     </ul>
                 </div>

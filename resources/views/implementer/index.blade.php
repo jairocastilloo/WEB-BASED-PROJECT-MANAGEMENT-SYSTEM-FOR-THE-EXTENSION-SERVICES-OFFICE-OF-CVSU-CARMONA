@@ -45,37 +45,17 @@
         <input type="text" class="d-none" id="username" value="{{ Auth::user()->username }}">
         <div class="row">
             <div class="col-lg-3">
-
                 <label class="ms-3 small form-label text-secondary fw-bold">
                     @if($role == "Admin")
-                    Tasks
+                    Programs
                     @else
-                    My Tasks
+                    My Program
                     @endif
                 </label>
-
-                @livewire('scheduled-subtasks', ['xScheduledTasks' => 1])
-
-                @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
-                @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 0])
-                @livewire('completed-tasks', ['activityid' => null, 'subtaskid' => null, 'xCompletedTasks' => 0])
-
-            </div>
-
-            <div class="col-lg-3">
-                <label class="ms-3 small form-label text-secondary fw-bold">
-                    @if($role == "Admin")
-                    Activities
-                    @else
-                    My Activities
-                    @endif
-                </label>
-                @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
-                @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
-                @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
-                @livewire('completed-activities', ['projectid' => null, 'activityid' => null, 'xCompletedActivities' => 0])
-                @livewire('check-output')
-
+                @livewire('ongoing-program', ['department' => null, 'programid' => null, 'xOngoingPrograms' => 1])
+                @livewire('upcoming-program', ['department' => null, 'programid' => null, 'yUpcomingPrograms' => 1])
+                @livewire('overdue-program', ['department' => null, 'programid' => null, 'zOverduePrograms' => 0])
+                @livewire('completed-program', ['department' => null, 'programid' => null, 'xCompletedPrograms' => 0])
             </div>
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">
@@ -93,16 +73,39 @@
             <div class="col-lg-3">
                 <label class="ms-3 small form-label text-secondary fw-bold">
                     @if($role == "Admin")
-                    Programs
+                    Activities
                     @else
-                    My Program
+                    My Activities
                     @endif
                 </label>
-                @livewire('ongoing-program', ['department' => null, 'programid' => null, 'xOngoingPrograms' => 1])
-                @livewire('upcoming-program', ['department' => null, 'programid' => null, 'yUpcomingPrograms' => 1])
-                @livewire('overdue-program', ['department' => null, 'programid' => null, 'zOverduePrograms' => 0])
-                @livewire('completed-program', ['department' => null, 'programid' => null, 'xCompletedPrograms' => 0])
+                @livewire('in-progress-activities', ['projectid' => null, 'activityid' => null, 'xInProgressActivities' => 1])
+                @livewire('not-started-activities', ['projectid' => null, 'activityid' => null, 'xNotStartedActivities' => 1])
+                @livewire('past-activities', ['projectid' => null, 'activityid' => null, 'xPastActivities' => 0])
+                @livewire('completed-activities', ['projectid' => null, 'activityid' => null, 'xCompletedActivities' => 0])
+                @livewire('check-output')
+
             </div>
+            <div class="col-lg-3">
+
+                <label class="ms-3 small form-label text-secondary fw-bold">
+                    @if($role == "Admin")
+                    Tasks
+                    @else
+                    My Tasks
+                    @endif
+                </label>
+
+                @livewire('scheduled-subtasks', ['xScheduledTasks' => 1])
+
+                @livewire('ongoing-tasks', ['activityid' => null, 'subtaskid' => null, 'xOngoingTasks' => 1])
+                @livewire('missing-tasks', ['activityid' => null, 'subtaskid' => null, 'xMissingTasks' => 0])
+                @livewire('completed-tasks', ['activityid' => null, 'subtaskid' => null, 'xCompletedTasks' => 0])
+
+            </div>
+
+
+
+
         </div>
 
     </div>

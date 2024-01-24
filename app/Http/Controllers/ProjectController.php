@@ -203,6 +203,7 @@ class ProjectController extends Controller
             ->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
+$projectLeaders = $indexproject->projectleaders;
 
         $program = [];
         $programId = $indexproject->program_id;
@@ -410,11 +411,25 @@ class ProjectController extends Controller
 
         $activities = $indexproject->activities;
         $activityArray = $activities->map(function ($activity) {
+            $currentDate = Carbon::now();
+            if ($activity->actremark === 'Incomplete' && $activity->actstartdate <= $currentDate && $activity->actenddate >= $currentDate){
+                $activitystatus = "Ongoing";
+            } else if ($activity->actremark === 'Incomplete' && $activity->actstartdate > $currentDate){
+                $activitystatus = "Upcoming";
+
+            } else if ($activity->actremark === 'Incomplete' && $activity->actenddate < $currentDate){
+                $activitystatus = "Overdue";
+
+            } else if ($activity->actremark === 'Completed'){
+                $activitystatus = "Completed";
+            }
+
             return (object) [
                 'id' => $activity->id,
                 'actname' => $activity->actname,
                 'actstartdate' => $activity->actstartdate,
                 'actenddate' => $activity->actenddate,
+                'actstatus' => $activitystatus,
             ];
         })->toArray();
 

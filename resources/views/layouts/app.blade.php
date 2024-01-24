@@ -104,7 +104,7 @@
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['tasks.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('tasks.show', ['username' => Auth::user()->username]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Monitoring
                         </a>
-                        <a class="nav-link @if(in_array(Route::currentRouteName(), ['project.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <a class="nav-link @if(in_array(Route::currentRouteName(), ['project.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('programs.select', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Projects
                         </a>
                         <a class="nav-link @if(in_array(Route::currentRouteName(), ['reports.show'])) currenthover @else navtohover @endif text-white mx-2" href="{{ route('reports.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>

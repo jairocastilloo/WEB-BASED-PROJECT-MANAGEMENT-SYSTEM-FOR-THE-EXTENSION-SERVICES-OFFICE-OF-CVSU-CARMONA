@@ -111,6 +111,7 @@
 
 
                             @if( $contribution['approval'] != 1)
+                            @if( Auth::user()->role == 'Admin')
                             <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
                                 <button type="button" class="btn btn-sm rounded btn-gold shadow dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -119,6 +120,7 @@
                                 @livewire('subtask-hours-submission',[ 'contributionid' => $contribution->id,
                                 'subtaskid' => $subtask['id'], 'subtaskname' => $subtask['subtask_name'] ])
                             </div>
+                            @endif
                             @endif
                         </div>
                     </div>

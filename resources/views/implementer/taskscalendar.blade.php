@@ -37,7 +37,15 @@
             <div class="border-bottom ps-3 pt-2 bggreen">
                 <h6 class="fw-bold small" style="color:darkgreen;">My Tasks Calendar</h6>
             </div>
+            <div id="legend">
+                <div class="legend-item" style="background-color: blue"></div>
+                <span>To Do Date</span>
+                <div class="legend-item" style="background-color: red"></div>
+                <span>Due Date</span>
 
+
+
+            </div>
             <div class="p-2" id="calendar"></div>
 
 

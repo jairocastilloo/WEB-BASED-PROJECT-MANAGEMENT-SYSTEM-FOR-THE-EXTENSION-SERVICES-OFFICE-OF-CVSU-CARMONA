@@ -116,6 +116,7 @@
 
 
                             @if( $actcontribution['approval'] != 1)
+                            @if(Auth::user()->role == 'Admin')
                             <div class="btn-group dropdown ms-3 mb-3 mt-2 shadow">
                                 <button type="button" class="btn btn-sm rounded btn-gold shadow dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <b class="small">Evaluate Submission</b>
@@ -124,6 +125,7 @@
                                 'activityid' => $activity->id, 'activityname' => $activity->actname ])
 
                             </div>
+                            @endif
                             @endif
                         </div>
 

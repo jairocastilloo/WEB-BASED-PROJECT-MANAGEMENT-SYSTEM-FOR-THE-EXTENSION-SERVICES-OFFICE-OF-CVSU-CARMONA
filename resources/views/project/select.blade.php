@@ -15,15 +15,12 @@
 
                 <div class="collapse navbar-collapse" id="navbarMonitoring">
                     <ul class="navbar-nav me-auto">
-                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Projects
-                        </a>
                         <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Programs
                         </a>
-
-
-
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Projects
+                        </a>
                     </ul>
                 </div>
             </nav>
@@ -117,9 +114,11 @@
                             </a>
                             @endif
                             @If(Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
+                            @if( $indexproject->projectstatus === 'Incomplete')
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.close',['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Close Project</b>
                             </a>
+                            @endif
                             @endif
                             @If(Auth::user()->role == "Admin")
                             <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">

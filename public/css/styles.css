@@ -951,6 +951,7 @@ div {
 .fc-daygrid-event,
 .fc-list-event {
     background-color: #198754;
+    padding:0;
 }
 .fcnavhover:hover {
     background-color: darkgreen;
@@ -960,6 +961,23 @@ div {
 .fcnavhoverr:hover {
     cursor: pointer;
 }
+#legend {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.legend-item {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+#legend span {
+    margin-right: 15px;
+}
+
 /*
 .fc-today {
     background-color: none;

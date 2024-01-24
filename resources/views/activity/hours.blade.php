@@ -97,9 +97,11 @@
 
                     <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#accomplishmentReportModal"><b class="small">Submit Accomplishment
                             Report</b></a>
+                    @if(Auth::user()->role === "Admin")
                     <a class="dropdown-item small hrefnav" href="#" data-bs-toggle="modal" data-bs-target="#completeactivitymodal">
                         <b class="small">Mark as Completed</b>
                     </a>
+                    @endif
 
                 </div>
             </div>

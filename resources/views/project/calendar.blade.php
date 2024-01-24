@@ -15,13 +15,13 @@
 
                 <div class="collapse navbar-collapse" id="navbarMonitoring">
                     <ul class="navbar-nav me-auto">
-                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
-                            Projects
-                        </a>
+
                         <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('programs.select', [ 'department' => Auth::user()->department ]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
                             Programs
                         </a>
-
+                        <a class="nav-link border border-1 p-2 px-4 divhover fw-bold small" href="{{ route('project.show', ['department' => Auth::user()->department]) }}" role="button" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Projects
+                        </a>
 
 
                     </ul>
@@ -148,6 +148,19 @@
                     <div class="border-bottom ps-3 pt-2 bggreen">
                         <h6 class="fw-bold small" style="color:darkgreen;">Calendar</h6>
                     </div>
+<div id="legend">
+    <div class="legend-item" style="background-color: rgb(50, 205, 50);"></div>
+    <span>Ongoing</span>
+
+    <div class="legend-item" style="background-color: rgb(152, 251, 152);"></div>
+    <span>Upcoming</span>
+
+    <div class="legend-item" style="background-color: rgb(85, 137, 47);"></div>
+    <span>Overdue</span>
+
+    <div class="legend-item" style="background-color: rgb(255, 215, 0);"></div>
+    <span>Completed</span>
+</div>
 
                     <div class="p-2" id="calendar"></div>
 
@@ -492,7 +505,8 @@
                     id: activity.id,
                     title: activity.actname,
                     start: activity.actstartdate,
-                    end: activity.actenddate
+                    end: activity.actenddate,
+                    status: activity.actstatus
                 };
             });
 
@@ -512,12 +526,36 @@
                 },
 
                 eventContent: function(arg) {
-                    return {
-                        html: '<div class="event-content fcnavhover" style="color: white;">' + arg.event.title + '</div>'
-                    };
+                    var status = arg.event.extendedProps.status;
+        var backgroundColor;
+
+        switch (status) {
+            case 'Ongoing':
+                backgroundColor = 'rgb(50, 205, 50)';
+                break;
+            case 'Upcoming':
+                backgroundColor = 'rgb(152, 251, 152)';
+                break;
+            case 'Overdue':
+                backgroundColor = 'rgb(85, 137, 47)';
+                break;
+            case 'Completed':
+                backgroundColor = 'rgb(255, 215, 0)';
+                break;
+            default:
+                backgroundColor = 'rgb(50, 205, 50)';
+                break;
+        }
+
+        return {
+            html: '<div class="event-content fcnavhover" style="color: black; padding: 5px; background-color: ' + backgroundColor + ';">' + arg.event.title + '</div>'
+        };
                 },
 
-                events: eventsArray
+                events: eventsArray,
+
+
+
             });
 
             calendar.render();
