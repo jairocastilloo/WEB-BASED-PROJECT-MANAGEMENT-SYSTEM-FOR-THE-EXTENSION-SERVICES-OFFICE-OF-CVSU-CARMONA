@@ -203,3 +203,4 @@ Route::get('/get-pdf/{username}/{random}', [PdfController::class, 'generatePdf']
 Route::get('/get-selectedPdf/{username}/{ayid}/{semester}/{random}', [PdfController::class, 'generateSelectedPdf'])->name('selectedPdf.generate');
 Route::get('/get-reportPdf/{projectid}/{department}/{random}', [PdfController::class, 'generateReportPdf'])->name('reportPdf.generate');
 Route::get('/failed-email-transmission', [AdminController::class, 'failedEmailTransmission'])->name('email.failedTransmission');
+Route::get('/show-all-submission', [AdminController::class, 'showAllSubmission'])->name('submission.showAll');

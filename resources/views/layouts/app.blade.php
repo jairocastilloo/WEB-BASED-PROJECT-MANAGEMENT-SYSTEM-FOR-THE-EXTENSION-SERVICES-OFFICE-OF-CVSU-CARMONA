@@ -150,6 +150,11 @@
                                         Failed Email Transmission
                                     </a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('submission.showAll') }}">
+                                        All Submission
+                                    </a>
+                                </li>
 
                                 @endif
                                 <li>

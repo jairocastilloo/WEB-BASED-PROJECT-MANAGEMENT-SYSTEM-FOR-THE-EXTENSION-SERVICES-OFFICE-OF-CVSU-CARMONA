@@ -36,6 +36,10 @@ class AdminController extends Controller
     {
         return view('admin.failed-email-transmission');
     }
+    public function showAllSubmission()
+    {
+        return view('admin.all-submission');
+    }
 
     public function approveaccount($id)
     {

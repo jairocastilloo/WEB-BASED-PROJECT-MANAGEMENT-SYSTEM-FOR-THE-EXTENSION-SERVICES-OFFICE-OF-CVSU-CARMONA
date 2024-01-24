@@ -509,6 +509,7 @@ $projectLeaders = $indexproject->projectleaders;
 
         if ($programId != 0) {
             $project->program_id = $programId;
+
         }
 
         $project->save();

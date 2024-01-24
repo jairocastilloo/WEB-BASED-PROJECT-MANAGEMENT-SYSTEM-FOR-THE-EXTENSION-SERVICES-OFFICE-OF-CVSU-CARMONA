@@ -163,7 +163,7 @@
                                     <form id="terminateProgramForm" data-url="{{ route('programs.terminateProgram') }}">
                                         @csrf
                                         <input type="number" class="d-none" name="programid" value="{{ $indexprogram['id'] }}">
-                                        <p> Are you sure you want to terminate the Program: "{{ $indexprogram['programName'] }}" as completed?
+                                        <p> Are you sure you want to terminate the Program: "{{ $indexprogram['programName'] }}"?
                                     </form>
                                 </div>
                                 <div class="modal-footer">
