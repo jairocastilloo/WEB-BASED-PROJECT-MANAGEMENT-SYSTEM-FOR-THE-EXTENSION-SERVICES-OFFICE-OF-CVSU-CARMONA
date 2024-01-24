@@ -528,7 +528,11 @@ class ProjectController extends Controller
 
         if ($programId != 0) {
             $project->program_id = $programId;
+            $program = Program::findOrFail($programId);
 
+            $program->update([
+                'status' => 'Incomplete'
+            ]);
         }
 
         $project->save();
@@ -1118,6 +1122,11 @@ class ProjectController extends Controller
         ]);
 
         $project->save();
+        $program = Program::findOrFail($request->input('programindex'));
+
+        $program->update([
+            'status' => 'Incomplete'
+        ]);
         $newProjectId = $project->id;
         /**if (!is_array($projectleaders)) {
             // Convert a string to an array if needed, assuming it's a comma-separated list
