@@ -370,7 +370,7 @@
                     </div>
                     <div class="container mb-3 p-0">
                         <label for="programleader" class="form-label">Program Leader</label>
-                        <select class="selectpicker w-100 border programleader" name="programleader-1[]"
+                        <select class="selectpicker w-100 border programleader-1" id="programleader-1" name="programleader-1[]"
                             id="programleader-1" multiple aria-label="Select Program Leaders" data-live-search="true">
                             <option value="0" disabled>Select Program Leader</option>
                             @foreach ($members as $member)
@@ -542,13 +542,16 @@ $(document).ready(function() {
     });
     $('#createProgram').click(function() {
         event.preventDefault();
+        var hasError = handleProgramError();
+        if(!hasError){
+        $(this).prop('disabled', true);
         var department = $('#department').val();
         // var hasError = handleError();
         var programurl =
             '{{ route("programs.display", ["programid" => ":programid", "department" => ":department" ]) }}';
         programurl = programurl.replace(':department', encodeURIComponent(department));
         //   if (!hasError) {
-        $(this).prop('disabled', true);
+
 
 
         var dataurl = $('#programform1').attr('data-url');
@@ -567,7 +570,6 @@ $(document).ready(function() {
                 window.location.href = programurl;
 
                 $('#programloadingSpan').css('display', 'none');
-
 
                 if (response.isMailSent == 0) {
                     $('#createProgramModal').modal('hide');
@@ -613,8 +615,80 @@ $(document).ready(function() {
 
             }
         });
+    }
         // }
     });
+    function handleProgramError() {
+
+            var hasErrors = false;
+
+            $(".invalid-feedback strong").text("");
+            $(".is-invalid").removeClass("is-invalid");
+
+            var programtitle = $("#programtitle-1").val();
+            var programstartdate = $("#programstartdate-1").val();
+            var programenddate = $("#programenddate-1").val();
+
+
+
+            // Validation for Project Title
+            if (programtitle.trim() === "") {
+                $("#programtitle-1").addClass("is-invalid");
+                $("#programtitle-1")
+                    .next(".invalid-feedback")
+                    .find("strong")
+                    .text("Program Title is required.");
+                hasErrors = true;
+            }
+
+            // Validation for Project Leader
+            if ($(".programleader-1 option:selected").length === 0) {
+                $(".programleader-1").addClass("is-invalid");
+                $(".programleader-1")
+                    .next(".invalid-feedback")
+                    .find("strong")
+                    .text("Program Leader is required.");
+                hasErrors = true;
+            }
+
+            if ($("#programstartdate-1").val() == "") {
+                $("#programstartdate-1").parent().addClass("is-invalid");
+                $("#programstartdate-1")
+                    .parent()
+                    .next(".invalid-feedback")
+                    .find("strong")
+                    .text("Program Start Date is required.");
+                hasErrors = true;
+            }
+            if ($("#programenddate-1").val() == "") {
+                $("#programenddate-1").parent().addClass("is-invalid");
+                $("#programenddate-1")
+                    .parent()
+                    .next(".invalid-feedback")
+                    .find("strong")
+                    .text("Program End Date is required.");
+                hasErrors = true;
+            }
+
+
+            /*
+                                // Validation for Project Start Date
+                                if (projectStartDate.getFullYear() !== targetYear) {
+                                    $('#projectstartdate').addClass('is-invalid');
+                                    $('#projectstartdate').next('.invalid-feedback').find('strong').text('Project Start Date must be in ' + targetYear + '.');
+                                    hasErrors = true;
+                                }
+
+                                // Validation for Project End Date
+                                if (projectEndDate.getFullYear() !== targetYear || projectEndDate < projectStartDate) {
+                                    $('#projectenddate').addClass('is-invalid');
+                                    $('#projectenddate').next('.invalid-feedback').find('strong').text('Project End Date must be in ' + targetYear + ' and after the Start Date.');
+                                    hasErrors = true;
+                                }
+                */
+            return hasErrors;
+
+    }
 });
 </script>
 <script src="{{ asset('js/project-create.js') }}"></script>
