@@ -176,8 +176,6 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
                 <div class="basiccont rounded shadow pb-3">
 
                     <div class="border-bottom ps-3 pt-2 bggreen pe-2">
@@ -187,9 +185,11 @@
 
 
                 </div>
-
-
             </div>
+               
+
+
+        
 
             <div class="col-lg-2">
                 @livewire('ongoing-program', ['department' => $department, 'programid' => $indexprogram->id,

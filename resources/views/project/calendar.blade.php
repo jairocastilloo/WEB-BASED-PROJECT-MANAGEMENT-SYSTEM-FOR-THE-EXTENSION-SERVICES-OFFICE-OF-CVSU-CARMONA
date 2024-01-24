@@ -512,7 +512,9 @@
             });
 
             var calendarEl = document.getElementById('calendar');
-
+            var messageBox = document.createElement('div');
+messageBox.className = 'custom-message-box';
+document.body.appendChild(messageBox);
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 themeSystem: 'bootstrap5',
                 /*
@@ -520,6 +522,14 @@
                                     alert('Clicked on: ' + info.dateStr);
                                 },
                 */
+                eventMouseEnter: function (info) {
+        var activityName = info.event.title;
+        showCustomMessageBox(activityName, info.jsEvent);
+    },
+
+    eventMouseLeave: function () {
+        hideCustomMessageBox();
+    },
                 eventClick: function(info) {
                     var url = '{{ route("activities.display", ["activityid" => ":activityid"]) }}';
                     url = url.replace(':activityid', info.event.id);
@@ -567,8 +577,30 @@
 
 
             });
+           
 
             calendar.render();
+
+            function showCustomMessageBox(activityName, mouseEvent) {
+    messageBox.innerHTML = activityName;
+    positionMessageBox(mouseEvent);
+}
+
+function hideCustomMessageBox() {
+    messageBox.style.display = 'none';
+}
+
+function positionMessageBox(mouseEvent) {
+    var mouseX = mouseEvent.pageX;
+    var mouseY = mouseEvent.pageY;
+    var boxWidth = messageBox.offsetWidth;
+    var boxHeight = messageBox.offsetHeight;
+
+    // Set the position of the message box next to the mouse pointer
+    messageBox.style.left = mouseX + 'px';
+    messageBox.style.top = mouseY + 10 + 'px'; // Adjust the vertical position as needed
+    messageBox.style.display = 'block';
+}
         } catch (error) {
             console.error(error);
         }

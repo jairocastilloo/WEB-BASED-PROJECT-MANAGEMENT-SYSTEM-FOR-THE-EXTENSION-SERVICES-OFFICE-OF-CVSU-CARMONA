@@ -86,8 +86,6 @@ body {
     position: relative;
 }
 
-
-
 .dep-choose-container {
     padding: 5px 20px;
 }
@@ -836,7 +834,16 @@ div {
     z-index: 1; /* Ensure the message box appears above other content */
     font-size: 10px;
 }
-
+.custom-message-box {
+    position: absolute;
+    display: none;
+    background-color: darkgreen;
+    border: 1px solid gold;
+    padding: 7px;
+    border-radius: 5px;
+    z-index: 1000;
+    color: white;
+}
 /* Style for the element you want to hover over */
 .hover-element {
     position: relative; /* Important for positioning the message box */
@@ -945,17 +952,19 @@ div {
 
 .fc-event {
     margin-top: 10px;
-    margin-bottom: 10px; /* Adjust the value as needed */
+    margin-bottom: 10px;
+    border: 1px solid #000; /* Adjust the value as needed */
 }
 
 .fc-daygrid-event,
 .fc-list-event {
     background-color: #198754;
-    padding:0;
+    padding: 0;
 }
 .fcnavhover:hover {
     background-color: darkgreen;
     color: black;
+
     cursor: pointer;
 }
 .fcnavhoverr:hover {
