@@ -55,7 +55,7 @@ class RegisterController extends Controller
                 'string',
                 'max:255',
                 'unique:users',
-                'regex:/^(?=.*[a-zA-Z0-9])[\p{L}a-zA-Z0-9]+$/u',
+                'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/'
             ],
             'title' => [
                 'required',
@@ -66,20 +66,21 @@ class RegisterController extends Controller
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-Z\s]+$/'
+                'regex:/^[\p{L}\'\s]+$/u',
             ],
             'middle_name' => [
                 'nullable',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-Z\s]+$/'
+                'regex:/^[\p{L}\'\s]+$/u',
             ],
             'last_name' => [
                 'required',
                 'string',
                 'max:255',
-                'regex:/^[a-zA-Z\s]+$/'
+                'regex:/^[\p{L}\'\s]+$/u',
             ],
+
             'email' => [
                 'required',
                 'string',
