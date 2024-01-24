@@ -88,11 +88,13 @@
                         </label>
                     </div>
                     @if (Auth::user()->role === 'Admin')
+                    @if (!$isTerminated)
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addproj">
                             <b class="small">Create Project</b>
                         </button>
                     </div>
+                    @endif
                     @endif
                 </div>
                 <div class="basiccont p-3 rounded shadow">
