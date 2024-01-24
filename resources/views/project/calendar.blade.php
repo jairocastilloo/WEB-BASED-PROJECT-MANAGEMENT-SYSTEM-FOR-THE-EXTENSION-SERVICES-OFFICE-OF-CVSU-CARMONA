@@ -149,18 +149,19 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">Calendar</h6>
                     </div>
 <div id="legend">
-    <div class="legend-item" style="background-color: rgb(50, 205, 50);"></div>
+    <div class="legend-item" style="background-color: #71BC68;"></div>
     <span>Ongoing</span>
 
-    <div class="legend-item" style="background-color: rgb(152, 251, 152);"></div>
+    <div class="legend-item" style="background-color: #F4AB6A;"></div>
     <span>Upcoming</span>
 
-    <div class="legend-item" style="background-color: rgb(85, 137, 47);"></div>
+    <div class="legend-item" style="background-color: #B22B27;"></div>
     <span>Overdue</span>
 
-    <div class="legend-item" style="background-color: rgb(255, 215, 0);"></div>
+    <div class="legend-item" style="background-color: #284F8F ;"></div>
     <span>Completed</span>
 </div>
+
 
                     <div class="p-2" id="calendar"></div>
 
@@ -531,25 +532,34 @@
 
         switch (status) {
             case 'Ongoing':
-                backgroundColor = 'rgb(50, 205, 50)';
+                backgroundColor = '#71BC68';
                 break;
             case 'Upcoming':
-                backgroundColor = 'rgb(152, 251, 152)';
+                backgroundColor = '#F4AB6A';
                 break;
             case 'Overdue':
-                backgroundColor = 'rgb(85, 137, 47)';
+                backgroundColor = '#B22B27';
                 break;
             case 'Completed':
-                backgroundColor = 'rgb(255, 215, 0)';
+                backgroundColor = '#284F8F';
                 break;
             default:
-                backgroundColor = 'rgb(50, 205, 50)';
+                backgroundColor = '#EFD033';
                 break;
         }
-
+        if (status == 'Ongoing' || status == 'Upcoming'){
         return {
+           
             html: '<div class="event-content fcnavhover" style="color: black; padding: 5px; background-color: ' + backgroundColor + ';">' + arg.event.title + '</div>'
+            
         };
+    } else{
+        return {
+           
+           html: '<div class="event-content fcnavhover" style="color: white; padding: 5px; background-color: ' + backgroundColor + ';">' + arg.event.title + '</div>'
+           
+       };
+    }
                 },
 
                 events: eventsArray,
