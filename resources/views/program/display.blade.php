@@ -110,10 +110,15 @@
                                 <b class="small">Edit Details</b>
                             </a>
                             @endif
-                            @If(Auth::user()->role == "Admin" || Auth::user()->role == "Coordinator")
-                            <a class="dropdown-item small hrefnav border-bottom" href="">
-                                <b class="small">Close Program</b>
+                            @If(Auth::user()->role == "Admin")
+                            @if($indexprogram->status == 'Incomplete')
+                            <a class="dropdown-item small hrefnav border-bottom" data-bs-target="#terminateProgram" data-bs-toggle="modal">
+                                <b class="small">Terminate Program</b>
                             </a>
+                            <a class="dropdown-item small hrefnav border-bottom" data-bs-target="#markAsCompleted" data-bs-toggle="modal">
+                                <b class="small">Mark As Completed</b>
+                            </a>
+@endif
                             @endif
                             @If(Auth::user()->role == "Admin")
                             <a class="dropdown-item small hrefnavDelete border-bottom">
@@ -125,7 +130,49 @@
 
                         </div>
                     </div>
-
+                    <div class="modal fade" id="markAsCompleted" tabindex="-1" aria-labelledby="markAsCompletedModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="markAsCompletedModalLabel">Mark As Completed</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="markAsCompletedForm" data-url="{{ route('programs.markAsCompleted') }}">
+                                        @csrf
+                                        <input type="number" class="d-none" name="programid" value="{{ $indexprogram['id'] }}">
+                                        <p> Are you sure you want to mark the Program: "{{ $indexprogram['programName'] }}" as completed?
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-md rounded border border-1 btn-light shadow" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-md rounded btn-gold shadow" id="markAsCompleted-btn">Mark as
+                                        Completed</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="terminateProgram" tabindex="-1" aria-labelledby="terminateProgramModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="terminateProgramModalLabel">Mark As Completed</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="terminateProgramForm" data-url="{{ route('programs.terminateProgram') }}">
+                                        @csrf
+                                        <input type="number" class="d-none" name="programid" value="{{ $indexprogram['id'] }}">
+                                        <p> Are you sure you want to terminate the Program: "{{ $indexprogram['programName'] }}" as completed?
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-md rounded border border-1 btn-light shadow" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-md rounded btn-gold shadow" id="terminateProgram-btn">Terminate Program</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="basiccont rounded shadow pb-3">
@@ -483,6 +530,8 @@
 var projecturl = '{{ route("projects.display", ["projectid" => ":projectid", "department" => ":department" ]) }}';
 var baseUrl = "{{ route('programs.select', ['department' => ':department']) }}";
 $(document).ready(function() {
+
+
     $('#editIndexProgram').click(function() {
         $('#editProgramModal').modal('show');
     });
@@ -532,6 +581,51 @@ $(document).ready(function() {
             $span.text($span.text().substring(0, 14) + '...'); // Truncate and add ellipsis
         }
     });
+
+    $('#markAsCompleted-btn').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#markAsCompletedForm').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#markAsCompletedForm').serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
+        $('#terminateProgram-btn').click(function(event) {
+            event.preventDefault();
+
+            var dataurl = $('#terminateProgramForm').attr('data-url');
+            // Create a data object with the value you want to send
+            var data1 = $('#terminateProgramForm').serialize();
+
+            $.ajax({
+                url: dataurl, // Replace with your actual AJAX endpoint URL
+                type: 'POST',
+                data: data1,
+                success: function(response) {
+                    console.log(response);
+                    window.location.href = url;
+                },
+                error: function(xhr, status, error) {
+                    // Handle the error here
+                    console.log(xhr.responseText);
+                    console.error(error);
+                }
+            });
+        });
     $('.programDiv').click(function() {
         var department = $(this).attr('data-dept');
         var programId = $(this).attr('data-value');

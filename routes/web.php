@@ -155,7 +155,8 @@ Route::post('/storeProject', [ProjectController::class, 'storeProject'])
     ->name('programs.storeProject');
 Route::get('/programMembers/{programid}/{department}', [ProjectController::class, 'programMembers'])
     ->name('programs.members');
-
+    Route::post('/markAsCompletedProgram', [ProjectController::class, 'markAsCompletedProgram'])->name('programs.markAsCompleted');
+    Route::post('/terminateProgram', [ProjectController::class, 'terminateProgram'])->name('programs.terminateProgram');
 Route::prefix('/projectinsights')->group(function () {
     Route::get('/{department}/select', [ReportController::class, 'showinsights'])->name('insights.show');
     Route::get('/{department}/{currentyear}', [ReportController::class, 'showyearinsights'])->name('yearinsights.show');

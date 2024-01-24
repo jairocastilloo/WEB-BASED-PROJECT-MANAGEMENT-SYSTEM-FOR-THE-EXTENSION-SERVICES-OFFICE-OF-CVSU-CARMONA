@@ -53,9 +53,11 @@ class ProjectController extends Controller
         }
 
         $department = str_replace('+', ' ', $department);
-        $allPrograms = Program::where('department', $department)
-        ->where('department', 'All')
-            ->get();
+        $allPrograms = Program::where(function ($query) use ($department) {
+            $query->where('department', $department)
+                  ->orWhere('department', 'All');
+        })->get();
+
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
@@ -198,9 +200,10 @@ class ProjectController extends Controller
         $allfiscalyears = FiscalYear::all();
         */
 
-        $allPrograms = Program::where('department', $department)
-        ->where('department', 'All')
-            ->get();
+        $allPrograms = Program::where(function ($query) use ($department) {
+            $query->where('department', $department)
+                  ->orWhere('department', 'All');
+        })->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 $projectLeaders = $indexproject->projectleaders;
@@ -221,6 +224,38 @@ $projectLeaders = $indexproject->projectleaders;
             'department' => $department,
             'program' => $program
         ]);
+    }
+    public function markAsCompletedProgram(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'programid' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $programid = $request->input('programid');
+
+        $markCompleted= Program::where('id', $programid)
+            ->update(['status' => 'Completed']);
+        return response()->json(['success' => true], 200);
+    }
+    public function terminateProgram(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'programid' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $programid = $request->input('programid');
+
+        $markCompleted= Program::where('id', $programid)
+            ->update(['status' => 'Terminated']);
+        return response()->json(['success' => true], 200);
     }
     public function displayActivities($projectid, $department)
     {
@@ -275,9 +310,10 @@ $projectLeaders = $indexproject->projectleaders;
         $allfiscalyears = FiscalYear::all();
         */
 
-        $allPrograms = Program::where('department', $department)
-        ->where('department', 'All')
-            ->get();
+        $allPrograms = Program::where(function ($query) use ($department) {
+            $query->where('department', $department)
+                  ->orWhere('department', 'All');
+        })->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
@@ -337,9 +373,10 @@ $projectLeaders = $indexproject->projectleaders;
             $users = null;
         }
 
-        $allPrograms = Program::where('department', $department)
-        ->where('department', 'All')
-            ->get();
+        $allPrograms = Program::where(function ($query) use ($department) {
+            $query->where('department', $department)
+                  ->orWhere('department', 'All');
+        })->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
@@ -397,9 +434,10 @@ $projectLeaders = $indexproject->projectleaders;
             $users = null;
         }
 
-        $allPrograms = Program::where('department', $department)
-        ->where('department', 'All')
-            ->get();
+        $allPrograms = Program::where(function ($query) use ($department) {
+            $query->where('department', $department)
+                  ->orWhere('department', 'All');
+        })->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 

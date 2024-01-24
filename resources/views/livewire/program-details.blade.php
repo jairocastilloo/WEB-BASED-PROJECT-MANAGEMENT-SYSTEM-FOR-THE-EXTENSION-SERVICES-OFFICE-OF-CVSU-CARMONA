@@ -4,7 +4,7 @@
     @if ($indexprogram != null)
     <div class="flex-container">
         <strong><em>Program Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</em></strong>
-        <div class="underline-space inline-div ps-2">{{ $indexprogram['programName'] }}</div>
+        <div class="underline-space inline-div ps-2">{{ $indexprogram['programName'] }}<i class="text-success"><b> ({{ $indexprogram['status'] }}) </b></i></div>
     </div>
     @endif
     @if ($programleaders != null)
@@ -154,6 +154,8 @@
             </div>
         </div>
     </div>
+
+
     <script>
     var titleNgProgram = document.getElementById('progTitle').value;
     document.addEventListener('livewire:load', function() {
