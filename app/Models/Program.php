@@ -21,6 +21,10 @@ class Program extends Model
     {
         return $this->hasMany(Project::class);
     }
+    public function program()
+{
+    return $this->belongsTo(Program::class);
+}
     public function programleaders()
     {
         return $this->belongsToMany(User::class, 'program_leaders');

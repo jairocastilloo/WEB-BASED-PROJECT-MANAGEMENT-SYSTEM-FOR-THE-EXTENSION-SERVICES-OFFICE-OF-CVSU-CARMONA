@@ -211,9 +211,13 @@ class ProjectController extends Controller
         
 
         $program = [];
+        $isTerminated = false;
         $programId = $indexproject->program_id;
         if ($programId != null) {
             $program = Program::findOrFail($programId);
+            if($program->status === 'Terminated'){
+            $isTerminated = true;
+            }
         }
 
         $isALeader = ProjectLeader::where('project_id', $indexproject->id)
@@ -231,7 +235,8 @@ class ProjectController extends Controller
             'activities' => $activities,
             'department' => $department,
             'program' => $program,
-            'isALeader' => $isALeader
+            'isALeader' => $isALeader,
+            'isTerminated' => $isTerminated
         ]);
     }
     public function markAsCompletedProgram(Request $request)
@@ -326,11 +331,16 @@ class ProjectController extends Controller
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
-        $program = [];
-        $programId = $indexproject->program_id;
-        if ($programId != null) {
-            $program = Program::findOrFail($programId);
-        }
+            $program = [];
+            $isTerminated = false;
+            $programId = $indexproject->program_id;
+            if ($programId != null) {
+                $program = Program::findOrFail($programId);
+                if($program->status === 'Terminated'){
+                $isTerminated = true;
+                }
+            }
+    
         $activities = $indexproject->activities;
 
         $isALeader = ProjectLeader::where('project_id', $indexproject->id)
@@ -346,7 +356,8 @@ class ProjectController extends Controller
             'allPrograms' => $allPrograms,
             'programLeaders' => $programLeaders,
             'program' => $program,
-            'isALeader'=> $isALeader
+            'isALeader'=> $isALeader,
+            'isTerminated' => $isTerminated
         ]);
     }
     public function displayMembers($projectid, $department)
@@ -393,11 +404,16 @@ class ProjectController extends Controller
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
-        $program = [];
-        $programId = $indexproject->program_id;
-        if ($programId != null) {
-            $program = Program::findOrFail($programId);
-        }
+            $program = [];
+            $isTerminated = false;
+            $programId = $indexproject->program_id;
+            if ($programId != null) {
+                $program = Program::findOrFail($programId);
+                if($program->status === 'Terminated'){
+                $isTerminated = true;
+                }
+            }
+    
         $isALeader = ProjectLeader::where('project_id', $indexproject->id)
         ->where('user_id', Auth::user()->id)
         ->exists();
@@ -409,7 +425,8 @@ class ProjectController extends Controller
             'allPrograms' => $allPrograms,
             'programLeaders' => $programLeaders,
             'program' => $program,
-            'isALeader' => $isALeader
+            'isALeader' => $isALeader,
+            'isTerminated' => $isTerminated
         ]);
     }
 
@@ -457,11 +474,16 @@ class ProjectController extends Controller
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
-        $program = [];
-        $programId = $indexproject->program_id;
-        if ($programId != null) {
-            $program = Program::findOrFail($programId);
-        }
+            $program = [];
+            $isTerminated = false;
+            $programId = $indexproject->program_id;
+            if ($programId != null) {
+                $program = Program::findOrFail($programId);
+                if($program->status === 'Terminated'){
+                $isTerminated = true;
+                }
+            }
+    
 
         $activities = $indexproject->activities;
         $activityArray = $activities->map(function ($activity) {
@@ -499,7 +521,8 @@ class ProjectController extends Controller
             'allPrograms' => $allPrograms,
             'programLeaders' => $programLeaders,
             'program' => $program,
-            'isALeader' => $isALeader
+            'isALeader' => $isALeader,
+            'isTermianted' => $isTerminated
 
         ]);
     }
@@ -975,6 +998,8 @@ class ProjectController extends Controller
         } else {
             $users = null;
         }
+       
+
         return view('program.display', [
             'members' => $users,
             'indexprogram' => $indexprogram,

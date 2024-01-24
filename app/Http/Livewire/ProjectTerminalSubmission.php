@@ -32,7 +32,7 @@ class ProjectTerminalSubmission extends Component
 
             // Check if all projects have the status 'Completed'
             $allCompleted = $projects->every(function ($project) {
-                return $project->status === 'Completed';
+                return $project->projectstatus === 'Completed';
             });
 
             // If all projects have the status 'Completed', update the corresponding program's status
