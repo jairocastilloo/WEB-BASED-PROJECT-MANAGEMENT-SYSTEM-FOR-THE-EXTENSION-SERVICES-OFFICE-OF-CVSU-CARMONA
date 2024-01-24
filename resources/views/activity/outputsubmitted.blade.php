@@ -8,7 +8,7 @@
             <div class="step">
                 <span class="fw-bold">Project: {{ $project->projecttitle }}</span>
                 <div class="message-box text-white">
-                    {{ $project->projecttitle }}
+            {{ $project->projecttitle }}
                 </div>
             </div>
 

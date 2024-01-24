@@ -109,7 +109,7 @@
                             <a class="dropdown-item small hrefnav border-bottom" href="{{ route('projects.calendar', ['projectid' => $indexproject->id, 'department' => $department ]) }}">
                                 <b class="small">Calendar</b>
                             </a>
-                            @If(Auth::user()->role == "Admin")
+                            @If(Auth::user()->role == "Admin" || $isALeader)
                             <a class="dropdown-item small hrefnav border-bottom" id="editIndexproject">
                                 <b class="small">Edit Details</b>
                             </a>

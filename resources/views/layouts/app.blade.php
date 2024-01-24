@@ -152,7 +152,7 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('submission.showAll') }}">
-                                        All Submission
+                                        Submitted Reports
                                     </a>
                                 </li>
 

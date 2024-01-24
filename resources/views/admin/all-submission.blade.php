@@ -10,21 +10,21 @@
         <div class="row">
             <div class="col-lg-4">
                 <label class="ms-3 small form-label text-secondary fw-bold">
-                   Projects Submission
+                   Projects Submitted Reports
                 </label>
                 @livewire('projects-submission')
 
             </div>
             <div class="col-lg-4">
                 <label class="ms-3 small form-label text-secondary fw-bold">
-                    Activities Submission
+                    Activities Submitted Reports
                 </label>
                 @livewire('activities-submission')
 
             </div>
             <div class="col-lg-4">
                 <label class="ms-3 small form-label text-secondary fw-bold">
-                   Subtasks Submission
+                   Subtasks Submitted Reports
                 </label>
                 @livewire('subtasks-submission')
 

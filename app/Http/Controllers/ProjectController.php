@@ -206,13 +206,21 @@ class ProjectController extends Controller
         })->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
-$projectLeaders = $indexproject->projectleaders;
+        
+        
+        
 
         $program = [];
         $programId = $indexproject->program_id;
         if ($programId != null) {
             $program = Program::findOrFail($programId);
         }
+
+        $isALeader = ProjectLeader::where('project_id', $indexproject->id)
+        ->where('user_id', Auth::user()->id)
+        ->exists();
+    
+
         return view('project.select', [
             'members' => $users,
             'indexproject' => $indexproject,
@@ -222,7 +230,8 @@ $projectLeaders = $indexproject->projectleaders;
             'objectives' => $objectives,
             'activities' => $activities,
             'department' => $department,
-            'program' => $program
+            'program' => $program,
+            'isALeader' => $isALeader
         ]);
     }
     public function markAsCompletedProgram(Request $request)
@@ -324,6 +333,9 @@ $projectLeaders = $indexproject->projectleaders;
         }
         $activities = $indexproject->activities;
 
+        $isALeader = ProjectLeader::where('project_id', $indexproject->id)
+        ->where('user_id', Auth::user()->id)
+        ->exists();
         return view('project.activities', [
             'members' => $users,
             'indexproject' => $indexproject,
@@ -333,7 +345,8 @@ $projectLeaders = $indexproject->projectleaders;
 
             'allPrograms' => $allPrograms,
             'programLeaders' => $programLeaders,
-            'program' => $program
+            'program' => $program,
+            'isALeader'=> $isALeader
         ]);
     }
     public function displayMembers($projectid, $department)
@@ -385,7 +398,9 @@ $projectLeaders = $indexproject->projectleaders;
         if ($programId != null) {
             $program = Program::findOrFail($programId);
         }
-
+        $isALeader = ProjectLeader::where('project_id', $indexproject->id)
+        ->where('user_id', Auth::user()->id)
+        ->exists();
         return view('project.members', [
             'members' => $users,
             'indexproject' => $indexproject,
@@ -393,7 +408,8 @@ $projectLeaders = $indexproject->projectleaders;
             'department' => $department,
             'allPrograms' => $allPrograms,
             'programLeaders' => $programLeaders,
-            'program' => $program
+            'program' => $program,
+            'isALeader' => $isALeader
         ]);
     }
 
@@ -470,7 +486,9 @@ $projectLeaders = $indexproject->projectleaders;
                 'actstatus' => $activitystatus,
             ];
         })->toArray();
-
+        $isALeader = ProjectLeader::where('project_id', $indexproject->id)
+        ->where('user_id', Auth::user()->id)
+        ->exists();
         return view('project.calendar', [
             'members' => $users,
             'indexproject' => $indexproject,
@@ -480,7 +498,8 @@ $projectLeaders = $indexproject->projectleaders;
             'activityArray' => $activityArray,
             'allPrograms' => $allPrograms,
             'programLeaders' => $programLeaders,
-            'program' => $program
+            'program' => $program,
+            'isALeader' => $isALeader
 
         ]);
     }
