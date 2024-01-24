@@ -182,7 +182,7 @@
                     </div>
                     @livewire('list-of-projects', ['indexprogram' => $indexprogram ])
                     @If(Auth::user()->role == "Admin")
-                    @if($indexprogram->status === "Terminated")
+                    @if($indexprogram->status != "Terminated")
                     <div class="ms-3 mt-2 btn-group shadow">
                         <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addproj">
                             <b class="small">Add New Project</b>
