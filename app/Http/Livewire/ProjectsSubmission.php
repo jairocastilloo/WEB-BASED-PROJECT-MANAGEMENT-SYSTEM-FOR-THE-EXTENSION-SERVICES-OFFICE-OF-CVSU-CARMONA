@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class ProjectsSubmission extends Component
 {
     public $currentPageProjectTerminal = 1; // The current page number
-    public $perPageProjectTerminal = 10;
+    public $perPageProjectTerminal = 5;
     public function changePageProjectTerminal($page)
     {
         $this->currentPageProjectTerminal = $page;

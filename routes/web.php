@@ -145,6 +145,8 @@ Route::get('/close/{projectid}/{department}', [ProjectController::class, 'closeP
     ->name('projects.close');
 Route::get('/delete/{projectid}', [ProjectController::class, 'deleteProject'])
     ->name('projects.delete');
+    Route::get('/deleteprogram/{programid}', [ProjectController::class, 'deleteProgram'])
+    ->name('programs.delete');
 Route::get('/selectprogram/{department}', [ProjectController::class, 'selectProgram'])
     ->name('programs.select');
 Route::get('/displayprogram/{programid}/{department}', [ProjectController::class, 'displayProgram'])

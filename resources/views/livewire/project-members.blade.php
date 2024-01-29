@@ -31,13 +31,15 @@
         @php $count++; @endphp
         @endforeach
     </div>
-    @if (Auth::user()->role === 'Admin')
+    @if (Auth::user()->role === 'Admin' || Auth::user()->role === 'Coordinator')
+
     <div class="btn-group ms-3 mt-2 mb-2 shadow">
         <button type="button" class="btn btn-sm rounded btn-gold shadow" id="btnAddMember" data-bs-toggle="modal" data-bs-target="#addAssigneeModal">
             <b class="small">Add Members</b>
         </button>
 
     </div>
+
     @endif
     <span class="ms-2 small loadingMessage" id="loadingSpan" style="display: none;">Sending Email..</span>
     <div class="alert alert-danger alert-dismissible fade show ms-2 mt-1" role="alert" id="emailError" style="display: none;">

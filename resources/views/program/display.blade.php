@@ -121,7 +121,7 @@
 @endif
                             @endif
                             @If(Auth::user()->role == "Admin")
-                            <a class="dropdown-item small hrefnavDelete border-bottom">
+                            <a class="dropdown-item small hrefnavDelete border-bottom" data-bs-target="#deleteProgramModal" data-bs-toggle="modal">
                                 <b class="small">Delete Program</b>
                             </a>
                             @endif
@@ -134,7 +134,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="markAsCompletedModalLabel">Mark As Completed</h5>
+                                    <h5 class="modal-title" id="markAsCompletedModalLabel">Terminate Program</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -152,6 +152,27 @@
                             </div>
                         </div>
                     </div>
+
+<div class="modal fade" id="deleteProgramModal" tabindex="-1" aria-labelledby="deleteProgramModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProgramModalLabel">Delete Program</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this program?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form id="deleteProgramForm" method="get" action="{{ route('programs.delete', $indexprogram['id']) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-danger">Delete Program</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
                     <div class="modal fade" id="terminateProgram" tabindex="-1" aria-labelledby="terminateProgramModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -526,6 +547,9 @@
         </div>
     </div>
 </div>
+
+
+
 @endsection
 @section('scripts')
 

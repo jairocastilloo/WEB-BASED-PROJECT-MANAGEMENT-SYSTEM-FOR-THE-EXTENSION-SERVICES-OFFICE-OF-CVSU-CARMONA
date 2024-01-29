@@ -204,12 +204,13 @@ class ProjectController extends Controller
         $allPrograms = Program::where(function ($query) use ($department) {
             $query->where('department', $department)
                   ->orWhere('department', 'All');
-        })->get();
+        })
+        ->where('status', '!=', 'Terminated')->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
-        
-        
-        
+
+
+
 
         $program = [];
         $isTerminated = false;
@@ -224,7 +225,7 @@ class ProjectController extends Controller
         $isALeader = ProjectLeader::where('project_id', $indexproject->id)
         ->where('user_id', Auth::user()->id)
         ->exists();
-    
+
 
         return view('project.select', [
             'members' => $users,
@@ -328,7 +329,8 @@ class ProjectController extends Controller
         $allPrograms = Program::where(function ($query) use ($department) {
             $query->where('department', $department)
                   ->orWhere('department', 'All');
-        })->get();
+        })
+        ->where('status', '!=', 'Terminated')->get();
         $programLeaders = ProgramLeader::whereIn('program_id', $allPrograms->pluck('id'))
             ->get();
 
@@ -341,7 +343,7 @@ class ProjectController extends Controller
                 $isTerminated = true;
                 }
             }
-    
+
         $activities = $indexproject->activities;
 
         $isALeader = ProjectLeader::where('project_id', $indexproject->id)
@@ -414,7 +416,7 @@ class ProjectController extends Controller
                 $isTerminated = true;
                 }
             }
-    
+
         $isALeader = ProjectLeader::where('project_id', $indexproject->id)
         ->where('user_id', Auth::user()->id)
         ->exists();
@@ -484,7 +486,7 @@ class ProjectController extends Controller
                 $isTerminated = true;
                 }
             }
-    
+
 
         $activities = $indexproject->activities;
         $activityArray = $activities->map(function ($activity) {
@@ -927,6 +929,18 @@ class ProjectController extends Controller
             ->delete();
         return redirect()->route('project.show', ['department' => $department]);
     }
+    public function deleteProgram($programid)
+    {
+
+        $program = Program::findorFail($programid);
+        $department = $program->department;
+
+        $program->delete();
+        Notification::where('task_id', $programid)
+            ->where('task_type', 'program')
+            ->delete();
+        return redirect()->route('programs.select', ['department' => $department]);
+    }
     public function selectProgram($department)
     {
 
@@ -999,7 +1013,7 @@ class ProjectController extends Controller
         } else {
             $users = null;
         }
-       
+
 
         return view('program.display', [
             'members' => $users,

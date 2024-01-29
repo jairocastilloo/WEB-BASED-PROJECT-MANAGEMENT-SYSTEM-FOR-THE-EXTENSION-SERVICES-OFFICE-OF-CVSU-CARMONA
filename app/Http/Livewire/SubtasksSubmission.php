@@ -10,7 +10,7 @@ use Livewire\WithPagination;
 class SubtasksSubmission extends Component
 {
     public $currentPageSubtaskContribution = 1; // The current page number
-    public $perPageSubtaskContribution = 10;
+    public $perPageSubtaskContribution = 5;
     public function changePageSubtaskContribution($page)
     {
         $this->currentPageSubtaskContribution = $page;

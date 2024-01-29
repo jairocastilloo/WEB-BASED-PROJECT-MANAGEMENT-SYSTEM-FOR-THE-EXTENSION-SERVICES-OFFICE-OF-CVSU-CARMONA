@@ -78,13 +78,13 @@
                         </label>
                     </div>
                     @if ($userRole == 'Admin')
-                    @if (!$isTerminated)
+
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addproj">
                             <b class="small">Create New Project</b>
                         </button>
                     </div>
-                    @endif
+
                     @endif
                 </div>
 

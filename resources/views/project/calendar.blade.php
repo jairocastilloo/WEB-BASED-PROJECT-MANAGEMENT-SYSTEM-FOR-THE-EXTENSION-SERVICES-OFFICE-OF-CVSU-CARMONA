@@ -80,13 +80,13 @@
                         </label>
                     </div>
                     @if (Auth::user()->role === 'Admin')
-                    @if (!$isTerminated)
+
                     <div class="btn-group mt-1 ms-3 mb-2 shadow">
                         <button type="button" class="btn btn-sm rounded btn-gold shadow" id="addproj">
                             <b class="small">Create Project</b>
                         </button>
                     </div>
-                    @endif
+
                     @endif
                 </div>
 
@@ -539,7 +539,9 @@ document.body.appendChild(messageBox);
                 },
 
                 eventContent: function(arg) {
-                   
+                    var maxTitleLength = 35; // Adjust the maximum length as needed
+                    var truncatedTitle = arg.event.title.length > maxTitleLength ? arg.event.title.substring(0, maxTitleLength) + ' ...' : arg.event.title;
+
                     var status = arg.event.extendedProps.status;
         var backgroundColor;
 
@@ -562,15 +564,15 @@ document.body.appendChild(messageBox);
         }
         if (status == 'Ongoing' || status == 'Upcoming'){
         return {
-           
-            html: '<div class="event-content fcnavhover" style="color: black; padding: 5px; background-color: ' + backgroundColor + ';">' + arg.event.title + '</div>'
-            
+
+            html: '<div class="event-content fcnavhover" style="color: black; padding: 5px; background-color: ' + backgroundColor + ';">' + truncatedTitle + '</div>'
+
         };
     } else{
         return {
-           
-           html: '<div class="event-content fcnavhover" style="color: white; padding: 5px; background-color: ' + backgroundColor + ';">' + arg.event.title + '</div>'
-           
+
+           html: '<div class="event-content fcnavhover" style="color: white; padding: 5px; background-color: ' + backgroundColor + ';">' + truncatedTitle + '</div>'
+
        };
     }
                 },
@@ -580,7 +582,7 @@ document.body.appendChild(messageBox);
 
 
             });
-           
+
 
             calendar.render();
 

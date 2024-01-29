@@ -17,6 +17,7 @@ class ProjectMembers extends Component
     public $members;
     public $addmembers;
     public $department;
+
     protected $listeners = ['saveMembers' => 'handleSaveMembers', 'sendNotification' => 'handleSendNotification'];
     public function mount($indexproject, $department)
     {
