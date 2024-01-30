@@ -40,17 +40,15 @@
             <button type="button" class="btn btn-sm rounded btn-gold shadow" wire:click="showScheduledTasks(1)">
                 <b class="small">Show Tasks</b>
             </button>
-
         </div>
+
         @else
         @if ($ScheduledTasks->isEmpty())
         <div class="p-2 text-center">
             <h6 class="fw-bold small">No Scheduled Tasks</h6>
         </div>
+
         @else
-
-
-
         <div class="container p-0">
             @foreach($ScheduledTasks as $subtask)
             <div class="border-bottom ps-3 p-2 divhover subtaskdiv" data-value="{{ $subtask['id'] }}"
