@@ -15,7 +15,7 @@ class EditAccount extends Component
     public $currentPage = 1; // The current page number
     public $perPage = 10;
     public $data;
-    protected $listeners = ['updateData' => 'handleupdateData', 'findAccount' => 'handleFindAccount'];
+    protected $listeners = ['updateData' => 'handleupdateData', 'findAccount' => 'handleFindAccount', 'addData' => 'handleAddData'];
 
     public function findAccount($inputSearch, $x)
     {
@@ -61,6 +61,31 @@ class EditAccount extends Component
     public function handleupdateData($data)
     {
         $this->updateData($data);
+    }
+    public function addData($data)
+    {
+     
+
+        $newAccount = new User;
+        $newAccount->name = $data['addtitle'] . ' ' . $data['addfirstname'];
+        $newAccount->middle_name = $data['addmiddlename'];
+        $newAccount->last_name = $data['addlastname'];
+        $newAccount->username = $data['addusername'];
+        $newAccount->password = $data['addpassword'];
+        $newAccount->email = $data['addemail'];
+        $newAccount->department = $data['adddepartment'];
+        $newAccount->role = $data['addrole'];
+        $newAccount->approval = 1;
+        $newAccount->email_verified_at = now(); // Corrected timestamp function call
+        $newAccount->save();
+        
+
+        $this->emit('afterAddData');
+    }
+
+    public function handleAddData($data)
+    {
+        $this->addData($data);
     }
     public function render()
     {

@@ -74,7 +74,9 @@
         </ul>
     </nav>
 
-
+    <button type="button" class="btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+        Add Account
+      </button>
     <div class="tablecontainer">
         <table class="approvaltable">
             <thead>
@@ -121,7 +123,122 @@
             </tbody>
         </table>
     </div>
+    <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAccountModalLabel">Add Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
 
+
+                   
+                <div class="mb-3">
+                    <label for="addtitle" class="form-label">Abbreviated Title</label>
+                    <select name="addtitle" id="addtitle" class="form-select"  required autocomplete="title">
+                        <option value="" disabled selected>Select Title</option>
+                        <option value="Mr.">Mr.</option>
+                        <option value="Ms.">Ms.</option>
+                        <option value="Prof.">Prof.</option>
+                        <option value="Dr.">Dr.</option>
+                    </select>
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+
+
+                <!-- First Name -->
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <input type="text" class="form-control autocapital" id="addfirstname" name="addfirstname">
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+
+                <!-- Middle Name -->
+                <div class="mb-3">
+                    <label for="middlename" class="form-label">Middle Name</label>
+                    <input type="text" class="form-control autocapital" id="addmiddlename" name="addmiddlename">
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+
+                <!-- Last Name -->
+                <div class="mb-3">
+                    <label for="addlastname" class="form-label">Last Name</label>
+                    <input type="text" class="form-control autocapital" id="addlastname" name="addlastname">
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+
+                <!-- Username -->
+                <div class="mb-3">
+                    <label for="addusername" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="addusername" name="addusername">
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <label for="addpassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="addpassword" name="addpassword">
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" class="form-control" id="addemail" name="addemail">
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+                <!-- Department (Select Input) -->
+                <div class="mb-3">
+                    <label for="adddepartment" class="form-label">Department</label>
+                    <select class="form-select" id="adddepartment" name="adddepartment">
+                        <option value="" disabled selected>Select your Department</option>
+                        <option value="All">All</option>
+                        <option value="Department of Management">Department of Management</option>
+                        <option value="Department of Industrial and Information Technology">Department of Industrial
+                            and Information Technology</option>
+                        <option value="Department of Teacher Education">Department of Teacher Education</option>
+                        <option value="Department of Arts and Science">Department of Arts and Science</option>
+                    </select>
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+
+                <!-- Role (Select Input) -->
+                <div class="mb-3">
+                    <label for="addrole" class="form-label">Role</label>
+                    <select class="form-select" id="addrole" name="addrole">
+                        <option value="" disabled selected>Select your Role</option>
+                        <option value="Coordinator">Coordinator</option>
+                        <option value="Implementer">Implementer</option>
+                    </select>
+                    <span class="invalid-feedback" role="alert">
+                        <strong></strong>
+                    </span>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    id="closeAdd">Close</button>
+                <button type="submit" class="btn btn-primary" id="confirmAddAccount">Add Account</button>
+            </div>
+        </div>
+    </div>
+</div>
     <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -137,7 +254,7 @@
                     <!-- First Name -->
                     <div class="mb-3">
                         <label for="firstname" class="form-label">First Name</label>
-                        <input type="text" class="form-control" id="firstname" name="firstname">
+                        <input type="text" class="form-control autocapital" id="firstname" name="firstname">
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
@@ -146,7 +263,7 @@
                     <!-- Middle Name -->
                     <div class="mb-3">
                         <label for="middlename" class="form-label">Middle Name</label>
-                        <input type="text" class="form-control" id="middlename" name="middlename">
+                        <input type="text" class="form-control autocapital" id="middlename" name="middlename">
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
@@ -155,7 +272,7 @@
                     <!-- Last Name -->
                     <div class="mb-3">
                         <label for="lastname" class="form-label">Last Name</label>
-                        <input type="text" class="form-control" id="lastname" name="lastname">
+                        <input type="text" class="form-control autocapital" id="lastname" name="lastname">
                         <span class="invalid-feedback" role="alert">
                             <strong></strong>
                         </span>
@@ -218,6 +335,7 @@
     <script>
     document.addEventListener('livewire:load', function() {
         const confirmEdit = document.getElementById('confirmEdit');
+        const confirmAddAccount = document.getElementById('confirmAddAccount');
         const btnSearch = document.getElementById('btnSearch');
         const inputSearch = document.getElementById('inputSearch');
         confirmEdit.addEventListener('click', function() {
@@ -237,60 +355,172 @@
             }
 
         });
-        Livewire.on('afterUpdateData', function() {
-            document.getElementById('closeEdit').click();
+        Livewire.on('afterAddData', function() {
+            document.getElementById('addtitle').value = "";
+            document.getElementById('addfirstname').value = "";
+            document.getElementById('addmiddlename').value = "";
+            document.getElementById('addlastname').value = "";
+            document.getElementById('addusername').value = "";
+            document.getElementById('addemail').value = "";
+            document.getElementById('addpassword').value = "";
+            document.getElementById('adddepartment').value = "";
+            document.getElementById('addrole').value = "";
+            document.getElementById('closeAdd').click();
         });
 
+        confirmAddAccount.addEventListener('click', function(){
+            var addData = {
+                'addtitle': document.getElementById('addtitle').value,
+                'addfirstname': document.getElementById('addfirstname').value,
+                'addmiddlename': document.getElementById('addmiddlename').value,
+                'addlastname': document.getElementById('addlastname').value,
+                'addusername': document.getElementById('addusername').value,
+                'addpassword': document.getElementById('addpassword').value,
+                'addemail': document.getElementById('addemail').value,
+                'adddepartment': document.getElementById('adddepartment').value,
+                'addrole': document.getElementById('addrole').value,
+            };
+            var addhasError = addhandleError();
+            if (!addhasError) {
+                Livewire.emit('addData', addData);
+            }
+        });
         function handleError() {
+            var hasError = false;
+            document.querySelectorAll('.invalid-feedback strong').forEach(function(element) {
+    element.textContent = "";
+});
 
-            // Display an error message or handle the error accordingly
+document.querySelectorAll('.is-invalid').forEach(function(element) {
+    element.classList.remove('is-invalid');
+});
             if (document.getElementById('firstname').value === "") {
                 document.getElementById('firstname').classList.add('is-invalid');
                 document.getElementById('firstname').nextElementSibling.querySelector(
                     '.invalid-feedback strong').textContent = 'First Name is required.';
 
-                return true;
+           hasError = true;
             }
+            // Display an error message or handle the error accordingly
+         
             if (document.getElementById('lastname').value === "") {
                 document.getElementById('lastname').classList.add('is-invalid');
                 document.getElementById('lastname').nextElementSibling.querySelector('.invalid-feedback strong')
                     .textContent = 'Last Name is required.';
 
-                return true;
+                    hasError = true;
             }
             if (document.getElementById('username').value === "") {
                 document.getElementById('username').classList.add('is-invalid');
                 document.getElementById('username').nextElementSibling.querySelector('.invalid-feedback strong')
                     .textContent = 'Username is required.';
 
-                return true;
+                    hasError = true;
             }
             if (document.getElementById('email').value === "") {
                 document.getElementById('email').classList.add('is-invalid');
                 document.getElementById('email').nextElementSibling.querySelector('.invalid-feedback strong')
                     .textContent = 'Email is required.';
 
-                return true;
+                    hasError = true;
             }
             if (document.getElementById('department').value === "") {
                 document.getElementById('department').classList.add('is-invalid');
                 document.getElementById('department').nextElementSibling.querySelector(
                     '.invalid-feedback strong').textContent = 'Department is required.';
 
-                return true;
+                    hasError = true;
             }
             if (document.getElementById('role').value === "") {
                 document.getElementById('role').classList.add('is-invalid');
                 document.getElementById('role').nextElementSibling.querySelector('.invalid-feedback strong')
                     .textContent = 'Role is required.';
 
-                return true;
+                    hasError = true;
             }
 
             // Error found
 
-            return false; // No error
+            return hasError; // No error
         }
+        function addhandleError() {
+            var hasError = false;
+
+            document.querySelectorAll('.invalid-feedback strong').forEach(function(element) {
+    element.textContent = "";
+});
+
+document.querySelectorAll('.is-invalid').forEach(function(element) {
+    element.classList.remove('is-invalid');
+});
+            if (document.getElementById('addtitle').value === "") {
+    document.getElementById('addtitle').classList.add('is-invalid');
+    document.getElementById('addtitle').nextElementSibling.querySelector(
+        '.invalid-feedback strong').textContent = 'Title is required.';
+
+        hasError = true;
+}
+            if (document.getElementById('addfirstname').value === "") {
+    document.getElementById('addfirstname').classList.add('is-invalid');
+    document.getElementById('addfirstname').nextElementSibling.querySelector(
+        '.invalid-feedback strong').textContent = 'First Name is required.';
+        hasError = true;
+}
+// Display an error message or handle the error accordingly
+if (document.getElementById('addfirstname').value === "") {
+    document.getElementById('addfirstname').classList.add('is-invalid');
+    document.getElementById('addfirstname').nextElementSibling.querySelector(
+        '.invalid-feedback strong').textContent = 'First Name is required.';
+
+        hasError = true;
+}
+if (document.getElementById('addlastname').value === "") {
+    document.getElementById('addlastname').classList.add('is-invalid');
+    document.getElementById('addlastname').nextElementSibling.querySelector('.invalid-feedback strong')
+        .textContent = 'Last Name is required.';
+
+        hasError = true;
+}
+if (document.getElementById('addusername').value === "") {
+    document.getElementById('addusername').classList.add('is-invalid');
+    document.getElementById('addusername').nextElementSibling.querySelector('.invalid-feedback strong')
+        .textContent = 'Username is required.';
+
+        hasError = true;
+}
+if (document.getElementById('addpassword').value === "") {
+    document.getElementById('addpassword').classList.add('is-invalid');
+    document.getElementById('addpassword').nextElementSibling.querySelector('.invalid-feedback strong')
+        .textContent = 'Password is required.';
+
+        hasError = true;
+}
+if (document.getElementById('addemail').value === "") {
+    document.getElementById('addemail').classList.add('is-invalid');
+    document.getElementById('addemail').nextElementSibling.querySelector('.invalid-feedback strong')
+        .textContent = 'Email is required.';
+
+        hasError = true;
+}
+if (document.getElementById('adddepartment').value === "") {
+    document.getElementById('adddepartment').classList.add('is-invalid');
+    document.getElementById('adddepartment').nextElementSibling.querySelector(
+        '.invalid-feedback strong').textContent = 'Department is required.';
+
+        hasError = true;
+}
+if (document.getElementById('addrole').value === "") {
+    document.getElementById('addrole').classList.add('is-invalid');
+    document.getElementById('addrole').nextElementSibling.querySelector('.invalid-feedback strong')
+        .textContent = 'Role is required.';
+
+        hasError = true;
+}
+
+// Error found
+
+return  hasError; // No error
+}
 
         btnSearch.addEventListener('click', function() {
             const searchCriteria = document.querySelector('input[name="searchCriteria"]:checked').value;

@@ -7,7 +7,7 @@
             Account Approval
         </div>
         <div class="border-2 border-end p-2 divhover" id="editAccounts">
-            Account Details
+            Accounts
         </div>
         <!--
         <div class="border-2 border-end p-2 divhover" id="editAccounts">

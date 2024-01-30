@@ -8,7 +8,7 @@
                 Account Approval
             </div>
             <div class="border-2 border-end p-2 currentdiv">
-                Account Details
+                Accounts
             </div>
            
 
@@ -26,6 +26,15 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+           
+        $(document).on('input', '.autocapital', function() {
+            var inputValue = $(this).val();
+            if (inputValue.length > 0) {
+                $(this).val(inputValue.charAt(0).toUpperCase() + inputValue.slice(1));
+            }
+        });
+  
+
             $('#navbarDropdown').click(function() {
                 // Add your function here
                 $('.dropdown-menu').toggleClass('shows');
