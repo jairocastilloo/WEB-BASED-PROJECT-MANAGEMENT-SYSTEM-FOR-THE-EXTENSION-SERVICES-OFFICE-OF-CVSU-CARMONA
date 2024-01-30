@@ -48,7 +48,7 @@
         @if ($yUpcomingPrograms == 0)
         <div class="shadow text-center p-2">
             <button type="button" class="btn btn-sm rounded btn-gold shadow" wire:click="showUpcomingPrograms(1)">
-                <b class="small">Show Projects</b>
+                <b class="small">Show Programs</b>
             </button>
 
         </div>
