@@ -44,8 +44,12 @@
             });
             $(document).on('click', '.editdetails', function() {
                 var parentdiv = $(this).closest('tr');
+                var firstnamedata = parentdiv.find('.firstname').text();
+var title = firstnamedata.split('.')[0].trim(); // Get the first part before the dot and remove leading/trailing spaces
+var firstname = firstnamedata.split(' ').slice(1).join(' ').trim(); // Get the part after the first space and remove leading/trailing spaces
 
-                var firstname = parentdiv.find('.firstname').text();
+title = title + '.'; 
+
                 var middlename = parentdiv.find('.middlename').text();
                 var lastname = parentdiv.find('.lastname').text();
                 var username = parentdiv.find('.username').text();
@@ -53,6 +57,8 @@
                 var department = parentdiv.find('.dept').text();
                 var role = parentdiv.find('.role').text();
                 $('#userid').val(parentdiv.attr('data-value'));
+                $('#title option[value="' + title + '"]').prop('selected', true);
+
                 $('#firstname').val(firstname);
                 $('#middlename').val(middlename);
                 $('#lastname').val(lastname);

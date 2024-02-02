@@ -46,7 +46,7 @@ class EditAccount extends Component
     {
         $user = User::findOrFail($data['id']); // Use square brackets to access data
         $user->update([
-            'name' => $data['firstname'],
+            'name' => $data['title'] . ' ' . $data['firstname'],
             'middle_name' => $data['middlename'],
             'last_name' => $data['lastname'],
             'username' => $data['username'],

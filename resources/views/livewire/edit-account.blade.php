@@ -251,6 +251,19 @@
                     <!-- Registration form -->
 
                     <input type="hidden" id="userid" name="userid">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Abbreviated Title</label>
+                        <select name="title" id="title" class="form-select"  required autocomplete="title">
+                            <option value="" disabled selected>Select Title</option>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Ms.">Ms.</option>
+                            <option value="Prof.">Prof.</option>
+                            <option value="Dr.">Dr.</option>
+                        </select>
+                        <span class="invalid-feedback" role="alert">
+                            <strong></strong>
+                        </span>
+                    </div>
                     <!-- First Name -->
                     <div class="mb-3">
                         <label for="firstname" class="form-label">First Name</label>
@@ -341,6 +354,7 @@
         confirmEdit.addEventListener('click', function() {
             var data = {
                 'id': document.getElementById('userid').value,
+                'title': document.getElementById('title').value,
                 'firstname': document.getElementById('firstname').value,
                 'middlename': document.getElementById('middlename').value,
                 'lastname': document.getElementById('lastname').value,
@@ -366,6 +380,10 @@
             document.getElementById('adddepartment').value = "";
             document.getElementById('addrole').value = "";
             document.getElementById('closeAdd').click();
+        });
+        Livewire.on('afterUpdateData', function() {
+           
+            document.getElementById('closeEdit').click();
         });
 
         confirmAddAccount.addEventListener('click', function(){
@@ -394,6 +412,14 @@
 document.querySelectorAll('.is-invalid').forEach(function(element) {
     element.classList.remove('is-invalid');
 });
+
+if (document.getElementById('title').value === "") {
+                document.getElementById('title').classList.add('is-invalid');
+                document.getElementById('title').nextElementSibling.querySelector(
+                    '.invalid-feedback strong').textContent = 'Title is required.';
+
+           hasError = true;
+            }
             if (document.getElementById('firstname').value === "") {
                 document.getElementById('firstname').classList.add('is-invalid');
                 document.getElementById('firstname').nextElementSibling.querySelector(
