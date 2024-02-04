@@ -44,7 +44,7 @@
     <div class="container-fluid">
         <div class="notifyCustom d-flex justify-content-center">
             <div class="mx-auto">
-                <button wire:click="notify()" type="button" class="btn btn-green btn-block">Notify (for
+                <button wire:click="notify()" type="button" class="btn btn-green btn-block d-none">Notify (for
                     developer)</button>
             </div>
         </div>

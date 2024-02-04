@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
     {
         //
 
-        $faker = FakerFactory::create();
+/*        $faker = FakerFactory::create();
 
         for ($i = 1; $i <= 498; $i++) {
 
@@ -51,6 +51,7 @@ class UsersTableSeeder extends Seeder
                 ]);
             }
         }
+        */
         /*
         for ($i = 2; $i < 500; $i++) {
             $subtasks = new Subtask();

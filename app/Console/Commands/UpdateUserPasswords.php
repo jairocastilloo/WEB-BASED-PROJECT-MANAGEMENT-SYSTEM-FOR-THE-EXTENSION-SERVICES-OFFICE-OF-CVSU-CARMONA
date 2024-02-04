@@ -25,7 +25,7 @@ class UpdateUserPasswords extends Command
                 $generatedPassword = $this->generatePassword();
 
                 // Display information about the user
-                $this->line("User ID: {$user->id}, Email: {$user->email}");
+                $this->line("Username: {$user->username}, Email: {$user->email}");
                 $this->line("Generated Password: {$generatedPassword}");
 
                 // Update the password

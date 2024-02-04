@@ -151,16 +151,16 @@
                         <h6 class="fw-bold small" style="color:darkgreen;">Calendar</h6>
                     </div>
 <div id="legend">
-    <div class="legend-item" style="background-color: #71BC68;"></div>
+    <div class="legend-item" style="background-color: #006400;"></div>
     <span>Ongoing</span>
 
-    <div class="legend-item" style="background-color: #F4AB6A;"></div>
+    <div class="legend-item" style="background-color: #b8860b;"></div>
     <span>Upcoming</span>
 
-    <div class="legend-item" style="background-color: #B22B27;"></div>
+    <div class="legend-item" style="background-color: #8b0000;"></div>
     <span>Overdue</span>
 
-    <div class="legend-item" style="background-color: #284F8F ;"></div>
+    <div class="legend-item" style="background-color: #00008b ;"></div>
     <span>Completed</span>
 </div>
 
@@ -547,34 +547,30 @@ document.body.appendChild(messageBox);
 
         switch (status) {
             case 'Ongoing':
-                backgroundColor = '#71BC68';
+                backgroundColor = '#006400';
                 break;
             case 'Upcoming':
-                backgroundColor = '#F4AB6A';
+                backgroundColor = '#b8860b';
                 break;
             case 'Overdue':
-                backgroundColor = '#B22B27';
+                backgroundColor = '#8b0000';
                 break;
             case 'Completed':
-                backgroundColor = '#284F8F';
+                backgroundColor = '#00008b';
                 break;
             default:
                 backgroundColor = '#EFD033';
                 break;
         }
-        if (status == 'Ongoing' || status == 'Upcoming'){
+        
         return {
 
-            html: '<div class="event-content fcnavhover" style="color: black; padding: 5px; background-color: ' + backgroundColor + ';">' + truncatedTitle + '</div>'
+            html: '<div class="event-content fcnavhover" style="color: ' + backgroundColor + '; padding: 5px; border-color: ' + backgroundColor + '; background-color: white;font-weight: bold;">' + truncatedTitle + '</div>'
 
         };
-    } else{
-        return {
-
-           html: '<div class="event-content fcnavhover" style="color: white; padding: 5px; background-color: ' + backgroundColor + ';">' + truncatedTitle + '</div>'
-
-       };
-    }
+  
+        
+   
                 },
 
                 events: eventsArray,
