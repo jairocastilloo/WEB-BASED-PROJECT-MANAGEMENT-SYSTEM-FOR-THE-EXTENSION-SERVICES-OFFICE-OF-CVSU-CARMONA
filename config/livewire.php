@@ -54,8 +54,8 @@ return [
     |
     */
 
-    'asset_url' => "http://192.168.148.93/extensionpms",
-    //'asset_url' => null,
+    //'asset_url' => "http://192.168.148.93/extensionpms",
+    'asset_url' => null,
     /*
     |--------------------------------------------------------------------------
     | Livewire App URL
