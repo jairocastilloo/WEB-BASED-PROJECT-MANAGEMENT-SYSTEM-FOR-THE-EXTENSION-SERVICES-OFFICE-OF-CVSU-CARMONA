@@ -4,4 +4,4 @@
 <h3><b>
     Task Monitoring Page
 </b></h3>
-<img src="public/images/cvsu-carmona-japanese.jpg" alt="cvsu-carmona" />
+<img src="public/images/git1.png" alt="cvsu-carmona" />
