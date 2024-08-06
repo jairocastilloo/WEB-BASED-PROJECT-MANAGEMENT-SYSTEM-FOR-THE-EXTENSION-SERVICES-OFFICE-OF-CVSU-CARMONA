@@ -4,4 +4,32 @@
 <h3><b>
     Task Monitoring Page
 </b></h3>
-<img src="public/images/git1.png" alt="cvsu-carmona" />
+<img src="public/images/git1.png" alt="task-monitoring-page" />
+<h3><b>
+    Program Page
+</b></h3>
+<img src="public/images/git3.png" alt="program-page" />
+<h3><b>
+    Project Page
+</b></h3>
+<img src="public/images/git2.png" alt="project-page" />
+<h3><b>
+    Work and Financial Page
+</b></h3>
+<img src="public/images/git4.png" alt="work-and-financial" />
+<h3><b>
+    Activity Page
+</b></h3>
+<img src="public/images/git5.png" alt="activity" />
+<h3><b>
+    Overview of the Reports Tab
+</b></h3>
+<img src="public/images/git6.png" alt="overview" />
+<h3><b>
+   Project Activities Data Table
+</b></h3>
+<img src="public/images/git8.png" alt="data-table" />
+<h3><b>
+   Records Section
+</b></h3>
+<img src="public/images/git9.png" alt="records" />
