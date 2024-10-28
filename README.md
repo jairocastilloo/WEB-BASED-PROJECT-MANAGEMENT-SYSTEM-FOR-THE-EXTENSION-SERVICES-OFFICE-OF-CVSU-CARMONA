@@ -4,4 +4,4 @@
 <h3><b>
     Login Page
 </b></h3>
-<img src="public/images/welcome page.png" alt="welcome-page" style="width: 300px;"/>
+<img src="public/images/welcome-page.png" alt="welcome-page" style="width: 300px;"/>
