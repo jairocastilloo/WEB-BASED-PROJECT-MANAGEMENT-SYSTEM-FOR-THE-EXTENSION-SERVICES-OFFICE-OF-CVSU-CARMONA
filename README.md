@@ -9,8 +9,34 @@
 <h3><b>Tasks Monitoring Page</b></h3>
 <p>The task monitoring page provides a clear overview of ongoing, upcoming, overdue, and completed subtasks, activities, and projects. Only subtasks do not have upcoming dates. This section displays these items in chronological order based on their creation dates.</p>
 <img src="public/images/monitoring-page.png" alt="monitoring-page" style="width: 600px;" />
-<h3><b>Program Page</b></h3>
+<h3><b>Program Selection Page</b></h3>
 <p>Users can explore programs within their specific departments or choose a more comprehensive view by accessing programs encompassing all departments</p>
 <p>Also, users can add new program</p>
 <img src="public/images/program-page.png" alt="program-page" style="width: 600px;" />
 <img src="public/images/new-program.png" alt="new-program" style="width: 600px;" />
+<h3><b>Project Selection Page</b></h3>
+<p>Users can explore projects within their respective departments or opt for a broader perspective by accessing projects involving all departments</p>
+<p>Also, users can add new project which user can select which program it is.Then, user can list objectives.</p>
+<img src="public/images/project-page.png" alt="project-page" style="width: 600px;" />
+<img src="public/images/new-project.png" alt="new-project" style="width: 600px;" />
+<img src="public/images/select-program-title_new-project.png" alt="select-program-title_new-project" style="width: 600px;" />
+<img src="public/images/list-objectives_new-project.png" alt="list-objectives_new-project" style="width: 600px;" />
+<h3><b>Project Page</b></h3>
+<p>Project Page includes the ability to navigate a comprehensive table presenting project details encompassing objectives, activities, expected output, activities’ duration, budget, and funding sources. </p>
+<p>Also, a menu unveils a curated selection of options.</p>
+<p></p>
+<img src="public/images/select-project.png" alt="select-project" style="width: 600px;" />
+<img src="public/images/menu-project.png" alt="menu-project" style="width: 600px;" />
+<h3><b>Activity Page</b></h3>
+<p>In an activity panel, users can see its details, outputs, assigned implementers, subtasks, and the other activities within the project. </p>
+<p>The activity interface also has a menu for administrators that unveils a curated selection of options that edit details, close activity, and delete activity. User can also add output, subtask, implementers for selected activity</p>
+<p></p>
+<img src="public/images/activity.png" alt="activity" style="width: 600px;" />
+<img src="public/images/activity_2.png" alt="activity_2" style="width: 600px;" />
+<h3><b>Subtask Page</b></h3>
+<p>In a subtask panel, users can see its details, assignees and the other subtasks within its activity. </p>
+<p>The subtask interface also has a menu for marking it as completed, edit details, delete subtask and submit accomplishment report for it</p>
+<p></p>
+<img src="public/images/subtask.png" alt="subtask" style="width: 600px;" />
+<img src="public/images/subtask_2.png" alt="subtask_2" style="width: 600px;" />
+<img src="public/images/submit_subtask.png" alt="submit_subtask" style="width: 600px;" />
