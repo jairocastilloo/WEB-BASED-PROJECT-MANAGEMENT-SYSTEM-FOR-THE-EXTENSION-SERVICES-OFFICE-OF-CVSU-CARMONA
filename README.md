@@ -4,5 +4,13 @@
 <h3><b>
     Login Page
 </b></h3>
-<h4>asdasd</h4>
+<p>The login page is designed with the Extension Service Office’s logo, mission, and vision, featuring CvSU – Carmona’s image as a background.</p>
 <img src="public/images/welcome-page.png" alt="welcome-page" style="width: 600px;"/>
+<h3><b>Tasks Monitoring Page</b></h3>
+<p>The task monitoring page provides a clear overview of ongoing, upcoming, overdue, and completed subtasks, activities, and projects. Only subtasks do not have upcoming dates. This section displays these items in chronological order based on their creation dates.</p>
+<img src="public/images/monitoring-page.png" alt="monitoring-page" style="width: 600px;" />
+<h3><b>Program Page</b></h3>
+<p>Users can explore programs within their specific departments or choose a more comprehensive view by accessing programs encompassing all departments</p>
+<p>Also, users can add new program</p>
+<img src="public/images/program-page.png" alt="program-page" style="width: 600px;" />
+<img src="public/images/new-program.png" alt="new-program" style="width: 600px;" />
