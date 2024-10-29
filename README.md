@@ -35,8 +35,16 @@
 <img src="public/images/activity_2.png" alt="activity_2" style="width: 600px;" />
 <h3><b>Subtask Page</b></h3>
 <p>In a subtask panel, users can see its details, assignees and the other subtasks within its activity. </p>
-<p>The subtask interface also has a menu for marking it as completed, edit details, delete subtask and submit accomplishment report for it</p>
+<p>The subtask interface also has a menu for marking it as completed, edit details, delete subtask and submit accomplishment report for it. Then admin can evaluate it.</p>
 <p></p>
 <img src="public/images/subtask.png" alt="subtask" style="width: 600px;" />
 <img src="public/images/subtask_2.png" alt="subtask_2" style="width: 600px;" />
-<img src="public/images/submit_subtask.png" alt="submit_subtask" style="width: 600px;" />
+<img src="public/images/submit-subtask.png" alt="submit-subtask" style="width: 600px;" />
+<img src="public/images/submit-subtask-report.png" alt="submit-subtask-report" style="width: 600px;" />
+<h3><b>Report Page</b></h3>
+<p>The Report tab is a central hub where users can view and analyze reports by department. It shows lists of ongoing, overdue, and completed projects. Selecting a project opens a detailed report with an overview of its status, including ongoing, completed, upcoming, and overdue items. Key metrics like total activities are also provided, along with a pie chart for a clear visual summary. </p>
+<img src="public/images/report.png" alt="report" style="width: 600px;" />
+
+<h3><b>User Profile Menu</b></h3>
+<p>The User Menu provides quick access to essential account options, including Records, Configuration Settings, Failed Email Transmission, Account Management, School Time Period Settings, and Submitted Reports, streamlining navigation for personal and administrative tasks. </p>
+<img src="public/images/settings.png" alt="settings" style="width: 600px;" />
